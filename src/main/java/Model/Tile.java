@@ -3,25 +3,23 @@ package Model;
 import Model.Units.Troop;
 import Model.Units.Unit;
 import enums.FogState;
-import enums.Terrain;
-import enums.TerrainFeature;
+import enums.TerrainType;
 
 public class Tile {
     static int count = 0;
     private int id;
     private int x, y;
-    private Terrain terrain;
-    private TerrainFeature terrainFeature;
+    private TerrainType terrain;
+
     private City city;  //can be null
     private Unit unit;
     private Troop troop;
     private FogState fogState;
 
-    public Tile(int x, int y, Terrain terrain, TerrainFeature terrainFeature, FogState fogState) {
+    public Tile(int x, int y, TerrainType terrain, FogState fogState) {
         this.x = x;
         this.y = y;
         this.terrain = terrain;
-        this.terrainFeature = terrainFeature;
         this.fogState = fogState;
         this.city = null;
         this.unit = null;
@@ -54,20 +52,12 @@ public class Tile {
         this.y = y;
     }
 
-    public Terrain getTerrain() {
+    public TerrainType getTerrain() {
         return terrain;
     }
 
-    public void setTerrain(Terrain terrain) {
+    public void setTerrain(TerrainType terrain) {
         this.terrain = terrain;
-    }
-
-    public TerrainFeature getTerrainFeature() {
-        return terrainFeature;
-    }
-
-    public void setTerrainFeature(TerrainFeature terrainFeature) {
-        this.terrainFeature = terrainFeature;
     }
 
     public City getCity() {

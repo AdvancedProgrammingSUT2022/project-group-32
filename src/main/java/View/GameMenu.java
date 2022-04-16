@@ -1,11 +1,14 @@
 package View;
 
+import Model.Player;
+
 import java.util.Scanner;
 
 public class GameMenu {
     public enum MiniMenuType {
         CITY_SELECTED
     }
+
 
     private static final MiniMenuType miniMenuType = null;
 

@@ -14,6 +14,7 @@ public class Unit {
     private int HP;
     private int XP;
     private UnitType unitType;
+    private final String name;
 
 
     public Unit(Tile tile, Player owner, UnitType unitType) {
@@ -21,6 +22,7 @@ public class Unit {
         this.owner = owner;
         this.unitType = unitType;
         this.XP = 0;
+        this.name = unitType.getName();
         setFieldsFromDatabase(this.unitType);
     }
 
