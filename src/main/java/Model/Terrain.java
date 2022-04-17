@@ -22,4 +22,36 @@ public class Terrain {
         // TODO: 4/17/2022 sets baseFeature, MP, food , ...
         // TODO: 4/17/2022  first the baseTerrain must be applied and then TerrainFeature's effect
     }
+
+    public TerrainType getTerrainType() {
+        return terrainType;
+    }
+
+    public TerrainFeature getTerrainFeature() {
+        return terrainFeature;
+    }
+
+    public TerrainFeature getBaseFeature() {
+        return baseFeature;
+    }
+
+    public ResourceType getResourceType() {
+        return resourceType;
+    }
+
+    public int getMP() {
+        return MP;
+    }
+
+    public int getFood() {
+        return food;
+    }
+
+    public int getProduction() {
+        return production;
+    }
+
+    public int getGold() {
+        return gold;
+    }
 }

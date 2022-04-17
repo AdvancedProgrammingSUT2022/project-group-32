@@ -17,4 +17,27 @@ public class Map {
         // TODO: 4/17/2022 initialized tiles , ....
     }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public Tile[][] getTiles() {
+        return tiles;
+    }
+
+    public void setTiles(Tile[][] tiles) {
+        this.tiles = tiles;
+    }
+
+    public ArrayList<City> getCities() {
+        return cities;
+    }
+
+    public ArrayList<Unit> getUnits() {
+        return units;
+    }
 }

@@ -4,6 +4,7 @@ import Model.Resources.Resource;
 import Model.Units.Troop;
 import Model.Units.Unit;
 import enums.FogState;
+import enums.RoadType;
 
 public class Tile {
     static int count = 0;
@@ -15,6 +16,7 @@ public class Tile {
     private Unit unit;
     private Troop troop;
     private FogState fogState;
+    private RoadType roadType; // can be null
 
     public Tile(int x, int y, Terrain terrain, FogState fogState, Resource resource) {
         this.x = x;
@@ -25,6 +27,7 @@ public class Tile {
         this.city = null;
         this.unit = null;
         this.troop = null;
+        this.roadType = null;
         this.id = count;
         count++;
     }

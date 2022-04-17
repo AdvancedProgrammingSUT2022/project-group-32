@@ -15,7 +15,8 @@ public class Unit {
     private int XP;
     private UnitType unitType;
     private final String name;
-
+    private Tile destination;
+    // TODO: 4/17/2022 : Unit order handling (orders should be passed on between turns)
 
     public Unit(Tile tile, Player owner, UnitType unitType) {
         this.tile = tile;
@@ -23,6 +24,7 @@ public class Unit {
         this.unitType = unitType;
         this.XP = 0;
         this.name = unitType.getName();
+        this.destination = this.tile;
         setFieldsFromDatabase(this.unitType);
     }
 
@@ -103,5 +105,14 @@ public class Unit {
     public void setUnitType(UnitType unitType) {
         this.unitType = unitType;
     }
+
+    public Tile getDestination() {
+        return destination;
+    }
+
+    public void setDestination(Tile destination) {
+        this.destination = destination;
+    }
+
 }
 

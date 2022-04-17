@@ -28,4 +28,43 @@ public class Troop extends Unit {
 
     }
 
+    public int getMeleeStrength() {
+        return meleeStrength;
+    }
+
+    public void setMeleeStrength(int meleeStrength) {
+        this.meleeStrength = meleeStrength;
+    }
+
+    public int getRangedStrength() {
+        return rangedStrength;
+    }
+
+    public void setRangedStrength(int rangedStrength) {
+        this.rangedStrength = rangedStrength;
+    }
+
+    public int getRange() {
+        return range;
+    }
+
+    public void setRange(int range) {
+        this.range = range;
+    }
+
+    public CombatType getCombatType() {
+        return combatType;
+    }
+
+    public void setCombatType(CombatType combatType) {
+        this.combatType = combatType;
+    }
+
+    public ArrayList<ResourceType> getNeededResources() {
+        return neededResources;
+    }
+
+    public ArrayList<TechnologyType> getNeededTechnologies() {
+        return neededTechnologies;
+    }
 }

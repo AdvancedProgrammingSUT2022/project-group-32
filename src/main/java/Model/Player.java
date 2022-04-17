@@ -14,12 +14,12 @@ public class Player {
     private final ArrayList<Tile> tiles = new ArrayList<>();
     private int gold, science, food, XP, happiness, population;
     private final ArrayList<Player> inWarPlayers = new ArrayList<>();
-    private final int cameraX;
-    private final int cameraY;
+    private int cameraX;
+    private int cameraY;
 
     public Player(User user, Map map, int cameraX, int cameraY) {
         this.user = user;
-//        this.map = map;
+        this.map = map;
         this.cameraX = cameraX;
         this.cameraY = cameraY;
     }
@@ -114,6 +114,19 @@ public class Player {
 
     public int getCameraY() {
         return cameraY;
+    }
+
+    public void setCameraX(int cameraX) {
+        this.cameraX = cameraX;
+    }
+
+    public void setCameraY(int cameraY) {
+        this.cameraY = cameraY;
+    }
+
+    public void setCamera(int cameraX, int cameraY){
+        this.cameraX = cameraX;
+        this.cameraY = cameraY;
     }
 
     public void addCity(City city) {
