@@ -8,9 +8,13 @@ import java.util.ArrayList;
 public class City {
     private String name;
     private Player owner;
-    private Tile capitalTile; // TODO: 4/17/2022 Kaakh must be handled
-    private ArrayList<Tile> territory = new ArrayList<>();
-    private ArrayList<Building> buildings = new ArrayList<>();
+    private Tile capitalTile; // TODO: 4/17/2022 Palace must be handled
+    private ArrayList<Tile> territory;
+    private ArrayList<Building> buildings;
+    private Building buildingInProgress;
+    private ArrayList<Building> incompleteBuildings;
+    private Unit unitInProgress;
+    private ArrayList<Unit> incompleteUnits;
     private ArrayList<Citizen> citizens = new ArrayList<>();
     private int gold, food, production, population, health, baseStrength; // TODO: 4/17/2022 is Gold for a city or for a nation??
 
@@ -19,7 +23,7 @@ public class City {
         this.owner = owner;
         this.capitalTile = capitalTile;
         this.territory = territory;
-        // TODO: 4/17/2022 setts buildings, citizens, gold, food, .... to default value;
+        // TODO: 4/17/2022 setts buildings, citizens, gold, food, .... to default value. and empty arraylists
     }
 
     public String getName() {
@@ -116,6 +120,22 @@ public class City {
 
     public void setBaseStrength(int baseStrength) {
         this.baseStrength = baseStrength;
+    }
+
+    public Building getBuildingInProgress() {
+        return buildingInProgress;
+    }
+
+    public void setBuildingInProgress(Building buildingInProgress) {
+        this.buildingInProgress = buildingInProgress;
+    }
+
+    public Unit getUnitInProgress() {
+        return unitInProgress;
+    }
+
+    public void setUnitInProgress(Unit unitInProgress) {
+        this.unitInProgress = unitInProgress;
     }
 
     private ArrayList<Unit> getUnits() {

@@ -1,5 +1,7 @@
 package Controller;
 
+import Model.Player;
+import View.MiniMenus.VictoryPanel;
 import enums.Responses.Response;
 
 public class PlayerController {
@@ -25,6 +27,50 @@ public class PlayerController {
 
     }
 
+    public static String citiesPanelInfo(){
+
+    }
+
+    public static String dealsPanelInfo(){
+
+    }
+
+    public static String demographicsPanelInfo(){
+
+    }
+
+    public static String diplomaticPanelInfo(){
+
+    }
+
+    public static String diplomacyPanelInfo(){
+
+    }
+
+    public static String economyPanelInfo(){
+
+    }
+
+    public static String militaryPanelInfo(){
+
+    }
+
+    public static String notificationsPanelInfo(){
+
+    }
+
+    public static String researchPanelInfo(){
+
+    }
+
+    public static String unitsPanelInfo(){
+
+    }
+
+    public static String victoryPanelInfo(){
+
+    }
+
     public static void updateFieldOfView() {
         // TODO: 4/16/2022
     }
@@ -33,5 +79,11 @@ public class PlayerController {
         // TODO: 4/17/2022
     }
 
+    public static boolean checkIfLost(){
 
+    }
+
+    public static boolean checkIfWon(){
+
+    }
 }

@@ -22,6 +22,14 @@ public class GameController {
 
     }
 
+    public static Game getGame() {
+        return game;
+    }
+
+    public static void setGame(Game game) {
+        GameController.game = game;
+    }
+
     public static Unit getSelectedUnit() {
         return selectedUnit;
     }

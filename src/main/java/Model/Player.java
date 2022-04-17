@@ -12,6 +12,8 @@ public class Player {
     private final ArrayList<Unit> units;
     private final ArrayList<Building> buildings;
     private final ArrayList<Technology> technologies;
+    private Technology technologyInProgress;
+    private final ArrayList<Technology> incompleteTechnologies; // TODO: 4/17/2022 adder and remover and shit
     private final ArrayList<City> cities;
     private final ArrayList<Tile> tiles;
     private int gold, science, food, XP, happiness, population;
@@ -32,6 +34,7 @@ public class Player {
         this.tiles = new ArrayList<>();
         this.inWarPlayers = new ArrayList<>();
         this.notifications = new ArrayList<>();
+        this.incompleteTechnologies = new ArrayList<>();
     }
 
     public String showMap(){
