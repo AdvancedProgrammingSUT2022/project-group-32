@@ -132,7 +132,7 @@ public class City {
         // TODO: 4/17/2022
     }
 
-    // TODO: 4/17/2022 getCitizenByID, removeCitizen, addTile, RemoveTile,( expand in Controller)
+    // TODO: 4/17/2022 getCitizenByID, removeCitizen, addTile, RemoveTile,( expand in Controller), getTile, getNeighbors, get
 
 
 }
