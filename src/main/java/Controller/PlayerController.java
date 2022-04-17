@@ -27,6 +27,15 @@ public class PlayerController {
 
     }
 
+    // TODO: 4/17/2022 War declaration needs confirmation
+    public static Response.GameMenu startWarWith(Player player){
+        
+    }
+    
+    public static Response.GameMenu endWarWith(Player player){
+        
+    }
+    
     public static String citiesPanelInfo(){
 
     }

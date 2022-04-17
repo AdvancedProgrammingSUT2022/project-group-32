@@ -45,12 +45,12 @@ public class UnitController {
 
     public static Response.GameMenu setup(){
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
+        // siege pre attack
     }
 
     public static Response.GameMenu attack(int x, int y){
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
+        // uses combat controller if needed
     }
 
     public static Response.GameMenu foundCity() {

@@ -6,6 +6,8 @@ import Model.Units.Unit;
 import enums.FogState;
 import enums.RoadType;
 
+import java.util.HashMap;
+
 public class Tile {
     static int count = 0;
     private int id;
@@ -17,6 +19,7 @@ public class Tile {
     private Troop troop;
     private FogState fogState;
     private RoadType roadType; // can be null
+    private HashMap<Integer, Boolean> isRiver; // Clock-based directions: 0 - 2 - 4 - 6 - 8 - 10
 
     public Tile(int x, int y, Terrain terrain, FogState fogState, Resource resource) {
         this.x = x;
@@ -29,6 +32,7 @@ public class Tile {
         this.troop = null;
         this.roadType = null;
         this.id = count;
+        this.isRiver = new HashMap<>(); // to be yad gerefte beshe
         count++;
     }
 
@@ -102,6 +106,22 @@ public class Tile {
 
     public void setResource(Resource resource) {
         this.resource = resource;
+    }
+
+    public RoadType getRoadType() {
+        return roadType;
+    }
+
+    public void setRoadType(RoadType roadType) {
+        this.roadType = roadType;
+    }
+
+    public HashMap<Integer, Boolean> getIsRiver() {
+        return isRiver;
+    }
+
+    public void setIsRiver(HashMap<Integer, Boolean> isRiver) {
+        this.isRiver = isRiver;
     }
 
     public int getMP() {
