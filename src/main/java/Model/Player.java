@@ -1,19 +1,22 @@
 package Model;
 
 import Model.Units.Unit;
+import enums.BuildingType;
+import enums.TechnologyType;
 
 import java.util.ArrayList;
 
 public class Player {
     private final User user;
     private Map map;
-    private final ArrayList<Unit> units = new ArrayList<>();
-    private final ArrayList<Building> buildings = new ArrayList<>();
-    private final ArrayList<Technology> technologies = new ArrayList<>();
-    private final ArrayList<City> cities = new ArrayList<>();
-    private final ArrayList<Tile> tiles = new ArrayList<>();
+    private final ArrayList<Unit> units;
+    private final ArrayList<Building> buildings;
+    private final ArrayList<Technology> technologies;
+    private final ArrayList<City> cities;
+    private final ArrayList<Tile> tiles;
     private int gold, science, food, XP, happiness, population;
-    private final ArrayList<Player> inWarPlayers = new ArrayList<>();
+    private final ArrayList<Player> inWarPlayers;
+    private final ArrayList<String> notifications;
     private int cameraX;
     private int cameraY;
 
@@ -22,10 +25,17 @@ public class Player {
         this.map = map;
         this.cameraX = cameraX;
         this.cameraY = cameraY;
+        this.units = new ArrayList<>();
+        this.buildings = new ArrayList<>(); // may need to change this
+        this.technologies = new ArrayList<>();
+        this.cities = new ArrayList<>(); // and this
+        this.tiles = new ArrayList<>();
+        this.inWarPlayers = new ArrayList<>();
+        this.notifications = new ArrayList<>();
     }
 
-    public void updateFieldOfView() {
-        // TODO: 4/16/2022
+    public String showMap(){
+        // shows players view of the map - currently in string form to be later replaces with graphics
     }
 
     public Map getMap() {
@@ -108,6 +118,10 @@ public class Player {
         return inWarPlayers;
     }
 
+    public ArrayList<String> getNotifications() {
+        return notifications;
+    }
+
     public int getCameraX() {
         return cameraX;
     }
@@ -129,11 +143,99 @@ public class Player {
         this.cameraY = cameraY;
     }
 
-    public void addCity(City city) {
-        if (city == null) {
-            System.err.println("null city");
-        }
-        cities.add(city);
-    }
     // TODO: 4/17/2022 adder remover getByName for ArrayLists
+
+    public void addUnit(Unit unit){
+        this.units.add(unit);
+    }
+
+    public void removeUnit(Unit unit){
+        this.units.remove(unit);
+    }
+
+    public void addBuilding(Building building){
+        this.buildings.add(building);
+    }
+
+    public void removeBuilding(Building building){
+        this.buildings.remove(building);
+    }
+
+    public Building getBuildingByName(String name){
+        for (Building building : buildings) {
+            if(building.getName().equals(name)){
+                return building;
+            }
+        }
+        return null;
+    }
+
+    public Building getBuildingByType(BuildingType buildingType){
+        for (Building building : buildings) {
+            if(building.getBuildingType().equals(buildingType)){
+                return building;
+            }
+        }
+        return null;
+    }
+
+    public void addTechnology(Technology technology){
+        this.technologies.add(technology);
+    }
+
+    public void removeTechnology(Technology technology){
+        this.technologies.remove(technology);
+    }
+
+    public Technology getTechnologyByName(String name){
+
+    }
+
+    public Technology getTechnologyByType(TechnologyType technologyType){
+
+    }
+
+    public void addCity(City city){
+
+    }
+
+    public void removeCity(City city){
+
+    }
+
+    public City getCityByName(String name){
+
+    }
+
+    public City getCityByXY(int x, int y){
+
+    }
+
+    public void addTile(Tile tile){
+
+    }
+
+    public void removeTile(Tile tile){
+
+    }
+
+    public Tile getTileByXY(int x, int y){
+
+    }
+
+    public void addInWarPlayer(Player player){
+
+    }
+
+    public void removeInWarPlayer(Player player){
+
+    }
+
+    public Player getInWarPlayerByName(String name){
+
+    }
+
+    public void addNotification(String notification){
+
+    }
 }

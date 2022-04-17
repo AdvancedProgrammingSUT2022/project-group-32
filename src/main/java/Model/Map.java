@@ -40,4 +40,8 @@ public class Map {
     public ArrayList<Unit> getUnits() {
         return units;
     }
+
+    public City getCityByName(String name){
+        // TODO: 4/17/2022 returns city by name
+    }
 }

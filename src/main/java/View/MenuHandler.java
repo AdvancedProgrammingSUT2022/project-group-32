@@ -6,11 +6,16 @@ public class MenuHandler {
     public static MenuType currentMenu;
 
     public enum MenuType {
-        MAIN_MENU,
-        LOGIN_MENU,
-        GAME,
-        PROFILE,
-        EXIT
+        MAIN_MENU("main menu"),
+        LOGIN_MENU("login menu"),
+        GAME_MENU("game menu"),
+        PROFILE_MENU("profile menu"),
+        EXIT("exit");
+
+        String name;
+        MenuType(String name){
+            this.name = name;
+        }
     }
 
     public static void run(Scanner scanner) {
@@ -20,6 +25,6 @@ public class MenuHandler {
 
         }
 
-        // TODO: 4/16/2022 current X,Y in PlayerController and cameraMove
+        // TODO: 4/17/2022 Menu Navigation should be handled in view as it makes sense
     }
 }
