@@ -1,5 +1,6 @@
 package Model.Resources;
 
+import Model.Tile;
 import enums.ImprovementType;
 import enums.ResourceType;
 import enums.TerrainFeature;
@@ -11,10 +12,19 @@ public class Resource {
     private String name;
     private int food, production, gold;
     private final ArrayList<TerrainFeature> canBeFoundOns = new ArrayList<>();
-    private final ArrayList<ImprovementType> neededImprovements = new ArrayList<>();
+    private ImprovementType neededImprovements;
+    private final Tile tile;
 
-    public Resource(ResourceType resourceType) {
+    // TODO: 4/17/2022 visibility & gettability must be handled in Controller
+    public Resource(ResourceType resourceType, Tile tile) {
         this.resourceType = resourceType;
-
+        this.tile = tile;
+        setFieldsFromDatabase();
     }
+
+
+    private void setFieldsFromDatabase() {
+        // TODO: 4/17/2022
+    }
+
 }

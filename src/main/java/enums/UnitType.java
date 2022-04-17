@@ -3,7 +3,6 @@ package enums;
 public enum UnitType {
     WORKER("worker");
     private final String name;
-
     UnitType(String name) {
         this.name = name;
     }
