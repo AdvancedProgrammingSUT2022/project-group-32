@@ -16,10 +16,10 @@ public class Building {
 
     public Building(BuildingType buildingType) {
         this.buildingType = buildingType;
-        serFieldsFromDatabase(this.buildingType);
+        setFieldsFromDatabase(this.buildingType);
     }
 
-    private void serFieldsFromDatabase(BuildingType buildingType) {
+    private void setFieldsFromDatabase(BuildingType buildingType) {
         // TODO: 4/16/2022 sets cost, name, maintenance, ...
     }
 

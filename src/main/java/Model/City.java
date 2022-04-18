@@ -2,8 +2,11 @@ package Model;
 
 import Model.Citizens.Citizen;
 import Model.Units.Unit;
+import enums.BuildingType;
+import enums.UnitType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class City {
     private String name;
@@ -16,7 +19,7 @@ public class City {
     private Unit unitInProgress;
     private ArrayList<Unit> incompleteUnits;
     private ArrayList<Citizen> citizens = new ArrayList<>();
-    private int gold, food, production, population, health, baseStrength; // TODO: 4/17/2022 is Gold for a city or for a nation??
+    private int food, production, population, health, baseStrength;
 
     public City(String name, Player owner, Tile capitalTile, ArrayList<Tile> territory) {
         this.name = name;
@@ -74,14 +77,6 @@ public class City {
         this.citizens = citizens;
     }
 
-    public int getGold() {
-        return gold;
-    }
-
-    public void setGold(int gold) {
-        this.gold = gold;
-    }
-
     public int getFood() {
         return food;
     }
@@ -130,6 +125,14 @@ public class City {
         this.buildingInProgress = buildingInProgress;
     }
 
+    public ArrayList<Building> getIncompleteBuildings() {
+        return incompleteBuildings;
+    }
+
+    public void setIncompleteBuildings(ArrayList<Building> incompleteBuildings) {
+        this.incompleteBuildings = incompleteBuildings;
+    }
+
     public Unit getUnitInProgress() {
         return unitInProgress;
     }
@@ -138,18 +141,138 @@ public class City {
         this.unitInProgress = unitInProgress;
     }
 
+    public ArrayList<Unit> getIncompleteUnits() {
+        return incompleteUnits;
+    }
+
+    public void setIncompleteUnits(ArrayList<Unit> incompleteUnits) {
+        this.incompleteUnits = incompleteUnits;
+    }
+
+    public void addTile(Tile tile) {
+        this.territory.add(tile);
+    }
+
+    public void removeTile(Tile tile){
+        this.territory.remove(tile);
+    }
+
+    public Tile getTileByXY(int x, int y){
+        for (Tile tile : territory) {
+            if(tile.getX() == x && tile.getY() == y){
+                return tile;
+            }
+        }
+        return null;
+    }
+
+    public Tile getTileByID(int id){
+        for (Tile tile : territory) {
+            if(tile.getId() == id){
+                return tile;
+            }
+        }
+        return null;
+    }
+
+    public void addBuilding(Building building){
+        this.buildings.add(building);
+    }
+
+    public void removeBuilding(Building building){
+        this.buildings.remove(building);
+    }
+
+    public Building getBuildingByName(String name){
+        for (Building building : buildings) {
+            if(building.getName().equals(name)){
+                return building;
+            }
+        }
+        return null;
+    }
+
+    public Building getBuildingByType(BuildingType buildingType){
+        for (Building building : buildings) {
+            if(building.getBuildingType().equals(buildingType)){
+                return building;
+            }
+        }
+        return null;
+    }
+
+    public void addIncompleteBuilding(Building building){
+        this.incompleteBuildings.add(building);
+    }
+
+    public void removeIncompleteBuilding(Building building){
+        this.incompleteBuildings.remove(building);
+    }
+
+    public Building getIncompleteBuildingByName(String name){
+        for (Building building : incompleteBuildings) {
+            if(building.getName().equals(name)){
+                return building;
+            }
+        }
+        return null;
+    }
+
+    public Building getIncompleteBuildingByType(BuildingType buildingType){
+        for (Building building : incompleteBuildings) {
+            if(building.getBuildingType().equals(buildingType)){
+                return building;
+            }
+        }
+        return null;
+    }
+
+    public void addIncompleteUnit(Unit unit){
+        this.incompleteUnits.add(unit);
+    }
+
+    public void removeIncompleteUnit(Unit unit){
+        this.incompleteUnits.remove(unit);
+    }
+
+    public Unit getIncompleteUnitByType(UnitType unitType){
+        for (Unit incompleteUnit : incompleteUnits) {
+            if(incompleteUnit.getUnitType().equals(unitType)){
+                return incompleteUnit;
+            }
+        }
+        return null;
+    }
+
+    public void addCitizen(Citizen citizen){
+        this.citizens.add(citizen);
+    }
+
+    public void removeCitizen(Citizen citizen){
+        this.citizens.remove(citizen);
+    }
+
+    public Citizen getCitizenByName(String name){
+        for (Citizen citizen : citizens) {
+            if(citizen.getName().equals(name)){
+                return citizen;
+            }
+        }
+        return null;
+    }
+
     private ArrayList<Unit> getUnits() {
-        // TODO: 4/17/2022 returns units in city
-        return new ArrayList<Unit>();
+        // returns unit in territory (but why??)
+        ArrayList<Unit> units = new ArrayList<>();
+        for (Tile tile : territory) {
+            units.addAll(Arrays.asList(tile.getUnit()));
+        }
+        return units;
     }
 
     private int getStrength() {
         // TODO: 4/17/2022  by units and baseStrength
         return 0;
-    }
-
-    public void addCitizen() {
-        // TODO: 4/17/2022
     }
 
     // TODO: 4/17/2022 getCitizenByID, removeCitizen, addTile, RemoveTile,( expand in Controller), getTile, getNeighbors, get

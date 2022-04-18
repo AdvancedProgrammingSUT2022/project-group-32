@@ -14,6 +14,7 @@ public class Map {
     public Map(int width, int height) {
         this.width = width;
         this.height = height;
+        this.tiles = new Tile[width][height];
         // TODO: 4/17/2022 initialized tiles , ....
     }
 
