@@ -4,7 +4,7 @@ import Model.Resources.Resource;
 import Model.Units.Troop;
 import Model.Units.Unit;
 import enums.FogState;
-import enums.RoadType;
+import enums.RouteType;
 
 import java.util.HashMap;
 
@@ -19,7 +19,7 @@ public class Tile {
     private Unit unit;
     private Troop troop;
     private FogState fogState;
-    private RoadType roadType; // can be null
+    private RouteType roadType; // can be null
     private HashMap<Integer, Boolean> isRiver; // Clock-based directions: 0 - 2 - 4 - 6 - 8 - 10
 
     public Tile(int x, int y, Terrain terrain, FogState fogState, Resource resource, Ruin ruin) {
@@ -118,11 +118,11 @@ public class Tile {
         this.resource = resource;
     }
 
-    public RoadType getRoadType() {
+    public RouteType getRoadType() {
         return roadType;
     }
 
-    public void setRoadType(RoadType roadType) {
+    public void setRoadType(RouteType roadType) {
         this.roadType = roadType;
     }
 

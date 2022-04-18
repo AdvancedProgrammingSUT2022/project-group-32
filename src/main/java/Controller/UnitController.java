@@ -3,7 +3,7 @@ package Controller;
 import Model.Units.Unit;
 import enums.ImprovementType;
 import enums.Responses.Response;
-import enums.RoadType;
+import enums.RouteType;
 
 public class UnitController {
     public static Response.GameMenu moveTo(int x, int y){
@@ -84,7 +84,7 @@ public class UnitController {
 
     }
 
-    public static Response.GameMenu buildRoad(RoadType roadType){
+    public static Response.GameMenu buildRoad(RouteType roadType) {
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
 
     }
