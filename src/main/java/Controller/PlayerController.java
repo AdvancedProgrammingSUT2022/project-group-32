@@ -29,55 +29,55 @@ public class PlayerController {
 
     // TODO: 4/17/2022 War declaration needs confirmation
     public static Response.GameMenu startWarWith(Player player){
-        
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
     }
     
     public static Response.GameMenu endWarWith(Player player){
-        
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
     }
     
     public static String citiesPanelInfo(){
-
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
     }
 
     public static String dealsPanelInfo(){
-
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
     }
 
     public static String demographicsPanelInfo(){
-
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
     }
 
     public static String diplomaticPanelInfo(){
-
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
     }
 
     public static String diplomacyPanelInfo(){
-
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
     }
 
     public static String economyPanelInfo(){
-
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
     }
 
     public static String militaryPanelInfo(){
-
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
     }
 
     public static String notificationsPanelInfo(){
-
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
     }
 
     public static String researchPanelInfo(){
-
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
     }
 
     public static String unitsPanelInfo(){
-
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
     }
 
     public static String victoryPanelInfo(){
-
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
     }
 
     public static void updateFieldOfView() {
@@ -89,10 +89,10 @@ public class PlayerController {
     }
 
     public static boolean checkIfLost(){
-
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
     }
 
     public static boolean checkIfWon(){
-
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
     }
 }

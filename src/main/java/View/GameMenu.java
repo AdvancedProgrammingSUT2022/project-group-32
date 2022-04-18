@@ -1,6 +1,6 @@
 package View;
 
-import Model.Player;
+import Controller.*;
 
 import java.util.Scanner;
 
@@ -20,7 +20,7 @@ public class GameMenu {
         }
     }
 
-    private static void showMap(Player player) {
+    private static void showMap() {
 
     }
 }

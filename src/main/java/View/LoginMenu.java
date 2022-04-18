@@ -1,5 +1,7 @@
 package View;
 
+import Controller.*;
+
 import java.util.Scanner;
 
 public class LoginMenu {
