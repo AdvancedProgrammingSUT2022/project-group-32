@@ -42,6 +42,11 @@ public class Map {
     }
 
     public City getCityByName(String name){
-        // TODO: 4/17/2022 returns city by name
+        for (City city : cities) {
+            if(city.getName().equals(name)){
+                return city;
+            }
+        }
+        return null;
     }
 }
