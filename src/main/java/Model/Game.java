@@ -48,6 +48,14 @@ public class Game {
         this.playerTurn = playerTurn;
     }
 
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
     public void nextTurn(){
         // TODO: 4/17/2022
     }
