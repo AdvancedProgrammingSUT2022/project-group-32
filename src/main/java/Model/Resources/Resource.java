@@ -78,4 +78,13 @@ public class Resource {
     public Tile getTile() {
         return tile;
     }
+
+    public boolean canBeFoundOn(TerrainFeature terrainFeature){
+        for (TerrainFeature canBeFoundOn : canBeFoundOns) {
+            if(canBeFoundOn.equals(terrainFeature)){
+                return true;
+            }
+        }
+        return false;
+    }
 }
