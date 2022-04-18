@@ -1,7 +1,5 @@
 package View;
 
-import Controller.*;
-
 import java.util.Scanner;
 
 public class MainMenu extends Menu{

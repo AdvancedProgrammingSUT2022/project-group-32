@@ -1,7 +1,5 @@
 package View;
 
-import Controller.*;
-
 import java.util.Scanner;
 
 public class LoginMenu extends Menu{
@@ -9,7 +7,6 @@ public class LoginMenu extends Menu{
         String input;
         while (true) {
             input = scanner.nextLine();
-
         }
     }
 
