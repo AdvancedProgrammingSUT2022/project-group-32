@@ -1,10 +1,10 @@
 package Controller;
 
-import View.MenuHandler;
+import View.Menu;
 
 public class MenuController {
     public static String currentMenu(){
-        return MenuHandler.currentMenu.name();
+        return Menu.currentMenu.name();
     }
 
     // TODO: 4/17/2022 maybe more functions?

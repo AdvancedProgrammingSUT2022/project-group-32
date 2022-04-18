@@ -13,6 +13,7 @@ public class Troop extends Unit {
     private int meleeStrength;
     private int rangedStrength;
     private int range;
+    private int beenFortified;
     private CombatType combatType;
     private final ArrayList<ResourceType> neededResources = new ArrayList<ResourceType>();
     private final ArrayList<TechnologyType> neededTechnologies = new ArrayList<TechnologyType>();
@@ -58,6 +59,14 @@ public class Troop extends Unit {
 
     public void setCombatType(CombatType combatType) {
         this.combatType = combatType;
+    }
+
+    public int getBeenFortified() {
+        return beenFortified;
+    }
+
+    public void setBeenFortified(int beenFortified) {
+        this.beenFortified = beenFortified;
     }
 
     public ArrayList<ResourceType> getNeededResources() {

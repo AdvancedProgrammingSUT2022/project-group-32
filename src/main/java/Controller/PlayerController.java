@@ -1,7 +1,7 @@
 package Controller;
 
 import Model.Player;
-import View.MiniMenus.VictoryPanel;
+import Model.Trade;
 import enums.Responses.Response;
 
 public class PlayerController {
@@ -33,6 +33,10 @@ public class PlayerController {
     }
     
     public static Response.GameMenu endWarWith(Player player){
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+    }
+
+    public static Response.GameMenu offerTrade(Player player, Trade trade){
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
     }
     

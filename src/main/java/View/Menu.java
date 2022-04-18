@@ -2,7 +2,7 @@ package View;
 
 import java.util.Scanner;
 
-public class MenuHandler {
+public class Menu {
     public static MenuType currentMenu;
 
     public enum MenuType {
@@ -26,5 +26,9 @@ public class MenuHandler {
         }
 
         // TODO: 4/17/2022 Menu Navigation should be handled in view as it makes sense
+    }
+
+    public static void showCurrentMenu(String command){
+
     }
 }

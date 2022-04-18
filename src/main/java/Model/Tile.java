@@ -9,11 +9,12 @@ import enums.RoadType;
 import java.util.HashMap;
 
 public class Tile {
-    static int count = 0;
+    private static int count = 0;
     private int id;
     private int x, y;
     private Terrain terrain;
     private Resource resource;
+    private Ruin ruin;
     private City city;  //can be null
     private Unit unit;
     private Troop troop;
@@ -21,12 +22,13 @@ public class Tile {
     private RoadType roadType; // can be null
     private HashMap<Integer, Boolean> isRiver; // Clock-based directions: 0 - 2 - 4 - 6 - 8 - 10
 
-    public Tile(int x, int y, Terrain terrain, FogState fogState, Resource resource) {
+    public Tile(int x, int y, Terrain terrain, FogState fogState, Resource resource, Ruin ruin) {
         this.x = x;
         this.y = y;
         this.terrain = terrain;
         this.fogState = fogState;
         this.resource = resource;
+        this.ruin = ruin;
         this.city = null;
         this.unit = null;
         this.troop = null;
@@ -66,6 +68,14 @@ public class Tile {
 
     public void setTerrain(Terrain terrain) {
         this.terrain = terrain;
+    }
+
+    public Ruin getRuin() {
+        return ruin;
+    }
+
+    public void setRuin(Ruin ruin) {
+        this.ruin = ruin;
     }
 
     public City getCity() {
