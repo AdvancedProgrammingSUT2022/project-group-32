@@ -13,6 +13,17 @@ public class Technology {
     private int remainingTurns;
     private int requiredTurns;
 
+    public Technology(TechnologyType technologyType) {
+        this.technologyType = technologyType;
+        this.name = this.technologyType.getName();
+        setFieldsFromDataBase(this.technologyType);
+    }
+
+    private void setFieldsFromDataBase(TechnologyType technologyType) {
+        // TODO: 4/16/2022 set cost, neededTechs, ...
+        this.remainingTurns = this.requiredTurns;
+    }
+
     public void setRequiredTurns(int requiredTurns) {
         this.requiredTurns = requiredTurns;
     }
@@ -43,16 +54,5 @@ public class Technology {
 
     public int getRequiredTurns() {
         return requiredTurns;
-    }
-
-    public Technology(TechnologyType technologyType) {
-        this.technologyType = technologyType;
-        this.name = this.technologyType.getName();
-        setFieldsFromDataBase(this.technologyType);
-    }
-
-    private void setFieldsFromDataBase(TechnologyType technologyType) {
-        // TODO: 4/16/2022 set cost, neededTechs, ...
-        this.remainingTurns = this.requiredTurns;
     }
 }

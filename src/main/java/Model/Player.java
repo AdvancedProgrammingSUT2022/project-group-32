@@ -8,12 +8,13 @@ import java.util.ArrayList;
 
 public class Player {
     private final User user;
+    private final String name;
     private Map map;
     private final ArrayList<Unit> units;
     private final ArrayList<Building> buildings;
     private final ArrayList<Technology> technologies;
     private Technology technologyInProgress;
-    private final ArrayList<Technology> incompleteTechnologies; // TODO: 4/17/2022 adder and remover and shit
+    private final ArrayList<Technology> incompleteTechnologies;
     private final ArrayList<City> cities;
     private final ArrayList<Tile> tiles;
     private int gold, science, food, XP, happiness, population;
@@ -24,6 +25,7 @@ public class Player {
 
     public Player(User user, Map map, int cameraX, int cameraY) {
         this.user = user;
+        this.name = user.getNickname();
         this.map = map;
         this.cameraX = cameraX;
         this.cameraY = cameraY;
@@ -41,6 +43,14 @@ public class Player {
         // shows players view of the map - currently in string form to be later replaces with graphics
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
         // TODO: 4/18/2022
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Map getMap() {
@@ -61,6 +71,18 @@ public class Player {
 
     public ArrayList<Technology> getTechnologies() {
         return technologies;
+    }
+
+    public Technology getTechnologyInProgress() {
+        return technologyInProgress;
+    }
+
+    public void setTechnologyInProgress(Technology technologyInProgress) {
+        this.technologyInProgress = technologyInProgress;
+    }
+
+    public ArrayList<Technology> getIncompleteTechnologies() {
+        return incompleteTechnologies;
     }
 
     public ArrayList<City> getCities() {
@@ -148,8 +170,6 @@ public class Player {
         this.cameraY = cameraY;
     }
 
-    // TODO: 4/17/2022 adder remover getByName for ArrayLists
-
     public void addUnit(Unit unit){
         this.units.add(unit);
     }
@@ -193,61 +213,111 @@ public class Player {
     }
 
     public Technology getTechnologyByName(String name){
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-        // TODO: 4/18/2022
+        for (Technology technology : technologies) {
+            if(technology.getName().equals(name)){
+                return technology;
+            }
+        }
+        return null;
     }
 
     public Technology getTechnologyByType(TechnologyType technologyType){
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-        // TODO: 4/18/2022
+        for (Technology technology : technologies) {
+            if(technology.getTechnologyType().equals(technologyType)){
+                return technology;
+            }
+        }
+        return null;
+    }
+
+    public void addIncompleteTechnology(Technology technology){
+        this.incompleteTechnologies.add(technology);
+    }
+
+    public void removeIncompleteTechnology(Technology technology){
+        this.incompleteTechnologies.remove(technology);
+    }
+
+    public Technology getIncompleteTechnologyByName(String name){
+        for (Technology technology : incompleteTechnologies) {
+            if(technology.getName().equals(name)){
+                return technology;
+            }
+        }
+        return null;
+    }
+
+    public Technology getIncompleteTechnologyByType(TechnologyType technologyType){
+        for (Technology technology : incompleteTechnologies) {
+            if(technology.getTechnologyType().equals(technologyType)){
+                return technology;
+            }
+        }
+        return null;
     }
 
     public void addCity(City city){
-
+        this.cities.add(city);
     }
 
     public void removeCity(City city){
-
+        this.cities.remove(city);
     }
 
     public City getCityByName(String name){
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-        // TODO: 4/18/2022
+        for (City city : cities) {
+            if(city.getName().equals(name)){
+                return city;
+            }
+        }
+        return null;
     }
 
     public City getCityByXY(int x, int y){
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-        // TODO: 4/18/2022
+        for (City city : cities) {
+            if(city.getCapitalTile().getX() == x && city.getCapitalTile().getY() == y){
+                return city;
+            }
+        }
+        return null;
     }
 
     public void addTile(Tile tile){
-
+        this.tiles.add(tile);
     }
 
     public void removeTile(Tile tile){
-
+        this.tiles.remove(tile);
     }
 
     public Tile getTileByXY(int x, int y){
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-        // TODO: 4/18/2022
+        for (Tile tile : tiles) {
+            if(tile.getX() == x && tile.getY() == y){
+                return tile;
+            }
+        }
+        return null;
     }
 
     public void addInWarPlayer(Player player){
-
+        this.inWarPlayers.add(player);
     }
 
     public void removeInWarPlayer(Player player){
-
+        this.inWarPlayers.remove(player);
     }
 
     public Player getInWarPlayerByName(String name){
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-        // TODO: 4/18/2022
+        for (Player inWarPlayer : inWarPlayers) {
+            if(inWarPlayer.getName().equals(name)){
+                return inWarPlayer;
+            }
+        }
+        return null;
     }
 
     public void addNotification(String notification){
-
+        notifications.add(notification);
     }
 
     public int getScore(){
