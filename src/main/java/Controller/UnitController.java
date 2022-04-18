@@ -13,6 +13,11 @@ public class UnitController {
 
     }
 
+    public static Response.GameMenu upgrade(){
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+
+    }
+
     // these functions should affect isDone
     public static Response.GameMenu sleep() {
         Unit unit = GameController.getSelectedUnit();

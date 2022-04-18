@@ -39,6 +39,8 @@ public class Player {
 
     public String showMap(){
         // shows players view of the map - currently in string form to be later replaces with graphics
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+        // TODO: 4/18/2022
     }
 
     public Map getMap() {
@@ -191,11 +193,13 @@ public class Player {
     }
 
     public Technology getTechnologyByName(String name){
-
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+        // TODO: 4/18/2022
     }
 
     public Technology getTechnologyByType(TechnologyType technologyType){
-
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+        // TODO: 4/18/2022
     }
 
     public void addCity(City city){
@@ -207,11 +211,13 @@ public class Player {
     }
 
     public City getCityByName(String name){
-
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+        // TODO: 4/18/2022
     }
 
     public City getCityByXY(int x, int y){
-
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+        // TODO: 4/18/2022
     }
 
     public void addTile(Tile tile){
@@ -223,7 +229,8 @@ public class Player {
     }
 
     public Tile getTileByXY(int x, int y){
-
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+        // TODO: 4/18/2022
     }
 
     public void addInWarPlayer(Player player){
@@ -235,10 +242,16 @@ public class Player {
     }
 
     public Player getInWarPlayerByName(String name){
-
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+        // TODO: 4/18/2022
     }
 
     public void addNotification(String notification){
 
+    }
+
+    public int getScore(){
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+        // TODO: 4/18/2022
     }
 }

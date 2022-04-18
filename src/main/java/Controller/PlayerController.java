@@ -88,7 +88,7 @@ public class PlayerController {
         // TODO: 4/16/2022
     }
 
-    public static void updateResources(){
+    public static void updateSupplies(){
         // TODO: 4/17/2022
     }
 

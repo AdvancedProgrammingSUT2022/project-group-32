@@ -16,6 +16,7 @@ public class CityController {
 
     public static ArrayList<Tile> getTilesInRange(int range){
         // gets tiles close to its border
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
     }
 
     public static void buildUnit(UnitType unitType){
@@ -39,6 +40,10 @@ public class CityController {
     }
 
     public static void assignCitizenToBuilding(){
+
+    }
+
+    public static void growCity(){
 
     }
 }
