@@ -8,13 +8,21 @@ public class CLI {
     private final Options options = new Options();
 
     {
+        // LOGIN, MAIN, PROFILE MENU PARAMETERS
         options.addOption("u", "username", true, "");
         options.addOption("p", "password", true, "");
         options.addOption("n", "nickname", true, "");
         options.addOption("m", "menu", true, "");
+
+        // GAME MENU PARAMETERS
+        Option option = new Option("l", "location", true, ""); // [x] [y]
+        option.setArgs(2);
+        options.addOption(option);
+        options.addOption("n", "name", true, "City name"); // in show, select city
+        options.addOption("c", "count", true, "how much to move in a direction");
+        options.addOption("r", "right", false, ""); // camera movement direction
         // All parameters must be added here
     }
-
     /**
      * @param command       input command from user
      * @param parameterKeys variable number of parameter keys
