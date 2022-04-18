@@ -114,7 +114,6 @@ public class Unit {
         this.destination = destination;
     }
 
-
     public int getRequiredTurn() {
         return requiredTurn;
     }
