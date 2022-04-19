@@ -5,6 +5,7 @@ import View.Menu;
 import enums.Responses.Response;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class UserController {
     private static ArrayList<User> users;
@@ -131,13 +132,16 @@ public class UserController {
         return Response.ProfileMenu.ACCOUNT_DELETED_SUCCESSFULLY;
     }
 
-    public static ArrayList<User> getScoreboard() {
-
+    public static ArrayList<User> getScoreboard() { // profile menu
+        ArrayList<User> scoreboard = new ArrayList<>(users);
+        Collections.sort(scoreboard, new User.compareByScore());
+        return scoreboard;
     }
 
     public static Response.MainMenu logout(){
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
+        currentUser = null;
+        Menu.setCurrentMenu(Menu.MenuType.LOGIN_MENU);
+        return Response.MainMenu.SUCCESSFUL_LOGOUT;
     }
 
     public static void saveUsers(){ // should be called when exited
