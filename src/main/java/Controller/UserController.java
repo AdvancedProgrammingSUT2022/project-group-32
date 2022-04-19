@@ -20,7 +20,7 @@ public class UserController {
 
     {
         try {
-            String json = new String(Files.readAllBytes(Paths.get("address to be added")));
+            String json = new String(Files.readAllBytes(Paths.get("main/java/resources/users.json")));
             users = new Gson().fromJson(json, new TypeToken<List<User>>(){}.getType());
         } catch (IOException e) {
             System.err.println("Error while loading users");
@@ -161,7 +161,7 @@ public class UserController {
 
     public static void saveUsers() { // should be called when exited
         try {
-            FileWriter fileWriter = new FileWriter("address to be added"); // TODO: 4/19/2022
+            FileWriter fileWriter = new FileWriter("main/java/resources/users.json"); // TODO: 4/19/2022
             fileWriter.write(new Gson().toJson(users));
             fileWriter.close();
         } catch (IOException e) {
