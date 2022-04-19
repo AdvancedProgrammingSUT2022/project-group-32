@@ -2,17 +2,30 @@ package Controller;
 
 import Model.User;
 import View.Menu;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import enums.Responses.Response;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class UserController {
     private static ArrayList<User> users;
     private static User currentUser;
 
     {
-        // TODO: 4/17/2022 : set users from database
+        try {
+            String json = new String(Files.readAllBytes(Paths.get("main/java/resources/users.json")));
+            users = new Gson().fromJson(json, new TypeToken<List<User>>(){}.getType());
+        } catch (IOException e) {
+            System.err.println("Error while loading users");
+            e.printStackTrace();
+        }
     }
 
     public static ArrayList<User> getUsers() {
@@ -76,10 +89,10 @@ public class UserController {
             return Response.LoginMenu.INVALID_PASSWORD_FORMAT;
         }
         if (getUserByUsername(username) != null) {
-            return Response.LoginMenu.USERNAME_EXISTS; // TODO: 4/19/2022
+            return Response.LoginMenu.USERNAME_EXISTS;
         }
         if (getUserByNickname(nickname) != null) {
-            return Response.LoginMenu.NICKNAME_EXISTS;// TODO: 4/19/2022
+            return Response.LoginMenu.NICKNAME_EXISTS;
         }
         if (!isPasswordStrong(password)) {
             return Response.LoginMenu.WEAK_PASSWORD;
@@ -140,14 +153,21 @@ public class UserController {
         return scoreboard;
     }
 
-    public static Response.MainMenu logout() {
+    public static Response.MainMenu logout() { // main menu
         currentUser = null;
         Menu.setCurrentMenu(Menu.MenuType.LOGIN_MENU);
         return Response.MainMenu.SUCCESSFUL_LOGOUT;
     }
 
     public static void saveUsers() { // should be called when exited
-
+        try {
+            FileWriter fileWriter = new FileWriter("main/java/resources/users.json"); // TODO: 4/19/2022
+            fileWriter.write(new Gson().toJson(users));
+            fileWriter.close();
+        } catch (IOException e) {
+            System.err.println("Error while Saving users");
+            e.printStackTrace();
+        }
     }
 
 }
