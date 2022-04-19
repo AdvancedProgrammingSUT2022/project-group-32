@@ -56,11 +56,11 @@ public class Game {
         this.currentPlayer = currentPlayer;
     }
 
-    public void nextTurn(){
+    public void nextTurn() {
         // TODO: 4/17/2022
     }
 
-    public void passTurn(){
+    public void passTurn() {
         // TODO: 4/17/2022
     }
 }

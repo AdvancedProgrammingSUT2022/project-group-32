@@ -153,108 +153,108 @@ public class City {
         this.territory.add(tile);
     }
 
-    public void removeTile(Tile tile){
+    public void removeTile(Tile tile) {
         this.territory.remove(tile);
     }
 
-    public Tile getTileByXY(int x, int y){
+    public Tile getTileByXY(int x, int y) {
         for (Tile tile : territory) {
-            if(tile.getX() == x && tile.getY() == y){
+            if (tile.getX() == x && tile.getY() == y) {
                 return tile;
             }
         }
         return null;
     }
 
-    public Tile getTileByID(int id){
+    public Tile getTileByID(int id) {
         for (Tile tile : territory) {
-            if(tile.getId() == id){
+            if (tile.getId() == id) {
                 return tile;
             }
         }
         return null;
     }
 
-    public void addBuilding(Building building){
+    public void addBuilding(Building building) {
         this.buildings.add(building);
     }
 
-    public void removeBuilding(Building building){
+    public void removeBuilding(Building building) {
         this.buildings.remove(building);
     }
 
-    public Building getBuildingByName(String name){
+    public Building getBuildingByName(String name) {
         for (Building building : buildings) {
-            if(building.getName().equals(name)){
+            if (building.getName().equals(name)) {
                 return building;
             }
         }
         return null;
     }
 
-    public Building getBuildingByType(BuildingType buildingType){
+    public Building getBuildingByType(BuildingType buildingType) {
         for (Building building : buildings) {
-            if(building.getBuildingType().equals(buildingType)){
+            if (building.getBuildingType().equals(buildingType)) {
                 return building;
             }
         }
         return null;
     }
 
-    public void addIncompleteBuilding(Building building){
+    public void addIncompleteBuilding(Building building) {
         this.incompleteBuildings.add(building);
     }
 
-    public void removeIncompleteBuilding(Building building){
+    public void removeIncompleteBuilding(Building building) {
         this.incompleteBuildings.remove(building);
     }
 
-    public Building getIncompleteBuildingByName(String name){
+    public Building getIncompleteBuildingByName(String name) {
         for (Building building : incompleteBuildings) {
-            if(building.getName().equals(name)){
+            if (building.getName().equals(name)) {
                 return building;
             }
         }
         return null;
     }
 
-    public Building getIncompleteBuildingByType(BuildingType buildingType){
+    public Building getIncompleteBuildingByType(BuildingType buildingType) {
         for (Building building : incompleteBuildings) {
-            if(building.getBuildingType().equals(buildingType)){
+            if (building.getBuildingType().equals(buildingType)) {
                 return building;
             }
         }
         return null;
     }
 
-    public void addIncompleteUnit(Unit unit){
+    public void addIncompleteUnit(Unit unit) {
         this.incompleteUnits.add(unit);
     }
 
-    public void removeIncompleteUnit(Unit unit){
+    public void removeIncompleteUnit(Unit unit) {
         this.incompleteUnits.remove(unit);
     }
 
-    public Unit getIncompleteUnitByType(UnitType unitType){
+    public Unit getIncompleteUnitByType(UnitType unitType) {
         for (Unit incompleteUnit : incompleteUnits) {
-            if(incompleteUnit.getUnitType().equals(unitType)){
+            if (incompleteUnit.getUnitType().equals(unitType)) {
                 return incompleteUnit;
             }
         }
         return null;
     }
 
-    public void addCitizen(Citizen citizen){
+    public void addCitizen(Citizen citizen) {
         this.citizens.add(citizen);
     }
 
-    public void removeCitizen(Citizen citizen){
+    public void removeCitizen(Citizen citizen) {
         this.citizens.remove(citizen);
     }
 
-    public Citizen getCitizenByName(String name){
+    public Citizen getCitizenByName(String name) {
         for (Citizen citizen : citizens) {
-            if(citizen.getName().equals(name)){
+            if (citizen.getName().equals(name)) {
                 return citizen;
             }
         }

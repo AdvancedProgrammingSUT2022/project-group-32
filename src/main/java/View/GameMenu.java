@@ -2,7 +2,7 @@ package View;
 
 import java.util.Scanner;
 
-public class GameMenu extends Menu{
+public class GameMenu extends Menu {
     public enum PanelType {
         CITY_SELECTED
     }
@@ -21,35 +21,35 @@ public class GameMenu extends Menu{
 
     }
 
-    private static void moveMap(String command){
+    private static void moveMap(String command) {
 
     }
 
-    private static void selectUnit(String command){
+    private static void selectUnit(String command) {
 
     }
 
-    private static void selectTile(String command){
+    private static void selectTile(String command) {
 
     }
 
-    private static void selectCity(String command){
+    private static void selectCity(String command) {
 
     }
 
-    private static void endGame(String command){
+    private static void endGame(String command) {
 
     }
 
-    private static void openPanel(String command){
+    private static void openPanel(String command) {
 
     }
 
-    private static void runPanel(String command){
+    private static void runPanel(String command) {
 
     }
 
-    public static void ShowCurrentPanel(String command){
+    public static void ShowCurrentPanel(String command) {
         System.out.println(panelType);
     }
 }

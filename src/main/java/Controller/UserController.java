@@ -31,58 +31,57 @@ public class UserController {
         UserController.currentUser = user;
     }
 
-    public static User getUserByUsername(String username){
+    public static User getUserByUsername(String username) {
         for (User user : users) {
-            if(user.getUsername().equals(username)){
+            if (user.getUsername().equals(username)) {
                 return user;
             }
         }
         return null;
     }
 
-    public static User getUserByNickname(String nickname){
+    public static User getUserByNickname(String nickname) {
         for (User user : users) {
-            if(user.getNickname().equals(nickname)){
+            if (user.getNickname().equals(nickname)) {
                 return user;
             }
         }
         return null;
     }
 
-    private static boolean passwordCheck(String password){
-        if(password.length() < 8 || password.length() > 32) return false;
-        if(password.matches("[^0-9]+")) return false;
-        if(password.matches("[^a-z]+")) return false;
-        if(password.matches("[^A-Z]+")) return false;
-        if(password.matches("[^*.!@$%^&(){}\\[\\]:;<>,?/~_+\\-=|]+")) return false;
-        return true;
+    private static boolean isPasswordStrong(String password) {
+        if (password.length() < 8 || password.length() > 32) return false;
+        if (password.matches("[^0-9]+")) return false;
+        if (password.matches("[^a-z]+")) return false;
+        if (password.matches("[^A-Z]+")) return false;
+        return !password.matches("[^*.!@$%^&(){}\\[\\]:;<>,?/~_+\\-=|]+");
     }
 
-    private static boolean IsNameValid(String name){
+    private static boolean IsNameValid(String name) {
         return name.matches("\\w+");
     }
 
-    private static boolean IsPasswordValid(String password){
+    private static boolean IsPasswordValid(String password) {
         return password.matches("\\S+");
     }
 
-    public static Response.LoginMenu register(String username, String password, String nickname){ // login menu
-        if(!IsNameValid(username)){
+    public static Response.LoginMenu register(String username, String password, String nickname) { // login menu
+        if (!IsNameValid(username)) {
             return Response.LoginMenu.INVALID_USERNAME_FORMAT;
         }
-        if(!IsNameValid(nickname)){
+        if (!IsNameValid(nickname)) {
             return Response.LoginMenu.INVALID_NICKNAME_FORMAT;
         }
-        if(!IsPasswordValid(password)){
+        if (!IsPasswordValid(password)) {
             return Response.LoginMenu.INVALID_PASSWORD_FORMAT;
         }
-        if(getUserByUsername(username) != null){
+        if (getUserByUsername(username) != null) {
             return Response.LoginMenu.USERNAME_EXISTS; // TODO: 4/19/2022
         }
-        if(getUserByNickname(nickname) != null){
+        if (getUserByNickname(nickname) != null) {
             return Response.LoginMenu.NICKNAME_EXISTS;// TODO: 4/19/2022
         }
-        if(!passwordCheck(password)){
+        if (!isPasswordStrong(password)) {
             return Response.LoginMenu.WEAK_PASSWORD;
         }
         User user = new User(username, password, nickname);
@@ -90,9 +89,9 @@ public class UserController {
         return Response.LoginMenu.REGISTER_SUCCESSFUL;
     }
 
-    public static Response.LoginMenu login(String username, String password){ // login menu
+    public static Response.LoginMenu login(String username, String password) { // login menu
         User user;
-        if((user = getUserByUsername(username)) == null || !user.getPassword().equals(password)){
+        if ((user = getUserByUsername(username)) == null || !user.getPassword().equals(password)) {
             return Response.LoginMenu.USERNAME_PASSWORD_DONT_MATCH;
         }
         setCurrentUser(user);
@@ -100,30 +99,33 @@ public class UserController {
         return Response.LoginMenu.LOGIN_SUCCESSFUL;
     }
 
-    public static Response.ProfileMenu changePassword(String oldPW, String newPW){ // profile menu
-        if(!currentUser.getPassword().equals(oldPW)){
+    public static Response.ProfileMenu changePassword(String oldPW, String newPW) { // profile menu
+        if (!currentUser.getPassword().equals(oldPW)) {
             return Response.ProfileMenu.WRONG_OLD_PASSWORD;
         }
-        if(!IsPasswordValid(newPW)){
+        if (!IsPasswordValid(newPW)) {
             return Response.ProfileMenu.INVALID_NEW_PASSWORD_FORMAT;
         }
-        if(!passwordCheck(newPW)){
+        if (!isPasswordStrong(newPW)) {
             return Response.ProfileMenu.WEAK_NEW_PASSWORD;
         }
         currentUser.setPassword(newPW);
         return Response.ProfileMenu.SUCCESSFUL_PASSWORD_CHANGE;
     }
 
-    public static Response.ProfileMenu changeNickname(String nickname){
-        if(!IsNameValid(nickname)){
+    public static Response.ProfileMenu changeNickname(String nickname) {
+        if (!IsNameValid(nickname)) {
             return Response.ProfileMenu.INVALID_NICKNAME_FORMAT;
+        }
+        if (getUserByNickname(nickname) == null) {
+            return Response.ProfileMenu.NICKNAME_EXISTS;
         }
         currentUser.setNickname(nickname);
         return Response.ProfileMenu.SUCCESSFUL_NICKNAME_CHANGE;
     }
 
-    public static Response.ProfileMenu removeUser(String password){
-        if(!currentUser.getPassword().equals(password)){
+    public static Response.ProfileMenu removeUser(String password) {
+        if (!currentUser.getPassword().equals(password)) {
             return Response.ProfileMenu.WRONG_PASSWORD;
         }
         users.remove(currentUser);
@@ -138,13 +140,13 @@ public class UserController {
         return scoreboard;
     }
 
-    public static Response.MainMenu logout(){
+    public static Response.MainMenu logout() {
         currentUser = null;
         Menu.setCurrentMenu(Menu.MenuType.LOGIN_MENU);
         return Response.MainMenu.SUCCESSFUL_LOGOUT;
     }
 
-    public static void saveUsers(){ // should be called when exited
+    public static void saveUsers() { // should be called when exited
 
     }
 

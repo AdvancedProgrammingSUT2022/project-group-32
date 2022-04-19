@@ -3,7 +3,7 @@ package Controller;
 import View.Menu;
 
 public class MenuController {
-    public static String currentMenu(){
+    public static String currentMenu() {
         return Menu.currentMenu.name();
     }
 

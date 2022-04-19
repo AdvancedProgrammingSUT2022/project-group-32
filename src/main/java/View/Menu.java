@@ -13,7 +13,8 @@ public class Menu {
         EXIT("exit");
 
         String name;
-        MenuType(String name){
+
+        MenuType(String name) {
             this.name = name;
         }
     }
@@ -36,7 +37,7 @@ public class Menu {
         // TODO: 4/17/2022 Menu Navigation should be handled in view as it makes sense
     }
 
-    public static void showCurrentMenu(String command){
+    public static void showCurrentMenu(String command) {
 
     }
 }

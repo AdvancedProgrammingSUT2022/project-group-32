@@ -7,15 +7,15 @@ public class ResearchPanel extends GameMenu {
 
     }
 
-    public static void showTechTree(String command){
+    public static void showTechTree(String command) {
 
     }
 
-    public static void researchTechnology(String command){
+    public static void researchTechnology(String command) {
 
     }
 
-    public static void pauseResearch(String command){
+    public static void pauseResearch(String command) {
 
     }
 }

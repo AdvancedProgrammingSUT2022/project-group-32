@@ -3,7 +3,7 @@ package Model.Resources;
 import Model.Tile;
 import enums.ResourceType;
 
-public class Luxury extends Resource{
+public class Luxury extends Resource {
     private int happiness;
 
     public Luxury(ResourceType resourceType, Tile tile) {

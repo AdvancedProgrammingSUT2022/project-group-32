@@ -4,7 +4,7 @@ import Model.Tile;
 import enums.ResourceType;
 import enums.TechnologyType;
 
-public class Strategic extends Resource{
+public class Strategic extends Resource {
     private TechnologyType neededTech;
 
     public Strategic(ResourceType resourceType, Tile tile) {

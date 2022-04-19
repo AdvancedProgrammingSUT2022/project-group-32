@@ -79,9 +79,9 @@ public class Resource {
         return tile;
     }
 
-    public boolean canBeFoundOn(TerrainFeature terrainFeature){
+    public boolean canBeFoundOn(TerrainFeature terrainFeature) {
         for (TerrainFeature canBeFoundOn : canBeFoundOns) {
-            if(canBeFoundOn.equals(terrainFeature)){
+            if (canBeFoundOn.equals(terrainFeature)) {
                 return true;
             }
         }

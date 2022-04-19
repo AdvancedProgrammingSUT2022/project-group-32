@@ -15,7 +15,7 @@ public class Ruin {
     private ArrayList<TechnologyType> technologies;
     private boolean isUsed;
 
-    public Ruin(RuinType ruinType){
+    public Ruin(RuinType ruinType) {
         this.ruinType = ruinType;
         this.isUsed = false;
         setFieldsFromDatabase(ruinType);

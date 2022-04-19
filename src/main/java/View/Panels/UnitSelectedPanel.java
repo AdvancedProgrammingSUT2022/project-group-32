@@ -7,11 +7,11 @@ public class UnitSelectedPanel extends GameMenu {
 
     }
 
-    public static void moveTo(String command){
+    public static void moveTo(String command) {
 
     }
 
-    public static void setOrder(String command){
+    public static void setOrder(String command) {
 
     }
 }

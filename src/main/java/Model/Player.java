@@ -39,7 +39,7 @@ public class Player {
         this.incompleteTechnologies = new ArrayList<>();
     }
 
-    public String showMap(){
+    public String showMap() {
         // shows players view of the map - currently in string form to be later replaces with graphics
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
         // TODO: 4/18/2022
@@ -165,171 +165,171 @@ public class Player {
         this.cameraY = cameraY;
     }
 
-    public void setCamera(int cameraX, int cameraY){
+    public void setCamera(int cameraX, int cameraY) {
         this.cameraX = cameraX;
         this.cameraY = cameraY;
     }
 
-    public void addUnit(Unit unit){
+    public void addUnit(Unit unit) {
         this.units.add(unit);
     }
 
-    public void removeUnit(Unit unit){
+    public void removeUnit(Unit unit) {
         this.units.remove(unit);
     }
 
-    public void addBuilding(Building building){
+    public void addBuilding(Building building) {
         this.buildings.add(building);
     }
 
-    public void removeBuilding(Building building){
+    public void removeBuilding(Building building) {
         this.buildings.remove(building);
     }
 
-    public Building getBuildingByName(String name){
+    public Building getBuildingByName(String name) {
         for (Building building : buildings) {
-            if(building.getName().equals(name)){
+            if (building.getName().equals(name)) {
                 return building;
             }
         }
         return null;
     }
 
-    public Building getBuildingByType(BuildingType buildingType){
+    public Building getBuildingByType(BuildingType buildingType) {
         for (Building building : buildings) {
-            if(building.getBuildingType().equals(buildingType)){
+            if (building.getBuildingType().equals(buildingType)) {
                 return building;
             }
         }
         return null;
     }
 
-    public void addTechnology(Technology technology){
+    public void addTechnology(Technology technology) {
         this.technologies.add(technology);
     }
 
-    public void removeTechnology(Technology technology){
+    public void removeTechnology(Technology technology) {
         this.technologies.remove(technology);
     }
 
-    public Technology getTechnologyByName(String name){
+    public Technology getTechnologyByName(String name) {
         for (Technology technology : technologies) {
-            if(technology.getName().equals(name)){
+            if (technology.getName().equals(name)) {
                 return technology;
             }
         }
         return null;
     }
 
-    public Technology getTechnologyByType(TechnologyType technologyType){
+    public Technology getTechnologyByType(TechnologyType technologyType) {
         for (Technology technology : technologies) {
-            if(technology.getTechnologyType().equals(technologyType)){
+            if (technology.getTechnologyType().equals(technologyType)) {
                 return technology;
             }
         }
         return null;
     }
 
-    public void addIncompleteTechnology(Technology technology){
+    public void addIncompleteTechnology(Technology technology) {
         this.incompleteTechnologies.add(technology);
     }
 
-    public void removeIncompleteTechnology(Technology technology){
+    public void removeIncompleteTechnology(Technology technology) {
         this.incompleteTechnologies.remove(technology);
     }
 
-    public Technology getIncompleteTechnologyByName(String name){
+    public Technology getIncompleteTechnologyByName(String name) {
         for (Technology technology : incompleteTechnologies) {
-            if(technology.getName().equals(name)){
+            if (technology.getName().equals(name)) {
                 return technology;
             }
         }
         return null;
     }
 
-    public Technology getIncompleteTechnologyByType(TechnologyType technologyType){
+    public Technology getIncompleteTechnologyByType(TechnologyType technologyType) {
         for (Technology technology : incompleteTechnologies) {
-            if(technology.getTechnologyType().equals(technologyType)){
+            if (technology.getTechnologyType().equals(technologyType)) {
                 return technology;
             }
         }
         return null;
     }
 
-    public void addCity(City city){
+    public void addCity(City city) {
         this.cities.add(city);
     }
 
-    public void removeCity(City city){
+    public void removeCity(City city) {
         this.cities.remove(city);
     }
 
-    public City getCityByName(String name){
+    public City getCityByName(String name) {
         for (City city : cities) {
-            if(city.getName().equals(name)){
+            if (city.getName().equals(name)) {
                 return city;
             }
         }
         return null;
     }
 
-    public City getCityByXY(int x, int y){
+    public City getCityByXY(int x, int y) {
         for (City city : cities) {
-            if(city.getCapitalTile().getX() == x && city.getCapitalTile().getY() == y){
+            if (city.getCapitalTile().getX() == x && city.getCapitalTile().getY() == y) {
                 return city;
             }
         }
         return null;
     }
 
-    public void addTile(Tile tile){
+    public void addTile(Tile tile) {
         this.tiles.add(tile);
     }
 
-    public void removeTile(Tile tile){
+    public void removeTile(Tile tile) {
         this.tiles.remove(tile);
     }
 
-    public Tile getTileByXY(int x, int y){
+    public Tile getTileByXY(int x, int y) {
         for (Tile tile : tiles) {
-            if(tile.getX() == x && tile.getY() == y){
+            if (tile.getX() == x && tile.getY() == y) {
                 return tile;
             }
         }
         return null;
     }
 
-    public Tile getTileByID(int id){
+    public Tile getTileByID(int id) {
         for (Tile tile : tiles) {
-            if(tile.getId() == id){
+            if (tile.getId() == id) {
                 return tile;
             }
         }
         return null;
     }
 
-    public void addInWarPlayer(Player player){
+    public void addInWarPlayer(Player player) {
         this.inWarPlayers.add(player);
     }
 
-    public void removeInWarPlayer(Player player){
+    public void removeInWarPlayer(Player player) {
         this.inWarPlayers.remove(player);
     }
 
-    public Player getInWarPlayerByName(String name){
+    public Player getInWarPlayerByName(String name) {
         for (Player inWarPlayer : inWarPlayers) {
-            if(inWarPlayer.getName().equals(name)){
+            if (inWarPlayer.getName().equals(name)) {
                 return inWarPlayer;
             }
         }
         return null;
     }
 
-    public void addNotification(String notification){
+    public void addNotification(String notification) {
         notifications.add(notification);
     }
 
-    public int getScore(){
+    public int getScore() {
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
         // TODO: 4/18/2022
     }

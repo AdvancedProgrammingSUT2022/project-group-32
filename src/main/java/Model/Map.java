@@ -42,9 +42,9 @@ public class Map {
         return units;
     }
 
-    public City getCityByName(String name){
+    public City getCityByName(String name) {
         for (City city : cities) {
-            if(city.getName().equals(name)){
+            if (city.getName().equals(name)) {
                 return city;
             }
         }

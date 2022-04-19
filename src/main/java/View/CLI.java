@@ -23,11 +23,11 @@ public class CLI {
         options.addOption("r", "right", false, ""); // camera movement direction
         // All parameters must be added here
     }
+
     /**
      * @param command       input command from user
      * @param parameterKeys variable number of parameter keys
      * @return arrayList of parameters' values, returns null with error or invalid command
-     *
      */
     public ArrayList<String> getParameters(String command, String... parameterKeys) {
         ArrayList<String> values = new ArrayList<>();

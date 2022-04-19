@@ -17,7 +17,7 @@ public class GameController {
     private static Tile selectedTile;
     private static City selectedCity;
 
-    private static Game gameGenerator(ArrayList<User> users, int mapW, int mapH){
+    private static Game gameGenerator(ArrayList<User> users, int mapW, int mapH) {
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
 
     }
@@ -72,13 +72,13 @@ public class GameController {
 
     }
 
-    public static Response.GameMenu selectUnit(int x,int y) {
+    public static Response.GameMenu selectUnit(int x, int y) {
         // selects the unarmed unit on x,y
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
 
     }
 
-    public static Response.GameMenu selectTroop(int x,int y) {
+    public static Response.GameMenu selectTroop(int x, int y) {
         // selects the armed unit on x,y
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
 
@@ -86,27 +86,27 @@ public class GameController {
 
     ///         CHEAT CODES
 
-    public static void cheatIncreaseTurn(int amount){
+    public static void cheatIncreaseTurn(int amount) {
 
     }
 
-    public static void cheatIncreaseMoney(int amount){
+    public static void cheatIncreaseMoney(int amount) {
 
     }
 
-    public static void cheatPutUnit(UnitType unitType){
+    public static void cheatPutUnit(UnitType unitType) {
         // puts a unit on a selected tile for free if possible(?)
     }
 
-    public static void cheatBuildBuilding(BuildingType buildingType){
+    public static void cheatBuildBuilding(BuildingType buildingType) {
         // builds a building in the selected city for free
     }
 
-    public static void cheatBuildCity(String name){
+    public static void cheatBuildCity(String name) {
         // builds a city in the selected tile with the given name
     }
 
-    public static void cheatManipulateUnit(int health, int strength){
+    public static void cheatManipulateUnit(int health, int strength) {
         // sets the health and strength of the selected unit
 
     }
@@ -118,11 +118,11 @@ public class GameController {
 
     }
 
-    public static void cheatWin(){
+    public static void cheatWin() {
 
     }
 
-    public static void cheatLose(){
+    public static void cheatLose() {
     }
 
 }
