@@ -5,7 +5,7 @@ import org.apache.commons.cli.*;
 import java.util.ArrayList;
 
 public class CLI {
-    private final Options options = new Options();
+    private final static Options options = new Options();
 
     {
         // LOGIN, MAIN, PROFILE MENU PARAMETERS
@@ -29,7 +29,7 @@ public class CLI {
      * @param parameterKeys variable number of parameter keys
      * @return arrayList of parameters' values, returns null with error or invalid command
      */
-    public ArrayList<String> getParameters(String command, String... parameterKeys) {
+    public static ArrayList<String> getParameters(String command, String... parameterKeys) {
         ArrayList<String> values = new ArrayList<>();
         CommandLineParser parser = new DefaultParser();
         try {

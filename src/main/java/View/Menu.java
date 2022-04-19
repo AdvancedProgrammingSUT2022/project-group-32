@@ -29,10 +29,15 @@ public class Menu {
 
     public static void run(Scanner scanner) {
         currentMenu = MenuType.LOGIN_MENU;
-        switch (currentMenu) {
-            case LOGIN_MENU -> LoginMenu.run(scanner);
-
+        while(currentMenu != MenuType.EXIT){
+            switch (currentMenu) {
+                case LOGIN_MENU -> LoginMenu.run(scanner);
+                case MAIN_MENU ->  MainMenu.run(scanner);
+                case GAME_MENU ->  GameMenu.run(scanner);
+                case PROFILE_MENU -> ProfileMenu.run(scanner);
+            }
         }
+
 
         // TODO: 4/17/2022 Menu Navigation should be handled in view as it makes sense
     }
