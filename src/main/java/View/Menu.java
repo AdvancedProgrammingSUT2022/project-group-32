@@ -3,7 +3,7 @@ package View;
 import java.util.Scanner;
 
 public class Menu {
-    public static MenuType currentMenu;
+    private static MenuType currentMenu;
 
     public enum MenuType {
         MAIN_MENU("main menu"),
@@ -16,6 +16,14 @@ public class Menu {
         MenuType(String name){
             this.name = name;
         }
+    }
+
+    public static MenuType getCurrentMenu() {
+        return currentMenu;
+    }
+
+    public static void setCurrentMenu(MenuType currentMenu) {
+        Menu.currentMenu = currentMenu;
     }
 
     public static void run(Scanner scanner) {
