@@ -40,7 +40,7 @@ public class CLI {
             }
             return values;
         } catch (ParseException e) {
-            System.err.println("error occured while parsing");
+            System.err.println("error occurred while parsing");
             e.printStackTrace();
             return null;
         }

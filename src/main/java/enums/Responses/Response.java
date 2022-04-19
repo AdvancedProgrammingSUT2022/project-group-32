@@ -14,7 +14,7 @@ public class Response {
         }
 
         // can get a string and adds it to corresponding location in the response message
-        private String getString(String... dynamicSubstring) {
+        public String getString(String... dynamicSubstring) {
             String messageText = this.message;
             if (dynamicSubstring.length == 0 || !messageText.contains("$")) return this.message;
             messageText.replaceFirst("\\$", dynamicSubstring[0]);

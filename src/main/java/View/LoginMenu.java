@@ -14,10 +14,10 @@ public class LoginMenu extends Menu {
             if(command.startsWith("user login")){
                 login(command);
             }
-            if(command.startsWith("user create")){
+            else if (command.startsWith("user create")){
                 register(command);
             }
-            if(command.startsWith("exit")){
+            else if (command.startsWith("exit")){
                 exit(command);
             }
         }

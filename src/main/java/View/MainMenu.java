@@ -4,9 +4,15 @@ import java.util.Scanner;
 
 public class MainMenu extends Menu {
     public static void run(Scanner scanner) {
-        String input;
+        String command;
         while (true) {
-            input = scanner.nextLine();
+            command = scanner.nextLine();
+            if(command.startsWith("logout")){
+
+            }
+            else if (command.startsWith("enter menu")){
+
+            }
 
         }
     }
