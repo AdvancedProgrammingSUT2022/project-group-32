@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Comparator;
+
 public class User {
     private String username;
     private String password;
@@ -43,5 +45,12 @@ public class User {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public static class compareByScore implements Comparator<User>{
+        @Override
+        public int compare(User o1, User o2) {
+            return o1.getScore() - o2.getScore();
+        }
     }
 }
