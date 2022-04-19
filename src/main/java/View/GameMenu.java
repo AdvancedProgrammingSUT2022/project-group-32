@@ -30,7 +30,7 @@ public class GameMenu extends Menu {
             else if (command.startsWith("select city")){
                 selectCity(command);
             }
-            else if(command.startsWith("end game")){
+            else if (command.startsWith("end game")){
                 endGame(command);
             }
             else if (command.startsWith("open panel")){
