@@ -37,12 +37,10 @@ public class Menu {
                 case PROFILE_MENU -> ProfileMenu.run(scanner);
             }
         }
-
-
         // TODO: 4/17/2022 Menu Navigation should be handled in view as it makes sense
     }
 
     public static void showCurrentMenu(String command) {
-        // TODO: 4/19/2022 //?
+        System.out.println(currentMenu);
     }
 }

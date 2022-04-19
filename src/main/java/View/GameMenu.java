@@ -1,5 +1,7 @@
 package View;
 
+import enums.Responses.Response;
+
 import java.util.Scanner;
 
 public class GameMenu extends Menu {
@@ -39,6 +41,9 @@ public class GameMenu extends Menu {
             }
             else if (command.startsWith("show current panel")){
                 showCurrentPanel(command);
+            }
+            else{
+                System.out.println(Response.LoginMenu.INVALID_COMMAND);
             }
         }
     }
