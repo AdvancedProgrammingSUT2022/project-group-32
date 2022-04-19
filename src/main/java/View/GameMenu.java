@@ -10,10 +10,36 @@ public class GameMenu extends Menu {
     private static final PanelType panelType = null;
 
     public static void run(Scanner scanner) {
-        String input;
+        String command;
         while (true) {
-            input = scanner.nextLine();
-
+            command = scanner.nextLine();
+            if (command.startsWith("show map")){
+                showMap(command);
+            }
+            else if (command.startsWith("move map")){
+                moveMap(command);
+            }
+            else if (command.startsWith("select unit")){
+                selectUnit(command);
+            }
+            else if (command.startsWith("select tile")){
+                selectTile(command);
+            }
+            else if (command.startsWith("select city")){
+                selectCity(command);
+            }
+            else if(command.startsWith("end game")){
+                endGame(command);
+            }
+            else if (command.startsWith("open panel")){
+                openPanel(command);
+            }
+            else if (command.startsWith("run panel")){
+                runPanel(command);
+            }
+            else if (command.startsWith("show current panel")){
+                showCurrentPanel(command);
+            }
         }
     }
 
@@ -49,7 +75,7 @@ public class GameMenu extends Menu {
 
     }
 
-    public static void ShowCurrentPanel(String command) {
+    public static void showCurrentPanel(String command) {
         System.out.println(panelType);
     }
 }

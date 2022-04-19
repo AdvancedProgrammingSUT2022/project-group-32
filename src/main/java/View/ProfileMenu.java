@@ -1,6 +1,7 @@
 package View;
 
 import Controller.UserController;
+import Model.User;
 import enums.Responses.Response;
 
 import java.util.ArrayList;
@@ -52,6 +53,9 @@ public class ProfileMenu extends Menu {
     }
 
     public static void showScoreboard(String command) {
-
+        ArrayList<User> scoreboard = UserController.getScoreboard();
+        for (User user : scoreboard) {
+            System.out.println(user);
+        }
     }
 }

@@ -11,7 +11,7 @@ public class LoginMenu extends Menu {
         String command;
         while (true) {
             command = scanner.nextLine();
-            if(command.startsWith("user login")){
+            if (command.startsWith("user login")){
                 login(command);
             }
             else if (command.startsWith("user create")){
