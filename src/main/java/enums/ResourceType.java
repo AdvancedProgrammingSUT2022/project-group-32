@@ -26,4 +26,12 @@ public enum ResourceType {
     ResourceType(String name) {
         this.name = name;
     }
+
+    public static ResourceType getResourceTypeByName(String resources) {
+        for (ResourceType resourceType : ResourceType.values()) {
+            if (resourceType.name.equals(resources)) return resourceType;
+        }
+        System.err.println("Resource Not Found!");
+        return null;
+    }
 }

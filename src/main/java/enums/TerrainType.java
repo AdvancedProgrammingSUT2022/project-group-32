@@ -26,4 +26,12 @@ public enum TerrainType {
             if (terrainType.terrainFeature.equals(terrainFeature)) return terrainType;
         return null;
     }
+
+    public static boolean isBaseTerrain(TerrainFeature terrainFeature) {
+        return getTerrainTypeByTerrainFeature(terrainFeature) != null;
+    }
+
+    public static boolean isTerrainFeature(TerrainFeature terrainFeature) {
+        return getTerrainTypeByTerrainFeature(terrainFeature) == null;
+    }
 }
