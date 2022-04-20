@@ -17,7 +17,7 @@ public class GameMenu extends Menu {
         }
     }
 
-    private static void showMap(String command) {
+    private static void showMap(String command, int x, int y) {
 
     }
 
