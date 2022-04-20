@@ -30,7 +30,6 @@ public class Unit {
 
     protected void setFieldsFromDatabase(UnitType unitType) {
 
-
         // TODO: 4/16/2022 set health, cost, movement, HP, XP
         this.HP = this.health;
         this.MP = this.movement;
