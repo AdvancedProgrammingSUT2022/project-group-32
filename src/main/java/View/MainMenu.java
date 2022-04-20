@@ -25,7 +25,7 @@ public class MainMenu extends Menu {
 
     public static void enterMenu(String command) {
         ArrayList<String> parameters = CLI.getParameters(command , "m");
-        if(parameters.get(0) == null){
+        if (parameters == null) {
             System.out.println(Response.LoginMenu.INVALID_COMMAND);
         }
         // TODO: 4/19/2022 changing current menu in View or MenuController

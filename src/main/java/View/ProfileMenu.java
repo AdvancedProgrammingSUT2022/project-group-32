@@ -39,7 +39,7 @@ public class ProfileMenu extends Menu {
 
     public static void changePassword(String command) {
         ArrayList<String> parameters = CLI.getParameters(command , "p" , "p");
-        if((parameters.get(0) == null) || (parameters.get(1) == null)){
+        if (parameters == null) {
             System.out.println(Response.LoginMenu.INVALID_COMMAND);
         }
         Response.ProfileMenu response = UserController.changePassword(parameters.get(0) , parameters.get(1));
@@ -48,7 +48,7 @@ public class ProfileMenu extends Menu {
 
     public static void changeNickname(String command) {
         ArrayList<String> parameters = CLI.getParameters(command , "n");
-        if(parameters.get(0) == null){
+        if (parameters == null) {
             System.out.println(Response.LoginMenu.INVALID_COMMAND);
         }
         Response.ProfileMenu response = UserController.changeNickname(parameters.get(0));
@@ -60,7 +60,7 @@ public class ProfileMenu extends Menu {
 
     public static void deleteAccount(String command) {
         ArrayList<String> parameters = CLI.getParameters(command , "p");
-        if(parameters.get(0) == null){
+        if (parameters == null) {
             System.out.println(Response.LoginMenu.INVALID_COMMAND);
         }
         Response.ProfileMenu response = UserController.removeUser(parameters.get(0));

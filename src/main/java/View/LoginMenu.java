@@ -11,16 +11,13 @@ public class LoginMenu extends Menu {
         String command;
         while (true) {
             command = scanner.nextLine();
-            if (command.startsWith("user login")){
+            if (command.startsWith("login")) {
                 login(command);
-            }
-            else if (command.startsWith("user create")){
+            } else if (command.startsWith("register")) {
                 register(command);
-            }
-            else if (command.startsWith("exit")){
+            } else if (command.startsWith("exit")) {
                 exit(command);
-            }
-            else{
+            } else {
                 System.out.println(Response.LoginMenu.INVALID_COMMAND);
             }
         }
@@ -29,7 +26,7 @@ public class LoginMenu extends Menu {
 
     public static void login(String command) {
         ArrayList<String> parameters = CLI.getParameters(command , "u" , "p");
-        if((parameters.get(0) == null) || (parameters.get(1) == null)){
+        if (parameters == null) {
             System.out.println(Response.LoginMenu.INVALID_COMMAND);
         }
         Response.LoginMenu response = UserController.login(parameters.get(0) , parameters.get(1));
@@ -38,7 +35,7 @@ public class LoginMenu extends Menu {
 
     public static void register(String command) {
         ArrayList<String> parameters = CLI.getParameters(command,"u" , "p" , "n" );
-        if((parameters.get(0) == null) || (parameters.get(1) == null) || parameters.get(2) == null){
+        if (parameters == null) {
             System.out.println(Response.LoginMenu.INVALID_COMMAND);
         }
         Response.LoginMenu response = UserController.register(parameters.get(0), parameters.get(1), parameters.get(2));

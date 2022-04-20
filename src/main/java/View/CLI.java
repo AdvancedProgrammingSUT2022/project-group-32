@@ -5,9 +5,9 @@ import org.apache.commons.cli.*;
 import java.util.ArrayList;
 
 public class CLI {
-    private final static Options options = new Options();
+    private static final Options options = new Options();
 
-    {
+    static {
         // LOGIN, MAIN, PROFILE MENU PARAMETERS
         options.addOption("u", "username", true, "");
         options.addOption("p", "password", true, "");
