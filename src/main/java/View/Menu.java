@@ -8,10 +8,10 @@ public class Menu {
     public static MenuType currentMenu;
 
     public enum MenuType {
-        MAIN_MENU("main menu"),
-        LOGIN_MENU("login menu"),
-        GAME_MENU("game menu"),
-        PROFILE_MENU("profile menu"),
+        MAIN_MENU("mainMenu"),
+        LOGIN_MENU("loginMenu"),
+        GAME_MENU("gameMenu"),
+        PROFILE_MENU("profileMenu"),
         EXIT("exit");
 
         String name;
