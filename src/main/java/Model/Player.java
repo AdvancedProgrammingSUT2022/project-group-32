@@ -2,6 +2,7 @@ package Model;
 
 import Model.Units.Unit;
 import enums.BuildingType;
+import enums.Color;
 import enums.TechnologyType;
 
 import java.util.ArrayList;
@@ -20,15 +21,16 @@ public class Player {
     private int gold, science, food, XP, happiness, population;
     private final ArrayList<Player> inWarPlayers;
     private final ArrayList<String> notifications;
-    private int cameraRow;
-    private int cameraColumn;
+    private int cameraX;
+    private int cameraY;
+    private Color color; // must be set unique while creating new game
 
-    public Player(User user, int cameraRow, int cameraColumn) {
-        // TODO: 4/21/2022 players map must be set after all players are created
+    public Player(User user, Map map, int cameraX, int cameraY) {
         this.user = user;
         this.name = user.getNickname();
-        this.cameraRow = cameraRow;
-        this.cameraColumn = cameraColumn;
+        this.map = map;
+        this.cameraX = cameraX;
+        this.cameraY = cameraY;
         this.units = new ArrayList<>();
         this.buildings = new ArrayList<>(); // may need to change this
         this.technologies = new ArrayList<>();
@@ -37,7 +39,6 @@ public class Player {
         this.inWarPlayers = new ArrayList<>();
         this.notifications = new ArrayList<>();
         this.incompleteTechnologies = new ArrayList<>();
-
     }
 
     public String showMap() {
@@ -150,29 +151,25 @@ public class Player {
         return notifications;
     }
 
-    public int getCameraRow() {
-        return cameraRow;
+    public int getCameraX() {
+        return cameraX;
     }
 
-    public int getCameraColumn() {
-        return cameraColumn;
+    public int getCameraY() {
+        return cameraY;
     }
 
-    public void setCameraRow(int cameraRow) {
-        this.cameraRow = cameraRow;
+    public void setCameraX(int cameraX) {
+        this.cameraX = cameraX;
     }
 
-    public void setCameraColumn(int cameraColumn) {
-        this.cameraColumn = cameraColumn;
+    public void setCameraY(int cameraY) {
+        this.cameraY = cameraY;
     }
 
-    public void setCamera(int cameraRow, int cameraColumn) {
-        this.cameraRow = cameraRow;
-        this.cameraColumn = cameraColumn;
-    }
-
-    public void setCamera(Tile tile) {
-        setCamera(tile.getRow(), tile.getColumn());
+    public void setCamera(int cameraX, int cameraY) {
+        this.cameraX = cameraX;
+        this.cameraY = cameraY;
     }
 
     public void addUnit(Unit unit) {
@@ -280,7 +277,7 @@ public class Player {
 
     public City getCityByXY(int x, int y) {
         for (City city : cities) {
-            if (city.getCapitalTile().getRow() == x && city.getCapitalTile().getColumn() == y) {
+            if (city.getCapitalTile().getX() == x && city.getCapitalTile().getY() == y) {
                 return city;
             }
         }
@@ -297,7 +294,7 @@ public class Player {
 
     public Tile getTileByXY(int x, int y) {
         for (Tile tile : tiles) {
-            if (tile.getRow() == x && tile.getColumn() == y) {
+            if (tile.getX() == x && tile.getY() == y) {
                 return tile;
             }
         }

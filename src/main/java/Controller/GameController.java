@@ -22,6 +22,10 @@ public class GameController {
 
     }
 
+    public static Map getCurrentPlayerMap() {
+        return game.getCurrentPlayer().getMap();
+    }
+
     public static Game getGame() {
         return game;
     }

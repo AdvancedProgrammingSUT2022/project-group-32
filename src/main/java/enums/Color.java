@@ -1,11 +1,10 @@
 package enums;
 
-public enum Colors {
-
+public enum Color {
         // Reset
         RESET("\033[0m"),  // Text Reset
 
-        // Regular Colors
+        // Regular Color
         BLACK("\033[0;30m"),   // BLACK
         RED("\033[0;31m"),     // RED
         GREEN("\033[0;32m"),   // GREEN
@@ -77,7 +76,7 @@ public enum Colors {
 
         private final String code;
 
-        Colors(String code) {
+        Color(String code) {
                 this.code = code;
         }
 }
