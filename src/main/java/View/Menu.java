@@ -5,7 +5,7 @@ import enums.Responses.Response;
 import java.util.Scanner;
 
 public class Menu {
-    private static MenuType currentMenu;
+    public static MenuType currentMenu;
 
     public enum MenuType {
         MAIN_MENU("main menu"),

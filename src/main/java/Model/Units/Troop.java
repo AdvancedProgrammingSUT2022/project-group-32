@@ -25,7 +25,6 @@ public class Troop extends Unit {
 
     @Override
     protected void setFieldsFromDatabase(UnitType unitType) {
-        // TODO: 4/16/2022 set health, cost, movement, HP, XP, ranges, needed techs , ...
 
     }
 
