@@ -18,9 +18,9 @@ public class UserController {
     private static ArrayList<User> users;
     private static User currentUser;
 
-    {
+    static {
         try {
-            String json = new String(Files.readAllBytes(Paths.get("main/java/resources/users.json")));
+            String json = new String(Files.readAllBytes(Paths.get("src/main/resources/users.json")));
             users = new Gson().fromJson(json, new TypeToken<List<User>>(){}.getType());
         } catch (IOException e) {
             System.err.println("Error while loading users");
@@ -161,7 +161,7 @@ public class UserController {
 
     public static void saveUsers() { // should be called when exited
         try {
-            FileWriter fileWriter = new FileWriter("main/java/resources/users.json"); // TODO: 4/19/2022
+            FileWriter fileWriter = new FileWriter("src/main/resources/users.json");
             fileWriter.write(new Gson().toJson(users));
             fileWriter.close();
         } catch (IOException e) {

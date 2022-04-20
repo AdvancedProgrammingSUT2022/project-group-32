@@ -13,22 +13,33 @@ public class MainMenu extends Menu {
             command = scanner.nextLine();
             if (command.startsWith("logout")){
                 logout(command);
+                return;
             }
             else if (command.startsWith("enter menu")){
                 enterMenu(command);
+                return;
+            }
+            else if(command.startsWith("current menu")){
+                Menu.showCurrentMenu();
             }
             else{
-                System.out.println(Response.LoginMenu.INVALID_COMMAND);
+                Menu.invalidCommand();
             }
         }
     }
 
     public static void enterMenu(String command) {
         ArrayList<String> parameters = CLI.getParameters(command , "m");
-        if(parameters.get(0) == null){
-            System.out.println(Response.LoginMenu.INVALID_COMMAND);
+        if(parameters == null){
+            Menu.invalidCommand();
+            return;
         }
-        // TODO: 4/19/2022 changing current menu in View or MenuController
+        MenuType newMenu = Menu.getType(parameters.get(0));
+        if(newMenu == null){
+            Menu.invalidCommand();
+            return;
+        }
+        Menu.setCurrentMenu(newMenu);
     }
 
     public static void logout(String command) {

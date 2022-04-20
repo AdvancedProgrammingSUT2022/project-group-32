@@ -1,5 +1,7 @@
 package View;
 
+import enums.Responses.Response;
+
 import java.util.Scanner;
 
 public class Menu {
@@ -37,10 +39,22 @@ public class Menu {
                 case PROFILE_MENU -> ProfileMenu.run(scanner);
             }
         }
-        // TODO: 4/17/2022 Menu Navigation should be handled in view as it makes sense
     }
 
-    public static void showCurrentMenu(String command) {
-        System.out.println(currentMenu);
+    public static MenuType getType(String name){ // returns menuType based on name
+        for(MenuType type : MenuType.values()){
+            if(type.name.equals(name)){
+                return type;
+            }
+        }
+        return null;
+    }
+
+    public static void showCurrentMenu(String... command) {
+        System.out.println(currentMenu.name);
+    }
+
+    public static void invalidCommand(String... command){
+        System.out.println(Response.MainMenu.INVALID_COMMAND.getString());
     }
 }

@@ -14,6 +14,7 @@ public class ProfileMenu extends Menu {
             command = scanner.nextLine();
             if (command.startsWith("back")){
                 back(command);
+                return;
             }
             else if (command.startsWith("change password")){
                 changePassword(command);
@@ -27,8 +28,11 @@ public class ProfileMenu extends Menu {
             else if (command.startsWith("show scoreboard")){
                 showScoreboard(command);
             }
+            else if(command.startsWith("current menu")){
+                Menu.showCurrentMenu();
+            }
             else{
-                System.out.println(Response.LoginMenu.INVALID_COMMAND);
+                Menu.invalidCommand();
             }
         }
     }
@@ -39,8 +43,9 @@ public class ProfileMenu extends Menu {
 
     public static void changePassword(String command) {
         ArrayList<String> parameters = CLI.getParameters(command , "p" , "p");
-        if((parameters.get(0) == null) || (parameters.get(1) == null)){
-            System.out.println(Response.LoginMenu.INVALID_COMMAND);
+        if(parameters == null){
+            Menu.invalidCommand();
+            return;
         }
         Response.ProfileMenu response = UserController.changePassword(parameters.get(0) , parameters.get(1));
         System.out.println(response.getString());
@@ -48,8 +53,9 @@ public class ProfileMenu extends Menu {
 
     public static void changeNickname(String command) {
         ArrayList<String> parameters = CLI.getParameters(command , "n");
-        if(parameters.get(0) == null){
-            System.out.println(Response.LoginMenu.INVALID_COMMAND);
+        if(parameters == null){
+            Menu.invalidCommand();
+            return;
         }
         Response.ProfileMenu response = UserController.changeNickname(parameters.get(0));
         if(response.equals(Response.ProfileMenu.NICKNAME_EXISTS)){
@@ -60,8 +66,9 @@ public class ProfileMenu extends Menu {
 
     public static void deleteAccount(String command) {
         ArrayList<String> parameters = CLI.getParameters(command , "p");
-        if(parameters.get(0) == null){
-            System.out.println(Response.LoginMenu.INVALID_COMMAND);
+        if(parameters == null){
+            Menu.invalidCommand();
+            return;
         }
         Response.ProfileMenu response = UserController.removeUser(parameters.get(0));
         System.out.println(response.getString());
