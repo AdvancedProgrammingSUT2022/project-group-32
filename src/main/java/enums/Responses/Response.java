@@ -17,8 +17,7 @@ public class Response {
         public String getString(String... dynamicSubstring) {
             String messageText = this.message;
             if (dynamicSubstring.length == 0 || !messageText.contains("$")) return this.message;
-            messageText.replaceFirst("\\$", dynamicSubstring[0]);
-            return messageText;
+            return messageText.replaceFirst("\\$", dynamicSubstring[0]);
         }
     }
 
@@ -54,8 +53,7 @@ public class Response {
         public String getString(String... dynamicSubstring) {
             String messageText = this.message;
             if (dynamicSubstring.length == 0 || !messageText.contains("$")) return this.message;
-            messageText.replaceFirst("\\$", dynamicSubstring[0]);
-            return messageText;
+            return messageText.replaceFirst("\\$", dynamicSubstring[0]);
         }
     }
 
@@ -95,8 +93,7 @@ public class Response {
         public String getString(String... dynamicSubstring) {
             String messageText = this.message;
             if (dynamicSubstring.length == 0 || !messageText.contains("$")) return this.message;
-            messageText.replaceFirst("\\$", dynamicSubstring[0]);
-            return messageText;
+            return messageText.replaceFirst("\\$", dynamicSubstring[0]);
         }
     }
 
@@ -123,8 +120,7 @@ public class Response {
         public String getString(String... dynamicSubstring) {
             String messageText = this.message;
             if (dynamicSubstring.length == 0 || !messageText.contains("$")) return this.message;
-            messageText.replaceFirst("\\$", dynamicSubstring[0]);
-            return messageText;
+            return messageText.replaceFirst("\\$", dynamicSubstring[0]);
         }
     }
 }

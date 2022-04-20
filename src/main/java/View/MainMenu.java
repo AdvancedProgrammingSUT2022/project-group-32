@@ -11,18 +11,15 @@ public class MainMenu extends Menu {
         String command;
         while (true) {
             command = scanner.nextLine();
-            if (command.startsWith("logout")){
+            if (command.startsWith("logout")) {
                 logout(command);
                 return;
-            }
-            else if (command.startsWith("enter menu")){
+            } else if (command.startsWith("enter")) {
                 enterMenu(command);
                 return;
-            }
-            else if(command.startsWith("current menu")){
+            } else if (command.startsWith("current menu")) {
                 Menu.showCurrentMenu();
-            }
-            else{
+            } else {
                 Menu.invalidCommand();
             }
         }

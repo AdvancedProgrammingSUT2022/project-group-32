@@ -11,21 +11,17 @@ public class LoginMenu extends Menu {
         String command;
         while (true) {
             command = scanner.nextLine();
-            if (command.startsWith("user login")){
+            if (command.startsWith("login")) {
                 login(command);
                 return;
-            }
-            else if (command.startsWith("user create")){
+            } else if (command.startsWith("register")) {
                 register(command);
-            }
-            else if (command.startsWith("exit")){
+            } else if (command.startsWith("exit")) {
                 exit(command);
                 return;
-            }
-            else if(command.startsWith("current menu")){
+            } else if (command.startsWith("current menu")) {
                 Menu.showCurrentMenu();
-            }
-            else{
+            } else {
                 Menu.invalidCommand();
             }
         }
