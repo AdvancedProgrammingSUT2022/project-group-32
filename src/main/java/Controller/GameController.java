@@ -71,8 +71,6 @@ public class GameController {
             player.addUnit(new Unit(initialTile, player, UnitType.SETTLER)); // adding initial units
             player.addUnit(new Unit(initialTile, player, UnitType.SCOUT));
         }
-        players.stream().forEach(p -> p.setCamera(p.getCities().get(0).getCapitalTile().getRow(),
-                p.getCities().get(0).getCapitalTile().getRow()));
         // starts a new game between users and responds accordingly
         return Response.GameMenu.GAME_CREATED;
     }
