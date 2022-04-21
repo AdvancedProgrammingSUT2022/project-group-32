@@ -36,7 +36,23 @@ public class InGameResponses {
         //REMOVE
         ROUTE_NOT_AVAILABLE("route is not available in this tile"),
         //REPAIR
-        RUIN_NOT_AVAILABLE("ruin is not available in the current position");
+        RUIN_NOT_AVAILABLE("ruin is not available in the current position"),
+
+        //SUCCESS
+        MOVETO_SUCCESSFUL("unit successfully moved"),
+        SLEEP_SUCCESSFUL("unit successfully slept"),
+        ALERT_SUCCESSFUL("unit successfully alerted"),
+        FORTIFY_SUCCESSFUL("unit successfully fortified"),
+        GARRISON__SUCCESSFUL("unit successfully garrisoned"),
+        SETUP_SUCCESSFUL("unit successfully setup"),
+        ATTACK_SUCCESSFUL("unit successfully attacked"),
+        FOUND_SUCCESSFUL("city successfully founded"),
+        CANCEL_SUCCESSFUL("mission successfully canceled"),
+        WAKE_SUCCESSFUL("unit successfully woken"),
+        DELETE_SUCCESSFUL("unit successfully deleted"),
+        BUILD_SUCCESSFUL("successfully built"),
+        REMOVE_SUCCESSFUL("successfully removed"),
+        REPAIR_SUCCESSFUL("successfully repaired");
 
         private final String message;
 
@@ -54,7 +70,11 @@ public class InGameResponses {
     public enum Map{
         //SHOW
         INVALID_POSITION("invalid position"),
-        INVALID_CITY_NAME("invalid city name");
+        INVALID_CITY_NAME("invalid city name"),
+
+        //SUCCESS
+        SHOW_SUCCESSFUL("successfully shown map"),
+        MOVE_SUCCESSFUL("successfully moved map");
 
         private final String message;
 
@@ -76,7 +96,11 @@ public class InGameResponses {
         NON_MILITARY_UNIT_ALREADY_PRESENT("non-military unit is already present in the position"),
         //CITY
         INVALID_CITY_NAME("invalid city name"),
-        CITY_ALREADY_EXISTS("city already exists in the position");
+        CITY_ALREADY_EXISTS("city already exists in the position"),
+
+        //SUCCESS
+        UNIT_SELECTION_SUCCESSFUL("unit successfully selected"),
+        CITY_SELECTION_SUCCESSFUL("city successfully selected");
 
         private final String message;
 
