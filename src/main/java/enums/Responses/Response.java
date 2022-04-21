@@ -107,8 +107,13 @@ public class Response {
 
         // LOGOUT
         SUCCESSFUL_LOGOUT("Logged out successfully "),
+
         // CURRENT MENU
-        CURRENT_MENU("Main menu");
+        CURRENT_MENU("Main menu"),
+
+        // NEW GAME
+        NEW_GAME_STARTED("new game created"),
+        NONEXISTENCE_USERS("user(s) \"$\" not found");
 
         private final String message;
 

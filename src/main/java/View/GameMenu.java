@@ -6,12 +6,13 @@ import java.util.Scanner;
 
 public class GameMenu extends Menu {
     public enum PanelType {
-        CITY_SELECTED
+        CITY_SELECTED, // TODO: others must be added
     }
 
     private static final PanelType panelType = null;
 
     public static void run(Scanner scanner) {
+
         String command;
         while (true) {
             command = scanner.nextLine();
@@ -43,7 +44,7 @@ public class GameMenu extends Menu {
                 showCurrentPanel(command);
             }
             else{
-                System.out.println(Response.LoginMenu.INVALID_COMMAND);
+                System.out.println(Response.LoginMenu.INVALID_COMMAND.getString());
             }
         }
     }

@@ -55,6 +55,7 @@ public class GameController {
     }
 
     public static Response.GameMenu newGame(ArrayList<User> users) {
+
         // starts a new game between users and responds accordingly
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
 
