@@ -159,7 +159,7 @@ public class City {
 
     public Tile getTileByXY(int x, int y) {
         for (Tile tile : territory) {
-            if (tile.getX() == x && tile.getY() == y) {
+            if (tile.getRow() == x && tile.getColumn() == y) {
                 return tile;
             }
         }

@@ -4,6 +4,7 @@ public class Response {
     // enums with $ have dynamic parts
     public enum GameMenu {
         INVALID_COMMAND("Invalid Command"),
+        GAME_CREATED("game created"),
         // CURRENT MENU
         CURRENT_MENU("Game menu");
 

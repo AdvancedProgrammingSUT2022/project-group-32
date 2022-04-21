@@ -1,18 +1,17 @@
 package Controller;
 
-import Model.City;
-import Model.Game;
-import Model.Tile;
+import Model.*;
 import Model.Units.Unit;
-import Model.User;
 import enums.BuildingType;
 import enums.Responses.Response;
 import enums.UnitType;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class GameController {
     private static Game game;
+    // fixme: each player has below selecteds or the whole game?
     private static Unit selectedUnit;
     private static Tile selectedTile;
     private static City selectedCity;
@@ -55,10 +54,24 @@ public class GameController {
     }
 
     public static Response.GameMenu newGame(ArrayList<User> users) {
-
+        Map mainMap = new Map(20, 20);
+        ArrayList<Player> players = users.stream().map(user -> new Player(user, 1, 1)).collect(Collectors.toCollection(ArrayList::new));
+        // TODO: initial gold, food, production, happiness, city population, .. must be set
+        setGame(new Game(mainMap, players));
+        // fixme: for the realGame cities should not be created while newGamign it must be created by settlers
+        MapController.generateRandomMap(game.getMap(), game.getPlayers());
+        //setting camera to city
+        for (Player player : players) {
+            Tile capitalTile = player.getCities().get(0).getCapitalTile();
+            player.setCamera(capitalTile.getRow(), capitalTile.getColumn()); // setting camera to capital
+            player.setMap(new Map(game.getMap())); // deep copying map
+            player.addUnit(new Unit(capitalTile, player, UnitType.SETTLER)); // adding initial units
+            player.addUnit(new Unit(capitalTile, player, UnitType.SCOUT));
+        }
+        players.stream().forEach(p -> p.setCamera(p.getCities().get(0).getCapitalTile().getRow(),
+                p.getCities().get(0).getCapitalTile().getRow()));
         // starts a new game between users and responds accordingly
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
+        return Response.GameMenu.GAME_CREATED;
     }
 
     public static Response.GameMenu selectTile(int x, int y) {
