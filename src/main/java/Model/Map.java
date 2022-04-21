@@ -14,8 +14,15 @@ public class Map {
     public Map(int width, int height) {
         this.width = width;
         this.height = height;
-        this.tiles = new Tile[width][height];
+        this.tiles = new Tile[width][height]; // TODO: 4/21/2022 how are these tiles initialized??
         // TODO: 4/17/2022 initialized tiles , ....
+    }
+
+    // gets a map and deep copies it, a copy with different reference is created
+    public Map(Map map) {
+        this.width = map.width;
+        this.height = map.height;
+        this.tiles = map.tiles.clone();
     }
 
     public int getWidth() {
@@ -49,5 +56,13 @@ public class Map {
             }
         }
         return null;
+    }
+
+    public void addCity(City city) {
+        this.cities.add(city);
+    }
+
+    public Tile getTile(int randomRow, int randomColumn) {
+        return tiles[randomRow][randomColumn];
     }
 }

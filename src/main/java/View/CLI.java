@@ -3,6 +3,8 @@ package View;
 import org.apache.commons.cli.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class CLI {
     private static final Options options = new Options();
@@ -13,7 +15,8 @@ public class CLI {
         options.addOption("p", "password", true, "");
         options.addOption("n", "nickname", true, "");
         options.addOption("m", "menu", true, "");
-
+        Option option1 = new Option("P", "player", true, "players for new game");
+        option1.setArgs(Option.UNLIMITED_VALUES);
         // GAME MENU PARAMETERS
         Option option = new Option("l", "location", true, ""); // [x] [y]
         option.setArgs(2);
@@ -36,6 +39,11 @@ public class CLI {
             CommandLine cmd = parser.parse(options, command.split(" "));
             for (String parameterKey : parameterKeys) {
                 if (!cmd.hasOption(parameterKey)) return null;
+                if (parameterKey.equals("P") || parameterKey.equals("player")) {
+                    List<String> playersUsernames = Arrays.asList(cmd.getOptionValues("p"));
+                    playersUsernames.remove(0);
+                    values.addAll(playersUsernames);
+                }
                 values.add(cmd.getOptionValue(parameterKey));
             }
             return values;

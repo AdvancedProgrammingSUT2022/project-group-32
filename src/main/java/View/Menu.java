@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class Menu {
     public static MenuType currentMenu;
 
+    // TODO: 4/21/2022 Invalid command structure must be detected: register aslgfkhs;dfl -u user -p pP123123$ -n niki must be invalid
     public enum MenuType {
         MAIN_MENU("mainMenu"),
         LOGIN_MENU("loginMenu"),

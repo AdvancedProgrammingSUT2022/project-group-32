@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class Tile {
     private static int count = 0;
     private int id;
-    private int x, y;
+    private int row, column;
     private Terrain terrain;
     private Resource resource;
     private Ruin ruin;
@@ -22,12 +22,12 @@ public class Tile {
     private RouteType roadType; // can be null
     private HashMap<Integer, Boolean> isRiver; // Clock-based directions: 0 - 2 - 4 - 6 - 8 - 10
 
-    public Tile(int x, int y, Terrain terrain, FogState fogState, Resource resource, Ruin ruin) {
-        this.x = x;
-        this.y = y;
+    public Tile(int row, int column, Terrain terrain, FogState fogState, Ruin ruin) {
+        this.row = row;
+        this.column = column;
         this.terrain = terrain;
         this.fogState = fogState;
-        this.resource = resource;
+        this.resource = new Resource(terrain.getResourceType(), this); // fixme: is this ok?
         this.ruin = ruin;
         this.city = null;
         this.unit = null;
@@ -46,20 +46,20 @@ public class Tile {
         this.id = id;
     }
 
-    public int getX() {
-        return x;
+    public int getRow() {
+        return row;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setRow(int row) {
+        this.row = row;
     }
 
-    public int getY() {
-        return y;
+    public int getColumn() {
+        return column;
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setColumn(int column) {
+        this.column = column;
     }
 
     public Terrain getTerrain() {

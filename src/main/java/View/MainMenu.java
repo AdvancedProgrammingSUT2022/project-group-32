@@ -1,6 +1,8 @@
 package View;
 
+import Controller.GameController;
 import Controller.UserController;
+import Model.User;
 import enums.Responses.Response;
 
 import java.util.ArrayList;
@@ -19,6 +21,8 @@ public class MainMenu extends Menu {
                 return;
             } else if (command.startsWith("current menu")) {
                 Menu.showCurrentMenu();
+            } else if (command.startsWith("new game")) {
+                newGame(command);
             } else {
                 Menu.invalidCommand();
             }
@@ -42,5 +46,34 @@ public class MainMenu extends Menu {
     public static void logout(String command) {
         Response.MainMenu responses = UserController.logout();
         System.out.println(responses.getString());
+    }
+
+    public static void newGame(String command) {
+        ArrayList<String> usernames = CLI.getParameters(command, "P");
+        if (usernames == null) {
+            Menu.invalidCommand();
+            return;
+        }
+        ArrayList<User> playingUsers = new ArrayList<>();
+        ArrayList<String> nonexistenceUsernames = new ArrayList<>();
+        for (String username : usernames) {
+            if (UserController.getUserByUsername(username) != null)
+                nonexistenceUsernames.add(username);
+            else
+                playingUsers.add(UserController.getUserByUsername(username));
+        }
+
+        if (nonexistenceUsernames.size() != 0) {
+            String invalidUsernames = "";
+            for (int i = 0; i < nonexistenceUsernames.size(); i++) {
+                invalidUsernames += nonexistenceUsernames.get(i);
+                if (i != nonexistenceUsernames.size() - 1) invalidUsernames += ",";
+            }
+            System.out.println(Response.MainMenu.NONEXISTENCE_USERS.getString(invalidUsernames));
+            return;
+        }
+        GameController.newGame(playingUsers);
+        Menu.setCurrentMenu(MenuType.GAME_MENU);
+        System.out.println(Response.MainMenu.NEW_GAME_STARTED.getString());
     }
 }

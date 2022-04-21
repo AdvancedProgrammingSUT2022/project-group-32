@@ -1,18 +1,18 @@
 package Controller;
 
-import Model.City;
-import Model.Game;
-import Model.Tile;
+import Model.*;
 import Model.Units.Unit;
-import Model.User;
 import enums.BuildingType;
 import enums.Responses.Response;
 import enums.UnitType;
 
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 public class GameController {
     private static Game game;
+    // fixme: each player has below selecteds or the whole game?
     private static Unit selectedUnit;
     private static Tile selectedTile;
     private static City selectedCity;
@@ -55,9 +55,24 @@ public class GameController {
     }
 
     public static Response.GameMenu newGame(ArrayList<User> users) {
+        Map mainMap = new Map(20, 20);
+        ArrayList<Player> players = users.stream().map(user -> new Player(user, 1, 1)).collect(Collectors.toCollection(ArrayList::new));
+        // TODO: initial gold, food, production, happiness, city population, .. must be set
+        setGame(new Game(mainMap, players));
+        MapController.generateRandomMap(game.getMap(), game.getPlayers());
+        //setting camera to city
+        for (Player player : players) {
+            // fixme: initialTile conflict is possible
+            int randomRow = ThreadLocalRandom.current().nextInt(0, game.getMap().getWidth());
+            int randomColumn = ThreadLocalRandom.current().nextInt(0, game.getMap().getHeight());
+            Tile initialTile = game.getMap().getTile(randomRow, randomColumn);
+            player.setCamera(initialTile); // setting camera to capital
+            player.setMap(new Map(game.getMap())); // deep copying map
+            player.addUnit(new Unit(initialTile, player, UnitType.SETTLER)); // adding initial units
+            player.addUnit(new Unit(initialTile, player, UnitType.SCOUT));
+        }
         // starts a new game between users and responds accordingly
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
+        return Response.GameMenu.GAME_CREATED;
     }
 
     public static Response.GameMenu selectTile(int x, int y) {
