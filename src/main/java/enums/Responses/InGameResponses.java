@@ -1,5 +1,44 @@
 package enums.Responses;
 
 public class InGameResponses {
-    // TODO: handles responses of different commands inside the game itself
+    public enum Unit{
+        UNIT_NOT_AVAILABLE,
+        UNIT_NOT_IN_POSSESS,
+        MOVEMENT_NOT_POSSIBLE,
+        UNIT_NOT_MILITARY,
+        UNIT_NOT_FOUND_CITY,
+        SURROUND_NOT_POSSIBLE,
+        ATTACK_NOT_POSSIBLE,
+        UNIT_NOT_A_SETTLER,
+        CITY_FOUNDATION_NOT_POSSIBLE,
+        UNIT_NOT_A_WORKER,
+        ROAD_ALREADY_EXISTS,
+        RAILROAD_ALREADY_EXISTS,
+        FARM_ALREADY_EXISTS,
+        BUILDING_NOT_POSSIBLE,
+        MINE_ALREADY_EXISTS,
+        TRADING_POST_ALREADY_EXISTS,
+        LUMBER_MILL_ALREADY_EXISTS,
+        JUNGLE_NOT_AVAILABLE,
+        PASTURE_ALREADY_EXISTS,
+        CAMP_ALREADY_EXISTS,
+        PLANTATION_ALREADY_EXISTS,
+        QUARRY_ALREADY_EXISTS,
+        ROUTE_NOT_AVAILABLE,
+        RUIN_NOT_AVAILABLE;
+    }
+    public enum Map{
+        INVALID_POSITION,
+        INVALID_CITY_NAME;
+    }
+    public enum Select{
+        INVALID_POSITION,
+        MILITARY_UNIT_ALREADY_PRESENT,
+        NON_MILITARY_UNIT_ALREADY_PRESENT,
+        INVALID_CITY_NAME,
+        CITY_ALREADY_EXISTS;
+    }
+    public enum Info{
+        // TODO: 4/21/2022 needed??
+    }
 }
