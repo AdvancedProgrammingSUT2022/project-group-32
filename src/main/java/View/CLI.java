@@ -24,7 +24,7 @@ public class CLI {
         options.addOption("n", "name", true, "City name"); // in show, select city
         options.addOption("c", "count", true, "how much to move in a direction");
         options.addOption("r", "right", false, ""); // camera movement direction
-        // All parameters must be added here
+        // TODO: 4/21/2022   All parameters must be added here
     }
 
     /**
