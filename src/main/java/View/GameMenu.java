@@ -50,7 +50,7 @@ public class GameMenu extends Menu {
     }
 
     private static void showMap(String command) {
-
+        throw new RuntimeException("THIS IS THE MAP :)");
     }
 
     private static void moveMap(String command) {

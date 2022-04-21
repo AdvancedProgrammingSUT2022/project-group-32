@@ -22,7 +22,10 @@ public class MainMenu extends Menu {
             } else if (command.startsWith("current menu")) {
                 Menu.showCurrentMenu();
             } else if (command.startsWith("new game")) {
-                newGame(command);
+                if (newGame(command)) {
+                    Menu.setCurrentMenu(MenuType.GAME_MENU);
+                    return;
+                }
             } else {
                 Menu.invalidCommand();
             }
@@ -48,16 +51,20 @@ public class MainMenu extends Menu {
         System.out.println(responses.getString());
     }
 
-    public static void newGame(String command) {
+    /**
+     * @return true if newGame is created, false if not
+     */
+    public static boolean newGame(String command) {
         ArrayList<String> usernames = CLI.getParameters(command, "P");
         if (usernames == null) {
             Menu.invalidCommand();
-            return;
+            return false;
         }
         ArrayList<User> playingUsers = new ArrayList<>();
+        playingUsers.add(UserController.getCurrentUser());
         ArrayList<String> nonexistenceUsernames = new ArrayList<>();
         for (String username : usernames) {
-            if (UserController.getUserByUsername(username) != null)
+            if (UserController.getUserByUsername(username) == null)
                 nonexistenceUsernames.add(username);
             else
                 playingUsers.add(UserController.getUserByUsername(username));
@@ -70,10 +77,11 @@ public class MainMenu extends Menu {
                 if (i != nonexistenceUsernames.size() - 1) invalidUsernames += ",";
             }
             System.out.println(Response.MainMenu.NONEXISTENCE_USERS.getString(invalidUsernames));
-            return;
+            return false;
         }
         GameController.newGame(playingUsers);
         Menu.setCurrentMenu(MenuType.GAME_MENU);
         System.out.println(Response.MainMenu.NEW_GAME_STARTED.getString());
+        return true;
     }
 }
