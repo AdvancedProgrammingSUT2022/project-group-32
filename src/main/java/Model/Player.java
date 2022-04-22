@@ -45,8 +45,8 @@ public class Player {
         this.id = count;
         this.backgroundColor = Color.values()[this.id];
         this.color = Color.values()[this.id + 8];
-        count++;
 
+        count++;
     }
 
     public String showMap() {
