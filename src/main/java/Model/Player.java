@@ -2,11 +2,14 @@ package Model;
 
 import Model.Units.Unit;
 import enums.BuildingType;
+import enums.Color;
 import enums.TechnologyType;
 
 import java.util.ArrayList;
 
 public class Player {
+    private final int id;
+    private static int count = 0;
     private final User user;
     private final String name;
     private Map map;
@@ -22,6 +25,8 @@ public class Player {
     private final ArrayList<String> notifications;
     private int cameraRow;
     private int cameraColumn;
+    private final Color backgroundColor;
+    private final Color color;
 
     public Player(User user, int cameraRow, int cameraColumn) {
         // TODO: 4/21/2022 players map must be set after all players are created
@@ -37,7 +42,11 @@ public class Player {
         this.inWarPlayers = new ArrayList<>();
         this.notifications = new ArrayList<>();
         this.incompleteTechnologies = new ArrayList<>();
+        this.id = count;
+        this.backgroundColor = Color.values()[this.id];
+        this.color = Color.values()[this.id + 8];
 
+        count++;
     }
 
     public String showMap() {
@@ -118,7 +127,7 @@ public class Player {
         this.food = food;
     }
 
-    public int getXP() {
+    public int getRowP() {
         return XP;
     }
 
@@ -163,7 +172,7 @@ public class Player {
     }
 
     public void setCameraColumn(int cameraColumn) {
-        this.cameraColumn = cameraColumn;
+        this.cameraColumn = Player.this.cameraColumn;
     }
 
     public void setCamera(int cameraRow, int cameraColumn) {
@@ -172,7 +181,7 @@ public class Player {
     }
 
     public void setCamera(Tile tile) {
-        setCamera(tile.getRow(), tile.getColumn());
+        this.setCamera(tile.getRow(), tile.getColumn());
     }
 
     public void addUnit(Unit unit) {
@@ -337,5 +346,13 @@ public class Player {
     public int getScore() {
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
         // TODO: 4/18/2022
+    }
+
+    public Color getBackgroundColor() {
+        return this.backgroundColor;
+    }
+
+    public Color getColor() {
+        return this.color;
     }
 }

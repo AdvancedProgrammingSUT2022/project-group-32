@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.*;
+import Model.Units.Troop;
 import Model.Units.Unit;
 import enums.BuildingType;
 import enums.Responses.Response;
@@ -20,6 +21,10 @@ public class GameController {
     private static Game gameGenerator(ArrayList<User> users, int mapH, int mapW) {
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
 
+    }
+
+    public static Map getCurrentPlayerMap() {
+        return game.getCurrentPlayer().getMap();
     }
 
     public static Game getGame() {
@@ -55,7 +60,7 @@ public class GameController {
     }
 
     public static Response.GameMenu newGame(ArrayList<User> users) {
-        Map mainMap = new Map(20, 20);
+        Map mainMap = new Map(3, 3);
         ArrayList<Player> players = users.stream().map(user -> new Player(user, 1, 1)).collect(Collectors.toCollection(ArrayList::new));
         // TODO: initial gold, food, production, happiness, city population, .. must be set
         setGame(gameGenerator(users, 50, 50)); // width and height chosen randomly
@@ -69,7 +74,7 @@ public class GameController {
             player.setCamera(initialTile); // setting camera to capital
             player.setMap(new Map(game.getMap())); // deep copying map
             player.addUnit(new Unit(initialTile, player, UnitType.SETTLER)); // adding initial units
-            player.addUnit(new Unit(initialTile, player, UnitType.SCOUT));
+            player.addUnit(new Troop(initialTile, player, UnitType.WARRIOR));
         }
         // starts a new game between users and responds accordingly
         return Response.GameMenu.GAME_CREATED;

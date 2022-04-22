@@ -26,6 +26,10 @@ public class Unit {
         this.XP = 0;
         this.destination = this.tile;
         setFieldsFromDatabase(this.unitType);
+        // TODO: 4/22/2022 can be assigned better/ کلا جداسازی یونیت و تروپ و ساخت آبجکت ازشون خیلی خوب نیست
+        if (this.unitType.equals(UnitType.WORKER) || this.unitType.equals(UnitType.SETTLER)) this.tile.setUnit(this);
+        else this.tile.setTroop((Troop) this);
+
     }
 
     protected void setFieldsFromDatabase(UnitType unitType) {

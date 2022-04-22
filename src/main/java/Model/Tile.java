@@ -87,7 +87,7 @@ public class Tile {
     }
 
     public Unit getUnit() {
-        return unit;
+        return this.unit;
     }
 
     public void setUnit(Unit unit) {
