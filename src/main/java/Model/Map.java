@@ -11,7 +11,7 @@ public class Map {
     private final ArrayList<City> cities = new ArrayList<>();
     private final ArrayList<Unit> units = new ArrayList<>();
 
-    public Map(int width, int height) {
+    public Map(int height, int width) {
         this.width = width;
         this.height = height;
         this.tiles = new Tile[width][height]; // TODO: 4/21/2022 how are these tiles initialized??

@@ -18,9 +18,9 @@ public class GameController {
     private static Tile selectedTile;
     private static City selectedCity;
 
-    private static Game gameGenerator(ArrayList<User> users, int mapH, int mapW) {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
+    private static void gameGenerator(ArrayList<Player> players, int mapH, int mapW) {
+        Map randomMap = MapController.RandomMap(players, mapH, mapW);
+        game = new Game(randomMap, players);
     }
 
     public static Map getCurrentPlayerMap() {
@@ -61,10 +61,13 @@ public class GameController {
 
     public static Response.GameMenu newGame(ArrayList<User> users) {
         Map mainMap = new Map(3, 3);
+
+        // TODO: 4/22/2022 this can use PlayerController.getPlayersByUsers
         ArrayList<Player> players = users.stream().map(user -> new Player(user, 1, 1)).collect(Collectors.toCollection(ArrayList::new));
+
         // TODO: initial gold, food, production, happiness, city population, .. must be set
-        setGame(gameGenerator(users, 50, 50)); // width and height chosen randomly
-        MapController.RandomizeMap(game.getMap(), game.getPlayers());
+        gameGenerator(players, 10, 10); // width and height chosen randomly
+
         //setting camera to city
         for (Player player : players) {
             // fixme: initialTile conflict is possible
