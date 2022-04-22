@@ -8,6 +8,8 @@ import enums.TechnologyType;
 import java.util.ArrayList;
 
 public class Player {
+    private final int id;
+    private static int count = 0;
     private final User user;
     private final String name;
     private Map map;
@@ -21,16 +23,17 @@ public class Player {
     private int gold, science, food, XP, happiness, population;
     private final ArrayList<Player> inWarPlayers;
     private final ArrayList<String> notifications;
-    private int cameraX;
-    private int cameraY;
-    private Color color; // must be set unique while creating new game
+    private int cameraRow;
+    private int cameraColumn;
+    private final Color backgroundColor;
+    private final Color color;
 
-    public Player(User user, Map map, int cameraX, int cameraY) {
+    public Player(User user, int cameraRow, int cameraColumn) {
+        // TODO: 4/21/2022 players map must be set after all players are created
         this.user = user;
         this.name = user.getNickname();
-        this.map = map;
-        this.cameraX = cameraX;
-        this.cameraY = cameraY;
+        this.cameraRow = cameraRow;
+        this.cameraColumn = cameraColumn;
         this.units = new ArrayList<>();
         this.buildings = new ArrayList<>(); // may need to change this
         this.technologies = new ArrayList<>();
@@ -39,6 +42,10 @@ public class Player {
         this.inWarPlayers = new ArrayList<>();
         this.notifications = new ArrayList<>();
         this.incompleteTechnologies = new ArrayList<>();
+        this.id = count;
+        this.backgroundColor = Color.values()[this.id];
+        this.color = Color.values()[this.id + 8];
+        count++;
     }
 
     public String showMap() {
@@ -119,7 +126,7 @@ public class Player {
         this.food = food;
     }
 
-    public int getXP() {
+    public int getRowP() {
         return XP;
     }
 
@@ -151,25 +158,29 @@ public class Player {
         return notifications;
     }
 
-    public int getCameraX() {
-        return cameraX;
+    public int getCameraRow() {
+        return cameraRow;
     }
 
-    public int getCameraY() {
-        return cameraY;
+    public int getCameraColumn() {
+        return cameraColumn;
     }
 
-    public void setCameraX(int cameraX) {
-        this.cameraX = cameraX;
+    public void setCameraRow(int cameraRow) {
+        this.cameraRow = cameraRow;
     }
 
-    public void setCameraY(int cameraY) {
-        this.cameraY = cameraY;
+    public void setCameraColumn(int cameraColumn) {
+        this.cameraColumn = Player.this.cameraColumn;
     }
 
-    public void setCamera(int cameraX, int cameraY) {
-        this.cameraX = cameraX;
-        this.cameraY = cameraY;
+    public void setCamera(int cameraRow, int cameraColumn) {
+        this.cameraRow = cameraRow;
+        this.cameraColumn = cameraColumn;
+    }
+
+    public void setCamera(Tile tile) {
+        this.setCamera(tile.getRow(), tile.getColumn());
     }
 
     public void addUnit(Unit unit) {
@@ -277,7 +288,7 @@ public class Player {
 
     public City getCityByXY(int x, int y) {
         for (City city : cities) {
-            if (city.getCapitalTile().getX() == x && city.getCapitalTile().getY() == y) {
+            if (city.getCapitalTile().getRow() == x && city.getCapitalTile().getColumn() == y) {
                 return city;
             }
         }
@@ -294,7 +305,7 @@ public class Player {
 
     public Tile getTileByXY(int x, int y) {
         for (Tile tile : tiles) {
-            if (tile.getX() == x && tile.getY() == y) {
+            if (tile.getRow() == x && tile.getColumn() == y) {
                 return tile;
             }
         }
@@ -334,5 +345,13 @@ public class Player {
     public int getScore() {
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
         // TODO: 4/18/2022
+    }
+
+    public Color getBackgroundColor() {
+        return this.backgroundColor;
+    }
+
+    public Color getColor() {
+        return this.color;
     }
 }
