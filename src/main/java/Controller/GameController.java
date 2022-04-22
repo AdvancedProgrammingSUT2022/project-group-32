@@ -59,7 +59,7 @@ public class GameController {
         ArrayList<Player> players = users.stream().map(user -> new Player(user, 1, 1)).collect(Collectors.toCollection(ArrayList::new));
         // TODO: initial gold, food, production, happiness, city population, .. must be set
         setGame(new Game(mainMap, players));
-        MapController.generateRandomMap(game.getMap(), game.getPlayers());
+        MapController.RandomizeMap(game.getMap(), game.getPlayers());
         //setting camera to city
         for (Player player : players) {
             // fixme: initialTile conflict is possible
