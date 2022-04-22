@@ -15,6 +15,8 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class MapController {
+    private static final int INF = 9999;
+
     public static void RandomizeMap(Map map, ArrayList<Player> players) {
         Tile[][] tiles = map.getTiles();
         int height = map.getHeight();
@@ -72,8 +74,37 @@ public class MapController {
 
     public static int getDistanceTo(Tile start, Tile finish) {
         Map map = GameController.getGame().getMap();
+        int height = map.getHeight(), width = map.getWidth();
         // uses Dijkstra
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+        int[][] distance = new int[height][width];
+        boolean[][] marked = new boolean[height][width];
+        for(int row = 0; row < height; row++){
+            for(int column = 0; column < width; column++){
+                distance[row][column] = INF;
+                marked[row][column] = false;
+            }
+        }
+        distance[start.getRow()][start.getColumn()] = 0;
+        for(int t = 0; t < width * height; t++){
+            Tile tile1 = null;
+            int minDistance = INF;
+            for(int i=0;i<height;i++){
+                for(int j=0;j<width;j++){
+                    if(!marked[i][j] && distance[i][j] <= minDistance){
+                        minDistance = distance[i][j];
+                        tile1 = map.getTile(i, j);
+                    }
+                }
+            }
+            ArrayList<Tile> neighbours = map.getNeighbouringTiles(tile1.getRow(), tile1.getColumn()); // won't cause RT error
+            for (Tile tile2 : neighbours) {
+                if(minDistance + tile2.getMP() < distance[tile2.getRow()][tile2.getColumn()]){
+                    distance[tile2.getRow()][tile2.getColumn()] = minDistance + tile2.getMP(); // TODO: rivers and stoppages to be handled
+                }
+            }
+            marked[tile1.getRow()][tile1.getRow()] = true;
+        }
+        return distance[finish.getRow()][finish.getColumn()];
     }
 
     public static Tile getNextMoveTo(Tile start, Tile finish) {

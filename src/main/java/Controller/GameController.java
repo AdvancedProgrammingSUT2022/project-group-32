@@ -17,7 +17,7 @@ public class GameController {
     private static Tile selectedTile;
     private static City selectedCity;
 
-    private static Game gameGenerator(ArrayList<User> users, int mapW, int mapH) {
+    private static Game gameGenerator(ArrayList<User> users, int mapH, int mapW) {
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
 
     }
@@ -58,7 +58,7 @@ public class GameController {
         Map mainMap = new Map(20, 20);
         ArrayList<Player> players = users.stream().map(user -> new Player(user, 1, 1)).collect(Collectors.toCollection(ArrayList::new));
         // TODO: initial gold, food, production, happiness, city population, .. must be set
-        setGame(new Game(mainMap, players));
+        setGame(gameGenerator(users, 50, 50)); // width and height chosen randomly
         MapController.RandomizeMap(game.getMap(), game.getPlayers());
         //setting camera to city
         for (Player player : players) {
