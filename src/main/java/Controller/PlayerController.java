@@ -2,9 +2,16 @@ package Controller;
 
 import Model.Player;
 import Model.Trade;
+import Model.User;
 import enums.Responses.Response;
 
+import java.util.ArrayList;
+
 public class PlayerController {
+
+    public static ArrayList<Player> getPlayersByUsers(ArrayList<User> users){
+        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+    }
 
     public static Response.GameMenu moveCamera(char direction, int value) {
         // gets current player from game

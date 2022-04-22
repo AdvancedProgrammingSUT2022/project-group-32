@@ -53,7 +53,7 @@ public class GameMenu extends Menu {
     private static void showMap(String command) {
 
         Tile[][] map = GameController.getCurrentPlayerMap().getTiles();
-        String[][] stringMap = new String[map.length * 8][map[0].length * 12];
+        String[][] stringMap = new String[map.length * 7][map[0].length * 11];
         initMap(stringMap);
         fillMap(map, stringMap);
         printMap(stringMap);
@@ -119,9 +119,9 @@ public class GameMenu extends Menu {
         if (tile.getTroop() != null) {
             map[centerRow][centerColumn + 1] = sCB(tile.getTroop().getUnitType().name().substring(0, 1), (tile.getUnit().getOwner().getColor()).code, color);
         }
-        map[centerRow + 1][centerColumn - 1] = sC(tile.getTerrain().getTerrainType().name.substring(0, 1), Color.GREEN_BACKGROUND.code);
-        map[centerRow + 1][centerColumn] = sC(",", Color.GREEN_BACKGROUND.code);
-        map[centerRow + 1][centerColumn + 1] = sC(tile.getTerrain().getTerrainFeature().name.substring(0, 1), Color.GREEN_BACKGROUND.code);
+        map[centerRow + 1][centerColumn - 1] = sC(tile.getTerrain().getTerrainType().name.substring(0, 1), Color.RED_BACKGROUND.code);
+        map[centerRow + 1][centerColumn] = sC(",", Color.RED_BACKGROUND.code);
+        map[centerRow + 1][centerColumn + 1] = sC(tile.getTerrain().getTerrainFeature().name.substring(0, 1), Color.RED_BACKGROUND.code);
 
     }
 

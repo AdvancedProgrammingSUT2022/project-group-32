@@ -11,7 +11,7 @@ public class Map {
     private final ArrayList<City> cities = new ArrayList<>();
     private final ArrayList<Unit> units = new ArrayList<>();
 
-    public Map(int width, int height) {
+    public Map(int height, int width) {
         this.width = width;
         this.height = height;
         this.tiles = new Tile[width][height]; // TODO: 4/21/2022 how are these tiles initialized??
@@ -62,7 +62,40 @@ public class Map {
         this.cities.add(city);
     }
 
-    public Tile getTile(int randomRow, int randomColumn) {
-        return tiles[randomRow][randomColumn];
+    public Tile getTile(int row, int column) {
+        return tiles[row][column];
+    }
+
+    public ArrayList<Tile> getNeighbouringTiles(int row, int column){
+        ArrayList<Tile> neighbours = new ArrayList<>();
+        if(row > 0){
+            neighbours.add(tiles[row - 1][column]);
+        }
+        if(row < height - 1){
+            neighbours.add(tiles[row + 1][column]);
+        }
+        if(column > 0){
+            neighbours.add(tiles[row][column - 1]);
+        }
+        if(column < width - 1){
+            neighbours.add(tiles[row][column + 1]);
+        }
+        if(column % 2 == 0){
+            if(column > 0 && row < height - 1){
+                neighbours.add(tiles[row + 1][column - 1]);
+            }
+            if(column < width -1 && row < height - 1){
+                neighbours.add(tiles[row + 1][column + 1]);
+            }
+        }
+        else{
+            if(column > 0 && row > 0){
+                neighbours.add(tiles[row - 1][column - 1]);
+            }
+            if(column < width -1 && row > 0){
+                neighbours.add(tiles[row - 1][column + 1]);
+            }
+        }
+        return neighbours;
     }
 }
