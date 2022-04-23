@@ -10,7 +10,7 @@ public class Unit {
     private int health;
     private int cost;
     private int movement;
-    private int MP;
+    private int MP; // needs to be refilled at the end of each turn
     private int HP;
     private int XP;
     private UnitType unitType;

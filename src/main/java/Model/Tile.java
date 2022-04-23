@@ -134,6 +134,31 @@ public class Tile {
         this.isRiver = isRiver;
     }
 
+    // the next 3 methods are for both troops and normal units
+    public boolean canFit(Unit unit){
+        if(unit instanceof Troop){
+            return (this.troop == null);
+        } else {
+            return (this.unit == null);
+        }
+    }
+
+    public void putUnit(Unit unit){
+        if(unit instanceof Troop){
+            this.troop = (Troop) unit;
+        } else {
+            this.unit = unit;
+        }
+    }
+
+    public void takeUnit(Unit unit){
+        if(unit instanceof Troop){
+            this.troop = null;
+        } else {
+            this.unit = null;
+        }
+    }
+
     public int getMP() {
         // TODO: 4/17/2022 checks MP based on Terrain object and the improvements and resource
         return 0;

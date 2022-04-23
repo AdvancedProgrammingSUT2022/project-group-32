@@ -2,6 +2,7 @@ package Controller;
 
 import Model.Player;
 import Model.Trade;
+import Model.Units.Unit;
 import Model.User;
 import enums.Responses.Response;
 
@@ -90,6 +91,18 @@ public class PlayerController {
 
     public static String victoryPanelInfo() {
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+    }
+
+    public static void startTurn(){
+        // TODO: 4/23/2022 does the necessary stuff at the start of the turn
+        Player player = GameController.getGame().getCurrentPlayer();
+        for (Unit unit : player.getUnits()) {
+            UnitController.moveToDestination(unit);
+        }
+    }
+
+    public static void endTurn(){
+        // TODO: 4/23/2022 does the necessary stuff at the end of the turn
     }
 
     public static void updateFieldOfView() {
