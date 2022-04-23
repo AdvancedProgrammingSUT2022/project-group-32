@@ -16,6 +16,7 @@ public class Tile {
     private Resource resource;
     private Ruin ruin;
     private City city;  //can be null
+    private Improvement improvement;
     private Unit unit;
     private Troop troop;
     private FogState fogState;
@@ -27,15 +28,33 @@ public class Tile {
         this.column = column;
         this.terrain = terrain;
         this.fogState = fogState;
-        this.resource = new Resource(terrain.getResourceType(), this); // fixme: is this ok?
+        this.resource = null;
         this.ruin = ruin;
         this.city = null;
+        this.improvement = null;
         this.unit = null;
         this.troop = null;
         this.roadType = null;
         this.id = count;
         this.isRiver = new HashMap<>(); // to be yad gerefte beshe
         count++;
+    }
+
+    // builds a tile based on a tile
+    public Tile(Tile tile){
+        this.row = tile.row;
+        this.column = tile.column;
+        this.terrain = tile.terrain;
+        this.fogState = tile.fogState;
+        this.resource = tile.resource;
+        this.ruin = tile.ruin;
+        this.city = tile.city;
+        this.improvement = tile.improvement;
+        this.unit = tile.unit;
+        this.troop = tile.troop;
+        this.roadType = tile.roadType;
+        this.id = tile.id;
+        this.isRiver = tile.isRiver;
     }
 
     public int getId() {
@@ -84,6 +103,14 @@ public class Tile {
 
     public void setCity(City city) {
         this.city = city;
+    }
+
+    public Improvement getImprovement() {
+        return improvement;
+    }
+
+    public void setImprovement(Improvement improvement) {
+        this.improvement = improvement;
     }
 
     public Unit getUnit() {

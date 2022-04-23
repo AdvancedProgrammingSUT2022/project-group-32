@@ -1,9 +1,8 @@
 package Controller;
 
-import Model.Player;
-import Model.Trade;
+import Model.*;
 import Model.Units.Unit;
-import Model.User;
+import enums.FogState;
 import enums.Responses.Response;
 
 import java.util.ArrayList;
@@ -105,8 +104,36 @@ public class PlayerController {
         // TODO: 4/23/2022 does the necessary stuff at the end of the turn
     }
 
+    // basically makes the visible tiles visited
+    private static void clearView(Map map){
+        for (int row = 0; row < map.getHeight(); row++) {
+            for (int column =  0; column < map.getWidth(); column++){
+                Tile tile = map.getTile(row, column);
+                if(tile.getFogState() != FogState.UNKNOWN){
+                    tile.setTroop(null);
+                    tile.setUnit(null);
+                    tile.setImprovement(null);
+                }
+            }
+        }
+    }
+
     public static void updateFieldOfView() {
-        // TODO: 4/16/2022
+        Player player = GameController.getGame().getCurrentPlayer();
+        Map map = player.getMap();
+        clearView(map);
+        ArrayList<Tile> inSight = new ArrayList<>();
+        for (Unit unit : player.getUnits()) {
+            inSight.addAll(MapController.getTilesInRange(unit.getTile(), unit.getSightRange()));
+        }
+        for (City city : player.getCities()) {
+            for (Tile tile : city.getTerritory()) {
+                inSight.addAll(MapController.getTilesInRange(tile, city.getSightRange()));
+            }
+        }
+        for (Tile tile : inSight) {
+            map.setTile(tile.getRow(), tile.getColumn(), new Tile(tile));
+        }
     }
 
     public static void updateSupplies() {
