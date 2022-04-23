@@ -148,7 +148,17 @@ public class MapController {
     }
 
     public static ArrayList<Tile> getTilesInRange(Tile tile, int range) {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+        Map map = GameController.getGame().getMap();
+        int height = map.getHeight(), width = map.getWidth();
+        ArrayList<Tile> tiles = new ArrayList<>();
+        for (int row = 0; row < height; row++) {
+            for (int column = 0; column < width; column++) {
+                if(getDistanceTo(tile, map.getTile(row, column)) <= range){
+                    tiles.add(map.getTile(row, column));
+                }
+            }
+        }
+        return tiles;
     }
 
     public static Response.GameMenu BuildCity() {

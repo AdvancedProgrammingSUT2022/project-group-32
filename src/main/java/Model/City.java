@@ -1,6 +1,7 @@
 package Model;
 
 import Model.Citizens.Citizen;
+import Model.Units.Troop;
 import Model.Units.Unit;
 import enums.BuildingType;
 import enums.UnitType;
@@ -20,6 +21,7 @@ public class City {
     private ArrayList<Unit> incompleteUnits;
     private ArrayList<Citizen> citizens = new ArrayList<>();
     private int food, production, population, health, baseStrength;
+    private Troop garrisonedTroop;
 
     public City(String name, Player owner, Tile capitalTile, ArrayList<Tile> territory) {
         this.name = name;
@@ -147,6 +149,14 @@ public class City {
 
     public void setIncompleteUnits(ArrayList<Unit> incompleteUnits) {
         this.incompleteUnits = incompleteUnits;
+    }
+
+    public Troop getGarrisonedTroop() {
+        return garrisonedTroop;
+    }
+
+    public void setGarrisonedTroop(Troop garrisonedTroop) {
+        this.garrisonedTroop = garrisonedTroop;
     }
 
     public void addTile(Tile tile) {
