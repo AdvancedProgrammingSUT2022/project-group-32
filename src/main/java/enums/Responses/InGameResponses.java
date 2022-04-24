@@ -5,8 +5,9 @@ public class InGameResponses {
         //GENERAL(FOR ALL)
         UNIT_NOT_AVAILABLE("current unit is not available"),
         UNIT_NOT_IN_POSSESS("current unit is not in possess"),
-        //MOVETO
-        MOVEMENT_NOT_POSSIBLE("movement to this position is not possble"),
+        //MOVE TO
+        TILE_NOT_REACHABLE("movement to this position is not possible because its not reachable"),
+        TILE_IS_FILLED("movement to this position is not possible because there is a troop on it"),
         //ALERT , FORTIFY , GARRISON , ATTACK
         UNIT_NOT_MILITARY("current unit is non-military"),
         //GARRISON

@@ -1,6 +1,7 @@
 package View;
 
 import Controller.GameController;
+import Controller.PlayerController;
 import Model.City;
 import Model.Tile;
 import enums.Color;
@@ -19,33 +20,28 @@ public class GameMenu extends Menu {
         String command;
         while (true) {
             command = scanner.nextLine();
-            if (command.startsWith("show map")){
+            if (command.startsWith("show map")) {
                 showMap(command);
-            }
-            else if (command.startsWith("move map")){
+            } else if (command.startsWith("move map")) {
                 moveMap(command);
-            }
-            else if (command.startsWith("select unit")){
+            } else if (command.startsWith("select unit")) {
                 selectUnit(command);
-            }
-            else if (command.startsWith("select tile")){
+            } else if (command.startsWith("select tile")) {
                 selectTile(command);
-            }
-            else if (command.startsWith("select city")){
+            } else if (command.startsWith("select city")) {
                 selectCity(command);
-            }
-            else if (command.startsWith("end game")){
+            } else if (command.startsWith("end game")) {
                 endGame(command);
-            }
-            else if (command.startsWith("open panel")){
+            } else if (command.startsWith("open panel")) {
                 openPanel(command);
-            }
-            else if (command.startsWith("run panel")){
-                runPanel(command);
+            } else if (command.startsWith("show current turn")) {
+                showTurn(command);
+            } else if (command.startsWith("pass turn")) {
+                passTurn(command);
             } else if (command.startsWith("show current panel")) {
                 showCurrentPanel(command);
             } else {
-                System.out.println(Response.LoginMenu.INVALID_COMMAND);
+                runPanel();
             }
         }
     }
@@ -149,6 +145,14 @@ public class GameMenu extends Menu {
 
     }
 
+    private static void showTurn(String command){
+        System.out.println(GameController.getGame().getCurrentPlayer().getName());
+    }
+
+    private static void passTurn(String command) {
+        System.out.println(PlayerController.nextTurn().getString());
+    }
+
     private static void endGame(String command) {
 
     }
@@ -157,8 +161,9 @@ public class GameMenu extends Menu {
 
     }
 
-    private static void runPanel(String command) {
-
+    // supposed to run the current panel
+    private static void runPanel() {
+        System.out.println(Response.GameMenu.INVALID_COMMAND.getString()); // TODO: 4/24/2022 temporary
     }
 
     public static void showCurrentPanel(String command) {
