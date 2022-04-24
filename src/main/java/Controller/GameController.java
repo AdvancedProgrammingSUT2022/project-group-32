@@ -68,7 +68,7 @@ public class GameController {
         ArrayList<Player> players = users.stream().map(user -> new Player(user, 1, 1)).collect(Collectors.toCollection(ArrayList::new));
 
         // TODO: initial gold, food, production, happiness, city population, .. must be set
-        gameGenerator(players, 10, 10); // width and height chosen randomly
+        gameGenerator(players, 15, 15); // width and height chosen randomly
 
         //setting camera to city
         for (Player player : players) {

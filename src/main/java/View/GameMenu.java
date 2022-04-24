@@ -109,11 +109,11 @@ public class GameMenu extends Menu {
         int HORIZONTAL_BORDER = 8;
         int VERTICAL_BORDER = 8;
         // debug mode:
-        int centerRow = VERTICAL_BORDER + tileRow * 7 - (tileColumn % 2) * 3;
-        int centerColumn = HORIZONTAL_BORDER + (tileColumn) * 13;
+//        int centerRow = VERTICAL_BORDER + tileRow * 7 - (tileColumn % 2) * 3;
+//        int centerColumn = HORIZONTAL_BORDER + (tileColumn) * 13;
         // final mode:
-//        int centerRow = VERTICAL_BORDER + tileRow * 6 - (tileColumn % 2) * 3;
-//        int centerColumn = HORIZONTAL_BORDER + (tileColumn) * 10;
+        int centerRow = VERTICAL_BORDER + tileRow * 6 - (tileColumn % 2) * 3;
+        int centerColumn = HORIZONTAL_BORDER + (tileColumn) * 10;
 
         // TILE BACKGROUND
         fillPartOfRow(map, centerRow, centerColumn - 5, centerColumn + 5, color);
@@ -155,8 +155,8 @@ public class GameMenu extends Menu {
             }
             // DOWN-LEFT
             for (int i = 0; i < 3; i++) {
-                map[centerRow + 2 - i][centerColumn - 4 - i] = sC(" ", getRiverColor(isRiver.get(4)));
-                map[centerRow + 2 - i][centerColumn - 5 - i] = sC(" ", getRiverColor(isRiver.get(4)));
+                map[centerRow + 2 - i][centerColumn - 4 - i] = sC(" ", getRiverColor(isRiver.get(8)));
+                map[centerRow + 2 - i][centerColumn - 5 - i] = sC(" ", getRiverColor(isRiver.get(8)));
             }
             // UP
             fillPartOfRow(map, centerRow - 3, centerColumn - 3, centerColumn + 3, getRiverColor(isRiver.get(0)));

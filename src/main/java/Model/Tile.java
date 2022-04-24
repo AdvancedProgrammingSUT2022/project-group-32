@@ -202,13 +202,13 @@ public class Tile {
             if(direction == 10) return map.getTile(this.row, this.column - 1);
             if(direction == 2) return map.getTile(this.row, this.column + 1);
             if(direction == 8) return map.getTile(this.row + 1, this.column - 1);
-            if(direction == 4) return map.getTile(this.row + 1, this.column - 1);
+            if(direction == 4) return map.getTile(this.row + 1, this.column + 1);
         }
         else{
             if(direction == 10) return map.getTile(this.row - 1, this.column - 1);
             if(direction == 2) return map.getTile(this.row - 1, this.column + 1);
             if(direction == 8) return map.getTile(this.row, this.column - 1);
-            if(direction == 4) return map.getTile(this.row, this.column - 1);
+            if(direction == 4) return map.getTile(this.row, this.column + 1);
         }
         return null;
     }

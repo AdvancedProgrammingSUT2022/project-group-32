@@ -33,6 +33,7 @@ public class MapController {
     }
 
     private static void drawRiverFromTo(Tile tile1, Tile tile2){
+        System.err.println(tile1.getRow() + "," + tile1.getColumn() + " " + tile2.getRow() + "," + tile2.getColumn());
         Map map = GameController.getGame().getMap();
         Tile currentTile = getNextMoveTo(tile1, tile2);
         int lastDirection = (tile1.getDirectionTo(currentTile) + 6) % 12;
@@ -40,12 +41,16 @@ public class MapController {
             Tile nextTile = getNextMoveTo(currentTile, tile2);
             int direction = currentTile.getDirectionTo(nextTile);
             lastDirection = (lastDirection + 2) % 12;
+            System.err.println(currentTile.getRow() + "," + currentTile.getColumn() + ":");
+            System.err.println(direction);
             while(lastDirection != direction){
                 currentTile.setRiverInDirection(lastDirection, 1); // river value is 1
                 Tile oppositeTile = currentTile.getTileInDirection(map, lastDirection);
-                oppositeTile.setRiverInDirection((lastDirection + 6) % 2, 1);
+                System.err.println(lastDirection + " " + oppositeTile.getRow() + "," + oppositeTile.getColumn());
+                oppositeTile.setRiverInDirection((lastDirection + 6) % 12, 1);
                 lastDirection = (lastDirection + 2) % 12;
             }
+            lastDirection = (lastDirection + 6) % 12;
             currentTile = nextTile;
         }
     }
