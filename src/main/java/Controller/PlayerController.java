@@ -9,10 +9,6 @@ import java.util.ArrayList;
 
 public class PlayerController {
 
-    public static ArrayList<Player> getPlayersByUsers(ArrayList<User> users){
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-    }
-
     public static Response.GameMenu moveCamera(char direction, int value) {
         // gets current player from game
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
@@ -102,6 +98,13 @@ public class PlayerController {
 
     public static void endTurn(){
         // TODO: 4/23/2022 does the necessary stuff at the end of the turn
+    }
+
+    public static Response.GameMenu nextTurn(){
+        endTurn();
+        GameController.getGame().nextTurn();
+        startTurn();
+        return Response.GameMenu.TURN_PASSED;
     }
 
     // basically makes the visible tiles visited
