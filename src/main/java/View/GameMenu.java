@@ -115,7 +115,7 @@ public class GameMenu extends Menu {
         if (tile.getTroop() != null) {
             map[centerRow][centerColumn + 1] = sCB(tile.getTroop().getUnitType().name().substring(0, 1), (tile.getUnit().getOwner().getColor()).code, color);
         }
-        map[centerRow + 1][centerColumn - 1] = sC(tile.getTerrain().getTerrainType().name.substring(0, 1), Color.RED_BACKGROUND.code);
+        map[centerRow + 1][centerColumn - 1] = sC(tile.getTerrain().getTerrainType().name.substring(0, 1), Color.BLUE_BOLD_BRIGHT.code);
         map[centerRow + 1][centerColumn] = sC(",", Color.RED_BACKGROUND.code);
         map[centerRow + 1][centerColumn + 1] = sC(tile.getTerrain().getTerrainFeature().name.substring(0, 1), Color.RED_BACKGROUND.code);
 
