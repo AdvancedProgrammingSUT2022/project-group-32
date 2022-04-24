@@ -20,12 +20,8 @@ public class UnitController {
         while (unit.getMP() > 0) {
             Tile currentTile = unit.getTile();
             Tile nextTile = MapController.getNextMoveTo(currentTile, unit.getDestination());
-            if(nextTile.getMP() > unit.getMP()){
-                if(unit instanceof Troop && nextTile.getTroop() != null){
-                    System.err.println("The path is blocked");
-                    break;
-                }
-                if(!(unit instanceof Troop) && nextTile.getUnit() != null){
+            if(nextTile.getMP(currentTile) > unit.getMP()){
+                if(!nextTile.canFit(unit)){
                     System.err.println("The path is blocked");
                     break;
                 }
@@ -34,7 +30,7 @@ public class UnitController {
             nextTile.putUnit(unit);
             unit.setTile(nextTile);
             PlayerController.updateFieldOfView();
-            unit.setMP(unit.getMP() - nextTile.getMP());
+            unit.setMP(unit.getMP() - nextTile.getMP(currentTile));
         }
     }
 
@@ -50,21 +46,16 @@ public class UnitController {
         if (MapController.getDistanceTo(unit.getTile(), map.getTile(row, column)) == INF) {
             return InGameResponses.Unit.TILE_NOT_REACHABLE;
         }
-        if (unit.getUnitType() == UnitType.WARRIOR && map.getTile(row, column).getTroop() != null){
-            return InGameResponses.Unit.TILE_IS_FILLED;
-        }
-        if (unit.getUnitType() != UnitType.WARRIOR && map.getTile(row, column).getUnit() != null){
+        if (!map.getTile(row, column).canFit(unit)){
             return InGameResponses.Unit.TILE_IS_FILLED;
         }
         unit.setDestination(map.getTile(row, column));
         moveToDestination(unit);
-            throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
+        return InGameResponses.Unit.MOVETO_SUCCESSFUL;
     }
 
     public static InGameResponses.Unit upgrade() {
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
     }
 
     // these functions should affect isDone
