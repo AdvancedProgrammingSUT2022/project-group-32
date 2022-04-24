@@ -6,6 +6,7 @@ import Model.Tile;
 import enums.Color;
 import enums.Responses.Response;
 
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class GameMenu extends Menu {
@@ -53,7 +54,7 @@ public class GameMenu extends Menu {
     private static void showMap(String command) {
 
         Tile[][] map = GameController.getCurrentPlayerMap().getTiles();
-        String[][] stringMap = new String[map.length * 8][map[0].length * 12];
+        String[][] stringMap = new String[map.length * 8 + 10][map[0].length * 12 + 20]; //fixme
         initMap(stringMap);
         fillMap(map, stringMap);
         printMap(stringMap);
@@ -91,28 +92,62 @@ public class GameMenu extends Menu {
         int HORIZONTAL_BORDER = 8;
         int VERTICAL_BORDER = 8;
         int centerRow = VERTICAL_BORDER + tileRow * 6 - (tileColumn % 2) * 3;
-        int centerColumn = HORIZONTAL_BORDER + (tileColumn) * 9;
-        for (int i = centerColumn - 5; i < centerColumn + 6; i++) {
-            map[centerRow][i] = sC(" ", color);
-            map[centerRow - 1][i] = sC(" ", color);
-        }
+        int centerColumn = HORIZONTAL_BORDER + (tileColumn) * 10;
 
+        // TILE BACKGROUND
+        fillPartOfRow(map, centerRow, centerColumn - 5, centerColumn + 5, color);
+        fillPartOfRow(map, centerRow - 1, centerColumn - 4, centerColumn + 4, color);
+        fillPartOfRow(map, centerRow + 1, centerColumn - 4, centerColumn + 4, color);
+        fillPartOfRow(map, centerRow - 2, centerColumn - 3, centerColumn + 3, color);
+        fillPartOfRow(map, centerRow + 2, centerColumn - 3, centerColumn + 3, color);
 
-        map[centerRow - 1][centerColumn - 1] = sC("" + tileRow, color);
+        // TILE COORDINATES
+        if (tileRow > 9) map[centerRow - 1][centerColumn - 2] = sC("" + tileRow / 10, color);
+        map[centerRow - 1][centerColumn - 1] = sC("" + tileRow % 10, color);
         map[centerRow - 1][centerColumn] = sC(",", color);
-        map[centerRow - 1][centerColumn + 1] = sC("" + tileColumn, color);
+        if (tileColumn > 9) map[centerRow - 1][centerColumn + 1] = sC("" + tileColumn / 10, color);
+        map[centerRow - 1][centerColumn + 2 - ((tileColumn > 9) ? 0 : 1)] = sC("" + tileColumn % 10, color);
 
-        for (int i = centerColumn - 4; i < centerColumn + 5; i++) {
-            map[centerRow - 2][i] = sC(" ", color);
-            map[centerRow + 1][i] = sC(" ", color);
-        }
-        for (int i = centerColumn - 3; i < centerColumn + 4; i++) {
-            map[centerRow - 3][i] = sC(" ", color);
-            map[centerRow + 2][i] = sC(" ", color);
-        }
+
         // UNIT
         if (tile.getUnit() != null) {
             map[centerRow][centerColumn - 1] = sCB(tile.getUnit().getUnitType().name().substring(0, 1), (tile.getUnit().getOwner().getColor()).code, color);
+        }
+
+        // RIVER
+        {
+            HashMap<Integer, Boolean> isRiver = tile.getIsRiver();
+            // UP
+            fillPartOfRow(map, centerRow - 3, centerColumn - 3, centerColumn + 3, getRiverColor(isRiver.get(0)));
+            // DOWN
+            fillPartOfRow(map, centerRow + 3, centerColumn - 3, centerColumn + 3, getRiverColor(isRiver.get(6)));
+            // UP-RIGHT
+            // TODO: 4/24/2022 confilicts in middle
+            for (int i = 0; i < 3; i++) {
+                map[centerRow - 2 + i][centerColumn + 4 + i] = sC(" ", getRiverColor(isRiver.get(2)));
+                map[centerRow - 2 + i][centerColumn + 5 + i] = sC(" ", getRiverColor(isRiver.get(2)));
+            }
+            // DOWN-RIGHT
+            for (int i = 0; i < 3; i++) {
+                map[centerRow + i][centerColumn + 6 - i] = sC(" ", getRiverColor(isRiver.get(4)));
+                map[centerRow + i][centerColumn + 7 - i] = sC(" ", getRiverColor(isRiver.get(4)));
+            }
+            // UP-LEFT
+            for (int i = 0; i < 3; i++) {
+                map[centerRow - 2 + i][centerColumn - 4 - i] = sC(" ", getRiverColor(isRiver.get(10)));
+                map[centerRow - 2 + i][centerColumn - 5 - i] = sC(" ", getRiverColor(isRiver.get(10)));
+            }
+            // DOWN-LEFT
+            for (int i = 0; i < 3; i++) {
+                map[centerRow + i][centerColumn - 6 + i] = sC(" ", getRiverColor(isRiver.get(4)));
+                map[centerRow + i][centerColumn - 7 + i] = sC(" ", getRiverColor(isRiver.get(4)));
+            }
+            // RIGHT_JOINT
+            if (isRiver.get(2) == isRiver.get(4))
+                fillPartOfRow(map, centerRow, centerColumn + 6, centerColumn + 7, getRiverColor(isRiver.get(2)));
+            // LEFT-JOINT
+            if (isRiver.get(8) == isRiver.get(10))
+                fillPartOfRow(map, centerRow, centerColumn - 6, centerColumn - 7, getRiverColor(isRiver.get(8)));
         }
 
         // TROOP
@@ -123,6 +158,25 @@ public class GameMenu extends Menu {
         map[centerRow + 1][centerColumn] = sC(",", Color.GREEN_BACKGROUND.code);
         map[centerRow + 1][centerColumn + 1] = sC(tile.getTerrain().getTerrainFeature().name.substring(0, 1), Color.GREEN_BACKGROUND.code);
 
+    }
+
+    private static void fillPartOfRow(String[][] map, int row, int startingColumn, int endingColumn, String color) {
+        for (int column = startingColumn; column <= endingColumn; column++) {
+            map[row][column] = sC(" ", color);
+        }
+    }
+
+    private static String getRiverColor(Boolean hasRiver) {
+        return hasRiver ? Color.BLUE_BACKGROUND_BRIGHT.code : Color.YELLOW_BACKGROUND.code;
+    }
+
+    private static void fillPartOfColumn(String[][] map, int column, int startingRow, int endingRow, String color) {
+        for (int row = startingRow; row <= endingRow; row++) {
+            map[row][column] = sC(" ", color);
+        }
+    }
+
+    private static void fillDiag(String[][] map, int row1, int column1, int length) {
     }
 
     public static String sCB(String text, String color, String background) {

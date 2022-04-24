@@ -11,6 +11,7 @@ import enums.TerrainFeature;
 import enums.TerrainType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MapController {
     public static void generateRandomMap(Map map, ArrayList<Player> players) {
@@ -23,6 +24,14 @@ public class MapController {
             for (int column = 0; column < columns; column++) {
                 tiles[row][column] = new Tile(row, column, new Terrain(TerrainType.GRASSLAND, TerrainFeature.GRASSLAND, ResourceType.SHEEP),
                         FogState.VISIBLE, null);
+                tiles[row][column].setIsRiver(new HashMap<Integer, Boolean>() {{
+                    put(0, true);
+                    put(2, true);
+                    put(4, false);
+                    put(6, true);
+                    put(8, true);
+                    put(10, true);
+                }});
             }
         }
 
