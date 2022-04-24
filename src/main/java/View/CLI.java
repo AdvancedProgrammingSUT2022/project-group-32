@@ -17,6 +17,7 @@ public class CLI {
         Option option1 = new Option("P", "player", true, "players for new game");
         option1.setArgs(Option.UNLIMITED_VALUES);
         options.addOption(option1);
+        options.addOption("n", "newPassword", true, "");
         // GAME MENU PARAMETERS
         Option option = new Option("l", "location", true, ""); // [x] [y]
         option.setArgs(2);

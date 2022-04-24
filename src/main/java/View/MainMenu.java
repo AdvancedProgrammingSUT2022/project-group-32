@@ -44,6 +44,7 @@ public class MainMenu extends Menu {
             return;
         }
         Menu.setCurrentMenu(newMenu);
+        System.out.println("entered " + newMenu.name);
     }
 
     public static void logout(String command) {

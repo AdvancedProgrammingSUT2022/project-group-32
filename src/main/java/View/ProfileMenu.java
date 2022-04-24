@@ -42,7 +42,7 @@ public class ProfileMenu extends Menu {
     }
 
     public static void changePassword(String command) {
-        ArrayList<String> parameters = CLI.getParameters(command, "p", "p");
+        ArrayList<String> parameters = CLI.getParameters(command, "p", "n");
         if(parameters == null){
             Menu.invalidCommand();
             return;
@@ -58,10 +58,9 @@ public class ProfileMenu extends Menu {
             return;
         }
         Response.ProfileMenu response = UserController.changeNickname(parameters.get(0));
-        if(response.equals(Response.ProfileMenu.NICKNAME_EXISTS)){
+        if (response.equals(Response.ProfileMenu.NICKNAME_EXISTS)) {
             System.out.println(response.getString(parameters.get(0)));
-        }
-        System.out.println(response.getString());
+        } else System.out.println(response.getString());
     }
 
     public static void deleteAccount(String command) {
@@ -76,8 +75,12 @@ public class ProfileMenu extends Menu {
 
     public static void showScoreboard(String command) {
         ArrayList<User> scoreboard = UserController.getScoreboard();
+        scoreboard.stream().sorted();
+        int rank = 1;
         for (User user : scoreboard) {
-            System.out.println(user);
+            // TODO: 4/24/2022 needs to have proper format
+            System.out.println(rank + "- " + user.getNickname() + ":" + user.getScore());
+            rank++;
         }
     }
 }
