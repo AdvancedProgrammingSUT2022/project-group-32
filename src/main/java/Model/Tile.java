@@ -36,7 +36,13 @@ public class Tile {
         this.troop = null;
         this.roadType = null;
         this.id = count;
-        this.isRiver = new HashMap<>(); // to be yad gerefte beshe
+        this.isRiver = new HashMap<>();
+        isRiver.put(0, 0);
+        isRiver.put(2, 0);
+        isRiver.put(4, 0);
+        isRiver.put(6, 0);
+        isRiver.put(8, 0);
+        isRiver.put(10, 0);
         count++;
     }
 

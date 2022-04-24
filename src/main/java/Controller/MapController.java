@@ -130,14 +130,14 @@ public class MapController {
         boolean[][] marked = new boolean[height][width];
         for (int row = 0; row < height; row++) {
             for (int column = 0; column < width; column++) {
-                distance[row][column] = INF;
+                distance[row][column] = INF + INF;
                 marked[row][column] = false;
             }
         }
         distance[start.getRow()][start.getColumn()] = 0;
         for (int t = 0; t < width * height; t++) {
             Tile tile1 = null;
-            int minDistance = INF;
+            int minDistance = INF + INF;
             for (int i = 0; i < height; i++) {
                 for (int j = 0; j < width; j++) {
                     if (!marked[i][j] && distance[i][j] <= minDistance) {
@@ -152,12 +152,15 @@ public class MapController {
                     distance[tile2.getRow()][tile2.getColumn()] = minDistance + tile2.getMP(tile1); // TODO: stoppages to be handled
                 }
             }
-            marked[tile1.getRow()][tile1.getRow()] = true;
+            marked[tile1.getRow()][tile1.getColumn()] = true;
         }
         return distance[finish.getRow()][finish.getColumn()];
     }
 
     public static Tile getNextMoveTo(Tile start, Tile finish) {
+        if(start.equals(finish)){
+            return start;
+        }
         Map map = GameController.getGame().getMap();
         int height = map.getHeight(), width = map.getWidth();
         // uses Dijkstra
@@ -166,14 +169,14 @@ public class MapController {
         Tile[][] parent = new Tile[height][width];
         for (int row = 0; row < height; row++) {
             for (int column = 0; column < width; column++) {
-                distance[row][column] = INF;
+                distance[row][column] = INF + INF;
                 marked[row][column] = false;
             }
         }
         distance[start.getRow()][start.getColumn()] = 0;
         for (int t = 0; t < width * height; t++) {
             Tile tile1 = null;
-            int minDistance = INF;
+            int minDistance = INF + INF;
             for (int i = 0; i < height; i++) {
                 for (int j = 0; j < width; j++) {
                     if (!marked[i][j] && distance[i][j] <= minDistance) {
@@ -189,9 +192,15 @@ public class MapController {
                     parent[tile2.getRow()][tile2.getColumn()] = tile1;
                 }
             }
-            marked[tile1.getRow()][tile1.getRow()] = true;
+            marked[tile1.getRow()][tile1.getColumn()] = true;
         }
-        return parent[finish.getRow()][finish.getColumn()];
+        Tile currentTile = finish;
+        while(true){
+            if(parent[currentTile.getRow()][currentTile.getColumn()].equals(start)){
+                return currentTile;
+            }
+            currentTile = parent[currentTile.getRow()][currentTile.getColumn()];
+        }
     }
 
     public static ArrayList<Tile> getTilesInRange(Tile tile, int range) {
