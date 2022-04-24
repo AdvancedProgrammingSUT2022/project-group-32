@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public enum TerrainType {
-    COAST("Coast", 1, 0, 1, 0.0, 1, new ArrayList<>(Arrays.asList(TerrainFeature.ICE)), TerrainFeature.COAST),
+    TUNDRA("Tundra", 1, 0, 1, 0.0, 1, new ArrayList<>(Arrays.asList(TerrainFeature.FOREST)), TerrainFeature.COAST),
     DESERT("Desert", 0, 0, 0, -0.33, 1, new ArrayList<>(Arrays.asList(TerrainFeature.OASIS, TerrainFeature.FLOOD_PLAINS)), TerrainFeature.DESERT),
     GRASSLAND("Grassland", 2, 0, 0, -0.33, 1, new ArrayList<>(Arrays.asList(TerrainFeature.FOREST, TerrainFeature.MARSH)), TerrainFeature.GRASSLAND),
     HILL("Hill", 0, 2, 0, 0.25, 2, new ArrayList<>(Arrays.asList(TerrainFeature.FOREST, TerrainFeature.JUNGLE)), TerrainFeature.HILL),
     MOUNTAIN("Mountain", 0, 0, 0, 0.25, 9999, new ArrayList<>(Arrays.asList()), TerrainFeature.MOUNTAIN),
-    OCEAN("Ocean", 1, 0, 1, 0.0, 9999, new ArrayList<>(Arrays.asList(TerrainFeature.ICE)), TerrainFeature.OCEAN),
+    OCEAN("Ocean", 1, 0, 1, 0.0, 9999, new ArrayList<>(Arrays.asList()), TerrainFeature.OCEAN),
     PLAINS("Plains", 1, 1, 0, -0.33, 1, new ArrayList<>(Arrays.asList(TerrainFeature.FOREST, TerrainFeature.JUNGLE)), TerrainFeature.PLAINS),
     SNOW("Snow", 0, 0, 0, -0.33, 1, new ArrayList<>(Arrays.asList()), TerrainFeature.SNOW);
 

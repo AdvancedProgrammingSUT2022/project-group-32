@@ -13,14 +13,16 @@ import java.util.stream.Collectors;
 
 public class GameController {
     private static Game game;
-    // fixme: each player has below selecteds or the whole game?
+    // fixme: each player has below selecteds or the whole game?    fixed : whole game, after each turn they get set to null
     private static Unit selectedUnit;
     private static Tile selectedTile;
     private static City selectedCity;
 
     private static void gameGenerator(ArrayList<Player> players, int mapH, int mapW) {
-        Map randomMap = MapController.RandomMap(players, mapH, mapW);
+        Map randomMap = MapController.randomMap(mapH, mapW);
         game = new Game(randomMap, players);
+        MapController.randomizeRivers();
+        // TODO: 4/24/2022 initializing players map and camera
     }
 
     public static Map getCurrentPlayerMap() {
