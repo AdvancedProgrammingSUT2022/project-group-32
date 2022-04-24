@@ -4,17 +4,39 @@ import Controller.GameController;
 import Controller.PlayerController;
 import Model.City;
 import Model.Tile;
+import View.Panels.*;
 import enums.Color;
 import enums.Responses.Response;
 
 import java.util.Scanner;
+import java.util.function.Consumer;
 
 public class GameMenu extends Menu {
     public enum PanelType {
-        CITY_SELECTED
+        CITIES_PANEL("cities", x -> CitiesPanel.run(x)),
+        CITY_SELECTED_PANEL("citySelected", x -> CitySelectedPanel.run(x)),
+        DEALS_PANEL("deals", x -> DealsPanel.run(x)),
+        DEMOGRAPHICS_PANEL("demographics", x -> DemographicsPanel.run(x)),
+        DIPLOMACY_PANEL("diplomacy", x -> DiplomacyPanel.run(x)),
+        DIPLOMATIC_PANEL("diplomatic", x -> DiplomaticPanel.run(x)),
+        ECONOMY_PANEL("economy", x -> EconomyPanel.run(x)),
+        MILITARY_PANEL("military", x -> MilitaryPanel.run(x)),
+        NOTIFICATIONS_PANEL("notifications", x -> NotificationsPanel.run(x)),
+        RESEARCH_PANEL("research", x -> ResearchPanel.run(x)),
+        UNIT_SELECTED_PANEL("unitSelected", x -> UnitSelectedPanel.run(x)),
+        UNITS_PANEL("units", x -> UnitsPanel.run(x)),
+        VICTORY_PANEL("victory", x -> VictoryPanel.run(x));
+
+        String name;
+        Consumer<String> function;
+
+        PanelType(String name, Consumer<String> consumer){
+            this.function = consumer;
+            this.name = name;
+        }
     }
 
-    private static final PanelType panelType = null;
+    private static PanelType currentPanel = null;
 
     public static void run(Scanner scanner) {
         String command;
@@ -41,7 +63,7 @@ public class GameMenu extends Menu {
             } else if (command.startsWith("show current panel")) {
                 showCurrentPanel(command);
             } else {
-                runPanel();
+                runPanel(command);
             }
         }
     }
@@ -158,15 +180,20 @@ public class GameMenu extends Menu {
     }
 
     private static void openPanel(String command) {
-
+        // to whoever implementing this . . .
+        // cycle through panel enums and finding the right name
     }
 
     // supposed to run the current panel
-    private static void runPanel() {
-        System.out.println(Response.GameMenu.INVALID_COMMAND.getString()); // TODO: 4/24/2022 temporary
+    private static void runPanel(String command) {
+        if(currentPanel == null){
+            System.out.println(Response.GameMenu.INVALID_COMMAND.getString());
+            return;
+        }
+        currentPanel.function.accept(command);
     }
 
     public static void showCurrentPanel(String command) {
-        System.out.println(panelType);
+        System.out.println(currentPanel.name);
     }
 }

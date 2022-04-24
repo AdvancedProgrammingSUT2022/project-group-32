@@ -43,7 +43,6 @@ public class MapController {
                         // increasing the chance of a tile being one of the neighbouring terrains
                         possibleTerrains.add(tile.getTerrain().getTerrainType());
                         possibleTerrains.add(tile.getTerrain().getTerrainType());
-                        possibleTerrains.add(tile.getTerrain().getTerrainType());
                     }
                 }
                 TerrainType terrainType = possibleTerrains.get(random.nextInt(possibleTerrains.size()));
@@ -65,8 +64,6 @@ public class MapController {
                         resourceType = possibleResources.get(random.nextInt(possibleResources.size()));
                     }
                 }
-
-                // TODO: 4/22/2022 rivers to be handled
 
                 Terrain terrain = new Terrain(terrainType, terrainFeature, resourceType);
                 tiles[row][column] = new Tile(row, column, terrain, FogState.VISIBLE, null); // TODO: 4/22/2022 do we have ruins?
