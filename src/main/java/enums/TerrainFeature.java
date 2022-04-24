@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public enum TerrainFeature {
+    NULL(" Null", 0, 0, 0, 0, 0, new ArrayList<>()),
     FLOOD_PLAINS("Flood Plains", 2, 0, 0, -0.33, 1, new ArrayList<>(Arrays.asList(ResourceType.WHEAT, ResourceType.SUGAR))),
     FOREST("Forest", 1, 1, 0, 0.25, 2, new ArrayList<>(Arrays.asList(ResourceType.DEER, ResourceType.FURS, ResourceType.DYES, ResourceType.SILK))),
     ICE("Ice", 0, 0, 0, 0.0, 9999, new ArrayList<>(Arrays.asList())),

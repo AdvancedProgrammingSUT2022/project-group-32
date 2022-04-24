@@ -5,6 +5,10 @@ public class Response {
     public enum GameMenu {
         INVALID_COMMAND("Invalid Command"),
         GAME_CREATED("game created"),
+
+        UNIT_SELECTED("Unit selected successfully"),
+        CITY_SELECTED("City selected successfully"),
+        TURN_PASSED("turn passed successfully"),
         // CURRENT MENU
         CURRENT_MENU("Game menu");
 

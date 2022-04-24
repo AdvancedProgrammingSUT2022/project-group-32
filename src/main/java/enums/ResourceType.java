@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public enum ResourceType {
+    NULL(" Null", 0, 0, 0, null, null),
     BANANAS("Bananas", 1, 0, 0, new ArrayList<>(Arrays.asList(TerrainFeature.JUNGLE)), ImprovementType.PLANTATION),
     CATTLE("Cattle", 1, 0, 0, new ArrayList<>(Arrays.asList(TerrainFeature.GRASSLAND)), ImprovementType.PASTURE),
     DEER("Deer", 1, 0, 0, new ArrayList<>(Arrays.asList(TerrainFeature.FOREST, TerrainFeature.HILL)), ImprovementType.CAMP),

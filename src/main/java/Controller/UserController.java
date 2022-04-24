@@ -131,7 +131,7 @@ public class UserController {
         if (!IsNameValid(nickname)) {
             return Response.ProfileMenu.INVALID_NICKNAME_FORMAT;
         }
-        if (getUserByNickname(nickname) == null) {
+        if (getUserByNickname(nickname) != null) {
             return Response.ProfileMenu.NICKNAME_EXISTS;
         }
         currentUser.setNickname(nickname);
