@@ -62,6 +62,10 @@ public class Map {
         this.cities.add(city);
     }
 
+    public void setTile(int row, int column, Tile tile){
+        tiles[row][column] = tile;
+    }
+
     public Tile getTile(int row, int column) {
         return tiles[row][column];
     }

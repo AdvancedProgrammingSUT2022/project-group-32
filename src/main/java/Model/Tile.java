@@ -16,26 +16,45 @@ public class Tile {
     private Resource resource;
     private Ruin ruin;
     private City city;  //can be null
+    private Improvement improvement;
     private Unit unit;
     private Troop troop;
     private FogState fogState;
     private RouteType roadType; // can be null
-    private HashMap<Integer, Boolean> isRiver; // Clock-based directions: 0 - 2 - 4 - 6 - 8 - 10
+    private HashMap<Integer, Integer> isRiver; // Clock-based directions: 0 - 2 - 4 - 6 - 8 - 10
 
     public Tile(int row, int column, Terrain terrain, FogState fogState, Ruin ruin) {
         this.row = row;
         this.column = column;
         this.terrain = terrain;
         this.fogState = fogState;
-        this.resource = new Resource(terrain.getResourceType(), this); // fixme: is this ok?
+        this.resource = null;
         this.ruin = ruin;
         this.city = null;
+        this.improvement = null;
         this.unit = null;
         this.troop = null;
         this.roadType = null;
         this.id = count;
         this.isRiver = new HashMap<>(); // to be yad gerefte beshe
         count++;
+    }
+
+    // builds a tile based on a tile
+    public Tile(Tile tile){
+        this.row = tile.row;
+        this.column = tile.column;
+        this.terrain = tile.terrain;
+        this.fogState = tile.fogState;
+        this.resource = tile.resource;
+        this.ruin = tile.ruin;
+        this.city = tile.city;
+        this.improvement = tile.improvement;
+        this.unit = tile.unit;
+        this.troop = tile.troop;
+        this.roadType = tile.roadType;
+        this.id = tile.id;
+        this.isRiver = tile.isRiver;
     }
 
     public int getId() {
@@ -86,6 +105,14 @@ public class Tile {
         this.city = city;
     }
 
+    public Improvement getImprovement() {
+        return improvement;
+    }
+
+    public void setImprovement(Improvement improvement) {
+        this.improvement = improvement;
+    }
+
     public Unit getUnit() {
         return this.unit;
     }
@@ -126,17 +153,67 @@ public class Tile {
         this.roadType = roadType;
     }
 
-    public HashMap<Integer, Boolean> getIsRiver() {
+    public HashMap<Integer, Integer> getIsRiver() {
         return isRiver;
     }
 
-    public void setIsRiver(HashMap<Integer, Boolean> isRiver) {
+    public void setIsRiver(HashMap<Integer, Integer> isRiver) {
         this.isRiver = isRiver;
     }
 
-    public int getMP() {
-        // TODO: 4/17/2022 checks MP based on Terrain object and the improvements and resource
-        return 0;
+    public int getDirectionTo(Tile tile){
+        if(tile.column == this.column){
+            if(tile.row == this.row - 1) return 0;
+            if(tile.row == this.row + 1) return 6;
+        }
+        if(this.column % 2 == 0){
+            if(this.row == tile.row && this.column - 1 == tile.column) return 10;
+            if(this.row == tile.row && this.column + 1 == tile.column) return 2;
+            if(this.row + 1 == tile.row && this.column - 1 == tile.column) return 8;
+            if(this.row + 1 == tile.row && this.column + 1 == tile.column) return 4;
+        }
+        else{
+            if(this.row - 1 == tile.row && this.column - 1 == tile.column) return 10;
+            if(this.row - 1 == tile.row && this.column + 1 == tile.column) return 2;
+            if(this.row == tile.row && this.column - 1 == tile.column) return 8;
+            if(this.row == tile.row && this.column + 1 == tile.column) return 4;
+        }
+        return -1; // meaning they are not neighbours
+    }
+
+    // the next 3 methods are for both troops and normal units
+    public boolean canFit(Unit unit){
+        if(unit instanceof Troop){
+            return (this.troop == null);
+        } else {
+            return (this.unit == null);
+        }
+    }
+
+    public void putUnit(Unit unit){
+        if(unit instanceof Troop){
+            this.troop = (Troop) unit;
+        } else {
+            this.unit = unit;
+        }
+    }
+
+    public void takeUnit(Unit unit){
+        if(unit instanceof Troop){
+            this.troop = null;
+        } else {
+            this.unit = null;
+        }
+    }
+
+    public int getMP(Tile incomingTile) {
+        // TODO: 4/24/2022 roads to be handled
+        int mp = 0;
+        mp += terrain.getMP();
+        int direction = incomingTile.getDirectionTo(this);
+        if(direction == -1) return 9999;
+        mp += incomingTile.getIsRiver().get(direction);
+        return mp;
     }
 
     public int getFood() {

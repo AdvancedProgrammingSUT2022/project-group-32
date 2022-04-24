@@ -101,8 +101,8 @@ public class MapController {
             }
             ArrayList<Tile> neighbours = map.getNeighbouringTiles(tile1.getRow(), tile1.getColumn()); // won't cause RT error
             for (Tile tile2 : neighbours) {
-                if(minDistance + tile2.getMP() < distance[tile2.getRow()][tile2.getColumn()]){
-                    distance[tile2.getRow()][tile2.getColumn()] = minDistance + tile2.getMP(); // TODO: rivers and stoppages to be handled
+                if(minDistance + tile2.getMP(tile1) < distance[tile2.getRow()][tile2.getColumn()]){
+                    distance[tile2.getRow()][tile2.getColumn()] = minDistance + tile2.getMP(tile1); // TODO: stoppages to be handled
                 }
             }
             marked[tile1.getRow()][tile1.getRow()] = true;
@@ -137,8 +137,8 @@ public class MapController {
             }
             ArrayList<Tile> neighbours = map.getNeighbouringTiles(tile1.getRow(), tile1.getColumn()); // won't cause RT error
             for (Tile tile2 : neighbours) {
-                if(minDistance + tile2.getMP() < distance[tile2.getRow()][tile2.getColumn()]){
-                    distance[tile2.getRow()][tile2.getColumn()] = minDistance + tile2.getMP(); // TODO: rivers and stoppages to be handled
+                if(minDistance + tile2.getMP(tile1) < distance[tile2.getRow()][tile2.getColumn()]){
+                    distance[tile2.getRow()][tile2.getColumn()] = minDistance + tile2.getMP(tile1); // TODO: stoppages to be handled
                     parent[tile2.getRow()][tile2.getColumn()] = tile1;
                 }
             }

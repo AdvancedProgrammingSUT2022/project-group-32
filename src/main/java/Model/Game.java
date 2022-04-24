@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Game {
     private Map map;
     private ArrayList<Player> players;
-    private Player currentPlayer;
+    private int currentPlayerID;
     int turnCount, playerTurn;
 
     public Game(Map map, ArrayList<Player> players) {
@@ -13,7 +13,7 @@ public class Game {
         this.players = players;
         turnCount = 1;
         playerTurn = 0;
-        currentPlayer = players.get(0);
+        currentPlayerID = 0;
     }
 
     public Map getMap() {
@@ -49,18 +49,11 @@ public class Game {
     }
 
     public Player getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    public void setCurrentPlayer(Player currentPlayer) {
-        this.currentPlayer = currentPlayer;
+        return players.get(currentPlayerID);
     }
 
     public void nextTurn() {
-        // TODO: 4/17/2022
+        currentPlayerID = (currentPlayerID + 1) % players.size();
     }
 
-    public void passTurn() {
-        // TODO: 4/17/2022
-    }
 }

@@ -1,17 +1,13 @@
 package Controller;
 
-import Model.Player;
-import Model.Trade;
-import Model.User;
+import Model.*;
+import Model.Units.Unit;
+import enums.FogState;
 import enums.Responses.Response;
 
 import java.util.ArrayList;
 
 public class PlayerController {
-
-    public static ArrayList<Player> getPlayersByUsers(ArrayList<User> users){
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-    }
 
     public static Response.GameMenu moveCamera(char direction, int value) {
         // gets current player from game
@@ -92,8 +88,55 @@ public class PlayerController {
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
     }
 
+    public static void startTurn(){
+        // TODO: 4/23/2022 does the necessary stuff at the start of the turn
+        Player player = GameController.getGame().getCurrentPlayer();
+        for (Unit unit : player.getUnits()) {
+            UnitController.moveToDestination(unit);
+        }
+    }
+
+    public static void endTurn(){
+        // TODO: 4/23/2022 does the necessary stuff at the end of the turn
+    }
+
+    public static Response.GameMenu nextTurn(){
+        endTurn();
+        GameController.getGame().nextTurn();
+        startTurn();
+        return Response.GameMenu.TURN_PASSED;
+    }
+
+    // basically makes the visible tiles visited
+    private static void clearView(Map map){
+        for (int row = 0; row < map.getHeight(); row++) {
+            for (int column =  0; column < map.getWidth(); column++){
+                Tile tile = map.getTile(row, column);
+                if(tile.getFogState() != FogState.UNKNOWN){
+                    tile.setTroop(null);
+                    tile.setUnit(null);
+                    tile.setImprovement(null);
+                }
+            }
+        }
+    }
+
     public static void updateFieldOfView() {
-        // TODO: 4/16/2022
+        Player player = GameController.getGame().getCurrentPlayer();
+        Map map = player.getMap();
+        clearView(map);
+        ArrayList<Tile> inSight = new ArrayList<>();
+        for (Unit unit : player.getUnits()) {
+            inSight.addAll(MapController.getTilesInRange(unit.getTile(), unit.getSightRange()));
+        }
+        for (City city : player.getCities()) {
+            for (Tile tile : city.getTerritory()) {
+                inSight.addAll(MapController.getTilesInRange(tile, city.getSightRange()));
+            }
+        }
+        for (Tile tile : inSight) {
+            map.setTile(tile.getRow(), tile.getColumn(), new Tile(tile));
+        }
     }
 
     public static void updateSupplies() {

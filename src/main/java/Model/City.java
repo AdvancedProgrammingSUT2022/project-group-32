@@ -21,6 +21,7 @@ public class City {
     private ArrayList<Unit> incompleteUnits;
     private ArrayList<Citizen> citizens = new ArrayList<>();
     private int food, production, population, health, baseStrength;
+    private int sightRange;
     private Troop garrisonedTroop;
 
     public City(String name, Player owner, Tile capitalTile, ArrayList<Tile> territory) {
@@ -117,6 +118,14 @@ public class City {
 
     public void setBaseStrength(int baseStrength) {
         this.baseStrength = baseStrength;
+    }
+
+    public int getSightRange() {
+        return sightRange;
+    }
+
+    public void setSightRange(int sightRange) {
+        this.sightRange = sightRange;
     }
 
     public Building getBuildingInProgress() {
