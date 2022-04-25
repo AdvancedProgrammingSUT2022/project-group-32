@@ -172,7 +172,7 @@ public class Player {
     }
 
     public void setCameraColumn(int cameraColumn) {
-        this.cameraColumn = Player.this.cameraColumn;
+        this.cameraColumn = cameraColumn;
     }
 
     public void setCamera(int cameraRow, int cameraColumn) {
