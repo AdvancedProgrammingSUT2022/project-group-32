@@ -6,6 +6,7 @@ import Model.Units.Unit;
 import enums.FogState;
 import enums.RouteType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Tile {
@@ -211,6 +212,14 @@ public class Tile {
             if(direction == 4) return map.getTile(this.row, this.column + 1);
         }
         return null;
+    }
+
+    public ArrayList<Tile> getNeighbouringTiles(Map map){
+        ArrayList<Tile> tiles = new ArrayList<>();
+        for(int d = 0; d < 12; d += 2){
+            tiles.add(this.getTileInDirection(map, d));
+        }
+        return tiles;
     }
 
     // the next 3 methods are for both troops and normal units

@@ -17,20 +17,23 @@ public class UnitController {
         if (unit.getDestination() == null || unit.getDestination() == unit.getTile()){
             return;
         }
+        Tile destination = unit.getDestination();
         while (unit.getMP() > 0) {
             Tile currentTile = unit.getTile();
-            Tile nextTile = MapController.getNextMoveTo(currentTile, unit.getDestination());
-            if(nextTile.getMP(currentTile) > unit.getMP()){
-                if(!nextTile.canFit(unit)){
-                    System.err.println("The path is blocked");
-                    break;
+            Tile nextTile = MapController.getNextMoveTo(currentTile, destination);
+            if(nextTile.getMP(currentTile) > unit.getMP() && !nextTile.canFit(unit)){
+                System.err.println("The path is blocked");
+                for (Tile tile : currentTile.getNeighbouringTiles(GameController.getGame().getMap())) {
+                    if(MapController.getDistanceTo(currentTile, destination) < MapController.getDistanceTo(tile, destination)){
+                        unit.placeIn(tile);
+                        PlayerController.updateFieldOfView();
+                        break;
+                    }
                 }
+                break;
             }
-            currentTile.takeUnit(unit);
-            nextTile.putUnit(unit);
-            unit.setTile(nextTile);
+            unit.placeIn(nextTile);
             PlayerController.updateFieldOfView();
-            unit.setMP(unit.getMP() - nextTile.getMP(currentTile));
         }
     }
 

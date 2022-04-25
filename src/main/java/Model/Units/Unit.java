@@ -143,5 +143,15 @@ public class Unit {
     public void setRemainingTurn(int remainingTurn) {
         this.remainingTurn = remainingTurn;
     }
+
+    public void placeIn(Tile tile){
+        this.MP -= tile.getMP(this.tile);
+        if(tile.getCity() != null && !tile.getCity().getOwner().equals(this.owner)){
+            this.MP = 0;
+        }
+        this.tile.takeUnit(this);
+        tile.putUnit(this);
+        this.tile = tile;
+    }
 }
 
