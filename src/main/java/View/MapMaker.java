@@ -141,7 +141,7 @@ public class MapMaker {
     }
 
     public static int getTileCenterColumn(int tileRow, int tileColumn) {
-        int centerColumn = HORIZONTAL_BORDER + (tileColumn) * 9;
+        int centerColumn = HORIZONTAL_BORDER + (tileColumn) * 10;
         return centerColumn;
     }
 }
