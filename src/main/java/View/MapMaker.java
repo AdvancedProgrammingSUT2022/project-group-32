@@ -71,22 +71,22 @@ public class MapMaker {
             // UP-RIGHT
             for (int i = 0; i < 3; i++) {
                 map[centerRow - 2 + i][centerColumn + 4 + i] = sC(" ", getRiverColor(isRiver.get(2)));
-                map[centerRow - 2 + i][centerColumn + 5 + i] = sC(" ", getRiverColor(isRiver.get(2)));
+                if (i != 2) map[centerRow - 2 + i][centerColumn + 5 + i] = sC(" ", getRiverColor(isRiver.get(2)));
             }
             // DOWN-RIGHT
             for (int i = 0; i < 3; i++) {
                 map[centerRow + i][centerColumn + 6 - i] = sC(" ", getRiverColor(isRiver.get(4)));
-                map[centerRow + i][centerColumn + 7 - i] = sC(" ", getRiverColor(isRiver.get(4)));
+                if (i != 2) map[centerRow + i][centerColumn + 7 - i] = sC(" ", getRiverColor(isRiver.get(4)));
             }
             // UP-LEFT
             for (int i = 0; i < 3; i++) {
                 map[centerRow - 2 + i][centerColumn - 4 - i] = sC(" ", getRiverColor(isRiver.get(10)));
-                map[centerRow - 2 + i][centerColumn - 5 - i] = sC(" ", getRiverColor(isRiver.get(10)));
+                if (i != 2) map[centerRow - 2 + i][centerColumn - 5 - i] = sC(" ", getRiverColor(isRiver.get(10)));
             }
             // DOWN-LEFT
             for (int i = 0; i < 3; i++) {
                 map[centerRow + 2 - i][centerColumn - 4 - i] = sC(" ", getRiverColor(isRiver.get(8)));
-                map[centerRow + 2 - i][centerColumn - 5 - i] = sC(" ", getRiverColor(isRiver.get(8)));
+                if (i != 2) map[centerRow + 2 - i][centerColumn - 5 - i] = sC(" ", getRiverColor(isRiver.get(8)));
             }
             // UP
             fillPartOfRow(map, centerRow - 3, centerColumn - 3, centerColumn + 3, getRiverColor(isRiver.get(0)));
@@ -95,10 +95,10 @@ public class MapMaker {
 
             // RIGHT_JOINT
             if (isRiver.get(2) == 1 || isRiver.get(4) == 1)
-                fillPartOfRow(map, centerRow, centerColumn + 6, centerColumn + 7, getRiverColor(1));
+                fillPartOfRow(map, centerRow, centerColumn + 6, centerColumn + 6, getRiverColor(1));
             // LEFT-JOINT
             if (isRiver.get(8) == 1 || isRiver.get(10) == 1)
-                fillPartOfRow(map, centerRow, centerColumn - 6, centerColumn - 7, getRiverColor(1));
+                fillPartOfRow(map, centerRow, centerColumn - 6, centerColumn - 6, getRiverColor(1));
         }
 
         // TROOP
@@ -106,7 +106,7 @@ public class MapMaker {
             map[centerRow][centerColumn + 1] = sCB(tile.getTroop().getUnitType().name().substring(0, 1), (tile.getTroop().getOwner().getColor()).code, color);
         }
         map[centerRow + 1][centerColumn - 1] = sC(tile.getTerrain().getTerrainType().name.substring(0, 1), Color.BLUE_BOLD_BRIGHT.code);
-        map[centerRow + 1][centerColumn] = sC(",", Color.RED_BACKGROUND.code);
+        map[centerRow + 1][centerColumn] = sC(",", color);
         map[centerRow + 1][centerColumn + 1] = sC(tile.getTerrain().getTerrainFeature().name.substring(0, 1), Color.RED_BACKGROUND.code);
 
     }
