@@ -10,7 +10,12 @@ public class Response {
         CITY_SELECTED("City selected successfully"),
         TURN_PASSED("turn passed successfully"),
         // CURRENT MENU
-        CURRENT_MENU("Game menu");
+        CURRENT_MENU("Game menu"),
+
+        // MOVE MAP
+        AMOUNT_IS_NOT_POSITIVE("map movement amount must be positive"),
+        SUCCESSFUL_MOVE("map moved successfully"),
+        MOVEMENT_OUT_OF_RANGE("can't move outside of map");
 
         private final String message;
 

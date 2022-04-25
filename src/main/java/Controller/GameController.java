@@ -109,6 +109,31 @@ public class GameController {
 
     }
 
+    public static Response.GameMenu changeCamera(String direction, int amount) {
+        Player player = game.getCurrentPlayer();
+        int row = game.getCurrentPlayer().getCameraRow();
+        int column = game.getCurrentPlayer().getCameraColumn();
+        if (amount <= 0) return Response.GameMenu.AMOUNT_IS_NOT_POSITIVE;
+        if (direction.equals("r") && column + amount <= game.getMap().getWidth()) {
+            player.setCameraColumn(column + amount);
+            return Response.GameMenu.SUCCESSFUL_MOVE;
+        }
+        if (direction.equals("l") && column - amount >= 0) {
+            player.setCameraColumn(column - amount);
+            return Response.GameMenu.SUCCESSFUL_MOVE;
+        }
+        if (direction.equals("u") && row - amount >= 0) {
+            player.setCameraRow(row - amount);
+            return Response.GameMenu.SUCCESSFUL_MOVE;
+        }
+        if (direction.equals("d") && row + amount <= game.getMap().getHeight()) {
+            player.setCameraRow(row + amount);
+            return Response.GameMenu.SUCCESSFUL_MOVE;
+        }
+        return Response.GameMenu.MOVEMENT_OUT_OF_RANGE;
+
+    }
+
     ///         CHEAT CODES
 
     public static void cheatIncreaseTurn(int amount) {

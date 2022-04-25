@@ -3,6 +3,7 @@ package View;
 import org.apache.commons.cli.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CLI {
@@ -24,7 +25,10 @@ public class CLI {
         options.addOption(option);
         options.addOption("n", "name", true, "City name"); // in show, select city
         options.addOption("c", "count", true, "how much to move in a direction");
-        options.addOption("r", "right", false, ""); // camera movement direction
+        Option option2 = new Option("d", "direction", true, ""); // urdl <n>
+        option2.setArgs(2);
+        options.addOption(option2);
+
         // TODO: 4/21/2022   All parameters must be added here
     }
 
@@ -44,6 +48,16 @@ public class CLI {
                     String[] rawValues = cmd.getOptionValues("P");
                     List<String> playersUsernames = java.util.Arrays.stream(rawValues, 1, rawValues.length).toList();
                     values.addAll(playersUsernames);
+                } else if (parameterKey.equals("d") || parameterKey.equals("direction")) {
+                    String[] rawValues = cmd.getOptionValues("d");
+                    String direction = rawValues[0];
+                    if (!direction.matches("^[urld]$")) return null;
+                    try {
+                        int amount = Integer.parseInt(rawValues[1]);
+                        return new ArrayList<>(Arrays.stream(rawValues).toList());
+                    } catch (NumberFormatException e) {
+                        return null;
+                    }
                 } else values.add(cmd.getOptionValue(parameterKey));
             }
             return values;
