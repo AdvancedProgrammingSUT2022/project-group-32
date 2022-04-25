@@ -37,15 +37,15 @@ public enum UnitType {
     PANZER("Panzer", 450, CombatType.ARMORED, 60, 0, 0, 5, null, TechnologyType.COMBUSTION),
     TANK("Tank", 450, CombatType.ARMORED, 50, 0, 0, 4, null, TechnologyType.COMBUSTION);
 
-    private final String name;
-    private final int cost;
-    private final CombatType combatType;
-    private final int strength;
-    private final int rangedStrength;
-    private final int range;
-    private final int movement;
-    private final ResourceType neededResource;
-    private final TechnologyType neededTech;
+    public final String name;
+    public final int cost;
+    public final CombatType combatType;
+    public final int strength;
+    public final int rangedStrength;
+    public final int range;
+    public final int movement;
+    public final ResourceType neededResource;
+    public final TechnologyType neededTech;
 
     UnitType(String name, int cost, CombatType combatType, int strength, int rangedStrength, int range, int movement, ResourceType neededResource, TechnologyType neededTech) {
         this.name = name;
@@ -65,62 +65,6 @@ public enum UnitType {
         }
         return null;
     }
-
-    private String getValue(UnitType unitType, String key) {
-        try {
-            JsonObject jsonObject = JsonParser.parseReader(new FileReader("src/main/java/t.json")).getAsJsonObject();
-            Iterator<JsonElement> iterator = jsonObject.getAsJsonArray("units").iterator();
-            while (iterator.hasNext()) {
-                JsonObject jsonObject1 = iterator.next().getAsJsonObject();
-                if (jsonObject1.getAsJsonPrimitive("Name").getAsString().equals(unitType.name))
-                    return jsonObject1.getAsJsonPrimitive(key).getAsString();
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.err.println("COULDN'T ACCESS DATABASE");
-        }
-        System.err.println("couldn't find unitType in database");
-        return null;
-    }
-
-    public int cost() {
-        return Integer.parseInt(Objects.requireNonNull(getValue(this, "Cost")));
-    }
-
-    public CombatType combatType() {
-        return CombatType.getCombatTypeByName(Objects.requireNonNull(getValue(this, "Combat")));
-    }
-
-    public int strength() {
-        return Integer.parseInt(Objects.requireNonNull(getValue(this, "Strength")));
-    }
-
-    public int rangedStrength() {
-        return Integer.parseInt(Objects.requireNonNull(getValue(this, "Ranged")));
-    }
-
-    public int range() {
-        return Integer.parseInt(Objects.requireNonNull(getValue(this, "Range")));
-    }
-
-    public int movement() {
-        return Integer.parseInt(Objects.requireNonNull(getValue(this, "Movement")));
-    }
-
-    public ArrayList<ResourceType> neededResources() {
-        ArrayList<ResourceType> resourceTypes = new ArrayList<>();
-        if (getValue(this, "Resources").equals("null")) return resourceTypes;
-        resourceTypes.add(ResourceType.getResourceTypeByName(getValue(this, "Resources")));
-        return resourceTypes;
-    }
-
-    public ArrayList<TechnologyType> neededTechnologies() {
-        ArrayList<TechnologyType> technologyTypes = new ArrayList<>();
-        if (getValue(this, "Technology").equals("null")) return technologyTypes;
-        technologyTypes.add(TechnologyType.getEnumByName(getValue(this, "Technology")));
-        return technologyTypes;
-    }
-
 
 }
 

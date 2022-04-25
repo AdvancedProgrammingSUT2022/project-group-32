@@ -17,8 +17,10 @@ public class UnitController {
         if (unit.getDestination() == null || unit.getDestination() == unit.getTile()){
             return;
         }
+        System.err.println(unit.getMP() + " This is the initial MP");
         Tile destination = unit.getDestination();
-        while (unit.getMP() > 0) {
+        while (unit.getMP() > 0 && unit.getTile() != destination) {
+            System.err.println("@");
             Tile currentTile = unit.getTile();
             Tile nextTile = MapController.getNextMoveTo(currentTile, destination);
             if(nextTile.getMP(currentTile) > unit.getMP() && !nextTile.canFit(unit)){
@@ -38,7 +40,7 @@ public class UnitController {
     }
 
     public static InGameResponses.Unit moveTo(int row, int column) {
-        Unit unit = GameController.getSelectedUnit();
+        Unit unit = GameController.getSelectedUnitOrTroop();
         Map map = GameController.getGame().getMap();
         if (unit == null) {
             return InGameResponses.Unit.UNIT_NOT_AVAILABLE;
@@ -53,6 +55,8 @@ public class UnitController {
             return InGameResponses.Unit.TILE_IS_FILLED;
         }
         unit.setDestination(map.getTile(row, column));
+        System.err.println(unit.getTile().getRow() + " " + unit.getTile().getColumn());
+        System.err.println(unit.getDestination().getRow() + " " + unit.getDestination().getColumn());
         moveToDestination(unit);
         return InGameResponses.Unit.MOVETO_SUCCESSFUL;
     }
@@ -63,7 +67,7 @@ public class UnitController {
 
     // these functions should affect isDone
     public static InGameResponses.Unit sleep() {
-        Unit unit = GameController.getSelectedUnit();
+        Unit unit = GameController.getSelectedUnitOrTroop();
         if (unit == null) {
 
         }

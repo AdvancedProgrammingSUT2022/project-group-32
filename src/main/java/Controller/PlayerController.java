@@ -92,15 +92,17 @@ public class PlayerController {
         // TODO: 4/23/2022 does the necessary stuff at the start of the turn
         Player player = GameController.getGame().getCurrentPlayer();
         for (Unit unit : player.getUnits()) {
+            unit.setMP(unit.getMovement());
             UnitController.moveToDestination(unit);
         }
+        updateFieldOfView();
     }
 
     public static void endTurn(){
         // TODO: 4/23/2022 does the necessary stuff at the end of the turn
         GameController.setSelectedCity(null);
         GameController.setSelectedUnit(null);
-        GameController.setSelectedTile(null);
+        GameController.setSelectedTroop(null);
     }
 
     public static Response.GameMenu nextTurn(){
@@ -127,7 +129,9 @@ public class PlayerController {
     public static void updateFieldOfView() {
         Player player = GameController.getGame().getCurrentPlayer();
         Map map = player.getMap();
-        clearView(map);
+        map = new Map(GameController.getGame().getMap());
+        return;
+        /*clearView(map);
         ArrayList<Tile> inSight = new ArrayList<>();
         for (Unit unit : player.getUnits()) {
             inSight.addAll(MapController.getTilesInRange(unit.getTile(), unit.getSightRange()));
@@ -139,7 +143,7 @@ public class PlayerController {
         }
         for (Tile tile : inSight) {
             map.setTile(tile.getRow(), tile.getColumn(), new Tile(tile));
-        }
+        }*/
     }
 
     public static void updateSupplies() {

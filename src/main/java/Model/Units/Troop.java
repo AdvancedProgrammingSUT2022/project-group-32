@@ -14,18 +14,21 @@ public class Troop extends Unit {
     private int rangedStrength;
     private int range;
     private int beenFortified;
+    private boolean isFortified;
     private CombatType combatType;
-    private final ArrayList<ResourceType> neededResources = new ArrayList<ResourceType>();
-    private final ArrayList<TechnologyType> neededTechnologies = new ArrayList<TechnologyType>();
+    private final ResourceType neededResource;
+    private final TechnologyType neededTechnology;
 
     public Troop(Tile tile, Player owner, UnitType unitType) {
         super(tile, owner, unitType);
-
-    }
-
-    @Override
-    protected void setFieldsFromDatabase(UnitType unitType) {
-
+        this.meleeStrength = unitType.strength;
+        this.rangedStrength = unitType.rangedStrength;
+        this.range = unitType.range;
+        this.beenFortified = 0;
+        this.isFortified = false;
+        this.combatType = unitType.combatType;
+        this.neededResource = unitType.neededResource;
+        this.neededTechnology = unitType.neededTech;
     }
 
     public int getMeleeStrength() {
@@ -68,11 +71,19 @@ public class Troop extends Unit {
         this.beenFortified = beenFortified;
     }
 
-    public ArrayList<ResourceType> getNeededResources() {
-        return neededResources;
+    public boolean isFortified() {
+        return isFortified;
     }
 
-    public ArrayList<TechnologyType> getNeededTechnologies() {
-        return neededTechnologies;
+    public void setFortified(boolean fortified) {
+        isFortified = fortified;
+    }
+
+    public ResourceType getNeededResource() {
+        return neededResource;
+    }
+
+    public TechnologyType getNeededTechnology() {
+        return neededTechnology;
     }
 }

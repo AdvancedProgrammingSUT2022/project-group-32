@@ -3,6 +3,7 @@ package Controller;
 import Model.*;
 import Model.Units.Troop;
 import Model.Units.Unit;
+import View.Panels.TroopSelectedPanel;
 import enums.BuildingType;
 import enums.Responses.Response;
 import enums.UnitType;
@@ -15,7 +16,7 @@ public class GameController {
     private static Game game;
     // fixme: each player has below selecteds or the whole game?    fixed : whole game, after each turn they get set to null
     private static Unit selectedUnit;
-    private static Tile selectedTile;
+    private static Troop selectedTroop;
     private static City selectedCity;
 
     private static void gameGenerator(ArrayList<Player> players, int mapH, int mapW) {
@@ -45,12 +46,17 @@ public class GameController {
         GameController.selectedUnit = selectedUnit;
     }
 
-    public static Tile getSelectedTile() {
-        return selectedTile;
+    public static Troop getSelectedTroop() {
+        return selectedTroop;
     }
 
-    public static void setSelectedTile(Tile selectedTile) {
-        GameController.selectedTile = selectedTile;
+    public static void setSelectedTroop(Troop selectedTroop) {
+        GameController.selectedTroop = selectedTroop;
+    }
+
+    public static Unit getSelectedUnitOrTroop(){
+        if(selectedUnit != null) return selectedUnit;
+        return selectedTroop;
     }
 
     public static City getSelectedCity() {
@@ -77,18 +83,16 @@ public class GameController {
             int randomColumn = ThreadLocalRandom.current().nextInt(0, game.getMap().getHeight());
             Tile initialTile = game.getMap().getTile(randomRow, randomColumn);
             player.setCamera(initialTile); // setting camera to capital
+            Unit unit = new Unit(initialTile, player, UnitType.SETTLER);
+            Troop troop = new Troop(initialTile, player, UnitType.WARRIOR);
+            initialTile.putUnit(unit);
+            initialTile.putUnit(troop);
+            player.addUnit(unit); // adding initial units
+            player.addUnit(troop);
             player.setMap(new Map(game.getMap())); // deep copying map
-            player.addUnit(new Unit(initialTile, player, UnitType.SETTLER)); // adding initial units
-            player.addUnit(new Troop(initialTile, player, UnitType.WARRIOR));
         }
         // starts a new game between users and responds accordingly
         return Response.GameMenu.GAME_CREATED;
-    }
-
-    public static Response.GameMenu selectTile(int x, int y) {
-        // selects the x,y tile (unselects everything else)
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
     }
 
     public static Response.GameMenu selectCity(int x, int y) {
@@ -97,16 +101,26 @@ public class GameController {
 
     }
 
-    public static Response.GameMenu selectUnit(int x, int y) {
-        // selects the unarmed unit on x,y
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
+    public static Response.GameMenu selectUnit(int row, int column) {
+        Tile tile = game.getMap().getTile(row, column);
+        if(tile.getUnit() == null){
+            return Response.GameMenu.NO_UNIT_IN_TILE;
+        }
+        setSelectedUnit(tile.getUnit());
+        setSelectedTroop(null);
+        setSelectedCity(null);
+        return Response.GameMenu.UNIT_SELECTED;
     }
 
-    public static Response.GameMenu selectTroop(int x, int y) {
-        // selects the armed unit on x,y
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
+    public static Response.GameMenu selectTroop(int row, int column) {
+        Tile tile = game.getMap().getTile(row, column);
+        if(tile.getTroop() == null){
+            return Response.GameMenu.NO_TROOP_IN_TILE;
+        }
+        setSelectedUnit(null);
+        setSelectedTroop(tile.getTroop());
+        setSelectedCity(null);
+        return Response.GameMenu.TROOP_SELECTED;
     }
 
     public static Response.GameMenu changeCamera(String direction, int amount) {

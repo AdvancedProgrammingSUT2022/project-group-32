@@ -58,6 +58,15 @@ public class CLI {
                     } catch (NumberFormatException e) {
                         return null;
                     }
+                } else if (parameterKey.equals("l") || parameterKey.equals("location")) {
+                    String[] rawValues = cmd.getOptionValues("l");
+                    try {
+                        int row = Integer.parseInt(rawValues[0]);
+                        int column = Integer.parseInt(rawValues[1]);
+                        return new ArrayList<>(Arrays.stream(rawValues).toList());
+                    } catch (NumberFormatException e) {
+                        return null;
+                    }
                 } else values.add(cmd.getOptionValue(parameterKey));
             }
             return values;

@@ -51,11 +51,11 @@ public class Menu {
         return null;
     }
 
-    public static void showCurrentMenu(String... command) {
+    protected static void showCurrentMenu(String... command) {
         System.out.println(currentMenu.name);
     }
 
-    public static void invalidCommand(String... command){
-        System.out.println(Response.MainMenu.INVALID_COMMAND.getString());
+    protected static void invalidCommand(){
+        System.out.println("invalid command!");
     }
 }

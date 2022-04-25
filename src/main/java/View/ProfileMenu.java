@@ -29,10 +29,10 @@ public class ProfileMenu extends Menu {
                 showScoreboard(command);
             }
             else if(command.startsWith("current menu")){
-                Menu.showCurrentMenu();
+                showCurrentMenu();
             }
             else{
-                Menu.invalidCommand();
+                invalidCommand();
             }
         }
     }
@@ -44,7 +44,7 @@ public class ProfileMenu extends Menu {
     public static void changePassword(String command) {
         ArrayList<String> parameters = CLI.getParameters(command, "p", "n");
         if(parameters == null){
-            Menu.invalidCommand();
+            invalidCommand();
             return;
         }
         Response.ProfileMenu response = UserController.changePassword(parameters.get(0) , parameters.get(1));
@@ -54,7 +54,7 @@ public class ProfileMenu extends Menu {
     public static void changeNickname(String command) {
         ArrayList<String> parameters = CLI.getParameters(command, "n");
         if(parameters == null){
-            Menu.invalidCommand();
+            invalidCommand();
             return;
         }
         Response.ProfileMenu response = UserController.changeNickname(parameters.get(0));
@@ -66,7 +66,7 @@ public class ProfileMenu extends Menu {
     public static void deleteAccount(String command) {
         ArrayList<String> parameters = CLI.getParameters(command, "p");
         if(parameters == null){
-            Menu.invalidCommand();
+            invalidCommand();
             return;
         }
         Response.ProfileMenu response = UserController.removeUser(parameters.get(0));

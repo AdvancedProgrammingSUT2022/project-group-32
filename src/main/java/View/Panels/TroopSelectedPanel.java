@@ -1,22 +1,18 @@
 package View.Panels;
 
-import Controller.GameController;
 import Controller.UnitController;
 import View.CLI;
 import View.GameMenu;
-import View.Menu;
 
 import java.util.ArrayList;
 
-public class UnitSelectedPanel extends GameMenu {
+public class TroopSelectedPanel extends GameMenu {
     public static void run(String command) {
-        if(command.startsWith("move unit")){
+        if(command.startsWith("move troop")){
             moveTo(command);
         } else if(command.startsWith("back")){
             GameMenu.currentPanel = null;
-        } else if(command.startsWith("show selected unit")){
-            showSelected();
-        }  else {
+        } else {
             invalidCommand();
         }
     }
@@ -29,14 +25,5 @@ public class UnitSelectedPanel extends GameMenu {
         }
         int row = Integer.parseInt(parameters.get(0)), column = Integer.parseInt(parameters.get(1));
         System.out.println(UnitController.moveTo(row, column).getString());
-        System.err.println("at " + GameController.getSelectedUnit().getTile().getRow() + " " + GameController.getSelectedUnit().getTile().getColumn());
-    }
-
-    public static void showSelected(){
-        System.out.println(GameController.getSelectedUnit().getTile().getRow() + " " + GameController.getSelectedUnit().getTile().getColumn());
-    }
-
-    public static void setOrder(String command) {
-
     }
 }

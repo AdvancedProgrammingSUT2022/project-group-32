@@ -6,6 +6,7 @@ import Model.Tile;
 import View.Panels.*;
 import enums.Responses.Response;
 
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.function.Consumer;
@@ -25,6 +26,7 @@ public class GameMenu extends Menu {
         MILITARY_PANEL("military", x -> MilitaryPanel.run(x)),
         NOTIFICATIONS_PANEL("notifications", x -> NotificationsPanel.run(x)),
         RESEARCH_PANEL("research", x -> ResearchPanel.run(x)),
+        TROOP_SELECTED_PANEL("troopSelected", x -> TroopSelectedPanel.run(x)),
         UNIT_SELECTED_PANEL("unitSelected", x -> UnitSelectedPanel.run(x)),
         UNITS_PANEL("units", x -> UnitsPanel.run(x)),
         VICTORY_PANEL("victory", x -> VictoryPanel.run(x));
@@ -38,7 +40,7 @@ public class GameMenu extends Menu {
         }
     }
 
-    private static final PanelType currentPanel = null;
+    protected static PanelType currentPanel = null;
 
     public static void run(Scanner scanner) {
         String command;
@@ -50,8 +52,8 @@ public class GameMenu extends Menu {
                 moveMap(command);
             } else if (command.startsWith("select unit")) {
                 selectUnit(command);
-            } else if (command.startsWith("select tile")) {
-                selectTile(command);
+            } else if (command.startsWith("select troop")) {
+                selectTroop(command);
             } else if (command.startsWith("select city")) {
                 selectCity(command);
             } else if (command.startsWith("end game")) {
@@ -91,7 +93,7 @@ public class GameMenu extends Menu {
     private static void moveMap(String command) {
         ArrayList<String> parameters = CLI.getParameters(command, "d");
         if (parameters == null) {
-            System.out.println(Response.GameMenu.INVALID_COMMAND.getString());
+            invalidCommand();
             return;
         }
         int amount = Integer.parseInt(parameters.get(1));
@@ -100,11 +102,35 @@ public class GameMenu extends Menu {
     }
 
     private static void selectUnit(String command) {
-
+        ArrayList<String> parameters = CLI.getParameters(command, "l");
+        if(parameters == null){
+            invalidCommand();
+            return;
+        }
+        int row = Integer.parseInt(parameters.get(0)), column = Integer.parseInt(parameters.get(1));
+        Response.GameMenu response = GameController.selectUnit(row, column);
+        if(response.equals(Response.GameMenu.NO_UNIT_IN_TILE)){
+            System.out.println(response.getString(row + " " + column));
+        } else {
+            System.out.println(response.getString());
+            currentPanel = PanelType.UNIT_SELECTED_PANEL;
+        }
     }
 
-    private static void selectTile(String command) {
-
+    private static void selectTroop(String command){
+        ArrayList<String> parameters = CLI.getParameters(command, "l");
+        if(parameters == null){
+            invalidCommand();
+            return;
+        }
+        int row = Integer.parseInt(parameters.get(0)), column = Integer.parseInt(parameters.get(1));
+        Response.GameMenu response = GameController.selectTroop(row, column);
+        if(response.equals(Response.GameMenu.NO_TROOP_IN_TILE)){
+            System.out.println(response.getString(row + " " + column));
+        } else {
+            System.out.println(response.getString());
+            currentPanel = PanelType.TROOP_SELECTED_PANEL;
+        }
     }
 
     private static void selectCity(String command) {
@@ -117,6 +143,7 @@ public class GameMenu extends Menu {
 
     private static void passTurn(String command) {
         System.out.println(PlayerController.nextTurn().getString());
+        currentPanel = null;
     }
 
     private static void endGame(String command) {
@@ -131,13 +158,17 @@ public class GameMenu extends Menu {
     // supposed to run the current panel
     private static void runPanel(String command) {
         if(currentPanel == null){
-            System.out.println(Response.GameMenu.INVALID_COMMAND.getString());
+            invalidCommand();
             return;
         }
         currentPanel.function.accept(command);
     }
 
     public static void showCurrentPanel(String command) {
+        if(currentPanel == null){
+            System.out.println("no panel is open");
+            return;
+        }
         System.out.println(currentPanel.name);
     }
 }

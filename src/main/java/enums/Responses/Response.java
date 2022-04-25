@@ -3,12 +3,22 @@ package enums.Responses;
 public class Response {
     // enums with $ have dynamic parts
     public enum GameMenu {
-        INVALID_COMMAND("Invalid Command"),
         GAME_CREATED("game created"),
 
+        // SELECT UNIT
         UNIT_SELECTED("Unit selected successfully"),
+        NO_UNIT_IN_TILE("no unit was found on \"$\""),
+
+        // SELECT TROOP
+        TROOP_SELECTED("Troop selected successfully"),
+        NO_TROOP_IN_TILE("no troop was found on \"$\""),
+
+        // SELECT CITY
         CITY_SELECTED("City selected successfully"),
+
+        // PASSING TURN
         TURN_PASSED("turn passed successfully"),
+
         // CURRENT MENU
         CURRENT_MENU("Game menu"),
 
@@ -33,8 +43,6 @@ public class Response {
 
 
     public enum LoginMenu {
-        INVALID_COMMAND("Invalid Command"),
-
         // LOGIN
         USERNAME_PASSWORD_DONT_MATCH("Username and password don't match"), // for nonexistence username and mismatch
         LOGIN_SUCCESSFUL("Logged in successfully"),
@@ -68,8 +76,6 @@ public class Response {
     }
 
     public enum ProfileMenu {
-        INVALID_COMMAND("Invalid Command"),
-
         // MAIN MENU RETURN
         ENTERED_MAIN_MENU("Entered main menu"),
 
@@ -108,8 +114,6 @@ public class Response {
     }
 
     public enum MainMenu {
-        INVALID_COMMAND("Invalid Command"),
-
         // MENU NAVIGATION
         MENU_NAVIGATION_NOT_POSSIBLE("Menu navigation not possible"),
         SUCCESSFULLY_ENTERED_GAME("Entered Game menu"),

@@ -20,14 +20,14 @@ public class MainMenu extends Menu {
                 enterMenu(command);
                 return;
             } else if (command.startsWith("current menu")) {
-                Menu.showCurrentMenu();
+                showCurrentMenu();
             } else if (command.startsWith("new game")) {
                 if (newGame(command)) {
-                    Menu.setCurrentMenu(MenuType.GAME_MENU);
+                    setCurrentMenu(MenuType.GAME_MENU);
                     return;
                 }
             } else {
-                Menu.invalidCommand();
+                invalidCommand();
             }
         }
     }
@@ -35,15 +35,15 @@ public class MainMenu extends Menu {
     public static void enterMenu(String command) {
         ArrayList<String> parameters = CLI.getParameters(command , "m");
         if(parameters == null){
-            Menu.invalidCommand();
+            invalidCommand();
             return;
         }
         MenuType newMenu = Menu.getType(parameters.get(0));
         if(newMenu == null){
-            Menu.invalidCommand();
+            invalidCommand();
             return;
         }
-        Menu.setCurrentMenu(newMenu);
+        setCurrentMenu(newMenu);
         System.out.println("entered " + newMenu.name);
     }
 
@@ -58,7 +58,7 @@ public class MainMenu extends Menu {
     public static boolean newGame(String command) {
         ArrayList<String> usernames = CLI.getParameters(command, "P");
         if (usernames == null) {
-            Menu.invalidCommand();
+            invalidCommand();
             return false;
         }
         ArrayList<User> playingUsers = new ArrayList<>();
@@ -81,7 +81,7 @@ public class MainMenu extends Menu {
             return false;
         }
         GameController.newGame(playingUsers);
-        Menu.setCurrentMenu(MenuType.GAME_MENU);
+        setCurrentMenu(MenuType.GAME_MENU);
         System.out.println(Response.MainMenu.NEW_GAME_STARTED.getString());
         return true;
     }

@@ -26,18 +26,13 @@ public class Unit {
         this.unitType = unitType;
         this.XP = 0;
         this.destination = this.tile;
-        setFieldsFromDatabase(this.unitType);
-        // TODO: 4/22/2022 can be assigned better/ کلا جداسازی یونیت و تروپ و ساخت آبجکت ازشون خیلی خوب نیست
-        if (this.unitType.equals(UnitType.WORKER) || this.unitType.equals(UnitType.SETTLER)) this.tile.setUnit(this);
-        else this.tile.setTroop((Troop) this);
-
-    }
-
-    protected void setFieldsFromDatabase(UnitType unitType) {
-
-        // TODO: 4/16/2022 set health, cost, movement, HP, XP
+        this.health = 10;
+        this.cost = unitType.cost;
+        this.movement = unitType.movement;
+        this.sightRange = 10;
         this.HP = this.health;
         this.MP = this.movement;
+        this.tile.putUnit(this);
     }
 
     public Tile getTile() {
