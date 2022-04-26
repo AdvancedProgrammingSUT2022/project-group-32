@@ -6,6 +6,7 @@ import Model.Units.Unit;
 import View.Panels.TroopSelectedPanel;
 import enums.BuildingType;
 import enums.Responses.Response;
+import enums.TerrainType;
 import enums.UnitType;
 
 import java.util.ArrayList;
@@ -75,22 +76,9 @@ public class GameController {
 
         // TODO: initial gold, food, production, happiness, city population, .. must be set
         gameGenerator(players, 15, 15); // width and height chosen randomly
-
-        //setting camera to city
-        for (Player player : players) {
-            // fixme: initialTile conflict is possible
-            int randomRow = ThreadLocalRandom.current().nextInt(0, game.getMap().getWidth());
-            int randomColumn = ThreadLocalRandom.current().nextInt(0, game.getMap().getHeight());
-            Tile initialTile = game.getMap().getTile(randomRow, randomColumn);
-            player.setCamera(initialTile); // setting camera to capital
-            Unit unit = new Unit(initialTile, player, UnitType.SETTLER);
-            Troop troop = new Troop(initialTile, player, UnitType.WARRIOR);
-            initialTile.putUnit(unit);
-            initialTile.putUnit(troop);
-            player.addUnit(unit); // adding initial units
-            player.addUnit(troop);
-            player.setMap(new Map(game.getMap())); // deep copying map
-        }
+        
+        PlayerController.initializePlayers(players); // TODO: 4/26/2022 should be improved 
+        
         // starts a new game between users and responds accordingly
         return Response.GameMenu.GAME_CREATED;
     }

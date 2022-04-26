@@ -29,7 +29,7 @@ public class Unit {
         this.health = 10;
         this.cost = unitType.cost;
         this.movement = unitType.movement;
-        this.sightRange = 10;
+        this.sightRange = 2;
         this.HP = this.health;
         this.MP = this.movement;
         this.tile.putUnit(this);

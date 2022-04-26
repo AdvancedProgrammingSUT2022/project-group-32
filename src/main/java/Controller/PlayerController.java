@@ -1,20 +1,48 @@
 package Controller;
 
 import Model.*;
+import Model.Units.Troop;
 import Model.Units.Unit;
 import enums.FogState;
 import enums.Responses.Response;
+import enums.TerrainType;
+import enums.UnitType;
 
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class PlayerController {
+
+    public static void initializePlayers(ArrayList<Player> players){
+        Game game = GameController.getGame();
+        //setting camera to an initial tile
+        for (Player player : players) {
+            // fixme: initialTile conflict is possible
+            int randomRow = ThreadLocalRandom.current().nextInt(0, game.getMap().getWidth());
+            int randomColumn = ThreadLocalRandom.current().nextInt(0, game.getMap().getHeight());
+            Tile initialTile = game.getMap().getTile(randomRow, randomColumn);
+            while(initialTile.getTerrainType() == TerrainType.OCEAN || initialTile.getTerrainType() == TerrainType.MOUNTAIN){
+                randomRow = ThreadLocalRandom.current().nextInt(0, game.getMap().getWidth());
+                randomColumn = ThreadLocalRandom.current().nextInt(0, game.getMap().getHeight());
+                initialTile = game.getMap().getTile(randomRow, randomColumn);
+            }
+            player.setCamera(initialTile); // setting camera to capital
+            Unit unit = new Unit(initialTile, player, UnitType.SETTLER);
+            Troop troop = new Troop(initialTile, player, UnitType.WARRIOR);
+            initialTile.putUnit(unit);
+            initialTile.putUnit(troop);
+            player.addUnit(unit); // adding initial units
+            player.addUnit(troop);
+            player.setMap(new Map(game.getMap())); // deep copying map
+            PlayerController.updateFieldOfView(player);
+        }
+    }
 
     public static Response.GameMenu moveCamera(char direction, int value) {
         // gets current player from game
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
 
     }
-
     // overloading
     public static Response.GameMenu moveCamera(char direction) {
         return moveCamera(direction, 0);
@@ -121,29 +149,43 @@ public class PlayerController {
                     tile.setTroop(null);
                     tile.setUnit(null);
                     tile.setImprovement(null);
+                    tile.setFogState(FogState.VISITED);
+                }
+                else {
+                    tile.setTroop(null);
+                    tile.setUnit(null);
+                    tile.setImprovement(null);
+                    tile.setTerrain(new Terrain(null, null, null));
+                    tile.setCity(null);
+                    tile.setRoadType(null);
                 }
             }
         }
     }
 
-    public static void updateFieldOfView() {
-        Player player = GameController.getGame().getCurrentPlayer();
+    public static void updateFieldOfView(Player player) {
         Map map = player.getMap();
-        map = new Map(GameController.getGame().getMap());
-        return;
-        /*clearView(map);
+        /*map = new Map(GameController.getGame().getMap());
+        return;*/
+        clearView(map);
         ArrayList<Tile> inSight = new ArrayList<>();
         for (Unit unit : player.getUnits()) {
-            inSight.addAll(MapController.getTilesInRange(unit.getTile(), unit.getSightRange()));
+            inSight.addAll(MapController.lookAroundInRange(unit.getTile(), unit.getSightRange()));
         }
         for (City city : player.getCities()) {
             for (Tile tile : city.getTerritory()) {
-                inSight.addAll(MapController.getTilesInRange(tile, city.getSightRange()));
+                inSight.addAll(MapController.lookAroundInRange(tile, city.getSightRange()));
             }
         }
         for (Tile tile : inSight) {
             map.setTile(tile.getRow(), tile.getColumn(), new Tile(tile));
-        }*/
+            map.getTile(tile.getRow(), tile.getColumn()).setFogState(FogState.VISIBLE);
+        }
+    }
+
+    public static void updateFieldOfView(){
+        Player player = GameController.getGame().getCurrentPlayer();
+        updateFieldOfView(player);
     }
 
     public static void updateSupplies() {

@@ -3,6 +3,7 @@ package View;
 import Model.City;
 import Model.Tile;
 import enums.Color;
+import enums.FogState;
 
 import java.util.HashMap;
 
@@ -59,12 +60,6 @@ public class MapMaker {
         if (tileColumn > 9) map[centerRow - 1][centerColumn + 1] = sC("" + tileColumn / 10, color);
         map[centerRow - 1][centerColumn + 2 - ((tileColumn > 9) ? 0 : 1)] = sC("" + tileColumn % 10, color);
 
-
-        // UNIT
-        if (tile.getUnit() != null) {
-            map[centerRow][centerColumn - 1] = sCB(tile.getUnit().getUnitType().name().substring(0, 1), (tile.getUnit().getOwner().getColor()).code, color);
-        }
-
         // RIVER
         {
             HashMap<Integer, Integer> isRiver = tile.getIsRiver();
@@ -101,14 +96,27 @@ public class MapMaker {
                 fillPartOfRow(map, centerRow, centerColumn - 6, centerColumn - 6, getRiverColor(1));
         }
 
-        // TROOP
-        if (tile.getTroop() != null) {
-            map[centerRow][centerColumn + 1] = sCB(tile.getTroop().getUnitType().name().substring(0, 1), (tile.getTroop().getOwner().getColor()).code, color);
-        }
-        map[centerRow + 1][centerColumn - 1] = sC(tile.getTerrain().getTerrainType().name.substring(0, 1), Color.BLUE_BOLD_BRIGHT.code);
-        map[centerRow + 1][centerColumn] = sC(",", color);
-        map[centerRow + 1][centerColumn + 1] = sC(tile.getTerrain().getTerrainFeature().name.substring(0, 1), Color.RED_BACKGROUND.code);
+        if(tile.getFogState() == FogState.VISIBLE){
+            // UNIT
+            if (tile.getUnit() != null) {
+                map[centerRow][centerColumn - 1] = sCB(tile.getUnit().getUnitType().name().substring(0, 1), (tile.getUnit().getOwner().getColor()).code, color);
+            }
 
+            // TROOP
+            if (tile.getTroop() != null) {
+                map[centerRow][centerColumn + 1] = sCB(tile.getTroop().getUnitType().name().substring(0, 1), (tile.getTroop().getOwner().getColor()).code, color);
+            }
+        }
+        
+        
+        if(tile.getFogState() != FogState.UNKNOWN){
+            // Terrain
+            // TODO: 4/26/2022 showing resources 
+            map[centerRow + 1][centerColumn - 1] = sC(tile.getTerrain().getTerrainType().name.substring(0, 1), Color.BLUE_BOLD_BRIGHT.code);
+            map[centerRow + 1][centerColumn] = sC(",", color);
+            map[centerRow + 1][centerColumn + 1] = sC(tile.getTerrain().getTerrainFeature().name.substring(0, 1), Color.RED_BACKGROUND.code);
+        }
+        
     }
 
     private static void fillPartOfRow(String[][] map, int row, int startingColumn, int endingColumn, String color) {

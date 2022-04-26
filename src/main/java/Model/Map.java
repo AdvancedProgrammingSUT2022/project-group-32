@@ -22,7 +22,12 @@ public class Map {
     public Map(Map map) {
         this.width = map.width;
         this.height = map.height;
-        this.tiles = map.tiles.clone();
+        tiles = new Tile[height][width];
+        for(int row = 0; row < height; row++){
+            for(int column = 0; column < width; column++){
+                this.tiles[row][column] = new Tile(map.getTile(row, column));
+            }
+        }
     }
 
     public int getWidth() {
@@ -67,6 +72,8 @@ public class Map {
     }
 
     public Tile getTile(int row, int column) {
+        if(row < 0 || row >= height) return null;
+        if(column < 0 || column >= width) return null;
         return tiles[row][column];
     }
 

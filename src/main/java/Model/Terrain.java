@@ -1,10 +1,13 @@
 package Model;
 
+import enums.FogState;
 import enums.ResourceType;
 import enums.TerrainFeature;
 import enums.TerrainType;
 
 public class Terrain {
+    private final int INF = 9999;
+
     private final TerrainType terrainType;
     private final TerrainFeature terrainFeature;
     private final TerrainFeature baseFeature; // terrainType and baseFeature are same baseTerrain but in different enums
@@ -14,7 +17,8 @@ public class Terrain {
         this.terrainType = terrainType;
         this.terrainFeature = terrainFeature;
         this.resourceType = resourceType;
-        this.baseFeature = terrainType.baseFeature;
+        if(terrainType != null) this.baseFeature = terrainType.baseFeature;
+        else this.baseFeature = null;
     }
 
     public TerrainType getTerrainType() {
@@ -34,6 +38,7 @@ public class Terrain {
     }
 
     public int getMP() {
+        if(terrainType == null) return INF;
         return terrainType.movement + terrainFeature.movement;
     }
 

@@ -3,8 +3,7 @@ package Model;
 import Model.Resources.Resource;
 import Model.Units.Troop;
 import Model.Units.Unit;
-import enums.FogState;
-import enums.RouteType;
+import enums.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,6 +93,22 @@ public class Tile {
 
     public void setTerrain(Terrain terrain) {
         this.terrain = terrain;
+    }
+
+    public TerrainType getTerrainType() {
+        return terrain.getTerrainType();
+    }
+
+    public TerrainFeature getTerrainFeature() {
+        return terrain.getTerrainFeature();
+    }
+
+    public TerrainFeature getBaseFeature() {
+        return terrain.getBaseFeature();
+    }
+
+    public ResourceType getResourceType() {
+        return terrain.getResourceType();
     }
 
     public Ruin getRuin() {
@@ -217,7 +232,9 @@ public class Tile {
     public ArrayList<Tile> getNeighbouringTiles(Map map){
         ArrayList<Tile> tiles = new ArrayList<>();
         for(int d = 0; d < 12; d += 2){
-            tiles.add(this.getTileInDirection(map, d));
+            if(this.getTileInDirection(map, d) != null){
+                tiles.add(this.getTileInDirection(map, d));
+            }
         }
         return tiles;
     }
