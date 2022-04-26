@@ -165,16 +165,17 @@ public class PlayerController {
 
     public static void updateFieldOfView(Player player) {
         Map map = player.getMap();
+        Map gameMap = GameController.getMap();
         /*map = new Map(GameController.getGame().getMap());
         return;*/
         clearView(map);
         ArrayList<Tile> inSight = new ArrayList<>();
         for (Unit unit : player.getUnits()) {
-            inSight.addAll(MapController.lookAroundInRange(unit.getTile(), unit.getSightRange()));
+            inSight.addAll(gameMap.lookAroundInRange(unit.getTile(), unit.getSightRange()));
         }
         for (City city : player.getCities()) {
             for (Tile tile : city.getTerritory()) {
-                inSight.addAll(MapController.lookAroundInRange(tile, city.getSightRange()));
+                inSight.addAll(gameMap.lookAroundInRange(tile, city.getSightRange()));
             }
         }
         for (Tile tile : inSight) {

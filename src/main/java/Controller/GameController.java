@@ -15,13 +15,15 @@ import java.util.stream.Collectors;
 
 public class GameController {
     private static Game game;
-    // fixme: each player has below selecteds or the whole game?    fixed : whole game, after each turn they get set to null
     private static Unit selectedUnit;
     private static Troop selectedTroop;
     private static City selectedCity;
 
     private static void gameGenerator(ArrayList<Player> players, int mapH, int mapW) {
         Map randomMap = MapController.randomMap(mapH, mapW);
+        while(!randomMap.isConnected()){
+            randomMap = MapController.randomMap(mapH, mapW);
+        }
         game = new Game(randomMap, players);
         MapController.randomizeRivers();
         // TODO: 4/24/2022 initializing players map and camera
@@ -29,6 +31,10 @@ public class GameController {
 
     public static Map getCurrentPlayerMap() {
         return game.getCurrentPlayer().getMap();
+    }
+
+    public static Map getMap(){
+        return game.getMap();
     }
 
     public static Game getGame() {
