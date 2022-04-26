@@ -17,13 +17,13 @@ public class MapController {
     private static final int INF = 9999;
 
     private static Tile nearestOcean(Tile tile1) {
-        Map map = GameController.getGame().getMap();
+        Map map = GameController.getMap();
         int height = map.getHeight(), width = map.getWidth();
         Tile tile2 = map.getTile(0, 0);
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 if (map.getTile(i, j).getTerrain().getTerrainType().equals(TerrainType.OCEAN)) {
-                    if (getDistanceTo(tile1, map.getTile(i, j)) <= getDistanceTo(tile1, tile2)) {
+                    if (map.getDistanceTo(tile1, map.getTile(i, j)) <= map.getDistanceTo(tile1, tile2)) {
                         tile2 = map.getTile(i, j);
                     }
                 }
@@ -33,11 +33,11 @@ public class MapController {
     }
 
     private static void drawRiverFromTo(Tile tile1, Tile tile2) {
-        Map map = GameController.getGame().getMap();
-        Tile currentTile = getNextMoveTo(tile1, tile2);
+        Map map = GameController.getMap();
+        Tile currentTile = map.getNextMoveTo(tile1, tile2);
         int lastDirection = (tile1.getDirectionTo(currentTile) + 6) % 12;
         while (currentTile != tile2) {
-            Tile nextTile = getNextMoveTo(currentTile, tile2);
+            Tile nextTile = map.getNextMoveTo(currentTile, tile2);
             int direction = currentTile.getDirectionTo(nextTile);
             lastDirection = (lastDirection + 2) % 12;
             while (lastDirection != direction) {
@@ -144,126 +144,6 @@ public class MapController {
 
 
         return map;
-    }
-
-    public static int getDistanceTo(Tile start, Tile finish) {
-        Map map = GameController.getGame().getMap();
-        int height = map.getHeight(), width = map.getWidth();
-        // uses Dijkstra
-        int[][] distance = new int[height][width];
-        boolean[][] marked = new boolean[height][width];
-        for (int row = 0; row < height; row++) {
-            for (int column = 0; column < width; column++) {
-                distance[row][column] = INF + INF;
-                marked[row][column] = false;
-            }
-        }
-        distance[start.getRow()][start.getColumn()] = 0;
-        for (int t = 0; t < width * height; t++) {
-            Tile tile1 = null;
-            int minDistance = INF + INF;
-            for (int i = 0; i < height; i++) {
-                for (int j = 0; j < width; j++) {
-                    if (!marked[i][j] && distance[i][j] <= minDistance) {
-                        minDistance = distance[i][j];
-                        tile1 = map.getTile(i, j);
-                    }
-                }
-            }
-            ArrayList<Tile> neighbours = map.getNeighbouringTiles(tile1.getRow(), tile1.getColumn()); // won't cause RT error
-            for (Tile tile2 : neighbours) {
-                if (minDistance + tile2.getMP(tile1) < distance[tile2.getRow()][tile2.getColumn()]) {
-                    distance[tile2.getRow()][tile2.getColumn()] = minDistance + tile2.getMP(tile1); // TODO: stoppages to be handled
-                }
-            }
-            marked[tile1.getRow()][tile1.getColumn()] = true;
-        }
-        return distance[finish.getRow()][finish.getColumn()];
-    }
-
-    public static Tile getNextMoveTo(Tile start, Tile finish) {
-        if (start.equals(finish)) {
-            return start;
-        }
-        Map map = GameController.getGame().getMap();
-        int height = map.getHeight(), width = map.getWidth();
-        // uses Dijkstra
-        int[][] distance = new int[height][width];
-        boolean[][] marked = new boolean[height][width];
-        Tile[][] parent = new Tile[height][width];
-        for (int row = 0; row < height; row++) {
-            for (int column = 0; column < width; column++) {
-                distance[row][column] = INF + INF;
-                marked[row][column] = false;
-            }
-        }
-        distance[start.getRow()][start.getColumn()] = 0;
-        for (int t = 0; t < width * height; t++) {
-            Tile tile1 = null;
-            int minDistance = INF + INF;
-            for (int i = 0; i < height; i++) {
-                for (int j = 0; j < width; j++) {
-                    if (!marked[i][j] && distance[i][j] <= minDistance) {
-                        minDistance = distance[i][j];
-                        tile1 = map.getTile(i, j);
-                    }
-                }
-            }
-            ArrayList<Tile> neighbours = map.getNeighbouringTiles(tile1.getRow(), tile1.getColumn()); // won't cause RT error
-            for (Tile tile2 : neighbours) {
-                if (minDistance + tile2.getMP(tile1) < distance[tile2.getRow()][tile2.getColumn()]) {
-                    distance[tile2.getRow()][tile2.getColumn()] = minDistance + tile2.getMP(tile1); // TODO: stoppages to be handled
-                    parent[tile2.getRow()][tile2.getColumn()] = tile1;
-                }
-            }
-            marked[tile1.getRow()][tile1.getColumn()] = true;
-        }
-        Tile currentTile = finish;
-        while (true) {
-            if (parent[currentTile.getRow()][currentTile.getColumn()] == null) {
-            }
-            if (parent[currentTile.getRow()][currentTile.getColumn()].equals(start)) {
-                return currentTile;
-            }
-            currentTile = parent[currentTile.getRow()][currentTile.getColumn()];
-        }
-    }
-
-    public static ArrayList<Tile> getTilesInRange(Tile tile, int range) {
-        Map map = GameController.getGame().getMap();
-        int height = map.getHeight(), width = map.getWidth();
-        ArrayList<Tile> tiles = new ArrayList<>();
-        for (int row = 0; row < height; row++) {
-            for (int column = 0; column < width; column++) {
-                if (getDistanceTo(tile, map.getTile(row, column)) <= range) {
-                    tiles.add(map.getTile(row, column));
-                }
-            }
-        }
-        return tiles;
-    }
-
-    public static ArrayList<Tile> lookAroundInRange(Tile tile, int range) {
-        Map map = GameController.getGame().getMap();
-        ArrayList<Tile> inSight = new ArrayList<>();
-        inSight.add(tile);
-        while (range-- > 0) {
-            ArrayList<Tile> looked = new ArrayList<>();
-            for (Tile tile1 : inSight) {
-                if (tile1.getTerrainType().equals(TerrainType.MOUNTAIN)
-                        && !tile.getTerrainType().equals(TerrainType.HILL)) {
-                    continue;
-                }
-                ArrayList<Tile> neighbours = tile1.getNeighbouringTiles(map);
-                for (Tile neighbour : neighbours) {
-                    if(!inSight.contains(neighbour) && !looked.contains(neighbour)){
-                        looked.add(neighbour);
-                    }
-                }
-            }
-            inSight.addAll(looked);
-        }
-        return inSight;
     }
 
     public static Response.GameMenu BuildCity() {

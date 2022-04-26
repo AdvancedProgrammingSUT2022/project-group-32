@@ -17,14 +17,15 @@ public class UnitController {
         if (unit.getDestination() == null || unit.getDestination() == unit.getTile()){
             return;
         }
+        Map map = GameController.getMap();
         Tile destination = unit.getDestination();
         while (unit.getMP() > 0 && unit.getTile() != destination) {
             Tile currentTile = unit.getTile();
-            Tile nextTile = MapController.getNextMoveTo(currentTile, destination);
+            Tile nextTile = map.getNextMoveTo(currentTile, destination);
             if(nextTile.getMP(currentTile) > unit.getMP() && !nextTile.canFit(unit)){
                 System.err.println("The path is blocked");
                 for (Tile tile : currentTile.getNeighbouringTiles(GameController.getGame().getMap())) {
-                    if(MapController.getDistanceTo(currentTile, destination) < MapController.getDistanceTo(tile, destination)){
+                    if(map.getDistanceTo(currentTile, destination) < map.getDistanceTo(tile, destination)){
                         unit.placeIn(tile);
                         PlayerController.updateFieldOfView();
                         break;
@@ -39,14 +40,14 @@ public class UnitController {
 
     public static InGameResponses.Unit moveTo(int row, int column) {
         Unit unit = GameController.getSelectedUnitOrTroop();
-        Map map = GameController.getGame().getMap();
+        Map map = GameController.getMap();
         if (unit == null) {
             return InGameResponses.Unit.UNIT_NOT_AVAILABLE;
         }
         if (!unit.getOwner().equals(GameController.getGame().getCurrentPlayer())) {
             return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
         }
-        if (MapController.getDistanceTo(unit.getTile(), map.getTile(row, column)) == INF) {
+        if (map.getDistanceTo(unit.getTile(), map.getTile(row, column)) == INF) {
             return InGameResponses.Unit.TILE_NOT_REACHABLE;
         }
         if (!map.getTile(row, column).canFit(unit)){

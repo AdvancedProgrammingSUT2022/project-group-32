@@ -1,10 +1,15 @@
 package Model;
 
+import Controller.GameController;
+import Controller.MapController;
 import Model.Units.Unit;
+import enums.TerrainType;
 
 import java.util.ArrayList;
 
 public class Map {
+    private static final int INF = 9999;
+
     private final int width;
     private final int height;
     private Tile[][] tiles;
@@ -23,8 +28,8 @@ public class Map {
         this.width = map.width;
         this.height = map.height;
         tiles = new Tile[height][width];
-        for(int row = 0; row < height; row++){
-            for(int column = 0; column < width; column++){
+        for (int row = 0; row < height; row++) {
+            for (int column = 0; column < width; column++) {
                 this.tiles[row][column] = new Tile(map.getTile(row, column));
             }
         }
@@ -67,46 +72,181 @@ public class Map {
         this.cities.add(city);
     }
 
-    public void setTile(int row, int column, Tile tile){
+    public void setTile(int row, int column, Tile tile) {
         tiles[row][column] = tile;
     }
 
     public Tile getTile(int row, int column) {
-        if(row < 0 || row >= height) return null;
-        if(column < 0 || column >= width) return null;
+        if (row < 0 || row >= height) return null;
+        if (column < 0 || column >= width) return null;
         return tiles[row][column];
     }
 
-    public ArrayList<Tile> getNeighbouringTiles(int row, int column){
+    public ArrayList<Tile> getNeighbouringTiles(int row, int column) {
         ArrayList<Tile> neighbours = new ArrayList<>();
-        if(row > 0){
+        if (row > 0) {
             neighbours.add(tiles[row - 1][column]);
         }
-        if(row < height - 1){
+        if (row < height - 1) {
             neighbours.add(tiles[row + 1][column]);
         }
-        if(column > 0){
+        if (column > 0) {
             neighbours.add(tiles[row][column - 1]);
         }
-        if(column < width - 1){
+        if (column < width - 1) {
             neighbours.add(tiles[row][column + 1]);
         }
-        if(column % 2 == 0){
-            if(column > 0 && row < height - 1){
+        if (column % 2 == 0) {
+            if (column > 0 && row < height - 1) {
                 neighbours.add(tiles[row + 1][column - 1]);
             }
-            if(column < width -1 && row < height - 1){
+            if (column < width - 1 && row < height - 1) {
                 neighbours.add(tiles[row + 1][column + 1]);
             }
-        }
-        else{
-            if(column > 0 && row > 0){
+        } else {
+            if (column > 0 && row > 0) {
                 neighbours.add(tiles[row - 1][column - 1]);
             }
-            if(column < width -1 && row > 0){
+            if (column < width - 1 && row > 0) {
                 neighbours.add(tiles[row - 1][column + 1]);
             }
         }
         return neighbours;
+    }
+
+    public int getDistanceTo(Tile start, Tile finish) {
+        // uses Dijkstra
+        int[][] distance = new int[height][width];
+        boolean[][] marked = new boolean[height][width];
+        for (int row = 0; row < height; row++) {
+            for (int column = 0; column < width; column++) {
+                distance[row][column] = INF + INF;
+                marked[row][column] = false;
+            }
+        }
+        distance[start.getRow()][start.getColumn()] = 0;
+        for (int t = 0; t < width * height; t++) {
+            Tile tile1 = null;
+            int minDistance = INF + INF;
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    if (!marked[i][j] && distance[i][j] <= minDistance) {
+                        minDistance = distance[i][j];
+                        tile1 = this.getTile(i, j);
+                    }
+                }
+            }
+            ArrayList<Tile> neighbours = this.getNeighbouringTiles(tile1.getRow(), tile1.getColumn()); // won't cause RT error
+            for (Tile tile2 : neighbours) {
+                if (minDistance + tile2.getMP(tile1) < distance[tile2.getRow()][tile2.getColumn()]) {
+                    distance[tile2.getRow()][tile2.getColumn()] = minDistance + tile2.getMP(tile1); // TODO: stoppages to be handled
+                }
+            }
+            marked[tile1.getRow()][tile1.getColumn()] = true;
+        }
+        return distance[finish.getRow()][finish.getColumn()];
+    }
+
+    public Tile getNextMoveTo(Tile start, Tile finish) {
+        if (start.equals(finish)) {
+            return start;
+        }
+        // uses Dijkstra
+        int[][] distance = new int[height][width];
+        boolean[][] marked = new boolean[height][width];
+        Tile[][] parent = new Tile[height][width];
+        for (int row = 0; row < height; row++) {
+            for (int column = 0; column < width; column++) {
+                distance[row][column] = INF + INF;
+                marked[row][column] = false;
+            }
+        }
+        distance[start.getRow()][start.getColumn()] = 0;
+        for (int t = 0; t < width * height; t++) {
+            Tile tile1 = null;
+            int minDistance = INF + INF;
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    if (!marked[i][j] && distance[i][j] <= minDistance) {
+                        minDistance = distance[i][j];
+                        tile1 = this.getTile(i, j);
+                    }
+                }
+            }
+            ArrayList<Tile> neighbours = this.getNeighbouringTiles(tile1.getRow(), tile1.getColumn()); // won't cause RT error
+            for (Tile tile2 : neighbours) {
+                if (minDistance + tile2.getMP(tile1) < distance[tile2.getRow()][tile2.getColumn()]) {
+                    distance[tile2.getRow()][tile2.getColumn()] = minDistance + tile2.getMP(tile1); // TODO: stoppages to be handled
+                    parent[tile2.getRow()][tile2.getColumn()] = tile1;
+                }
+            }
+            marked[tile1.getRow()][tile1.getColumn()] = true;
+        }
+        Tile currentTile = finish;
+        while (true) {
+            if (parent[currentTile.getRow()][currentTile.getColumn()] == null) {
+            }
+            if (parent[currentTile.getRow()][currentTile.getColumn()].equals(start)) {
+                return currentTile;
+            }
+            currentTile = parent[currentTile.getRow()][currentTile.getColumn()];
+        }
+    }
+
+    public ArrayList<Tile> getTilesInRange(Tile tile, int range) {
+        Map map = GameController.getGame().getMap();
+        int height = map.getHeight(), width = map.getWidth();
+        ArrayList<Tile> tiles = new ArrayList<>();
+        for (int row = 0; row < height; row++) {
+            for (int column = 0; column < width; column++) {
+                if (getDistanceTo(tile, map.getTile(row, column)) <= range) {
+                    tiles.add(map.getTile(row, column));
+                }
+            }
+        }
+        return tiles;
+    }
+
+    public ArrayList<Tile> lookAroundInRange(Tile tile, int range) {
+        Map map = GameController.getGame().getMap();
+        ArrayList<Tile> inSight = new ArrayList<>();
+        inSight.add(tile);
+        while (range-- > 0) {
+            ArrayList<Tile> looked = new ArrayList<>();
+            for (Tile tile1 : inSight) {
+                if (tile1.getTerrainType().equals(TerrainType.MOUNTAIN)
+                        && !tile.getTerrainType().equals(TerrainType.HILL)) {
+                    continue;
+                }
+                ArrayList<Tile> neighbours = tile1.getNeighbouringTiles(map);
+                for (Tile neighbour : neighbours) {
+                    if(!inSight.contains(neighbour) && !looked.contains(neighbour)){
+                        looked.add(neighbour);
+                    }
+                }
+            }
+            inSight.addAll(looked);
+        }
+        return inSight;
+    }
+
+    public boolean isConnected() {
+        for (int row = 0; row < height; row++) {
+            for (int column = 0; column < width; column++) {
+                if (tiles[row][column].getTerrainType() != TerrainType.OCEAN) {
+                    for (int i = 0; i < height; i++) {
+                        for (int j = 0; j < width; j++) {
+                            if (tiles[i][j].getTerrainType() == TerrainType.OCEAN
+                                    || tiles[i][j].getTerrainType() == TerrainType.MOUNTAIN) continue;
+                            if (this.getDistanceTo(tiles[row][column], tiles[i][j]) >= INF) {
+                                return false;
+                            }
+                        }
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
