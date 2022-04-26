@@ -79,6 +79,33 @@ public class MapController {
         }
     }
 
+    private static ArrayList<TerrainType> getPossibleTerrains(ArrayList<Tile> neighbours){
+        ArrayList<TerrainType> possibleTerrains = new ArrayList<>(Arrays.asList(TerrainType.values()));
+        for (Tile tile : neighbours) {
+            if (tile == null) continue;
+            // increasing the chance of a tile being one of the neighbouring terrains
+            possibleTerrains.add(tile.getTerrain().getTerrainType());
+            if (!tile.getTerrainType().equals(TerrainType.OCEAN)) {
+                possibleTerrains.add(tile.getTerrain().getTerrainType());
+            }
+        }
+        for (Tile tile : neighbours) {
+            if (tile == null) continue;
+            // making the terrain logical
+            if(tile.getTerrainType().equals(TerrainType.DESERT)){
+                possibleTerrains.removeIf(TerrainType.SNOW::equals);
+                possibleTerrains.removeIf(TerrainType.TUNDRA::equals);
+            }
+            if(tile.getTerrainType().equals(TerrainType.SNOW)){
+                possibleTerrains.removeIf(TerrainType.DESERT::equals);
+            }
+            if(tile.getTerrainType().equals(TerrainType.TUNDRA)){
+                possibleTerrains.removeIf(TerrainType.DESERT::equals);
+            }
+        }
+        return possibleTerrains;
+    }
+
     public static Map randomMap(int height, int width) {
         Map map = new Map(height, width);
         Tile[][] tiles = map.getTiles();
@@ -90,16 +117,7 @@ public class MapController {
             for (int column = 1; column < width - 1; column++) {
                 // sets Terrain randomly
 
-                ArrayList<TerrainType> possibleTerrains = new ArrayList<>(Arrays.asList(TerrainType.values()));
-                ArrayList<Tile> neighbours = map.getNeighbouringTiles(row, column);
-                for (Tile tile : neighbours) {
-                    if (tile == null) continue;
-                    // increasing the chance of a tile being one of the neighbouring terrains
-                    possibleTerrains.add(tile.getTerrain().getTerrainType());
-                    if (!tile.getTerrain().getTerrainType().equals(TerrainType.OCEAN)) {
-                        possibleTerrains.add(tile.getTerrain().getTerrainType());
-                    }
-                }
+                ArrayList<TerrainType> possibleTerrains = getPossibleTerrains(map.getNeighbouringTiles(row, column));
                 TerrainType terrainType = possibleTerrains.get(random.nextInt(possibleTerrains.size()));
 
                 TerrainFeature terrainFeature = TerrainFeature.NULL;
