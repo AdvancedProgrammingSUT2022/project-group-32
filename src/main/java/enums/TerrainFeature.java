@@ -18,7 +18,8 @@ public enum TerrainFeature {
     MOUNTAIN("Mountain", 0, 0, 0, 0.25, 9999, new ArrayList<>(Arrays.asList())),
     OCEAN("Ocean", 1, 0, 1, 0.0, 1, new ArrayList<>(Arrays.asList())),
     PLAINS("Plains", 1, 1, 0, -0.33, 1, new ArrayList<>(Arrays.asList(ResourceType.IRON, ResourceType.HORSES, ResourceType.COAL, ResourceType.WHEAT, ResourceType.GOLD, ResourceType.GEMS, ResourceType.MARBLE, ResourceType.IVORY, ResourceType.COTTON, ResourceType.INCENSE, ResourceType.SHEEP))),
-    SNOW("Snow", 0, 0, 0, -0.33, 1, new ArrayList<>(Arrays.asList(ResourceType.IRON)));
+    SNOW("Snow", 0, 0, 0, -0.33, 1, new ArrayList<>(Arrays.asList(ResourceType.IRON))),
+    TUNDRA("Tundra", 1, 0, 1, 0.0, 1, new ArrayList<>(Arrays.asList(ResourceType.IRON, ResourceType.HORSES, ResourceType.DEER, ResourceType.SILVER, ResourceType.GEMS, ResourceType.MARBLE, ResourceType.FURS)));
 
     public final String name;
     public final int food, production, gold;

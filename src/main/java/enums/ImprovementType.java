@@ -1,19 +1,63 @@
 package enums;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public enum ImprovementType {
-    CAMP("Camp"),
-    FARM("Farm"),
-    LUMBER_MILL("Lumber Mill"),
-    MINE("Mine"),
-    PASTURE("Pasture"),
-    PLANTATION("Plantation"),
-    QUARRY("Quarry"),
-    TRADING_POST("Trading Post"),
-    MANUFACTORY("Manufactory");
+    CAMP("Camp", 0, 0, 0, new ArrayList<>(Arrays.asList(ResourceType.IVORY, ResourceType.FURS, ResourceType.DEER)), TechnologyType.TRAPPING, new ArrayList<>(Arrays.asList(TerrainFeature.FOREST, TerrainFeature.TUNDRA, TerrainFeature.PLAINS, TerrainFeature.HILL))),
+    FARM("Farm", 0, 0, 1, new ArrayList<>(Arrays.asList(ResourceType.WHEAT)), TechnologyType.AGRICULTURE, new ArrayList<>(Arrays.asList(TerrainFeature.GRASSLAND, TerrainFeature.PLAINS, TerrainFeature.DESERT))),
+    LUMBER_MILL("Lumber Mill", 0, 1, 0, new ArrayList<>(Arrays.asList()), TechnologyType.ENGINEERING, new ArrayList<>(Arrays.asList(TerrainFeature.FOREST))),
+    MINE("Mine", 0, 1, 0, new ArrayList<>(Arrays.asList(ResourceType.IRON, ResourceType.COAL, ResourceType.GEMS, ResourceType.GOLD, ResourceType.SILVER)), TechnologyType.MINING, new ArrayList<>(Arrays.asList(TerrainFeature.GRASSLAND, TerrainFeature.PLAINS, TerrainFeature.DESERT, TerrainFeature.TUNDRA, TerrainFeature.JUNGLE, TerrainFeature.SNOW, TerrainFeature.HILL))),
+    PASTURE("Pasture", 0, 0, 0, new ArrayList<>(Arrays.asList(ResourceType.HORSES, ResourceType.CATTLE, ResourceType.SHEEP)), TechnologyType.ANIMAL_HUSBANDRY, new ArrayList<>(Arrays.asList(TerrainFeature.GRASSLAND, TerrainFeature.PLAINS, TerrainFeature.DESERT, TerrainFeature.TUNDRA, TerrainFeature.HILL))),
+    PLANTATION("Plantation", 0, 0, 0, new ArrayList<>(Arrays.asList(ResourceType.BANANAS, ResourceType.DYES, ResourceType.SILK, ResourceType.SUGAR, ResourceType.COTTON, ResourceType.INCENSE)), TechnologyType.CALENDAR, new ArrayList<>(Arrays.asList(TerrainFeature.GRASSLAND, TerrainFeature.PLAINS, TerrainFeature.DESERT, TerrainFeature.FOREST, TerrainFeature.MARSH, TerrainFeature.FLOOD_PLAINS, TerrainFeature.JUNGLE))),
+    QUARRY("Quarry", 0, 0, 0, new ArrayList<>(Arrays.asList(ResourceType.MARBLE)), TechnologyType.MASONRY, new ArrayList<>(Arrays.asList(TerrainFeature.GRASSLAND, TerrainFeature.PLAINS, TerrainFeature.DESERT, TerrainFeature.TUNDRA, TerrainFeature.HILL))),
+    TRADING_POST("Trading Post", 2, 0, 0, new ArrayList<>(Arrays.asList()), TechnologyType.TRAPPING, new ArrayList<>(Arrays.asList(TerrainFeature.GRASSLAND, TerrainFeature.PLAINS, TerrainFeature.DESERT, TerrainFeature.TUNDRA))),
+    MANUFACTORY("Manufactory", 0, 3, 0, new ArrayList<>(Arrays.asList()), TechnologyType.ENGINEERING, new ArrayList<>(Arrays.asList(TerrainFeature.GRASSLAND, TerrainFeature.PLAINS, TerrainFeature.DESERT, TerrainFeature.TUNDRA, TerrainFeature.SNOW)));
+
 
     private final String name;
+    private final int gold;
+    private final int production;
+    private final int food;
+    private final ArrayList<ResourceType> improvingResources;
+    private final TechnologyType neededTechs;
+    private final ArrayList<TerrainFeature> canBeOn;
 
-    ImprovementType(String name) {
+    ImprovementType(String name, int gold, int production, int food, ArrayList<ResourceType> improvingResources, TechnologyType neededTechs, ArrayList<TerrainFeature> canBeOn) {
         this.name = name;
+        this.gold = gold;
+        this.production = production;
+        this.food = food;
+        this.improvingResources = improvingResources;
+        this.neededTechs = neededTechs;
+        this.canBeOn = canBeOn;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getGold() {
+        return gold;
+    }
+
+    public int getProduction() {
+        return production;
+    }
+
+    public int getFood() {
+        return food;
+    }
+
+    public ArrayList<ResourceType> getImprovingResources() {
+        return improvingResources;
+    }
+
+    public TechnologyType getNeededTechs() {
+        return neededTechs;
+    }
+
+    public ArrayList<TerrainFeature> getCanBeOn() {
+        return canBeOn;
     }
 }
