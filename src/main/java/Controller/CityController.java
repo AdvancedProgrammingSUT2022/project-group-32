@@ -12,6 +12,7 @@ public class CityController {
 
     public static void updateCity(City city) {
         // todo: updates resources, population, ... after a turn has passed.
+        // gold updates is PlayerController.updateGold
         UpdateInProgressBuildsTurns();
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
 
