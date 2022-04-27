@@ -1,8 +1,10 @@
 package Controller;
 
+import Model.City;
 import Model.Map;
 import Model.Terrain;
 import Model.Tile;
+import Model.Units.Unit;
 import enums.FogState;
 import enums.ResourceType;
 import enums.Responses.Response;
@@ -142,12 +144,18 @@ public class MapController {
             }
         }
 
-
         return map;
     }
 
-    public static Response.GameMenu BuildCity() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+    public static void BuildCity(Unit unit, String name) {
+        Map map = GameController.getMap();
+        Tile tile = unit.getTile();
+        ArrayList<Tile> territory = tile.getNeighbouringTiles(map);
+        territory.add(tile);
+        City city = new City(name, unit.getOwner(), tile, territory);
+        unit.getOwner().addCity(city);
+        tile.setCity(city);
+        PlayerController.updateFieldOfView(unit.getOwner());
     }
 
 }

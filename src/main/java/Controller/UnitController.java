@@ -102,9 +102,22 @@ public class UnitController {
         // uses combat controller if needed
     }
 
-    public static InGameResponses.Unit foundCity() {
+    public static InGameResponses.Unit foundCity(String name) {
         // only for settlers
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+        Unit unit = GameController.getSelectedUnitOrTroop();
+        if(unit.getOwner() != GameController.getCurrentPlayer()){
+            return InGameResponses.Unit.UNIT_NOT_YOURS;
+        }
+        if(unit.getUnitType() != UnitType.SETTLER){
+            return InGameResponses.Unit.UNIT_NOT_A_SETTLER;
+        }
+        if(unit.getTile().getCity() != null){
+            return InGameResponses.Unit.CITY_FOUNDATION_NOT_POSSIBLE;
+        }
+        MapController.BuildCity(unit, name);
+        unit.destroy();
+        GameController.setSelectedUnit(null);
+        return InGameResponses.Unit.FOUND_SUCCESSFUL;
 
     }
 

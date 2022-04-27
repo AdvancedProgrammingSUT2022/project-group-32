@@ -3,24 +3,25 @@ package enums.Responses;
 public class InGameResponses {
     public enum Unit{
         //GENERAL(FOR ALL)
-        UNIT_NOT_AVAILABLE("current unit is not available"),
-        UNIT_NOT_IN_POSSESS("current unit is not in possess"),
+        UNIT_NOT_YOURS("you don't own the selected unit"),
+        UNIT_NOT_AVAILABLE("selected unit is not available"),
+        UNIT_NOT_IN_POSSESS("selected unit is not in possess"),
         //MOVE TO
         TILE_NOT_REACHABLE("movement to this position is not possible because its not reachable"),
         TILE_IS_FILLED("movement to this position is not possible because there is a troop on it"),
         //ALERT , FORTIFY , GARRISON , ATTACK
-        UNIT_NOT_MILITARY("current unit is non-military"),
+        UNIT_NOT_MILITARY("selected unit is non-military"),
         //GARRISON
         UNIT_NOT_PRESENT_IN_CITY("unit is not present in the city"),
         //SETUP
-        SURROUND_NOT_POSSIBLE("current unit is not capable of surrounding"),
+        SURROUND_NOT_POSSIBLE("selected unit is not capable of surrounding"),
         //ATTACK
         ATTACK_NOT_POSSIBLE("attack to this position is not possible"),
         //FOUND
-        UNIT_NOT_A_SETTLER("current unit is not a settler"),
+        UNIT_NOT_A_SETTLER("selected unit is not a settler"),
         CITY_FOUNDATION_NOT_POSSIBLE("city foundation in the current position is not possible"),
         //BUILD , REMOVE , REPAIR
-        UNIT_NOT_A_WORKER("current unit is not a worker"),
+        UNIT_NOT_A_WORKER("selected unit is not a worker"),
         //BUILD
         ROAD_ALREADY_EXISTS("road already exists in the current position"),
         RAILROAD_ALREADY_EXISTS("railroad already exists in the current position"),

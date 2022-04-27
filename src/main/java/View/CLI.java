@@ -18,12 +18,12 @@ public class CLI {
         Option option1 = new Option("P", "player", true, "players for new game");
         option1.setArgs(Option.UNLIMITED_VALUES);
         options.addOption(option1);
-        options.addOption("n", "newPassword", true, "");
+        options.addOption("np", "newPassword", true, "");
         // GAME MENU PARAMETERS
         Option option = new Option("l", "location", true, ""); // [x] [y]
         option.setArgs(2);
         options.addOption(option);
-        options.addOption("n", "name", true, "City name"); // in show, select city
+        options.addOption("cn", "name", true, "City name"); // in show, select city
         options.addOption("c", "count", true, "how much to move in a direction");
         Option option2 = new Option("d", "direction", true, ""); // urdl <n>
         option2.setArgs(2);

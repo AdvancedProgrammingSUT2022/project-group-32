@@ -139,6 +139,14 @@ public class Unit {
         this.remainingTurn = remainingTurn;
     }
 
+    public int getRow(){
+        return tile.getRow();
+    }
+
+    public int getColumn(){
+        return tile.getColumn();
+    }
+
     public void placeIn(Tile tile){
         this.MP -= tile.getMP(this.tile);
         if(tile.getCity() != null && !tile.getCity().getOwner().equals(this.owner)){
@@ -147,6 +155,11 @@ public class Unit {
         this.tile.takeUnit(this);
         tile.putUnit(this);
         this.tile = tile;
+    }
+
+    public void destroy(){
+        this.tile.takeUnit(this);
+        this.owner.removeUnit(this);
     }
 }
 
