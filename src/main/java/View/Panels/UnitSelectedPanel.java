@@ -14,11 +14,17 @@ public class UnitSelectedPanel extends GameMenu {
             moveTo(command);
         } else if(command.startsWith("back")){
             GameMenu.currentPanel = null;
+        } else if(command.startsWith("build city")){
+            foundCity(command);
         } else if(command.startsWith("show selected unit")){
             showSelected();
         }  else {
             invalidCommand();
         }
+    }
+
+    public static void showSelected(){
+        System.out.println(GameController.getSelectedUnit().getTile().getRow() + " " + GameController.getSelectedUnit().getTile().getColumn());
     }
 
     public static void moveTo(String command) {
@@ -29,11 +35,15 @@ public class UnitSelectedPanel extends GameMenu {
         }
         int row = Integer.parseInt(parameters.get(0)), column = Integer.parseInt(parameters.get(1));
         System.out.println(UnitController.moveTo(row, column).getString());
-        System.err.println("at " + GameController.getSelectedUnit().getTile().getRow() + " " + GameController.getSelectedUnit().getTile().getColumn());
     }
 
-    public static void showSelected(){
-        System.out.println(GameController.getSelectedUnit().getTile().getRow() + " " + GameController.getSelectedUnit().getTile().getColumn());
+    public static void foundCity(String command){
+        ArrayList<String> parameters = CLI.getParameters(command, "cn");
+        if(parameters == null){
+            invalidCommand();
+            return;
+        }
+        System.out.println(UnitController.foundCity(parameters.get(0)).getString());
     }
 
     public static void setOrder(String command) {

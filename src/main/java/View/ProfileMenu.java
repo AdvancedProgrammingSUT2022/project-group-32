@@ -42,7 +42,7 @@ public class ProfileMenu extends Menu {
     }
 
     public static void changePassword(String command) {
-        ArrayList<String> parameters = CLI.getParameters(command, "p", "n");
+        ArrayList<String> parameters = CLI.getParameters(command, "p", "np");
         if(parameters == null){
             invalidCommand();
             return;

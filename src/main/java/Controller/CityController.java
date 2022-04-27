@@ -10,13 +10,8 @@ import java.util.ArrayList;
 public class CityController {
 
     public static void updateCity(City city) {
-        // updates resources, population, ... after a turn has passed
+        // updates resources, population, ... after a turn has passed.
         // pass a turn in constructions as well
-    }
-
-    public static ArrayList<Tile> getTilesInRange(int range) {
-        // gets tiles close to its border
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
     }
 
     public static void buildUnit(UnitType unitType) {

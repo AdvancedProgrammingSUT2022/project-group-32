@@ -29,6 +29,10 @@ public class GameController {
         // TODO: 4/24/2022 initializing players map and camera
     }
 
+    public static Player getCurrentPlayer(){
+        return game.getCurrentPlayer();
+    }
+
     public static Map getCurrentPlayerMap() {
         return game.getCurrentPlayer().getMap();
     }

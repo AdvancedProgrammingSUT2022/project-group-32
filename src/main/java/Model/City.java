@@ -29,7 +29,7 @@ public class City {
         this.owner = owner;
         this.capitalTile = capitalTile;
         this.territory = territory;
-        // TODO: 4/17/2022 setts buildings, citizens, gold, food, .... to default value. and empty arraylists
+        // TODO: 4/17/2022 sets buildings, citizens, gold, food, .... to default value. and empty arraylists
     }
 
     public String getName() {
