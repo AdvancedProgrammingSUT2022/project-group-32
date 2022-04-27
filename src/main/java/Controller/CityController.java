@@ -1,8 +1,10 @@
 package Controller;
 
+import Model.Building;
 import Model.City;
 import Model.Tile;
 import enums.BuildingType;
+import enums.Responses.InGameResponses;
 import enums.UnitType;
 
 import java.util.ArrayList;
@@ -33,12 +35,39 @@ public class CityController {
 
     }
 
-    public static void buildBuilding(BuildingType buildingType) {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+    /**
+     * gets a BuildingType and builds it. if this type is half-built continues it. moves currently inProgress building to
+     * inComplete buildings of city
+     *
+     * @param buildingType type of the desired building
+     */
+    public static InGameResponses.Building buildBuilding(BuildingType buildingType) {
+        City city = GameController.getSelectedCity();
+        if (city == null) return InGameResponses.Building.CITY_NOT_SELECTED;
 
+        for (Building building : city.getBuildings()) {
+            if (building.getBuildingType().name.equals(buildingType.name))
+                return InGameResponses.Building.ALREADY_EXISTS;
+        }
+        // adding previous inProgress to incomplete
+        if (city.getBuildingInProgress() != null) {
+            city.addIncompleteBuilding(city.getBuildingInProgress());
+        }
+
+        // restating previously half-built if exists
+        for (Building incompleteBuilding : city.getIncompleteBuildings()) {
+            if (incompleteBuilding.getBuildingType().name.equals(buildingType.name)) {
+                city.setBuildingInProgress(incompleteBuilding);
+                city.removeIncompleteBuilding(incompleteBuilding);
+                return InGameResponses.Building.IN_PROGRESS_BUILDING_CHANGED;
+            }
+        }
+
+        city.setBuildingInProgress(new Building(buildingType));
+        return InGameResponses.Building.IN_PROGRESS_BUILDING_CHANGED;
     }
 
-    public static void pauseBuilding() {
+    public static void pauseBuilding(BuildingType buildingType) {
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
 
     }

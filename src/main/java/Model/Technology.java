@@ -55,4 +55,8 @@ public class Technology {
     public int getRequiredTurns() {
         return requiredTurns;
     }
+
+    public void setRemainingTurns(int remainingTurns) {
+        this.remainingTurns = remainingTurns;
+    }
 }
