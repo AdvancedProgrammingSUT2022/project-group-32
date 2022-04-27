@@ -122,7 +122,6 @@ public class PlayerController {
         // TODO: 4/23/2022 does the necessary stuff at the start of the turn
         // TODO: 4/27/2022 decrease ramaining turns in in progress units, techs, buildings
         Player player = GameController.getGame().getCurrentPlayer();
-        UpdateInProgressBuildsTurns();
         for (Unit unit : player.getUnits()) {
             unit.setMP(unit.getMovement());
             UnitController.moveToDestination(unit);
@@ -130,44 +129,7 @@ public class PlayerController {
         updateFieldOfView();
     }
 
-    private static void UpdateInProgressBuildsTurns() {
-        Player player = GameController.getGame().getCurrentPlayer();
 
-        for (City city : player.getCities()) {
-            // Building
-            Building inProgressBuilding = city.getBuildingInProgress();
-            if (inProgressBuilding != null) {
-                inProgressBuilding.setRemainingTurns(inProgressBuilding.getRemainingTurns() - 1);
-                if (inProgressBuilding.getRemainingTurns() == 0) {
-                    city.addBuilding(inProgressBuilding);
-                    city.setBuildingInProgress(null);
-                    // todo: build finished popup and start new building popUp
-                }
-            }
-            // Unit
-            Unit inProgressUnit = city.getUnitInProgress();
-            if (inProgressUnit != null) {
-                inProgressUnit.setRemainingTurn(inProgressUnit.getRemainingTurn() - 1);
-                if (inProgressUnit.getRemainingTurn() == 0) {
-                    player.addUnit(inProgressUnit);
-                    city.setUnitInProgress(null);
-                    // TODO: new unit creation logic, unit build finished popUp and new buildRequired popUp
-                }
-            }
-        }
-
-        // Tech
-        Technology inProgressTechnology = player.getTechnologyInProgress();
-        if (inProgressTechnology != null) {
-            inProgressTechnology.setRemainingTurns(inProgressTechnology.getRemainingTurns() - 1);
-            if (inProgressTechnology.getRequiredTurns() == 0) {
-                player.addTechnology(inProgressTechnology);
-                player.setTechnologyInProgress(null);
-                // TODO: 4/27/2022 tech fininsh popup and Logic, new build required
-            }
-        }
-
-    }
 
 
     public static void endTurn() {

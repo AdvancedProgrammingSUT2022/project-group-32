@@ -5,7 +5,9 @@ public class InGameResponses {
     public enum Building {
         ALREADY_EXISTS("\"$\" already exists in this city"),
         IN_PROGRESS_BUILDING_CHANGED("In progress building changed to \"$\""),
-        CITY_NOT_SELECTED("No city is selected");
+        CITY_NOT_SELECTED("No city is selected"),
+        NO_BUILDING_IN_PROGRESS("There are no in progress buildings"),
+        BUILDING_PAUSED("Building progress paused");
 
         private final String message;
 
