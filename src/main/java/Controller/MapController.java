@@ -155,7 +155,6 @@ public class MapController {
         City city = new City(name, unit.getOwner(), tile, territory);
         unit.getOwner().addCity(city);
         tile.setCity(city);
-        PlayerController.updateFieldOfView(unit.getOwner());
     }
 
 }

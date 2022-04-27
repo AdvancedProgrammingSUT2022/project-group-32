@@ -117,6 +117,7 @@ public class UnitController {
         MapController.BuildCity(unit, name);
         unit.destroy();
         GameController.setSelectedUnit(null);
+        PlayerController.updateFieldOfView(unit.getOwner());
         return InGameResponses.Unit.FOUND_SUCCESSFUL;
 
     }
