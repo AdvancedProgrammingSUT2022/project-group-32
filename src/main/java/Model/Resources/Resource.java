@@ -11,20 +11,20 @@ public class Resource {
     private final ResourceType resourceType; // TODO: 4/16/2022 handle resource type and resource group type with enumSet???
     private String name;
     private int food, production, gold;
-    private final ArrayList<TerrainFeature> canBeFoundOns = new ArrayList<>();
-    private ImprovementType neededImprovements;
+    private final ArrayList<TerrainFeature> canBeFoundOns;
+    private ImprovementType neededImprovement;
     private final Tile tile;
 
     // TODO: 4/17/2022 visibility & collectablity must be handled in Controller
     public Resource(ResourceType resourceType, Tile tile) {
         this.resourceType = resourceType;
         this.tile = tile;
-        setFieldsFromDatabase();
-    }
-
-
-    protected void setFieldsFromDatabase() {
-        // TODO: 4/17/2022
+        this.food = resourceType.food;
+        this.gold = resourceType.gold;
+        this.production = resourceType.production;
+        this.name = resourceType.name;
+        this.neededImprovement = resourceType.neededImprovement;
+        this.canBeFoundOns = new ArrayList<>(resourceType.possibleFeatures);
     }
 
     public ResourceType getResourceType() {
@@ -67,12 +67,12 @@ public class Resource {
         return canBeFoundOns;
     }
 
-    public ImprovementType getNeededImprovements() {
-        return neededImprovements;
+    public ImprovementType getNeededImprovement() {
+        return neededImprovement;
     }
 
-    public void setNeededImprovements(ImprovementType neededImprovements) {
-        this.neededImprovements = neededImprovements;
+    public void setNeededImprovement(ImprovementType neededImprovement) {
+        this.neededImprovement = neededImprovement;
     }
 
     public Tile getTile() {

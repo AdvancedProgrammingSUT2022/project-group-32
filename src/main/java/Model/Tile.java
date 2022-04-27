@@ -277,18 +277,20 @@ public class Tile {
     public int getFood() {
         // TODO: 4/17/2022 checks food income based on Terrain object and the improvements and resource and building
         // Total food of a city is just sum of getFood()s of its tiles
-        return 0;
+        throw new RuntimeException("NOT IMPLEMENTED!");
     }
 
     public int getGold() {
-        // TODO: 4/17/2022 checks gold income based on Terrain object and the improvements and resource
-
-        return 0;
+        // TODO: anything else?
+        // + : terrain, terrain Feature, resource if improved,
+        return terrain.getGold() +
+                ((resource.getNeededImprovement().name.equals(improvement.getName())) ? resource.getGold() : 0);
     }
 
     public int getProduction() {
         // TODO: 4/17/2022 checks production income based on Terrain object and the improvements and resource
-        return 0;
+        throw new RuntimeException("NOT IMPLEMENTED!");
+
     }
 
 }

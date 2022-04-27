@@ -15,7 +15,7 @@ public class Technology {
 
     public Technology(TechnologyType technologyType) {
         this.technologyType = technologyType;
-        this.name = this.technologyType.getName();
+        this.name = this.technologyType.name;
         setFieldsFromDataBase(this.technologyType);
     }
 

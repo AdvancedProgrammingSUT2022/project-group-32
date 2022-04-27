@@ -3,6 +3,7 @@ package Controller;
 import Model.*;
 import Model.Units.Troop;
 import Model.Units.Unit;
+import enums.BuildingType;
 import enums.FogState;
 import enums.Responses.Response;
 import enums.TerrainType;
@@ -10,6 +11,7 @@ import enums.UnitType;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 public class PlayerController {
 
@@ -184,13 +186,32 @@ public class PlayerController {
         }
     }
 
-    public static void updateFieldOfView(){
+    public static void updateFieldOfView() {
         Player player = GameController.getGame().getCurrentPlayer();
         updateFieldOfView(player);
     }
 
     public static void updateSupplies() {
         // TODO: 4/17/2022
+    }
+
+    private static void updateGold() {
+        // handles turn based coin changes - NOT HANDLING TRADES, BUYS, ...
+        double goldChange = 0;
+        for (City city : GameController.getGame().getCurrentPlayer().getCities()) {
+            // todo: the building effects are applied to gross city gold production not net!, MINT EFFECT NOT APPLIED!
+            double cityGrossGold = city.getTerritory().stream().mapToInt(Tile::getGold).sum();
+            ArrayList<BuildingType> buildingTypes = city.getBuildings().stream().map(Building::getBuildingType).collect(Collectors.toCollection(ArrayList::new));
+            if (buildingTypes.contains(BuildingType.MARKET)) cityGrossGold *= 1.25;
+            if (buildingTypes.contains(BuildingType.BANK)) cityGrossGold *= 1.25;
+            if (buildingTypes.contains(BuildingType.SATRAP_COURT)) cityGrossGold *= 1.5;
+            if (buildingTypes.contains(BuildingType.STOCK_EXCHANGE)) cityGrossGold *= 1.33;
+            for (Building building : city.getBuildings()) {
+                cityGrossGold -= building.getCost();
+            }
+            goldChange += cityGrossGold;
+        }
+        // +: terrains, terrain Features, resources, buildings cost __ not handling route  and unit cost
     }
 
     public static boolean checkIfLost() {
