@@ -25,7 +25,7 @@ public enum ResourceType {
     SILVER("Silver", 0, 0, 2, new ArrayList<>(Arrays.asList(TerrainFeature.DESERT, TerrainFeature.HILL)), ImprovementType.MINE),
     SUGAR("Sugar", 0, 0, 2, new ArrayList<>(Arrays.asList(TerrainFeature.FLOOD_PLAINS, TerrainFeature.MARSH)), ImprovementType.PLANTATION);
 
-    private final String name;
+    public final String name;
     public final int food, production, gold;
     public final ArrayList<TerrainFeature> possibleFeatures;
     public final ImprovementType neededImprovement;

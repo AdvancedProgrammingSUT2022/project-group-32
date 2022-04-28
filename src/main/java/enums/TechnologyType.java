@@ -56,9 +56,9 @@ public enum TechnologyType {
     TELEGRAPH("Telegraph", 2200, new ArrayList<>(List.of(TechnologyType.ELECTRICITY)));
 
 
-    private final String name;
-    private final int cost;
-    private final ArrayList<TechnologyType> neededTechs;
+    public final String name;
+    public final int cost;
+    public final ArrayList<TechnologyType> neededTechs;
 
     TechnologyType(String name, int cost, ArrayList<TechnologyType> neededTechs) {
         this.name = name;
@@ -72,25 +72,13 @@ public enum TechnologyType {
      */
     public static TechnologyType getEnumByName(String name) {
         for (TechnologyType technologyType : TechnologyType.values()) {
-            if (technologyType.getName().toLowerCase(Locale.ROOT).equals(name.toLowerCase(Locale.ROOT)))
+            if (technologyType.name.toLowerCase(Locale.ROOT).equals(name.toLowerCase(Locale.ROOT)))
                 return technologyType;
         }
         return null;
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public int getCost() {
-        return cost;
-    }
-
-    public ArrayList<TechnologyType> getNeededTechs() {
-        return neededTechs;
-    }
-
     public ArrayList<TechnologyType> getUnlockingTechs() {
-        return Arrays.stream(TechnologyType.values()).filter(t -> t.getNeededTechs().contains(this)).collect(Collectors.toCollection(ArrayList::new));
+        return Arrays.stream(TechnologyType.values()).filter(t -> t.neededTechs.contains(this)).collect(Collectors.toCollection(ArrayList::new));
     }
 }

@@ -37,7 +37,7 @@ public enum BuildingType {
     MILITARY_BASE("Military Base"),
     STOCK_EXCHANGE("Stock Exchange");
 
-    private final String name;
+    public final String name;
 
     BuildingType(String name) {
         this.name = name;

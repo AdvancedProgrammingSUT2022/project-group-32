@@ -1,6 +1,5 @@
 package Model;
 
-import enums.FogState;
 import enums.ResourceType;
 import enums.TerrainFeature;
 import enums.TerrainType;
@@ -51,6 +50,6 @@ public class Terrain {
     }
 
     public int getGold() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+        return terrainType.gold + terrainFeature.gold;
     }
 }

@@ -221,10 +221,14 @@ public class City {
     }
 
     public void addIncompleteBuilding(Building building) {
+        if (incompleteBuildings.contains(building))
+            System.err.println("OH NO, THIS BUILDING ALREADY EXISTS IN IN PROGRESS BUILDINGS, CANT ADD IT AGAIN");
         this.incompleteBuildings.add(building);
     }
 
     public void removeIncompleteBuilding(Building building) {
+        if (!incompleteBuildings.contains(building))
+            System.err.println("CANT REMOVE NONEXISTENT BUILDING FROM IN PROGRESS BUILDINGS");
         this.incompleteBuildings.remove(building);
     }
 

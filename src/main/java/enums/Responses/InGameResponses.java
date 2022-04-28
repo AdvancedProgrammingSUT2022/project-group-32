@@ -1,7 +1,29 @@
 package enums.Responses;
 
 public class InGameResponses {
-    public enum Unit{
+
+    public enum Building {
+        ALREADY_EXISTS("\"$\" already exists in this city"),
+        IN_PROGRESS_BUILDING_CHANGED("In progress building changed to \"$\""),
+        CITY_NOT_SELECTED("No city is selected"),
+        NO_BUILDING_IN_PROGRESS("There are no in progress buildings"),
+        BUILDING_PAUSED("Building progress paused");
+
+        private final String message;
+
+        Building(String message) {
+            this.message = message;
+        }
+
+        // can get a string and adds it to corresponding location in the response message
+        public String getString(String... dynamicSubstring) {
+            String messageText = this.message;
+            if (dynamicSubstring.length == 0 || !messageText.contains("$")) return this.message;
+            return messageText.replaceFirst("\\$", dynamicSubstring[0]);
+        }
+    }
+
+    public enum Unit {
         //GENERAL(FOR ALL)
         UNIT_NOT_YOURS("you don't own the selected unit"),
         UNIT_NOT_AVAILABLE("selected unit is not available"),
@@ -39,6 +61,7 @@ public class InGameResponses {
         ROUTE_NOT_AVAILABLE("route is not available in this tile"),
         //REPAIR
         RUIN_NOT_AVAILABLE("ruin is not available in the current position"),
+
 
         //SUCCESS
         MOVETO_SUCCESSFUL("unit successfully moved"),

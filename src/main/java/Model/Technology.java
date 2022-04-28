@@ -15,7 +15,7 @@ public class Technology {
 
     public Technology(TechnologyType technologyType) {
         this.technologyType = technologyType;
-        this.name = this.technologyType.getName();
+        this.name = this.technologyType.name;
         setFieldsFromDataBase(this.technologyType);
     }
 
@@ -54,5 +54,9 @@ public class Technology {
 
     public int getRequiredTurns() {
         return requiredTurns;
+    }
+
+    public void setRemainingTurns(int remainingTurns) {
+        this.remainingTurns = remainingTurns;
     }
 }

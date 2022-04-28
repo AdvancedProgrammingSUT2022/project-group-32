@@ -15,13 +15,13 @@ public enum ImprovementType {
     MANUFACTORY("Manufactory", 0, 3, 0, new ArrayList<>(Arrays.asList()), TechnologyType.ENGINEERING, new ArrayList<>(Arrays.asList(TerrainFeature.GRASSLAND, TerrainFeature.PLAINS, TerrainFeature.DESERT, TerrainFeature.TUNDRA, TerrainFeature.SNOW)));
 
 
-    private final String name;
-    private final int gold;
-    private final int production;
-    private final int food;
-    private final ArrayList<ResourceType> improvingResources;
-    private final TechnologyType neededTechs;
-    private final ArrayList<TerrainFeature> canBeOn;
+    public final String name;
+    public final int gold;
+    public final int production;
+    public final int food;
+    public final ArrayList<ResourceType> improvingResources;
+    public final TechnologyType neededTechs;
+    public final ArrayList<TerrainFeature> canBeOn;
 
     ImprovementType(String name, int gold, int production, int food, ArrayList<ResourceType> improvingResources, TechnologyType neededTechs, ArrayList<TerrainFeature> canBeOn) {
         this.name = name;
@@ -33,31 +33,5 @@ public enum ImprovementType {
         this.canBeOn = canBeOn;
     }
 
-    public String getName() {
-        return name;
-    }
 
-    public int getGold() {
-        return gold;
-    }
-
-    public int getProduction() {
-        return production;
-    }
-
-    public int getFood() {
-        return food;
-    }
-
-    public ArrayList<ResourceType> getImprovingResources() {
-        return improvingResources;
-    }
-
-    public TechnologyType getNeededTechs() {
-        return neededTechs;
-    }
-
-    public ArrayList<TerrainFeature> getCanBeOn() {
-        return canBeOn;
-    }
 }
