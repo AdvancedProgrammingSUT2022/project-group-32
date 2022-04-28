@@ -93,10 +93,18 @@ public class GameController {
         return Response.GameMenu.GAME_CREATED;
     }
 
-    public static Response.GameMenu selectCity(int x, int y) {
-        // selects the city on the x,y tile (unselects everything else)
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
+    public static Response.GameMenu selectCity(int row, int column) {
+        City city = game.getMap().getTile(row, column).getCity();
+        if(city == null){
+            return Response.GameMenu.NO_CITY_IN_TILE;
+        }
+        if(city.getCapitalTile() != game.getMap().getTile(row, column)){
+            return Response.GameMenu.NO_CITY_IN_TILE;
+        }
+        setSelectedUnit(null);
+        setSelectedTroop(null);
+        setSelectedCity(city);
+        return Response.GameMenu.CITY_SELECTED;
     }
 
     public static Response.GameMenu selectUnit(int row, int column) {

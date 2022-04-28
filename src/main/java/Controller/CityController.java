@@ -57,12 +57,6 @@ public class CityController {
 
     }
 
-    public static ArrayList<Tile> getTilesInRange(int range) {
-        // gets tiles close to its border
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
-    }
-
     public static void buildUnit(UnitType unitType) {
         // handles the food production if settler
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
@@ -121,15 +115,7 @@ public class CityController {
 
     }
 
-
-    // specialists removed, right?
-    public static void assignCitizenToBuilding() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
-    }
-
     public static void growCity() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
 
     }
 }

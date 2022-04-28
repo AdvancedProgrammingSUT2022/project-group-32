@@ -26,4 +26,8 @@ public class CitySelectedPanel extends GameMenu {
     public static void assignCitizen(String command) {
 
     }
+
+    public static void getInfo(String command){
+
+    }
 }

@@ -15,6 +15,7 @@ public class Response {
 
         // SELECT CITY
         CITY_SELECTED("City selected successfully"),
+        NO_CITY_IN_TILE("no city was found on this \"$\""),
 
         // PASSING TURN
         TURN_PASSED("turn passed successfully"),
