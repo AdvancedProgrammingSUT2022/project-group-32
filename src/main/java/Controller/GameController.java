@@ -93,10 +93,18 @@ public class GameController {
         return Response.GameMenu.GAME_CREATED;
     }
 
-    public static Response.GameMenu selectCity(int x, int y) {
-        // selects the city on the x,y tile (unselects everything else)
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
+    public static Response.GameMenu selectCity(int row, int column) {
+        City city = game.getMap().getTile(row, column).getCity();
+        if(city == null){
+            return Response.GameMenu.NO_CITY_IN_TILE;
+        }
+        if(city.getCapitalTile() != game.getMap().getTile(row, column)){
+            return Response.GameMenu.NO_CITY_IN_TILE;
+        }
+        setSelectedUnit(null);
+        setSelectedTroop(null);
+        setSelectedCity(city);
+        return Response.GameMenu.CITY_SELECTED;
     }
 
     public static Response.GameMenu selectUnit(int row, int column) {
@@ -177,8 +185,6 @@ public class GameController {
         // makes the whole map visible to a player (temporarily)
     }
 
-    // TODO: 4/17/2022 there is a lot of cheat codes to be added
-
     public static void cheatBecomeAGod() {
         // basically sets every fucking thing to infinity :)
 
@@ -189,6 +195,9 @@ public class GameController {
     }
 
     public static void cheatLose() {
+
     }
+
+    // TODO: 4/17/2022 there is a lot of cheat codes to be added
 
 }

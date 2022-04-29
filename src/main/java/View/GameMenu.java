@@ -134,7 +134,19 @@ public class GameMenu extends Menu {
     }
 
     private static void selectCity(String command) {
-
+        ArrayList<String> parameters = CLI.getParameters(command, "l");
+        if(parameters == null){
+            invalidCommand();
+            return;
+        }
+        int row = Integer.parseInt(parameters.get(0)), column = Integer.parseInt(parameters.get(1));
+        Response.GameMenu response = GameController.selectCity(row, column);
+        if(response.equals(Response.GameMenu.NO_CITY_IN_TILE)){
+            System.out.println(response.getString(row + " " + column));
+        } else {
+            System.out.println(response.getString());
+            currentPanel = PanelType.CITY_SELECTED_PANEL;
+        }
     }
 
     private static void showTurn(String command){

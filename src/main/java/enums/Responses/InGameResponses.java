@@ -92,6 +92,29 @@ public class InGameResponses {
             return messageText.replaceFirst("\\$", dynamicSubstring[0]);
         }
     }
+    public enum City{
+        // general
+        NO_CITY_SELECTED("you haven't selected any city yet"),
+        LOCATION_NOT_VALID("the coordinates are not valid"),
+        // purchase tile
+        TILE_ALREADY_BOUGHT("tile is already bought"),
+        CANT_BUY_TILE("this tile is not available to buy"),
+        TILE_TOO_FAR("this tile is not near the selected city"),
+        BUY_SUCCESSFUL("tile purchased successfully");
+
+
+        private final String message;
+
+        City(String message) {
+            this.message = message;
+        }
+        // can get a string and adds it to corresponding location in the response message
+        public String getString(String... dynamicSubstring) {
+            String messageText = this.message;
+            if (dynamicSubstring.length == 0 || !messageText.contains("$")) return this.message;
+            return messageText.replaceFirst("\\$", dynamicSubstring[0]);
+        }
+    }
     public enum Map{
         //SHOW
         INVALID_POSITION("invalid position"),

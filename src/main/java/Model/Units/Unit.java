@@ -16,7 +16,6 @@ public class Unit {
     private int sightRange;
     private UnitType unitType;
     private Tile destination;
-    private int requiredTurn;
     private int remainingTurn;
     // TODO: 4/17/2022 : Unit order handling (orders should be passed on between turns)
 
@@ -32,6 +31,7 @@ public class Unit {
         this.sightRange = 2;
         this.HP = this.health;
         this.MP = this.movement;
+        this.remainingTurn = this.cost;
         this.tile.putUnit(this);
     }
 
