@@ -1,8 +1,10 @@
 package Controller;
 
 import Model.*;
+import Model.Units.Troop;
 import Model.Units.Unit;
 import enums.BuildingType;
+import enums.CombatType;
 import enums.Responses.InGameResponses;
 import enums.UnitType;
 
@@ -58,9 +60,14 @@ public class CityController {
     }
 
     public static void buildUnit(UnitType unitType) {
-        // handles the food production if settler
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
+        City city = GameController.getSelectedCity();
+        Unit unit;
+        if(unitType.combatType == CombatType.CIVILIAN){
+            unit = new Unit(null, GameController.getCurrentPlayer(), unitType);
+        } else {
+            unit = new Troop(null, GameController.getCurrentPlayer(), unitType);
+        }
+        city.setUnitInProgress(unit);
     }
 
     public static void pauseUnit() {
@@ -117,5 +124,33 @@ public class CityController {
 
     public static void growCity() {
 
+    }
+
+    public static InGameResponses.City buyTile(int row, int column) {
+        Map map = GameController.getMap();
+        City city = GameController.getSelectedCity();
+        if(city == null){
+            return InGameResponses.City.NO_CITY_SELECTED;
+        }
+        Tile tile = GameController.getMap().getTile(row, column);
+        if(tile == null){
+            return InGameResponses.City.LOCATION_NOT_VALID;
+        }
+        if(tile.getCity() != null){
+            return InGameResponses.City.TILE_ALREADY_BOUGHT;
+        }
+        boolean isClose = false;
+        for (Tile neighbour : tile.getNeighbouringTiles(map)) {
+            if(city.getTerritory().contains(neighbour)){
+                isClose = true;
+            }
+        }
+        if(!isClose){
+            return InGameResponses.City.TILE_TOO_FAR;
+        }
+        tile.setCity(city);
+        city.addTile(tile);
+        city.getOwner().addTile(tile);
+        return InGameResponses.City.BUY_SUCCESSFUL;
     }
 }

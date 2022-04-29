@@ -185,8 +185,6 @@ public class GameController {
         // makes the whole map visible to a player (temporarily)
     }
 
-    // TODO: 4/17/2022 there is a lot of cheat codes to be added
-
     public static void cheatBecomeAGod() {
         // basically sets every fucking thing to infinity :)
 
@@ -197,6 +195,9 @@ public class GameController {
     }
 
     public static void cheatLose() {
+
     }
+
+    // TODO: 4/17/2022 there is a lot of cheat codes to be added
 
 }

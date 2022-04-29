@@ -154,6 +154,7 @@ public class MapController {
         territory.add(tile);
         City city = new City(name, unit.getOwner(), tile, territory);
         unit.getOwner().addCity(city);
+        unit.getOwner().addTile(tile);
         tile.setCity(city);
     }
 
