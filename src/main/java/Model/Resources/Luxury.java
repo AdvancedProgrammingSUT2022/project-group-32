@@ -10,11 +10,6 @@ public class Luxury extends Resource {
         super(resourceType, tile);
     }
 
-    @Override
-    protected void setFieldsFromDatabase() {
-        // TODO: 4/17/2022
-    }
-
     public int getHappiness() {
         return happiness;
     }
