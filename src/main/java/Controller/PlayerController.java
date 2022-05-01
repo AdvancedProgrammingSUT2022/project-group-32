@@ -118,19 +118,21 @@ public class PlayerController {
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
     }
 
-    public static void startTurn(){
+    public static void startTurn() {
         // TODO: 4/23/2022 does the necessary stuff at the start of the turn
-        // TODO: 4/27/2022 decrease ramaining turns in in progress units, techs, buildings
+        // TODO: 4/27/2022 decrease ramaining turns in in progress units, techs, buildings, improvements
         Player player = GameController.getGame().getCurrentPlayer();
         for (Unit unit : player.getUnits()) {
-            unit.setMP(unit.getMovement());
-            UnitController.moveToDestination(unit);
+            UnitController.updateUnit(unit);
+        }
+        for (City city : player.getCities()) {
+            CityController.updateCity(city);
         }
         updateFieldOfView();
+        updateTechnology();
+        updateSupplies();
+        updateGold();
     }
-
-
-
 
     public static void endTurn() {
         // TODO: 4/23/2022 does the necessary stuff at the end of the turn
@@ -216,6 +218,19 @@ public class PlayerController {
             goldChange += cityGrossGold;
         }
         // +: terrains, terrain Features, resources, buildings cost __ not handling route  and unit cost
+    }
+
+    private static void updateTechnology(){
+        Player player = GameController.getGame().getCurrentPlayer();
+        Technology inProgressTechnology = player.getTechnologyInProgress();
+        if (inProgressTechnology != null) {
+            inProgressTechnology.setRemainingTurns(inProgressTechnology.getRemainingTurns() - 1);
+            if (inProgressTechnology.getRequiredTurns() == 0) {
+                player.addTechnology(inProgressTechnology);
+                player.setTechnologyInProgress(null);
+                // TODO: 4/27/2022 tech fininsh popup and Logic, new build required
+            }
+        }
     }
 
     public static boolean checkIfLost() {

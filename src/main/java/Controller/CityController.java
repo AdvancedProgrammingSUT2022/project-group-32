@@ -12,51 +12,38 @@ import java.util.ArrayList;
 
 public class CityController {
 
+    // updates all there is about a city accordingly
     public static void updateCity(City city) {
         // todo: updates resources, population, ... after a turn has passed.
         // gold updates is PlayerController.updateGold
-        updateInProgressBuildsTurns();
+        updateInProgressBuildsTurns(city);
+        growCity();
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
 
     }
 
-    private static void updateInProgressBuildsTurns() {
-        Player player = GameController.getGame().getCurrentPlayer();
-
-        for (City city : player.getCities()) {
-            // Building
-            Building inProgressBuilding = city.getBuildingInProgress();
-            if (inProgressBuilding != null) {
-                inProgressBuilding.setRemainingTurns(inProgressBuilding.getRemainingTurns() - 1);
-                if (inProgressBuilding.getRemainingTurns() == 0) {
-                    city.addBuilding(inProgressBuilding);
-                    city.setBuildingInProgress(null);
-                    // todo: build finished popup and start new building popUp
-                }
-            }
-            // Unit
-            Unit inProgressUnit = city.getUnitInProgress();
-            if (inProgressUnit != null) {
-                inProgressUnit.setRemainingTurn(inProgressUnit.getRemainingTurn() - 1);
-                if (inProgressUnit.getRemainingTurn() == 0) {
-                    player.addUnit(inProgressUnit);
-                    city.setUnitInProgress(null);
-                    // TODO: new unit creation logic, unit build finished popUp and new buildRequired popUp
-                }
+    private static void updateInProgressBuildsTurns(City city) {
+        Player player = city.getOwner();
+        // Building
+        Building inProgressBuilding = city.getBuildingInProgress();
+        if (inProgressBuilding != null) {
+            inProgressBuilding.setRemainingTurns(inProgressBuilding.getRemainingTurns() - 1);
+            if (inProgressBuilding.getRemainingTurns() == 0) {
+                city.addBuilding(inProgressBuilding);
+                city.setBuildingInProgress(null);
+                // todo: build finished popup and start new building popUp
             }
         }
-
-        // Tech
-        Technology inProgressTechnology = player.getTechnologyInProgress();
-        if (inProgressTechnology != null) {
-            inProgressTechnology.setRemainingTurns(inProgressTechnology.getRemainingTurns() - 1);
-            if (inProgressTechnology.getRequiredTurns() == 0) {
-                player.addTechnology(inProgressTechnology);
-                player.setTechnologyInProgress(null);
-                // TODO: 4/27/2022 tech fininsh popup and Logic, new build required
+        // Unit
+        Unit inProgressUnit = city.getUnitInProgress();
+        if (inProgressUnit != null) {
+            inProgressUnit.setRemainingTurn(inProgressUnit.getRemainingTurn() - 1);
+            if (inProgressUnit.getRemainingTurn() == 0) {
+                player.addUnit(inProgressUnit);
+                city.setUnitInProgress(null);
+                // TODO: new unit creation logic, unit build finished popUp and new buildRequired popUp
             }
         }
-
     }
 
     /**
@@ -148,7 +135,7 @@ public class CityController {
     }
 
     public static void growCity() {
-
+        // TODO: 5/1/2022 may not even be necessary
     }
 
     public static InGameResponses.City buyTile(int row, int column) {
