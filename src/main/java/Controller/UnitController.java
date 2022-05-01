@@ -13,6 +13,13 @@ import enums.UnitType;
 public class UnitController {
     static final int INF = 9999;
 
+    // updates all there is about a unit accordingly
+    public static void updateUnit(Unit unit){
+        unit.setMP(unit.getMovement());
+        UnitController.moveToDestination(unit);
+        // TODO: 5/1/2022 health regeneration, garrison, fortify logic
+    }
+    // moves the selected unit to chosen destination
     public static void moveToDestination(Unit unit){
         if (unit.getDestination() == null || unit.getDestination() == unit.getTile()){
             return;

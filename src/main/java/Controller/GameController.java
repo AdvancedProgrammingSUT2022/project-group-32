@@ -178,7 +178,6 @@ public class GameController {
 
     public static void cheatManipulateUnit(int health, int strength) {
         // sets the health and strength of the selected unit
-
     }
 
     public static void eyeOfSauron(){

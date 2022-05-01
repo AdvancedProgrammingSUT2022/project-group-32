@@ -61,7 +61,10 @@ public class InGameResponses {
         ROUTE_NOT_AVAILABLE("route is not available in this tile"),
         //REPAIR
         RUIN_NOT_AVAILABLE("ruin is not available in the current position"),
-
+        //BUILDING THE UNIT
+        UNIT_BUILDING_PAUSED("unit building successfully paused"),
+        UNIT_BUILDING_SUCCESSFUL("unit is being built successfully"),
+        UNIT_ALREADY_IN_MAKING("a unit of this type is already being built"),
 
         //SUCCESS
         MOVETO_SUCCESSFUL("unit successfully moved"),
