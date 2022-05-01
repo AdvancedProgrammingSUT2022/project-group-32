@@ -15,12 +15,12 @@ public class CityController {
     public static void updateCity(City city) {
         // todo: updates resources, population, ... after a turn has passed.
         // gold updates is PlayerController.updateGold
-        UpdateInProgressBuildsTurns();
+        updateInProgressBuildsTurns();
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
 
     }
 
-    private static void UpdateInProgressBuildsTurns() {
+    private static void updateInProgressBuildsTurns() {
         Player player = GameController.getGame().getCurrentPlayer();
 
         for (City city : player.getCities()) {
@@ -59,20 +59,45 @@ public class CityController {
 
     }
 
-    public static void buildUnit(UnitType unitType) {
+    /**
+     * gets a UnitType and builds it. if this type is half-built continues it. moves currently inProgress building to
+     * inComplete buildings of city
+     *
+     * @param unitType type of the desired unit
+     */
+    public static InGameResponses.Unit buildUnit(UnitType unitType) {
         City city = GameController.getSelectedCity();
-        Unit unit;
-        if(unitType.combatType == CombatType.CIVILIAN){
-            unit = new Unit(null, GameController.getCurrentPlayer(), unitType);
-        } else {
-            unit = new Troop(null, GameController.getCurrentPlayer(), unitType);
+
+        // adding the previous one to the unfinished list
+        if (city.getUnitInProgress() != null) {
+            if(city.getUnitInProgress().getUnitType() == unitType){
+                return InGameResponses.Unit.UNIT_ALREADY_IN_MAKING;
+            }
+            city.addIncompleteUnit(city.getUnitInProgress());
         }
+
+        Unit unit;
+        // continue the half-built unit if possible
+        unit = city.getIncompleteUnitByType(unitType);
+        if (unit != null) {
+            city.removeIncompleteUnit(unit);
+        } else {
+            if (unitType.combatType == CombatType.CIVILIAN) {
+                unit = new Unit(null, GameController.getCurrentPlayer(), unitType);
+            } else {
+                unit = new Troop(null, GameController.getCurrentPlayer(), unitType);
+            }
+        }
+
         city.setUnitInProgress(unit);
+        return InGameResponses.Unit.UNIT_BUILDING_SUCCESSFUL;
     }
 
-    public static void pauseUnit() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
+    public static InGameResponses.Unit pauseInProgressUnit() {
+        City city = GameController.getSelectedCity();
+        Unit unit = city.getUnitInProgress();
+        city.addIncompleteUnit(unit);
+        return InGameResponses.Unit.UNIT_BUILDING_PAUSED;
     }
 
     /**
@@ -129,23 +154,23 @@ public class CityController {
     public static InGameResponses.City buyTile(int row, int column) {
         Map map = GameController.getMap();
         City city = GameController.getSelectedCity();
-        if(city == null){
+        if (city == null) {
             return InGameResponses.City.NO_CITY_SELECTED;
         }
         Tile tile = GameController.getMap().getTile(row, column);
-        if(tile == null){
+        if (tile == null) {
             return InGameResponses.City.LOCATION_NOT_VALID;
         }
-        if(tile.getCity() != null){
+        if (tile.getCity() != null) {
             return InGameResponses.City.TILE_ALREADY_BOUGHT;
         }
         boolean isClose = false;
         for (Tile neighbour : tile.getNeighbouringTiles(map)) {
-            if(city.getTerritory().contains(neighbour)){
+            if (city.getTerritory().contains(neighbour)) {
                 isClose = true;
             }
         }
-        if(!isClose){
+        if (!isClose) {
             return InGameResponses.City.TILE_TOO_FAR;
         }
         tile.setCity(city);

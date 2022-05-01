@@ -123,14 +123,6 @@ public class Unit {
         this.destination = destination;
     }
 
-    public int getRequiredTurn() {
-        return requiredTurn;
-    }
-
-    public void setRequiredTurn(int requiredTurn) {
-        this.requiredTurn = requiredTurn;
-    }
-
     public int getRemainingTurn() {
         return remainingTurn;
     }
