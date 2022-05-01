@@ -45,7 +45,6 @@ public class UserController {
     }
 
     public static User getUserByUsername(String username) {
-
         for (User user : users) {
             if (user.getUsername().equals(username)) {
                 return user;
@@ -63,7 +62,7 @@ public class UserController {
         return null;
     }
 
-    private static boolean isPasswordStrong(String password) {
+    public static boolean isPasswordStrong(String password) {
         if (password.length() < 8 || password.length() > 32) return false;
         if (password.matches("[^0-9]+")) return false;
         if (password.matches("[^a-z]+")) return false;
