@@ -25,7 +25,7 @@ public class InGameResponses {
 
     public enum Unit {
         //GENERAL(FOR ALL)
-        UNIT_NOT_YOURS("you don't own the selected unit"),
+        NO_UNIT_SELECTED("no unit is selected"),
         UNIT_NOT_AVAILABLE("selected unit is not available"),
         UNIT_NOT_IN_POSSESS("selected unit is not in possess"),
         //MOVE TO

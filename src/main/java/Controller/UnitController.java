@@ -85,10 +85,13 @@ public class UnitController {
     public static InGameResponses.Unit sleep() {
         Unit unit = GameController.getSelectedUnitOrTroop();
         if (unit == null) {
-
+            return InGameResponses.Unit.NO_UNIT_SELECTED;
         }
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
+        if (unit.getOwner() != GameController.getCurrentPlayer()){
+            return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
+        }
+        unit.setOrderType(OrderType.ASLEEP);
+        return InGameResponses.Unit.SLEEP_SUCCESSFUL;
     }
 
     public static InGameResponses.Unit alert() {
@@ -124,8 +127,11 @@ public class UnitController {
     public static InGameResponses.Unit foundCity(String name) {
         // only for settlers
         Unit unit = GameController.getSelectedUnitOrTroop();
+        if (unit == null) {
+            return InGameResponses.Unit.NO_UNIT_SELECTED;
+        }
         if(unit.getOwner() != GameController.getCurrentPlayer()){
-            return InGameResponses.Unit.UNIT_NOT_YOURS;
+            return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
         }
         if(unit.getUnitType() != UnitType.SETTLER){
             return InGameResponses.Unit.UNIT_NOT_A_SETTLER;
@@ -147,8 +153,15 @@ public class UnitController {
     }
 
     public static InGameResponses.Unit wake() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
+        Unit unit = GameController.getSelectedUnitOrTroop();
+        if (unit == null) {
+            return InGameResponses.Unit.NO_UNIT_SELECTED;
+        }
+        if (unit.getOwner() != GameController.getCurrentPlayer()){
+            return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
+        }
+        unit.setOrderType(OrderType.AWAKE);
+        return InGameResponses.Unit.WAKE_SUCCESSFUL;
     }
 
     public static InGameResponses.Unit delete() {
@@ -158,8 +171,11 @@ public class UnitController {
 
     public static InGameResponses.Unit buildImprovement(ImprovementType improvementType) {
         Unit unit = GameController.getSelectedUnit();
+        if (unit == null) {
+            return InGameResponses.Unit.NO_UNIT_SELECTED;
+        }
         if(unit.getOwner() != GameController.getCurrentPlayer()){
-            return InGameResponses.Unit.UNIT_NOT_YOURS;
+            return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
         }
         if(unit.getUnitType() != UnitType.WORKER){
             return InGameResponses.Unit.UNIT_NOT_A_WORKER;

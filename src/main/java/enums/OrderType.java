@@ -1,7 +1,7 @@
 package enums;
 
 public enum OrderType {
-    SLEEP,
+    ASLEEP,
     FORTIFY,
     BUILDING,
     AWAKE,
