@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Tile {
-    private static int count = 0;
-    private int id;
     private int row, column;
     private Terrain terrain;
     private Resource resource;
@@ -22,6 +20,7 @@ public class Tile {
     private FogState fogState;
     private RouteType roadType; // can be null
     private HashMap<Integer, Integer> isRiver; // Clock-based directions: 0 - 2 - 4 - 6 - 8 - 10
+    private boolean hasCitizen;
 
     public Tile(int row, int column, Terrain terrain, FogState fogState, Ruin ruin) {
         this.row = row;
@@ -35,7 +34,6 @@ public class Tile {
         this.unit = null;
         this.troop = null;
         this.roadType = null;
-        this.id = count;
         this.isRiver = new HashMap<>();
         isRiver.put(0, 0);
         isRiver.put(2, 0);
@@ -43,7 +41,6 @@ public class Tile {
         isRiver.put(6, 0);
         isRiver.put(8, 0);
         isRiver.put(10, 0);
-        count++;
     }
 
     // builds a tile based on a tile
@@ -59,16 +56,7 @@ public class Tile {
         this.unit = tile.unit;
         this.troop = tile.troop;
         this.roadType = tile.roadType;
-        this.id = tile.id;
         this.isRiver = tile.isRiver;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getRow() {
@@ -191,6 +179,14 @@ public class Tile {
         return isRiver.get(direction);
     }
 
+    public boolean isHasCitizen() {
+        return hasCitizen;
+    }
+
+    public void setHasCitizen(boolean hasCitizen) {
+        this.hasCitizen = hasCitizen;
+    }
+
     public int getDirectionTo(Tile tile){
         if(tile.column == this.column){
             if(tile.row == this.row - 1) return 0;
@@ -271,6 +267,9 @@ public class Tile {
         int direction = incomingTile.getDirectionTo(this);
         if(direction == -1) return 9999;
         mp += incomingTile.getIsRiver().get(direction);
+        if(this.roadType == RouteType.ROAD && incomingTile.roadType == RouteType.ROAD){
+            mp --;
+        }
         return mp;
     }
 
