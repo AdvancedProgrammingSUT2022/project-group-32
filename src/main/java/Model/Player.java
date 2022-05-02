@@ -313,15 +313,6 @@ public class Player {
         return null;
     }
 
-    public Tile getTileByID(int id) {
-        for (Tile tile : tiles) {
-            if (tile.getId() == id) {
-                return tile;
-            }
-        }
-        return null;
-    }
-
     public void addInWarPlayer(Player player) {
         this.inWarPlayers.add(player);
     }

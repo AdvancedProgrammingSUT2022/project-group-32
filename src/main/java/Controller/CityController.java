@@ -27,8 +27,8 @@ public class CityController {
         // Building
         Building inProgressBuilding = city.getBuildingInProgress();
         if (inProgressBuilding != null) {
-            inProgressBuilding.setRemainingTurns(inProgressBuilding.getRemainingTurns() - 1);
-            if (inProgressBuilding.getRemainingTurns() == 0) {
+            inProgressBuilding.setRemainingCost(inProgressBuilding.getRemainingCost() - city.getProduction()); // production should be completed
+            if (inProgressBuilding.getRemainingCost() <= 0) {
                 city.addBuilding(inProgressBuilding);
                 city.setBuildingInProgress(null);
                 // todo: build finished popup and start new building popUp
@@ -37,11 +37,16 @@ public class CityController {
         // Unit
         Unit inProgressUnit = city.getUnitInProgress();
         if (inProgressUnit != null) {
-            inProgressUnit.setRemainingTurn(inProgressUnit.getRemainingTurn() - 1);
-            if (inProgressUnit.getRemainingTurn() == 0) {
+            inProgressUnit.setRemainingCost(inProgressUnit.getRemainingCost() - city.getProduction());
+            if (inProgressUnit.getRemainingCost() <= 0) {
                 player.addUnit(inProgressUnit);
                 city.setUnitInProgress(null);
-                // TODO: new unit creation logic, unit build finished popUp and new buildRequired popUp
+                if(!city.getCapitalTile().canFit(inProgressUnit)){
+                    System.err.println("unit can't be made because there exists a unit on the tile already");
+                    return;
+                }
+                city.getCapitalTile().putUnit(inProgressUnit);
+                // TODO: 5/2/2022 build finished popup maybe??
             }
         }
     }

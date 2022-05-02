@@ -11,8 +11,7 @@ public class Building {
     private final BuildingType buildingType;
     private int maintenanceCost;
     private final ArrayList<TechnologyType> neededTechs = new ArrayList<>();
-    private int remainingTurns;
-    private int requiredTurns; // TODO: 4/16/2022 Specialist handling
+    private int remainingCost;
 
     public Building(BuildingType buildingType) {
         this.buildingType = buildingType;
@@ -43,15 +42,11 @@ public class Building {
         return neededTechs;
     }
 
-    public int getRemainingTurns() {
-        return remainingTurns;
+    public int getRemainingCost() {
+        return remainingCost;
     }
 
-    public int getRequiredTurns() {
-        return requiredTurns;
-    }
-
-    public void setRemainingTurns(int remainingTurns) {
-        this.remainingTurns = remainingTurns;
+    public void setRemainingCost(int remainingTurns) {
+        this.remainingCost = remainingTurns;
     }
 }
