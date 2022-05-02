@@ -1,14 +1,17 @@
 package Controller;
 
+import Model.Improvement;
 import Model.Map;
 import Model.Tile;
 import Model.Units.Troop;
 import Model.Units.Unit;
 import enums.ImprovementType;
+import enums.OrderType;
 import enums.Responses.InGameResponses;
 import enums.Responses.Response;
 import enums.RouteType;
 import enums.UnitType;
+import jdk.jshell.execution.Util;
 
 public class UnitController {
     static final int INF = 9999;
@@ -17,6 +20,15 @@ public class UnitController {
     public static void updateUnit(Unit unit){
         unit.setMP(unit.getMovement());
         UnitController.moveToDestination(unit);
+        if(unit.getOrderType() == OrderType.BUILDING){
+            Improvement improvement = unit.getTile().getImprovement();
+            if(improvement != null){
+                improvement.setRemainingTurns(improvement.getRemainingTurns() - 1);
+                if(improvement.getRemainingTurns() <= 0){
+                    unit.setOrderType(OrderType.AWAKE);
+                }
+            }
+        }
         // TODO: 5/1/2022 health regeneration, garrison, fortify logic
     }
     // moves the selected unit to chosen destination
@@ -73,10 +85,13 @@ public class UnitController {
     public static InGameResponses.Unit sleep() {
         Unit unit = GameController.getSelectedUnitOrTroop();
         if (unit == null) {
-
+            return InGameResponses.Unit.NO_UNIT_SELECTED;
         }
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
+        if (unit.getOwner() != GameController.getCurrentPlayer()){
+            return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
+        }
+        unit.setOrderType(OrderType.ASLEEP);
+        return InGameResponses.Unit.SLEEP_SUCCESSFUL;
     }
 
     public static InGameResponses.Unit alert() {
@@ -112,8 +127,11 @@ public class UnitController {
     public static InGameResponses.Unit foundCity(String name) {
         // only for settlers
         Unit unit = GameController.getSelectedUnitOrTroop();
+        if (unit == null) {
+            return InGameResponses.Unit.NO_UNIT_SELECTED;
+        }
         if(unit.getOwner() != GameController.getCurrentPlayer()){
-            return InGameResponses.Unit.UNIT_NOT_YOURS;
+            return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
         }
         if(unit.getUnitType() != UnitType.SETTLER){
             return InGameResponses.Unit.UNIT_NOT_A_SETTLER;
@@ -135,8 +153,15 @@ public class UnitController {
     }
 
     public static InGameResponses.Unit wake() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
+        Unit unit = GameController.getSelectedUnitOrTroop();
+        if (unit == null) {
+            return InGameResponses.Unit.NO_UNIT_SELECTED;
+        }
+        if (unit.getOwner() != GameController.getCurrentPlayer()){
+            return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
+        }
+        unit.setOrderType(OrderType.AWAKE);
+        return InGameResponses.Unit.WAKE_SUCCESSFUL;
     }
 
     public static InGameResponses.Unit delete() {
@@ -144,9 +169,35 @@ public class UnitController {
 
     }
 
-    public static InGameResponses.Unit buildImprovement(ImprovementType improvement) {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
+    public static InGameResponses.Unit buildImprovement(ImprovementType improvementType) {
+        Unit unit = GameController.getSelectedUnit();
+        if (unit == null) {
+            return InGameResponses.Unit.NO_UNIT_SELECTED;
+        }
+        if(unit.getOwner() != GameController.getCurrentPlayer()){
+            return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
+        }
+        if(unit.getUnitType() != UnitType.WORKER){
+            return InGameResponses.Unit.UNIT_NOT_A_WORKER;
+        }
+        Tile tile = unit.getTile();
+        if(!improvementType.canBeOn.contains(tile.getBaseFeature()) && !improvementType.canBeOn.contains(tile.getTerrainFeature())){
+            return InGameResponses.Unit.BUILDING_NOT_POSSIBLE;
+        }
+        if(tile.getImprovement().getImprovementType() == improvementType){
+            if(tile.getImprovement().getRemainingTurns() <= 0){
+                return InGameResponses.Unit.IMPROVEMENT_ALREADY_EXISTS;
+            } else {
+                unit.setOrderType(OrderType.BUILDING);
+                unit.setMP(0);
+                return InGameResponses.Unit.CONTINUING_BUILDING;
+            }
+        }
+        Improvement improvement = new Improvement(improvementType, tile);
+        unit.setOrderType(OrderType.BUILDING);
+        unit.setMP(0);
+        unit.getTile().setImprovement(improvement);
+        return InGameResponses.Unit.BUILD_SUCCESSFUL;
     }
 
     public static InGameResponses.Unit buildRoad(RouteType roadType) {

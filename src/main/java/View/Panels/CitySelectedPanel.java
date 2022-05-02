@@ -4,7 +4,7 @@ import View.GameMenu;
 
 public class CitySelectedPanel extends GameMenu {
     public static void run(String command) {
-
+        // TODO: 5/2/2022  
     }
 
     public static void buildBuilding(String command) {

@@ -1,6 +1,5 @@
 package Model;
 
-import Model.Citizens.Citizen;
 import Model.Units.Troop;
 import Model.Units.Unit;
 import enums.BuildingType;
@@ -19,7 +18,7 @@ public class City {
     private ArrayList<Building> incompleteBuildings;
     private Unit unitInProgress;
     private ArrayList<Unit> incompleteUnits;
-    private ArrayList<Citizen> citizens = new ArrayList<>();
+    private int freeCitizens;
     private int food, production, population, health, baseStrength;
     private int sightRange;
     private Troop garrisonedTroop;
@@ -29,6 +28,7 @@ public class City {
         this.owner = owner;
         this.capitalTile = capitalTile;
         this.territory = territory;
+        this.freeCitizens = 0;
         // TODO: 4/17/2022 sets buildings, citizens, gold, food, .... to default value. and empty arraylists
     }
 
@@ -72,14 +72,6 @@ public class City {
         this.buildings = buildings;
     }
 
-    public ArrayList<Citizen> getCitizens() {
-        return citizens;
-    }
-
-    public void setCitizens(ArrayList<Citizen> citizens) {
-        this.citizens = citizens;
-    }
-
     public int getFood() {
         return food;
     }
@@ -102,6 +94,14 @@ public class City {
 
     public void setPopulation(int population) {
         this.population = population;
+    }
+
+    public int getFreeCitizens() {
+        return freeCitizens;
+    }
+
+    public void setFreeCitizens(int freeCitizens) {
+        this.freeCitizens = freeCitizens;
     }
 
     public int getHealth() {
@@ -185,15 +185,6 @@ public class City {
         return null;
     }
 
-    public Tile getTileByID(int id) {
-        for (Tile tile : territory) {
-            if (tile.getId() == id) {
-                return tile;
-            }
-        }
-        return null;
-    }
-
     public void addBuilding(Building building) {
         this.buildings.add(building);
     }
@@ -262,23 +253,6 @@ public class City {
         for (Unit incompleteUnit : incompleteUnits) {
             if (incompleteUnit.getUnitType().equals(unitType)) {
                 return incompleteUnit;
-            }
-        }
-        return null;
-    }
-
-    public void addCitizen(Citizen citizen) {
-        this.citizens.add(citizen);
-    }
-
-    public void removeCitizen(Citizen citizen) {
-        this.citizens.remove(citizen);
-    }
-
-    public Citizen getCitizenByName(String name) {
-        for (Citizen citizen : citizens) {
-            if (citizen.getName().equals(name)) {
-                return citizen;
             }
         }
         return null;
