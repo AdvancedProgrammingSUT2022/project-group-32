@@ -11,23 +11,22 @@ public class Improvement {
     private final ImprovementType improvementType;
     private String name;
     private final Tile tile;
-    private int addedFood, addedGold, addedProduction;
+    private final int addedFood, addedGold, addedProduction;
     private final ArrayList<TechnologyType> neededTechs = new ArrayList<>();
     private final ArrayList<ResourceType> unlockingResources = new ArrayList<>();
     private final ArrayList<TerrainFeature> possibleTerrainFeatures = new ArrayList<>();
     private int remainingTurns;
-    private int requiredTurns;
+    private final int requiredTurns;
 
     public Improvement(ImprovementType improvementType, Tile tile) {
         this.improvementType = improvementType;
         this.tile = tile;
-        setFieldsFromDataBase();
+        this.addedFood = improvementType.food;
+        this.addedGold = improvementType.gold;
+        this.addedProduction = improvementType.production;
+        this.requiredTurns = 6; // TODO: 5/2/2022 the number of turns should be determined
+        this.remainingTurns = this.requiredTurns;
     }
-
-    private void setFieldsFromDataBase() {
-        // TODO: 4/17/2022 `
-    }
-
     public String getName() {
         return name;
     }

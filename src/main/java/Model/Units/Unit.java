@@ -2,6 +2,7 @@ package Model.Units;
 
 import Model.Player;
 import Model.Tile;
+import enums.OrderType;
 import enums.UnitType;
 
 public class Unit {
@@ -17,6 +18,7 @@ public class Unit {
     private UnitType unitType;
     private Tile destination;
     private int remainingCost;
+    private OrderType orderType;
     // TODO: 4/17/2022 : Unit order handling (orders should be passed on between turns)
 
     public Unit(Tile tile, Player owner, UnitType unitType) {
@@ -32,6 +34,7 @@ public class Unit {
         this.HP = this.health;
         this.MP = this.movement;
         this.remainingCost = this.cost;
+        this.orderType = OrderType.AWAKE;
         this.tile.putUnit(this);
     }
 
@@ -129,6 +132,14 @@ public class Unit {
 
     public void setRemainingCost(int remainingTurn) {
         this.remainingCost = remainingTurn;
+    }
+
+    public OrderType getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(OrderType orderType) {
+        this.orderType = orderType;
     }
 
     public int getRow(){

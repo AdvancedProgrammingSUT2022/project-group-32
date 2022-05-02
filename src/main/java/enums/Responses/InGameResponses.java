@@ -47,8 +47,9 @@ public class InGameResponses {
         //BUILD
         ROAD_ALREADY_EXISTS("road already exists in the current position"),
         RAILROAD_ALREADY_EXISTS("railroad already exists in the current position"),
-        FARM_ALREADY_EXISTS("farm already exists in the current position"),
+        IMPROVEMENT_ALREADY_EXISTS("this improvement already exists in the current position"),
         BUILDING_NOT_POSSIBLE("building not possible in the current position"),
+        CONTINUING_BUILDING("worker is continuing the building"),
         MINE_ALREADY_EXISTS("mine already exists in the current position"),
         TRADING_POST_ALREADY_EXISTS("trading post already exists in the current position"),
         LUMBER_MILL_ALREADY_EXISTS("lumber-mill already exists in the current position"),
