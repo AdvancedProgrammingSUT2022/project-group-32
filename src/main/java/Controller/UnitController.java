@@ -148,8 +148,15 @@ public class UnitController {
     }
 
     public static InGameResponses.Unit cancelOrder() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
+        Unit unit = GameController.getSelectedUnitOrTroop();
+        if (unit == null) {
+            return InGameResponses.Unit.NO_UNIT_SELECTED;
+        }
+        if(unit.getOwner() != GameController.getCurrentPlayer()){
+            return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
+        }
+        unit.setOrderType(OrderType.AWAKE);
+        return InGameResponses.Unit.CANCEL_SUCCESSFUL;
     }
 
     public static InGameResponses.Unit wake() {
