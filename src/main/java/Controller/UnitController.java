@@ -5,13 +5,13 @@ import Model.Map;
 import Model.Tile;
 import Model.Units.Troop;
 import Model.Units.Unit;
-import enums.ImprovementType;
-import enums.OrderType;
+import enums.*;
 import enums.Responses.InGameResponses;
 import enums.Responses.Response;
-import enums.RouteType;
-import enums.UnitType;
 import jdk.jshell.execution.Util;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class UnitController {
     static final int INF = 9999;
@@ -115,8 +115,20 @@ public class UnitController {
     }
 
     public static InGameResponses.Unit setup() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-        // siege pre attack
+        // only for siege troops
+        Unit unit = GameController.getSelectedUnitOrTroop();
+        if (unit == null) {
+            return InGameResponses.Unit.NO_UNIT_SELECTED;
+        }
+        if(unit.getOwner() != GameController.getCurrentPlayer()){
+            return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
+        }
+        if(!UnitType.getUnitsByCombatType(CombatType.SIEGE).contains(unit.getUnitType())){
+            return InGameResponses.Unit.UNIT_NOT_SIEGE;
+        }
+        unit.setOrderType(OrderType.SETUP);
+        unit.setMP(0);
+        return InGameResponses.Unit.SETUP_SUCCESSFUL;
     }
 
     public static InGameResponses.Unit attack(int x, int y) {

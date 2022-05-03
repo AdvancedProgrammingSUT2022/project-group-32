@@ -66,6 +66,16 @@ public enum UnitType {
         return null;
     }
 
+    public static ArrayList<UnitType> getUnitsByCombatType(CombatType combatType){
+        ArrayList<UnitType> units = new ArrayList<UnitType>();
+        for (UnitType unitType : UnitType.values()) {
+            if(unitType.combatType.equals(combatType)){
+                units.add(unitType);
+            }
+        }
+        return units;
+    }
+
 }
 
 
