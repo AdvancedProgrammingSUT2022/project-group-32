@@ -9,6 +9,7 @@ import enums.*;
 import enums.Responses.InGameResponses;
 import enums.Responses.Response;
 import jdk.jshell.execution.Util;
+import org.mockito.internal.matchers.Or;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +26,13 @@ public class UnitController {
             if(improvement != null){
                 improvement.setRemainingTurns(improvement.getRemainingTurns() - 1);
                 if(improvement.getRemainingTurns() <= 0){
+                    unit.setOrderType(OrderType.AWAKE);
+                }
+            }
+        }
+        if(unit.getOrderType() == OrderType.ALERT){
+            for (Tile tile : GameController.getMap().lookAroundInRange(unit.getTile(), unit.getSightRange())) {
+                if(tile.getTroop() != null || tile.getUnit() != null){
                     unit.setOrderType(OrderType.AWAKE);
                 }
             }
@@ -95,8 +103,15 @@ public class UnitController {
     }
 
     public static InGameResponses.Unit alert() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
+        Unit unit = GameController.getSelectedUnitOrTroop();
+        if (unit == null) {
+            return InGameResponses.Unit.NO_UNIT_SELECTED;
+        }
+        if (unit.getOwner() != GameController.getCurrentPlayer()){
+            return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
+        }
+        unit.setOrderType(OrderType.ALERT);
+        return InGameResponses.Unit.ALERT_SUCCESSFUL;
     }
 
     public static InGameResponses.Unit fortify() {
