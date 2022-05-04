@@ -7,5 +7,6 @@ public enum OrderType {
     AWAKE,
     ALERT,
     HEAL,
-    SETUP;
+    SETUP,
+    MOVING;
 }

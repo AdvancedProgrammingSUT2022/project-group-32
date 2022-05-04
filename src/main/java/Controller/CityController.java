@@ -18,8 +18,6 @@ public class CityController {
         // gold updates is PlayerController.updateGold
         updateInProgressBuildsTurns(city);
         growCity();
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
     }
 
     private static void updateInProgressBuildsTurns(City city) {

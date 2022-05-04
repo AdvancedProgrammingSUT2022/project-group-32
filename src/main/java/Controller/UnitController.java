@@ -42,6 +42,7 @@ public class UnitController {
     // moves the selected unit to chosen destination
     public static void moveToDestination(Unit unit){
         if (unit.getDestination() == null || unit.getDestination() == unit.getTile()){
+            unit.setOrderType(OrderType.AWAKE);
             return;
         }
         Map map = GameController.getMap();
@@ -63,6 +64,9 @@ public class UnitController {
             unit.placeIn(nextTile);
             PlayerController.updateFieldOfView();
         }
+        if (unit.getDestination() == unit.getTile()){
+            unit.setOrderType(OrderType.AWAKE);
+        }
     }
 
     public static InGameResponses.Unit moveTo(int row, int column) {
@@ -81,6 +85,7 @@ public class UnitController {
             return InGameResponses.Unit.TILE_IS_FILLED;
         }
         unit.setDestination(map.getTile(row, column));
+        unit.setOrderType(OrderType.MOVING);
         moveToDestination(unit);
         return InGameResponses.Unit.MOVETO_SUCCESSFUL;
     }
