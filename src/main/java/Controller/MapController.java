@@ -18,13 +18,13 @@ import java.util.Random;
 public class MapController {
     private static final int INF = 9999;
 
-    private static Tile nearestOcean(Tile tile1) {
+    private static Tile nearestTileByFeature(Tile tile1, TerrainFeature feature) {
         Map map = GameController.getMap();
         int height = map.getHeight(), width = map.getWidth();
         Tile tile2 = map.getTile(0, 0);
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                if (map.getTile(i, j).getTerrain().getTerrainType().equals(TerrainType.OCEAN)) {
+                if (map.getTile(i, j).getTerrainFeature() == feature || map.getTile(i, j).getBaseFeature() == feature) {
                     if (map.getDistanceTo(tile1, map.getTile(i, j)) <= map.getDistanceTo(tile1, tile2)) {
                         tile2 = map.getTile(i, j);
                     }
@@ -61,7 +61,7 @@ public class MapController {
             for (int column = 0; column < width; column++) {
                 Tile tile1 = tiles[row][column];
                 if (tile1.getTerrain().getTerrainType().equals(TerrainType.MOUNTAIN)) {
-                    Tile tile2 = nearestOcean(tile1);
+                    Tile tile2 = nearestTileByFeature(tile1, TerrainFeature.OCEAN);
                     drawRiverFromTo(tile1, tile2);
                 }
             }

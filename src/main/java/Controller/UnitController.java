@@ -5,13 +5,14 @@ import Model.Map;
 import Model.Tile;
 import Model.Units.Troop;
 import Model.Units.Unit;
-import enums.ImprovementType;
-import enums.OrderType;
+import enums.*;
 import enums.Responses.InGameResponses;
 import enums.Responses.Response;
-import enums.RouteType;
-import enums.UnitType;
 import jdk.jshell.execution.Util;
+import org.mockito.internal.matchers.Or;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class UnitController {
     static final int INF = 9999;
@@ -29,11 +30,19 @@ public class UnitController {
                 }
             }
         }
+        if(unit.getOrderType() == OrderType.ALERT){
+            for (Tile tile : GameController.getMap().lookAroundInRange(unit.getTile(), unit.getSightRange())) {
+                if(tile.getTroop() != null || tile.getUnit() != null){
+                    unit.setOrderType(OrderType.AWAKE);
+                }
+            }
+        }
         // TODO: 5/1/2022 health regeneration, garrison, fortify logic
     }
     // moves the selected unit to chosen destination
     public static void moveToDestination(Unit unit){
         if (unit.getDestination() == null || unit.getDestination() == unit.getTile()){
+            unit.setOrderType(OrderType.AWAKE);
             return;
         }
         Map map = GameController.getMap();
@@ -55,6 +64,9 @@ public class UnitController {
             unit.placeIn(nextTile);
             PlayerController.updateFieldOfView();
         }
+        if (unit.getDestination() == unit.getTile()){
+            unit.setOrderType(OrderType.AWAKE);
+        }
     }
 
     public static InGameResponses.Unit moveTo(int row, int column) {
@@ -73,6 +85,7 @@ public class UnitController {
             return InGameResponses.Unit.TILE_IS_FILLED;
         }
         unit.setDestination(map.getTile(row, column));
+        unit.setOrderType(OrderType.MOVING);
         moveToDestination(unit);
         return InGameResponses.Unit.MOVETO_SUCCESSFUL;
     }
@@ -95,8 +108,15 @@ public class UnitController {
     }
 
     public static InGameResponses.Unit alert() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
+        Unit unit = GameController.getSelectedUnitOrTroop();
+        if (unit == null) {
+            return InGameResponses.Unit.NO_UNIT_SELECTED;
+        }
+        if (unit.getOwner() != GameController.getCurrentPlayer()){
+            return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
+        }
+        unit.setOrderType(OrderType.ALERT);
+        return InGameResponses.Unit.ALERT_SUCCESSFUL;
     }
 
     public static InGameResponses.Unit fortify() {
@@ -115,8 +135,20 @@ public class UnitController {
     }
 
     public static InGameResponses.Unit setup() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-        // siege pre attack
+        // only for siege troops
+        Unit unit = GameController.getSelectedUnitOrTroop();
+        if (unit == null) {
+            return InGameResponses.Unit.NO_UNIT_SELECTED;
+        }
+        if(unit.getOwner() != GameController.getCurrentPlayer()){
+            return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
+        }
+        if(!UnitType.getUnitsByCombatType(CombatType.SIEGE).contains(unit.getUnitType())){
+            return InGameResponses.Unit.UNIT_NOT_SIEGE;
+        }
+        unit.setOrderType(OrderType.SETUP);
+        unit.setMP(0);
+        return InGameResponses.Unit.SETUP_SUCCESSFUL;
     }
 
     public static InGameResponses.Unit attack(int x, int y) {
@@ -148,8 +180,15 @@ public class UnitController {
     }
 
     public static InGameResponses.Unit cancelOrder() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
+        Unit unit = GameController.getSelectedUnitOrTroop();
+        if (unit == null) {
+            return InGameResponses.Unit.NO_UNIT_SELECTED;
+        }
+        if(unit.getOwner() != GameController.getCurrentPlayer()){
+            return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
+        }
+        unit.setOrderType(OrderType.AWAKE);
+        return InGameResponses.Unit.CANCEL_SUCCESSFUL;
     }
 
     public static InGameResponses.Unit wake() {

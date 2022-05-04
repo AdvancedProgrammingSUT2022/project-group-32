@@ -36,7 +36,7 @@ public class InGameResponses {
         //GARRISON
         UNIT_NOT_PRESENT_IN_CITY("unit is not present in the city"),
         //SETUP
-        SURROUND_NOT_POSSIBLE("selected unit is not capable of surrounding"),
+        UNIT_NOT_SIEGE("selected unit is not a siege unit"),
         //ATTACK
         ATTACK_NOT_POSSIBLE("attack to this position is not possible"),
         //FOUND
