@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.Objects;
 
 public enum UnitType {
-    ARCHER("Archer", 70, CombatType.ARCHERY, 4, 6, 2, 2, null, TechnologyType.ARCHERY),
+    ARCHER("Archer", 70, CombatType.RANGED, 4, 6, 2, 2, null, TechnologyType.ARCHERY),
     CHARIOT_ARCHER("Chariot Archer", 60, CombatType.MOUNTED, 3, 6, 2, 4, ResourceType.HORSES, TechnologyType.THE_WHEEL),
     SCOUT("Scout", 25, CombatType.RECON, 4, 0, 0, 2, null, null),
     SETTLER("Settler", 89, CombatType.CIVILIAN, 0, 0, 0, 2, null, null),
@@ -21,7 +21,7 @@ public enum UnitType {
     CATAPULT("Catapult", 100, CombatType.SIEGE, 4, 14, 2, 2, ResourceType.IRON, TechnologyType.MATHEMATICS),
     HORSEMAN("Horseman", 80, CombatType.MOUNTED, 12, 0, 0, 4, ResourceType.HORSES, TechnologyType.HORSEBACK_RIDING),
     SWORDSMAN("Swordsman", 80, CombatType.MELEE, 11, 0, 0, 2, ResourceType.IRON, TechnologyType.IRON_WORKING),
-    CROSSBOWMAN("Crossbowman", 120, CombatType.ARCHERY, 6, 12, 2, 2, null, TechnologyType.MACHINERY),
+    CROSSBOWMAN("Crossbowman", 120, CombatType.RANGED, 6, 12, 2, 2, null, TechnologyType.MACHINERY),
     KNIGHT("Knight", 150, CombatType.MOUNTED, 18, 0, 0, 3, ResourceType.HORSES, TechnologyType.CHIVALRY),
     LONGSWORDSMAN("Longswordsman", 150, CombatType.MELEE, 18, 0, 0, 3, ResourceType.IRON, TechnologyType.STEEL),
     PIKEMAN("Pikeman", 100, CombatType.MELEE, 10, 0, 0, 2, null, TechnologyType.CIVIL_SERVICE),
@@ -66,11 +66,13 @@ public enum UnitType {
         return null;
     }
 
-    public static ArrayList<UnitType> getUnitsByCombatType(CombatType combatType){
+    public static ArrayList<UnitType> getUnitsByCombatType(CombatType... combatType){
         ArrayList<UnitType> units = new ArrayList<UnitType>();
         for (UnitType unitType : UnitType.values()) {
-            if(unitType.combatType.equals(combatType)){
-                units.add(unitType);
+            for (CombatType type : combatType) {
+                if(unitType.combatType.equals(type)){
+                    units.add(unitType);
+                }
             }
         }
         return units;

@@ -34,6 +34,7 @@ public class InGameResponses {
         TILE_IS_FILLED("movement to this position is not possible because there is a troop on it"),
         //ALERT , FORTIFY , GARRISON , ATTACK
         UNIT_NOT_MILITARY("selected unit is non-military"),
+        UNIT_CANT_FORTIFY("selected unit can't fortify"),
         //GARRISON
         UNIT_NOT_PRESENT_IN_CITY("unit is not present in the city"),
         //SETUP
@@ -74,6 +75,7 @@ public class InGameResponses {
         SLEEP_SUCCESSFUL("unit successfully slept"),
         ALERT_SUCCESSFUL("unit successfully alerted"),
         FORTIFY_SUCCESSFUL("unit successfully fortified"),
+        HEAL_SUCCESSFUL("unit is successfully healing"),
         GARRISON__SUCCESSFUL("unit successfully garrisoned"),
         SETUP_SUCCESSFUL("unit successfully setup"),
         ATTACK_SUCCESSFUL("unit successfully attacked"),

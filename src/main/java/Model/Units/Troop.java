@@ -7,14 +7,11 @@ import enums.ResourceType;
 import enums.TechnologyType;
 import enums.UnitType;
 
-import java.util.ArrayList;
-
 public class Troop extends Unit {
     private int meleeStrength;
     private int rangedStrength;
     private int range;
-    private int beenFortified;
-    private boolean isFortified;
+    private int fortifyBonus;
     private CombatType combatType;
     private final ResourceType neededResource;
     private final TechnologyType neededTechnology;
@@ -24,8 +21,7 @@ public class Troop extends Unit {
         this.meleeStrength = unitType.strength;
         this.rangedStrength = unitType.rangedStrength;
         this.range = unitType.range;
-        this.beenFortified = 0;
-        this.isFortified = false;
+        this.fortifyBonus = 0;
         this.combatType = unitType.combatType;
         this.neededResource = unitType.neededResource;
         this.neededTechnology = unitType.neededTech;
@@ -63,20 +59,12 @@ public class Troop extends Unit {
         this.combatType = combatType;
     }
 
-    public int getBeenFortified() {
-        return beenFortified;
+    public int getFortifyBonus() {
+        return fortifyBonus;
     }
 
-    public void setBeenFortified(int beenFortified) {
-        this.beenFortified = beenFortified;
-    }
-
-    public boolean isFortified() {
-        return isFortified;
-    }
-
-    public void setFortified(boolean fortified) {
-        isFortified = fortified;
+    public void setFortifyBonus(int fortifyBonus) {
+        this.fortifyBonus = fortifyBonus;
     }
 
     public ResourceType getNeededResource() {
