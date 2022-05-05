@@ -5,6 +5,7 @@ import Model.Map;
 import Model.Tile;
 import Model.Units.Troop;
 import Model.Units.Unit;
+import View.GameMenu;
 import enums.*;
 import enums.Responses.InGameResponses;
 import enums.Responses.Response;
@@ -169,11 +170,6 @@ public class UnitController {
         return InGameResponses.Unit.HEAL_SUCCESSFUL;
     }
 
-    public static InGameResponses.Unit garrison() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
-    }
-
     public static InGameResponses.Unit setup() {
         // only for siege troops
         Unit unit = GameController.getSelectedUnitOrTroop();
@@ -223,7 +219,6 @@ public class UnitController {
         GameController.setSelectedUnit(null);
         PlayerController.updateFieldOfView(unit.getOwner());
         return InGameResponses.Unit.FOUND_SUCCESSFUL;
-
     }
 
     public static InGameResponses.Unit cancelOrder() {
@@ -254,7 +249,22 @@ public class UnitController {
     }
 
     public static InGameResponses.Unit delete() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+        Unit unit = GameController.getSelectedUnitOrTroop();
+        if (unit == null) {
+            return InGameResponses.Unit.NO_UNIT_SELECTED;
+        }
+        if (unit.getOwner() != GameController.getCurrentPlayer()){
+            return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
+        }
+        if(unit.getMP() <= 0){
+            return InGameResponses.Unit.UNIT_IS_TIRED;
+        }
+        unit.getOwner().setGold(unit.getOwner().getGold() + unit.getCost() / 10);
+        unit.destroy();
+        GameController.setSelectedUnit(null);
+        GameController.setSelectedTroop(null);
+        PlayerController.updateFieldOfView(unit.getOwner());
+        return InGameResponses.Unit.DELETE_SUCCESSFUL;
     }
 
     public static InGameResponses.Unit buildImprovement(ImprovementType improvementType) {
