@@ -1,7 +1,7 @@
 package enums;
 
 public enum CombatType {
-    ARCHERY("Archery"),
+    RANGED("Ranged"),
     MOUNTED("Mounted"),
     RECON("Recon"),
     CIVILIAN("Civilian"),

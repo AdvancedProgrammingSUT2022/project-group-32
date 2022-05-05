@@ -8,7 +8,7 @@ public class Terrain {
     private final int INF = 9999;
 
     private final TerrainType terrainType;
-    private final TerrainFeature terrainFeature;
+    private TerrainFeature terrainFeature;
     private final TerrainFeature baseFeature; // terrainType and baseFeature are same baseTerrain but in different enums
     private final ResourceType resourceType;
 
@@ -26,6 +26,10 @@ public class Terrain {
 
     public TerrainFeature getTerrainFeature() {
         return terrainFeature;
+    }
+
+    public void setTerrainFeature(TerrainFeature terrainFeature) {
+        this.terrainFeature = terrainFeature;
     }
 
     public TerrainFeature getBaseFeature() {

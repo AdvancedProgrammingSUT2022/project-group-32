@@ -13,7 +13,6 @@ public class Unit {
     private int movement;
     private int MP; // needs to be refilled at the end of each turn
     private int HP;
-    private int XP;
     private int sightRange;
     private UnitType unitType;
     private Tile destination;
@@ -25,7 +24,6 @@ public class Unit {
         this.tile = tile;
         this.owner = owner;
         this.unitType = unitType;
-        this.XP = 0;
         this.destination = this.tile;
         this.health = 10;
         this.cost = unitType.cost;
@@ -92,14 +90,6 @@ public class Unit {
 
     public void setHP(int HP) {
         this.HP = HP;
-    }
-
-    public int getXP() {
-        return XP;
-    }
-
-    public void setXP(int XP) {
-        this.XP = XP;
     }
 
     public int getSightRange() {
