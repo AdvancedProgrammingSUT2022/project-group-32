@@ -143,6 +143,9 @@ public class UnitController {
         if(unit.getOwner() != GameController.getCurrentPlayer()){
             return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
         }
+        if(unit.getMP() <= 0){
+            return InGameResponses.Unit.UNIT_IS_TIRED;
+        }
         if(!UnitType.getUnitsByCombatType(CombatType.SIEGE).contains(unit.getUnitType())){
             return InGameResponses.Unit.UNIT_NOT_SIEGE;
         }
@@ -164,6 +167,9 @@ public class UnitController {
         }
         if(unit.getOwner() != GameController.getCurrentPlayer()){
             return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
+        }
+        if(unit.getMP() <= 0){
+            return InGameResponses.Unit.UNIT_IS_TIRED;
         }
         if(unit.getUnitType() != UnitType.SETTLER){
             return InGameResponses.Unit.UNIT_NOT_A_SETTLER;
@@ -216,6 +222,9 @@ public class UnitController {
         if(unit.getOwner() != GameController.getCurrentPlayer()){
             return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
         }
+        if(unit.getMP() <= 0){
+            return InGameResponses.Unit.UNIT_IS_TIRED;
+        }
         if(unit.getUnitType() != UnitType.WORKER){
             return InGameResponses.Unit.UNIT_NOT_A_WORKER;
         }
@@ -240,18 +249,75 @@ public class UnitController {
     }
 
     public static InGameResponses.Unit buildRoad(RouteType roadType) {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
+        Unit unit = GameController.getSelectedUnit();
+        if (unit == null) {
+            return InGameResponses.Unit.NO_UNIT_SELECTED;
+        }
+        if(unit.getOwner() != GameController.getCurrentPlayer()){
+            return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
+        }
+        if(unit.getMP() <= 0){
+            return InGameResponses.Unit.UNIT_IS_TIRED;
+        }
+        if(unit.getUnitType() != UnitType.WORKER){
+            return InGameResponses.Unit.UNIT_NOT_A_WORKER;
+        }
+        Tile tile = unit.getTile();
+        if(tile.getRoadType() == RouteType.ROAD){
+            return InGameResponses.Unit.ROAD_ALREADY_EXISTS;
+        }
+        if(tile.getRoadType() == RouteType.RAILROAD){
+            return InGameResponses.Unit.RAILROAD_ALREADY_EXISTS;
+        }
+        tile.setRoadType(roadType); // note: road types take 1 turn to build right now
+        unit.setMP(0);
+        return InGameResponses.Unit.BUILD_SUCCESSFUL;
     }
 
     public static InGameResponses.Unit removeForest() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
+        Unit unit = GameController.getSelectedUnit();
+        if (unit == null) {
+            return InGameResponses.Unit.NO_UNIT_SELECTED;
+        }
+        if(unit.getOwner() != GameController.getCurrentPlayer()){
+            return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
+        }
+        if(unit.getMP() <= 0){
+            return InGameResponses.Unit.UNIT_IS_TIRED;
+        }
+        if(unit.getUnitType() != UnitType.WORKER){
+            return InGameResponses.Unit.UNIT_NOT_A_WORKER;
+        }
+        Tile tile = unit.getTile();
+        if(tile.getTerrainFeature() != TerrainFeature.FOREST){
+            return InGameResponses.Unit.TILE_NOT_FOREST;
+        }
+        tile.getTerrain().setTerrainFeature(null); // note: deforestation takes 1 turn
+        unit.setMP(0);
+        return InGameResponses.Unit.REMOVE_SUCCESSFUL;
     }
 
     public static InGameResponses.Unit removeRoute() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
+        Unit unit = GameController.getSelectedUnit();
+        if (unit == null) {
+            return InGameResponses.Unit.NO_UNIT_SELECTED;
+        }
+        if(unit.getOwner() != GameController.getCurrentPlayer()){
+            return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
+        }
+        if(unit.getMP() <= 0){
+            return InGameResponses.Unit.UNIT_IS_TIRED;
+        }
+        if(unit.getUnitType() != UnitType.WORKER){
+            return InGameResponses.Unit.UNIT_NOT_A_WORKER;
+        }
+        Tile tile = unit.getTile();
+        if(tile.getRoadType() == null){
+            return InGameResponses.Unit.ROUTE_NOT_AVAILABLE;
+        }
+        tile.setRoadType(null); // note: deforestation takes 1 turn
+        unit.setMP(0);
+        return InGameResponses.Unit.REMOVE_SUCCESSFUL;
     }
 
     public static InGameResponses.Unit repair() {

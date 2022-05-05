@@ -28,6 +28,7 @@ public class InGameResponses {
         NO_UNIT_SELECTED("no unit is selected"),
         UNIT_NOT_AVAILABLE("selected unit is not available"),
         UNIT_NOT_IN_POSSESS("selected unit is not in possess"),
+        UNIT_IS_TIRED("selected unit is out of moves"),
         //MOVE TO
         TILE_NOT_REACHABLE("movement to this position is not possible because its not reachable"),
         TILE_IS_FILLED("movement to this position is not possible because there is a troop on it"),
@@ -44,6 +45,7 @@ public class InGameResponses {
         CITY_FOUNDATION_NOT_POSSIBLE("city foundation in the current position is not possible"),
         //BUILD , REMOVE , REPAIR
         UNIT_NOT_A_WORKER("selected unit is not a worker"),
+        TILE_NOT_FOREST("selected unit is not on a forest tile"),
         //BUILD
         ROAD_ALREADY_EXISTS("road already exists in the current position"),
         RAILROAD_ALREADY_EXISTS("railroad already exists in the current position"),
@@ -59,7 +61,7 @@ public class InGameResponses {
         PLANTATION_ALREADY_EXISTS("plantation already exists in the current position"),
         QUARRY_ALREADY_EXISTS("quarry already exists in the current position"),
         //REMOVE
-        ROUTE_NOT_AVAILABLE("route is not available in this tile"),
+        ROUTE_NOT_AVAILABLE("selected unit is not on a tile with a route"),
         //REPAIR
         RUIN_NOT_AVAILABLE("ruin is not available in the current position"),
         //BUILDING THE UNIT
