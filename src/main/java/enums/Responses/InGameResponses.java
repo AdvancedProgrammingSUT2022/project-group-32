@@ -108,7 +108,13 @@ public class InGameResponses {
         // general
         NO_CITY_SELECTED("you haven't selected any city yet"),
         LOCATION_NOT_VALID("the coordinates are not valid"),
-
+        // citizen assigning/freeing
+        NO_FREE_CITIZEN("the city has no free citizens"),
+        TILE_NOT_IN_TERRITORY("selected tile is not inside this city"),
+        TILE_ALREADY_FULL("this tile already has a citizen working on it"),
+        TILE_IS_EMPTY("this tile has no citizen working on it"),
+        ASSIGNMENT_SUCCESSFUL("a citizen was successfully assigned to this tile"),
+        FREEING_SUCCESSFUL("the citizen is now unemployed"),
         // purchase units
         CAPITAL_IS_FULL("capital tile is currently fulled"),
         NOT_ENOUGH_GOLD("not enough gold to buy the unit"),

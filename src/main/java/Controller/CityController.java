@@ -146,9 +146,40 @@ public class CityController {
         return InGameResponses.City.UNIT_BUY_SUCCESSFUL;
     }
 
-    public static InGameResponses.City assignCitizenToTile() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+    public static InGameResponses.City assignCitizenToTile(int row, int column) {
+        City city = GameController.getSelectedCity();
+        if(city == null) return InGameResponses.City.NO_CITY_SELECTED;
+        if(city.getFreeCitizens() == 0){
+            return InGameResponses.City.NO_FREE_CITIZEN;
+        }
+        Tile tile = GameController.getMap().getTile(row, column);
+        if (tile == null) {
+            return InGameResponses.City.LOCATION_NOT_VALID;
+        }
+        if(tile.getCity() != city){
+            return InGameResponses.City.TILE_NOT_IN_TERRITORY;
+        }
+        if(tile.isHasCitizen()){
+            return InGameResponses.City.TILE_ALREADY_FULL;
+        }
+        tile.setHasCitizen(true);
+        city.setFreeCitizens(city.getFreeCitizens() - 1);
+        return InGameResponses.City.ASSIGNMENT_SUCCESSFUL;
+    }
 
+    public static InGameResponses.City freeCitizenFromTile(int row, int column) {
+        City city = GameController.getSelectedCity();
+        if(city == null) return InGameResponses.City.NO_CITY_SELECTED;
+        Tile tile = GameController.getMap().getTile(row, column);
+        if (tile == null) {
+            return InGameResponses.City.LOCATION_NOT_VALID;
+        }
+        if(!tile.isHasCitizen()){
+            return InGameResponses.City.TILE_IS_EMPTY;
+        }
+        tile.setHasCitizen(false);
+        city.setFreeCitizens(city.getFreeCitizens() + 1);
+        return InGameResponses.City.FREEING_SUCCESSFUL;
     }
 
     public static InGameResponses.City buyTile(int row, int column) {
