@@ -44,6 +44,8 @@ public class InGameResponses {
         //FOUND
         UNIT_NOT_A_SETTLER("selected unit is not a settler"),
         CITY_FOUNDATION_NOT_POSSIBLE("city foundation in the current position is not possible"),
+        //PILLAGE
+        NO_IMPROVEMENT("there is no improvement on the current tile"),
         //BUILD , REMOVE , REPAIR
         UNIT_NOT_A_WORKER("selected unit is not a worker"),
         TILE_NOT_FOREST("selected unit is not on a forest tile"),
@@ -85,6 +87,7 @@ public class InGameResponses {
         DELETE_SUCCESSFUL("unit successfully deleted"),
         BUILD_SUCCESSFUL("successfully built"),
         REMOVE_SUCCESSFUL("successfully removed"),
+        PILLAGE_SUCCESSFUL("pillage successful"),
         REPAIR_SUCCESSFUL("successfully repaired");
 
         private final String message;

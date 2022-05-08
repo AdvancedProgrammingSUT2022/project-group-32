@@ -17,7 +17,6 @@ public class CityController {
         // todo: updates resources, population, ... after a turn has passed.
         // gold updates is PlayerController.updateGold
         updateInProgressBuildsTurns(city);
-        growCity();
     }
 
     private static void updateInProgressBuildsTurns(City city) {
@@ -135,10 +134,6 @@ public class CityController {
     public static void assignCitizenToTile() {
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
 
-    }
-
-    public static void growCity() {
-        // TODO: 5/1/2022 may not even be necessary
     }
 
     public static InGameResponses.City buyTile(int row, int column) {
