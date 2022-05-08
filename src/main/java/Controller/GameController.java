@@ -153,6 +153,10 @@ public class GameController {
         return Response.GameMenu.MOVEMENT_OUT_OF_RANGE;
 
     }
+    // same as above basically overriding
+    public static Response.GameMenu changeCamera(String direction){
+        return changeCamera(direction, 1);
+    }
 
     ///         CHEAT CODES
 

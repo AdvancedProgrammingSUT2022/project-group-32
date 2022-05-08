@@ -180,6 +180,24 @@ public class InGameResponses {
             return messageText.replaceFirst("\\$", dynamicSubstring[0]);
         }
     }
+    public enum Technology{
+        TECH_ALREADY_DONE("you have already researched this technology"),
+        TECH_NOT_YET_READY("you don't have the prerequisites for this technology"),
+        TECH_RESEARCHED("technology is being researched");
+
+        private final String message;
+
+        Technology(String message) {
+            this.message = message;
+        }
+
+        // can get a string and adds it to corresponding location in the response message
+        public String getString(String... dynamicSubstring) {
+            String messageText = this.message;
+            if (dynamicSubstring.length == 0 || !messageText.contains("$")) return this.message;
+            return messageText.replaceFirst("\\$", dynamicSubstring[0]);
+        }
+    }
     public enum Info {
         //GENERAL(FOR ALL)  needed??
         ACCEPT("accept");

@@ -3,11 +3,9 @@ package Controller;
 import Model.*;
 import Model.Units.Troop;
 import Model.Units.Unit;
-import enums.BuildingType;
-import enums.FogState;
+import enums.*;
+import enums.Responses.InGameResponses;
 import enums.Responses.Response;
-import enums.TerrainType;
-import enums.UnitType;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
@@ -38,27 +36,6 @@ public class PlayerController {
             player.setMap(new Map(game.getMap())); // deep copying map
             PlayerController.updateFieldOfView(player);
         }
-    }
-
-    public static Response.GameMenu moveCamera(char direction, int value) {
-        // gets current player from game
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
-    }
-    // overloading
-    public static Response.GameMenu moveCamera(char direction) {
-        return moveCamera(direction, 0);
-    }
-
-
-    public static Response.GameMenu setCameraByXY(int x, int y) {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
-    }
-
-    public static Response.GameMenu setCameraByCityName(String cityName) {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-
     }
 
     // TODO: 4/17/2022 War declaration needs confirmation
@@ -116,6 +93,27 @@ public class PlayerController {
 
     public static String victoryPanelInfo() {
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+    }
+
+    public static InGameResponses.Technology researchTech(TechnologyType technologyType){
+        Player player = GameController.getCurrentPlayer();
+        if(player.getTechnologyByType(technologyType) != null){
+            return InGameResponses.Technology.TECH_RESEARCHED;
+        }
+        for (TechnologyType neededTech : technologyType.neededTechs) {
+            if(player.getTechnologyByType(neededTech) == null){
+                return InGameResponses.Technology.TECH_NOT_YET_READY; // can be dynamic
+            }
+        }
+        player.addIncompleteTechnology(player.getTechnologyInProgress());
+        player.setTechnologyInProgress(null);
+        Technology technology = new Technology(technologyType);
+        if (player.getIncompleteTechnologyByType(technologyType) != null){
+            technology = player.getIncompleteTechnologyByType(technologyType);
+            player.removeIncompleteTechnology(technology);
+        }
+        player.setTechnologyInProgress(technology);
+        return InGameResponses.Technology.TECH_RESEARCHED;
     }
 
     public static void startTurn() {
@@ -224,8 +222,8 @@ public class PlayerController {
         Player player = GameController.getGame().getCurrentPlayer();
         Technology inProgressTechnology = player.getTechnologyInProgress();
         if (inProgressTechnology != null) {
-            inProgressTechnology.setRemainingTurns(inProgressTechnology.getRemainingTurns() - 1);
-            if (inProgressTechnology.getRequiredTurns() == 0) {
+            inProgressTechnology.setRemainingCost(inProgressTechnology.getRemainingCost() - player.getScience());
+            if (inProgressTechnology.getRequiredCost() <= 0) {
                 player.addTechnology(inProgressTechnology);
                 player.setTechnologyInProgress(null);
                 // TODO: 4/27/2022 tech fininsh popup and Logic, new build required
