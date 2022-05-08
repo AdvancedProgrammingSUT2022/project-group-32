@@ -198,6 +198,7 @@ public class PlayerController {
     }
 
     public static void updateSupplies() {
+
         // TODO: 4/17/2022
     }
 
@@ -217,6 +218,9 @@ public class PlayerController {
             }
             goldChange += cityGrossGold;
         }
+        int unitMaintenanceCost = 1;
+        goldChange -= unitMaintenanceCost * GameController.getCurrentPlayer().getUnits().size();
+        GameController.getCurrentPlayer().addGold(goldChange);
         // +: terrains, terrain Features, resources, buildings cost __ not handling route  and unit cost
     }
 

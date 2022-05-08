@@ -346,4 +346,8 @@ public class Player {
     public Color getColor() {
         return this.color;
     }
+
+    public void addGold(double goldChange) {
+        gold += goldChange;
+    }
 }

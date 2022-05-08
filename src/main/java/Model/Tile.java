@@ -281,10 +281,12 @@ public class Tile {
 
     public int getGold() {
         // TODO: anything else?
-        // + : terrain, terrain Feature, resource if improved, rivers
+        // + : terrain, terrain Feature, resource  improved, rivers
         return terrain.getGold() +
-                ((resource.getNeededImprovement().name.equals(improvement.getName())) ? resource.getGold() : 0) +
-                (int) isRiver.values().stream().filter(i -> i.equals(1)).count();
+                ((hasCitizen) ? resource.getGold() : 0) +
+                ((resource.getNeededImprovement().name.equals(improvement.getName())) ? improvement.getAddedGold() : 0) +
+                (int) isRiver.values().stream().filter(i -> i.equals(1)).count() -
+                ((roadType == null) ? 0 : roadType.getMaintenanceCost());
     }
 
     public int getProduction() {
