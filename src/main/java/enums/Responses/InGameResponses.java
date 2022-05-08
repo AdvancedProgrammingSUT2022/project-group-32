@@ -46,6 +46,7 @@ public class InGameResponses {
         CITY_FOUNDATION_NOT_POSSIBLE("city foundation in the current position is not possible"),
         //PILLAGE
         NO_IMPROVEMENT("there is no improvement on the current tile"),
+        OWN_IMPROVEMENT("this improvement belongs to you, you can't pillage it"),
         //BUILD , REMOVE , REPAIR
         UNIT_NOT_A_WORKER("selected unit is not a worker"),
         TILE_NOT_FOREST("selected unit is not on a forest tile"),
