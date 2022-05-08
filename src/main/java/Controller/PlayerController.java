@@ -3,11 +3,9 @@ package Controller;
 import Model.*;
 import Model.Units.Troop;
 import Model.Units.Unit;
-import enums.BuildingType;
-import enums.FogState;
+import enums.*;
+import enums.Responses.InGameResponses;
 import enums.Responses.Response;
-import enums.TerrainType;
-import enums.UnitType;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
@@ -118,6 +116,27 @@ public class PlayerController {
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
     }
 
+    public static InGameResponses.Technology researchTech(TechnologyType technologyType){
+        Player player = GameController.getCurrentPlayer();
+        if(player.getTechnologyByType(technologyType) != null){
+            return InGameResponses.Technology.TECH_RESEARCHED;
+        }
+        for (TechnologyType neededTech : technologyType.neededTechs) {
+            if(player.getTechnologyByType(neededTech) == null){
+                return InGameResponses.Technology.TECH_NOT_YET_READY; // can be dynamic
+            }
+        }
+        player.addIncompleteTechnology(player.getTechnologyInProgress());
+        player.setTechnologyInProgress(null);
+        Technology technology = new Technology(technologyType);
+        if (player.getIncompleteTechnologyByType(technologyType) != null){
+            technology = player.getIncompleteTechnologyByType(technologyType);
+            player.removeIncompleteTechnology(technology);
+        }
+        player.setTechnologyInProgress(technology);
+        return InGameResponses.Technology.TECH_RESEARCHED;
+    }
+
     public static void startTurn() {
         // TODO: 4/23/2022 does the necessary stuff at the start of the turn
         // TODO: 4/27/2022 decrease ramaining turns in in progress units, techs, buildings, improvements
@@ -224,8 +243,8 @@ public class PlayerController {
         Player player = GameController.getGame().getCurrentPlayer();
         Technology inProgressTechnology = player.getTechnologyInProgress();
         if (inProgressTechnology != null) {
-            inProgressTechnology.setRemainingTurns(inProgressTechnology.getRemainingTurns() - 1);
-            if (inProgressTechnology.getRequiredTurns() == 0) {
+            inProgressTechnology.setRemainingCost(inProgressTechnology.getRemainingCost() - player.getScience());
+            if (inProgressTechnology.getRequiredCost() <= 0) {
                 player.addTechnology(inProgressTechnology);
                 player.setTechnologyInProgress(null);
                 // TODO: 4/27/2022 tech fininsh popup and Logic, new build required
