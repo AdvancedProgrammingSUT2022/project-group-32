@@ -4,9 +4,9 @@ import Controller.GameController;
 import Controller.PlayerController;
 import Model.Tile;
 import View.Panels.*;
+import enums.Color;
 import enums.Responses.Response;
 
-import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.function.Consumer;
@@ -81,8 +81,12 @@ public class GameMenu extends Menu {
     }
 
     private static void printMap(String[][] map, int cameraRow, int cameraColumn) {
+        System.out.println(Color.YELLOW_BOLD_BRIGHT.code + Color.GREEN_BACKGROUND.code + "Player : '" + GameController.getCurrentPlayer().getName() + "'"
+                + Color.RESET.code);
         for (int row = Math.max(0, cameraRow - SCREEN_HEIGHT / 2); row < Math.min(map.length, cameraRow + SCREEN_HEIGHT / 2); row++) {
-            for (int column = Math.max(0, cameraColumn - SCREEN_WIDTH / 2); column < Math.min(map[0].length, cameraColumn + SCREEN_WIDTH / 2); column++) {
+            for (int column = Math.max(0, cameraColumn - SCREEN_WIDTH / 2);
+                 column < Math.min(map[0].length, cameraColumn + SCREEN_WIDTH / 2);
+                 column++) {
                 System.out.print(map[row][column]);
             }
             System.out.println();
