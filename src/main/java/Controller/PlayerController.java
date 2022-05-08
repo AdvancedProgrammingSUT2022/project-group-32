@@ -34,7 +34,9 @@ public class PlayerController {
             player.addUnit(unit); // adding initial units
             player.addUnit(troop);
             player.setMap(new Map(game.getMap())); // deep copying map
-            PlayerController.updateFieldOfView(player);
+        }
+        for(Player player : players){
+            updateFieldOfView(player);
         }
     }
 
