@@ -108,11 +108,16 @@ public class InGameResponses {
         // general
         NO_CITY_SELECTED("you haven't selected any city yet"),
         LOCATION_NOT_VALID("the coordinates are not valid"),
+
+        // purchase units
+        CAPITAL_IS_FULL("capital tile is currently fulled"),
+        NOT_ENOUGH_GOLD("not enough gold to buy the unit"),
+        UNIT_BUY_SUCCESSFUL("unit purchased successfully"),
         // purchase tile
         TILE_ALREADY_BOUGHT("tile is already bought"),
         CANT_BUY_TILE("this tile is not available to buy"),
         TILE_TOO_FAR("this tile is not near the selected city"),
-        BUY_SUCCESSFUL("tile purchased successfully");
+        TILE_BUY_SUCCESSFUL("tile purchased successfully");
 
 
         private final String message;

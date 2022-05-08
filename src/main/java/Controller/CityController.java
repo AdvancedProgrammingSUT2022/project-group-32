@@ -8,8 +8,6 @@ import enums.CombatType;
 import enums.Responses.InGameResponses;
 import enums.UnitType;
 
-import java.util.ArrayList;
-
 public class CityController {
 
     // updates all there is about a city accordingly
@@ -124,14 +122,31 @@ public class CityController {
     public static InGameResponses.Building pauseInProgressBuilding() {
         City city = GameController.getSelectedCity();
         if (city == null) return InGameResponses.Building.CITY_NOT_SELECTED;
-
         if (city.getBuildingInProgress() == null) return InGameResponses.Building.NO_BUILDING_IN_PROGRESS;
         city.addIncompleteBuilding(city.getBuildingInProgress());
         city.setBuildingInProgress(null);
         return InGameResponses.Building.BUILDING_PAUSED;
     }
 
-    public static void assignCitizenToTile() {
+    public static InGameResponses.City buyUnit(UnitType unitType){
+        City city = GameController.getSelectedCity();
+        if(city == null) return InGameResponses.City.NO_CITY_SELECTED;
+        Tile pooch = new Tile(-1, -1, null, null, null); // this tile is temporary
+        Unit unit = new Unit(pooch, city.getOwner(), unitType);
+        if(!city.getCapitalTile().canFit(unit)){
+            return InGameResponses.City.CAPITAL_IS_FULL;
+        }
+        Player player = city.getOwner();
+        if(player.getGold() < unit.getCost()){
+            return InGameResponses.City.NOT_ENOUGH_GOLD;
+        }
+        player.setGold(player.getGold() - unit.getCost());
+        unit.placeIn(city.getCapitalTile());
+        unit.setRemainingCost(0);
+        return InGameResponses.City.UNIT_BUY_SUCCESSFUL;
+    }
+
+    public static InGameResponses.City assignCitizenToTile() {
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
 
     }
@@ -161,6 +176,6 @@ public class CityController {
         tile.setCity(city);
         city.addTile(tile);
         city.getOwner().addTile(tile);
-        return InGameResponses.City.BUY_SUCCESSFUL;
+        return InGameResponses.City.TILE_BUY_SUCCESSFUL;
     }
 }
