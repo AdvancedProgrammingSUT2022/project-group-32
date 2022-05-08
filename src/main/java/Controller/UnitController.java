@@ -393,13 +393,15 @@ public class UnitController {
             return InGameResponses.Unit.UNIT_IS_TIRED;
         }
         Tile tile = unit.getTile();
-        Improvement improvement;
-        if ((improvement = tile.getImprovement()) != null) {
-            return InGameResponses.Unit.NO_IMPROVEMENT;
-        }
         if(tile.getCity() != null && tile.getCity().getOwner() == unit.getOwner()){
             return InGameResponses.Unit.OWN_IMPROVEMENT;
         }
+        Improvement improvement;
+        if ((improvement = tile.getImprovement()) != null) {
+            Road road;
+            if((road = tile.getRoad()) == null) return InGameResponses.Unit.NO_IMPROVEMENT;
+            road.setRemainingTurns(Math.max(road.getRemainingTurns() + 1, 3));
+        } // todo: can be implemented better
         improvement.setRemainingTurns(Math.max(improvement.getRemainingTurns() + 1, improvement.getRequiredTurns()));
         unit.setOrderType(OrderType.AWAKE);
         unit.setMP(0);
@@ -422,10 +424,12 @@ public class UnitController {
         }
         Tile tile = unit.getTile();
         if(tile.getImprovement() == null){
-            return InGameResponses.Unit.NO_IMPROVEMENT;
+            if(tile.getRoad() == null) return InGameResponses.Unit.NO_IMPROVEMENT;
+            unit.setOrderType(OrderType.ROAD_BUILDING);
+            unit.setMP(0);
+            return InGameResponses.Unit.REPAIR_SUCCESSFUL;
         }
         unit.setOrderType(OrderType.BUILDING);
-        unit.setMP(0);
         unit.setMP(0);
         return InGameResponses.Unit.REPAIR_SUCCESSFUL;
     }
