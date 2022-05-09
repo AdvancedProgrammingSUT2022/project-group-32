@@ -58,6 +58,9 @@ public class UnitController {
 
     // moves the selected unit to chosen destination
     public static void moveToDestination(Unit unit) {
+        if(!unit.getDestination().canFit(unit)){
+            unit.setDestination(null);
+        }
         if (unit.getDestination() == null || unit.getDestination() == unit.getTile()) {
             unit.setOrderType(OrderType.AWAKE);
             return;
@@ -72,14 +75,14 @@ public class UnitController {
                 System.err.println("The path is blocked");
                 for (Tile tile : currentTile.getNeighbouringTiles(GameController.getGame().getMap())) {
                     if (map.getDistanceTo(currentTile, destination) < map.getDistanceTo(tile, destination)) {
-                        unit.placeIn(tile);
+                        unit.placeIn(tile, map);
                         PlayerController.updateFieldOfView();
                         break;
                     }
                 }
                 break;
             }
-            unit.placeIn(nextTile);
+            unit.placeIn(nextTile, map);
             PlayerController.updateFieldOfView();
         }
         if (unit.getDestination() == unit.getTile()) {
@@ -286,6 +289,9 @@ public class UnitController {
         if (unit.getUnitType() != UnitType.WORKER) {
             return InGameResponses.Unit.UNIT_NOT_A_WORKER;
         }
+        if(improvementType == null){
+            return InGameResponses.Unit.INVALID_IMPROVEMENT;
+        }
         Tile tile = unit.getTile();
         if (!improvementType.canBeOn.contains(tile.getBaseFeature()) && !improvementType.canBeOn.contains(tile.getTerrainFeature())) {
             return InGameResponses.Unit.BUILDING_NOT_POSSIBLE;
@@ -318,6 +324,9 @@ public class UnitController {
         }
         if (unit.getUnitType() != UnitType.WORKER) {
             return InGameResponses.Unit.UNIT_NOT_A_WORKER;
+        }
+        if(roadType == null){
+            return InGameResponses.Unit.INVALID_ROAD;
         }
         Tile tile = unit.getTile();
         if (tile.getRoadType() == RoadType.ROAD) {
