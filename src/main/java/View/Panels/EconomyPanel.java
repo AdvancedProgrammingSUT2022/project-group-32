@@ -11,26 +11,34 @@ public class EconomyPanel extends GameMenu {
 
     public static void run(String command) {
         cities.addAll(GameController.getCurrentPlayer().getCities()); // this is what used every where, for same indexing ...
-        if (command.startsWith("economy panel")) {
+        if (command.startsWith("show")) {
             printPanel();
         }
     }
 
     private static void printPanel() {
         int i = 0;
-        System.out.println("#  Name\tPopulation\tFood\tGold\tScience\tProduction\tBuilding");
+        System.out.println("### ECONOMY");
+        printRow("#", "Name", "Population", "Food", "Gold", "Science", "Production", "Building");
         for (City city : cities) {
             i++;
-            System.out.println(i + "- " + city.getName() + "\t" +
-                    city.getPopulation() + "\t" +
-                    city.getFoodIncome() + "\t" +
-                    city.getGoldIncome() + "\t" +
-                    city.getScienceIncome() + "\t" +
-                    city.getProduction() + "\t" +
-                    (((city.getBuildingInProgress() == null) ? "-" : city.getBuildingInProgress().getName()) + "\t")
+            printRow(i + "",
+                    city.getName(),
+                    city.getPopulation() + "",
+                    city.getFoodIncome() + "",
+                    city.getGoldIncome() + "",
+                    city.getScienceIncome() + "",
+                    city.getProduction() + "",
+                    (((city.getBuildingInProgress() == null) ? "-" : city.getBuildingInProgress().getName()))
             );
 
         }
+    }
+
+    private static void printRow(String s1, String s2, String s3, String s4, String s5, String s6, String s7, String s8) {
+        String format = "|%1$-4s|%2$-15s|%3$-12s|%4$-12s|%5$-12s|%6$-12s|%6$-12s|%6$-12s|";
+        System.out.format(format, s1, s2, s3, s4, s5, s6, s7, s8);
+        System.out.println();
     }
 
 }

@@ -17,7 +17,8 @@ public class MapMaker {
     public static String getTopBar() {
         String top = "";
         Player player = GameController.getCurrentPlayer();
-        top = (Color.YELLOW_BOLD_BRIGHT.code + Color.BLACK_BACKGROUND.code + "Player : '" + player.getName() + "'");
+        top = (Color.YELLOW_BOLD_BRIGHT.code + Color.BLACK_BACKGROUND.code + "Player : '" + player.getName() + "'" + Color.RESET.code + player.getBackgroundColor().code + "   " + Color.RESET.code);
+        top += Color.YELLOW_BOLD_BRIGHT.code + Color.BLACK_BACKGROUND.code;
         top += "\t GOLD: " + player.getGold() + "(" + ((player.getGoldIncome() >= 0) ? "+" : "") + player.getGoldIncome() + ")";
         top += "\t Happiness: " + player.getHappiness();
         top += "\t Science: " + ((player.getScienceIncome() >= 0) ? "+" : "") + player.getScienceIncome();

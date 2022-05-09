@@ -57,7 +57,7 @@ public class GameMenu extends Menu {
                 selectTroop(command);
             } else if (command.startsWith("select city")) {
                 selectCity(command);
-            } else if (command.startsWith("research tech")){
+            } else if (command.startsWith("research tech")) {
                 researchTech(command);
             } else if (command.startsWith("end game")) {
                 endGame(command);
@@ -69,8 +69,15 @@ public class GameMenu extends Menu {
                 passTurn(command);
             } else if (command.startsWith("show current panel")) {
                 showCurrentPanel(command);
-            } else if(command.startsWith("cheat")){
+            } else if (command.startsWith("cheat")) {
                 checkCheats(command);
+            } else if (command.startsWith("demographic panel")) {
+                currentPanel = PanelType.DEMOGRAPHICS_PANEL;
+            } else if (command.startsWith("economy panel")) {
+                currentPanel = PanelType.ECONOMY_PANEL;
+            } else if (command.startsWith("cities panel")) {
+                System.err.println(" dfs");
+                currentPanel = PanelType.CITIES_PANEL;
             } else {
                 runPanel(command);
             }

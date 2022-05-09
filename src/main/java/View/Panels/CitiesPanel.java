@@ -16,7 +16,7 @@ public class CitiesPanel extends GameMenu {
 
     public static void run(String command) {
         initializeCities();
-        if (command.startsWith("cities panel")) {
+        if (command.startsWith("show")) {
             printPanel();
         }
 
@@ -31,9 +31,19 @@ public class CitiesPanel extends GameMenu {
 
     private static void printPanel() {
         int i = 0;
+        System.out.println("### CITIES");
         for (City city : cities) {
             i++;
-            System.out.println(city.getOwner().getBackgroundColor().code + i + "- " + city.getName() + " \t" + city.getOwner().getName() + Color.RESET);
+            printRow(city.getOwner().getBackgroundColor().code + i + "  " + Color.RESET.code,
+                    city.getName(),
+                    city.getOwner().getName()
+            );
         }
+    }
+
+    private static void printRow(String s1, String s2, String s3) {
+        String format = "|%1$-5s|%2$-15s|%3$-15s|";
+        System.out.format(format, s1, s2, s3);
+        System.out.println();
     }
 }
