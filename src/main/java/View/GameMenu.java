@@ -138,7 +138,7 @@ public class GameMenu extends Menu {
         }
     }
 
-    private static void selectTroop(String command){
+    protected static void selectTroop(String command){
         ArrayList<String> parameters = CLI.getParameters(command, "l");
         if(parameters == null){
             invalidCommand();
@@ -194,8 +194,19 @@ public class GameMenu extends Menu {
     }
 
     private static void openPanel(String command) {
-        // to whoever implementing this . . .
-        // cycle through panel enums and finding the right name
+        ArrayList<String> parameters = CLI.getParameters(command, "t");
+        if(parameters == null){
+            invalidCommand();
+            return;
+        }
+        for (PanelType panel : PanelType.values()) {
+            if(panel.name.equals(parameters.get(0))){
+                currentPanel = panel;
+                System.out.println(parameters.get(0) + " panel opened successfully");
+                return;
+            }
+        }
+        System.out.println("invalid panel name");
     }
 
     // supposed to run the current panel
@@ -233,7 +244,7 @@ public class GameMenu extends Menu {
 
     private static void increaseGold(String command){
         ArrayList<String> parameters = CLI.getParameters(command, "a");
-        if(parameters == null || !parameters.get(0).matches("-?\\d")){
+        if(parameters == null || !parameters.get(0).matches("-?\\d+")){
             invalidCommand();
             return;
         }
@@ -263,7 +274,7 @@ public class GameMenu extends Menu {
 
     private static void instantHeal(String command){
         ArrayList<String> parameters = CLI.getParameters(command, "a");
-        if(parameters == null || !parameters.get(0).matches("-?\\d")){
+        if(parameters == null || !parameters.get(0).matches("-?\\d+")){
             invalidCommand();
             return;
         }

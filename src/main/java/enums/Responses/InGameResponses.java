@@ -214,6 +214,7 @@ public class InGameResponses {
     }
     public enum Info {
         //GENERAL(FOR ALL)  needed??
+        INVALID_ID("the id given is out of bounds"),
         ACCEPT("accept");
 
         private final String message;

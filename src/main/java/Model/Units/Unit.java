@@ -34,7 +34,7 @@ public class Unit {
         this.MP = this.movement;
         this.remainingCost = this.cost;
         this.orderType = OrderType.AWAKE;
-        this.tile.putUnit(this);
+        if(this.tile != null) this.tile.putUnit(this);
     }
 
     public Tile getTile() {

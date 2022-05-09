@@ -23,6 +23,7 @@ public class CLI {
         Option option = new Option("l", "location", true, ""); // [x] [y]
         option.setArgs(2);
         options.addOption(option);
+        options.addOption("id", "id", true, "");
         options.addOption("a", "amount", true, "");
         options.addOption("cn", "name", true, "City name"); // in show, select city
         options.addOption("c", "count", true, "how much to move in a direction");

@@ -6,13 +6,12 @@ public class Game {
     private Map map;
     private ArrayList<Player> players;
     private int currentPlayerID;
-    int turnCount, playerTurn;
+    int turnCount;
 
     public Game(Map map, ArrayList<Player> players) {
         this.map = map;
         this.players = players;
         turnCount = 1;
-        playerTurn = 0;
         currentPlayerID = 0;
     }
 
@@ -40,20 +39,16 @@ public class Game {
         this.turnCount = turnCount;
     }
 
-    public int getPlayerTurn() {
-        return playerTurn;
-    }
-
-    public void setPlayerTurn(int playerTurn) {
-        this.playerTurn = playerTurn;
-    }
-
     public Player getCurrentPlayer() {
         return players.get(currentPlayerID);
     }
 
     public void nextTurn() {
-        currentPlayerID = (currentPlayerID + 1) % players.size();
+        currentPlayerID = currentPlayerID + 1;
+        if(currentPlayerID == players.size()){
+            currentPlayerID = 0;
+            turnCount ++;
+        }
     }
 
 }
