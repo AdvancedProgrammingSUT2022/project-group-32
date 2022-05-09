@@ -293,18 +293,8 @@ public class PlayerController {
         int scienceIncome = 0;
         if (player.getCities().size() > 0) scienceIncome += 3;
         for (City city : player.getCities()) {
-            ArrayList<BuildingType> buildingTypes = city.getBuildings().stream().map(Building::getBuildingType).collect(Collectors.toCollection(ArrayList::new));
-            double cityScience = city.getPopulation();
-            if (buildingTypes.contains(BuildingType.LIBRARY)) cityScience += city.getPopulation() / 2;
-            if (buildingTypes.contains(BuildingType.UNIVERSITY)) {
-                for (Tile tile : city.getTerritory()) {
-                    if (tile.getTerrain().getTerrainFeature().equals(TerrainFeature.JUNGLE)) cityScience += 2;
-                }
-                cityScience *= 1.5;
-            }
-            if (buildingTypes.contains(BuildingType.PUBLIC_SCHOOL)) cityScience *= 1.5;
+            scienceIncome += city.getScienceIncome();
         }
-        System.err.println(scienceIncome);
         player.setScienceIncome(scienceIncome);
     }
 
