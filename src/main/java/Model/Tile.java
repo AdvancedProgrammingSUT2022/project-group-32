@@ -57,6 +57,7 @@ public class Tile {
         this.troop = tile.troop;
         this.road = tile.road;
         this.isRiver = tile.isRiver;
+        this.hasCitizen = tile.hasCitizen;
         // todo this should be debugged
     }
 

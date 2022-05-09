@@ -4,6 +4,7 @@ import Model.*;
 import Model.Units.Troop;
 import Model.Units.Unit;
 import enums.BuildingType;
+import enums.FogState;
 import enums.Responses.InGameResponses;
 import enums.Responses.Response;
 import enums.UnitType;
@@ -188,6 +189,8 @@ public class GameController {
         cheatPutUnit(UnitType.SETTLER, row, column);
         Tile tile = getMap().getTile(row, column);
         MapController.BuildCity(tile.getUnit(), name);
+        tile.getUnit().destroy();
+        PlayerController.updateFieldOfView(GameController.getCurrentPlayer());
         return Response.GameMenu.CHEAT_SUCCESSFUL;
         // builds a city in the selected tile with the given name
     }
@@ -207,6 +210,7 @@ public class GameController {
         for (int row = 0; row < map.getHeight(); row++) {
             for (int column = 0; column < map.getWidth(); column++) {
                 tiles[row][column] = new Tile(map.getTile(row, column));
+                tiles[row][column].setFogState(FogState.VISIBLE);
             }
         }
         return Response.GameMenu.CHEAT_SUCCESSFUL;

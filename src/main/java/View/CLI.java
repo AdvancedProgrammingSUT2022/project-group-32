@@ -56,7 +56,7 @@ public class CLI {
                     if (!direction.matches("^[urld]$")) return null;
                     try {
                         int amount = Integer.parseInt(rawValues[1]);
-                        return new ArrayList<>(Arrays.stream(rawValues).toList());
+                        values.addAll(Arrays.stream(rawValues).toList());
                     } catch (NumberFormatException e) {
                         return null;
                     }
@@ -65,7 +65,7 @@ public class CLI {
                     try {
                         int row = Integer.parseInt(rawValues[0]);
                         int column = Integer.parseInt(rawValues[1]);
-                        return new ArrayList<>(Arrays.stream(rawValues).toList());
+                        values.addAll(Arrays.stream(rawValues).toList());
                     } catch (NumberFormatException e) {
                         return null;
                     }

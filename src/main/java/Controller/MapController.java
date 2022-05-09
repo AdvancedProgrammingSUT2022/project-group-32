@@ -139,7 +139,7 @@ public class MapController {
                 }
 
                 Terrain terrain = new Terrain(terrainType, terrainFeature, resourceType);
-                tiles[row][column] = new Tile(row, column, terrain, FogState.UNKNOWN, null); // TODO: 4/22/2022 do we have ruins?
+                tiles[row][column] = new Tile(row, column, terrain, FogState.UNKNOWN, null); // note: the main map is foggy
             }
         }
 
