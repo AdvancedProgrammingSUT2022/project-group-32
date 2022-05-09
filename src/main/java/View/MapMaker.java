@@ -1,6 +1,8 @@
 package View;
 
+import Controller.GameController;
 import Model.City;
+import Model.Player;
 import Model.Tile;
 import enums.Color;
 import enums.FogState;
@@ -11,8 +13,21 @@ public class MapMaker {
     private static final int HORIZONTAL_BORDER = 60;
     private static final int VERTICAL_BORDER = 15;
 
+
+    public static String getTopBar() {
+        String top = "";
+        Player player = GameController.getCurrentPlayer();
+        top = (Color.YELLOW_BOLD_BRIGHT.code + Color.BLACK_BACKGROUND.code + "Player : '" + player.getName() + "'");
+        top += "\t GOLD: " + player.getGold() + "(" + ((player.getGoldIncome() > 0) ? "+" : "") + player.getGoldIncome() + ")";
+        top += "\t Happiness: " + player.getHappiness();
+        top += "\t Science: " + ((player.getScienceIncome() > 0) ? "+" : "") + player.getScienceIncome();
+        top += Color.RESET.code;
+
+        return top;
+    }
+
     public static String[][] getMap(Tile[][] map) {
-        String[][] strMap = new String[map.length * 6 + VERTICAL_BORDER * 2][map[0].length * 10 + HORIZONTAL_BORDER * 2];
+        String[][] strMap = new String[map.length * 6 + VERTICAL_BORDER * 2 + 1][map[0].length * 10 + HORIZONTAL_BORDER * 2];
         initMap(strMap);
         fillMap(map, strMap);
         return strMap;
@@ -22,7 +37,6 @@ public class MapMaker {
     private static void fillMap(Tile[][] map, String[][] stringMap) {
         for (int row = 0; row < map.length; row++) {
             for (int column = 0; column < map[0].length; column++) {
-                Tile tile = map[row][column];
                 City city = map[row][column].getCity();
                 fillAHex(stringMap, row, column, (city == null) ? Color.BLACK_BACKGROUND_BRIGHT.code : city.getOwner().getBackgroundColor().code, map[row][column]);
             }

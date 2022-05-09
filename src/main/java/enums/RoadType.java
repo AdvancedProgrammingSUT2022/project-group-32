@@ -1,13 +1,16 @@
 package enums;
 
 public enum RoadType {
-    ROAD("Road"),
-    RAILROAD("Railroad");
+    // costs are DELLY
+    ROAD("Road", 1),
+    RAILROAD("Railroad", 2);
 
-    String name;
-
-    RoadType(String name){
+    private final String name;
+    private final int maintenanceCost;
+      
+    RoadType(String name, int maintenanceCost){
         this.name = name;
+        this.maintenanceCost = maintenanceCost;
     }
 
     public static RoadType getTypeByName(String name){
@@ -17,5 +20,9 @@ public enum RoadType {
             }
         }
         return null;
+    }
+  
+    public int getMaintenanceCost() {
+        return maintenanceCost;
     }
 }

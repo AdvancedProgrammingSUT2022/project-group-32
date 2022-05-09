@@ -21,7 +21,14 @@ public class Player {
     private final ArrayList<Technology> incompleteTechnologies;
     private final ArrayList<City> cities;
     private final ArrayList<Tile> tiles;
-    private int gold, science, food, XP, happiness, population;
+    private int gold;
+
+
+    private int scienceIncome;
+    private int goldIncome;
+    private int XP;
+    private int happiness;
+    private int population;
     private final ArrayList<Player> inWarPlayers;
     private final ArrayList<String> notifications;
     private int cameraRow;
@@ -46,7 +53,7 @@ public class Player {
         this.id = count;
         this.backgroundColor = Color.values()[this.id];
         this.color = Color.values()[this.id + 8];
-
+        this.happiness = 20;
         count++;
     }
 
@@ -54,6 +61,26 @@ public class Player {
         // shows players view of the map - currently in string form to be later replaces with graphics
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
         // TODO: 4/18/2022
+    }
+
+    public int getScienceIncome() {
+        return scienceIncome;
+    }
+
+    public void setScienceIncome(int scienceIncome) {
+        this.scienceIncome = scienceIncome;
+    }
+
+    public int getGoldIncome() {
+        return goldIncome;
+    }
+
+    public void setGoldIncome(int goldIncome) {
+        this.goldIncome = goldIncome;
+    }
+
+    public int getXP() {
+        return XP;
     }
 
     public User getUser() {
@@ -112,22 +139,6 @@ public class Player {
         this.gold = gold;
     }
 
-    public int getScience() {
-        return science;
-    }
-
-    public void setScience(int science) {
-        this.science = science;
-    }
-
-    public int getFood() {
-        return food;
-    }
-
-    public void setFood(int food) {
-        this.food = food;
-    }
-
     public int getRowP() {
         return XP;
     }
@@ -144,7 +155,12 @@ public class Player {
         this.happiness = happiness;
     }
 
+    //updates when ever gotten
     public int getPopulation() {
+        population = 0;
+        for (City city : cities) {
+            population += city.getPopulation();
+        }
         return population;
     }
 
@@ -346,5 +362,14 @@ public class Player {
 
     public Color getColor() {
         return this.color;
+    }
+
+    public void updateGoldByIncome() {
+        gold += goldIncome;
+        if (gold < 0) {
+            scienceIncome -= goldIncome;
+            if (scienceIncome < 0) scienceIncome = 0;
+            gold = 0;
+        }
     }
 }

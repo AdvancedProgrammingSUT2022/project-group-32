@@ -130,8 +130,57 @@ public class PlayerController {
         }
         updateFieldOfView();
         updateTechnology();
-        updateSupplies();
-        updateGold();
+        updateFood();
+        updateScience();
+        updateGold(); // gold must be updated after science
+        updateHappiness();
+    }
+
+    private static void updateHappiness() {
+        int happiness = 0;
+        happiness -= GameController.getCurrentPlayer().getCities().size() * 3;
+
+        ArrayList<ResourceType> playerResources = getPlayerWorkingResourceTypes(GameController.getCurrentPlayer());
+        for (ResourceType luxuryResourceType : ResourceType.getLuxuryResourceTypes()) {
+            if (playerResources.contains(luxuryResourceType)) happiness += 4;
+        }
+
+
+        ArrayList<BuildingType> buildingTypes = getPlayerBuildingTypes(GameController.getCurrentPlayer());
+        if (buildingTypes.contains(BuildingType.BURIAL_TOMB)) happiness += 2;
+        if (buildingTypes.contains(BuildingType.CIRCUS)) happiness += 3; // TODO: 5/9/2022
+        if (buildingTypes.contains(BuildingType.COLOSSEUM)) happiness += 4;
+        if (buildingTypes.contains(BuildingType.SATRAP_COURT)) happiness += 2;
+
+        happiness -= GameController.getCurrentPlayer().getPopulation() / 10;
+
+        GameController.getCurrentPlayer().setHappiness(happiness);
+    }
+
+    private static void updateFood() { // citizen eat, death, settler no production
+        Player player = GameController.getCurrentPlayer();
+        for (City city : player.getCities()) {
+            int foodIncome = 0;
+            foodIncome += city.getTilesFoodIncome();
+            ArrayList<BuildingType> buildingTypes = city.getBuildings().stream().map(Building::getBuildingType).collect(Collectors.toCollection(ArrayList::new));
+            if (buildingTypes.contains(BuildingType.GRANARY)) foodIncome += 2;
+            if (buildingTypes.contains(BuildingType.WATER_MILL) && city.hasRiver()) {
+                foodIncome += 2;
+            }
+            int foodConsumption = city.getPopulation() * 2;
+            if (foodConsumption > foodIncome) {
+                city.setPopulation(foodIncome / 2);
+                city.setFoodIncome(0);
+                return;
+            }
+            if (city.getUnitInProgress().getUnitType().equals(UnitType.SETTLER)) {
+                city.setFoodIncome(0);
+                return;
+            }
+
+            city.setFoodIncome(foodIncome - foodConsumption);
+            city.updateNewCitizenStoredFood();
+        }
     }
 
     public static void endTurn() {
@@ -197,16 +246,19 @@ public class PlayerController {
     }
 
     public static void updateSupplies() {
+
         // TODO: 4/17/2022
     }
 
+
     private static void updateGold() {
         // handles turn based coin changes - NOT HANDLING TRADES, BUYS, ...
-        double goldChange = 0;
+        double goldIncome = 0;
         for (City city : GameController.getGame().getCurrentPlayer().getCities()) {
-            // todo: the building effects are applied to gross city gold production not net!, MINT EFFECT NOT APPLIED!
-            double cityGrossGold = city.getTerritory().stream().mapToInt(Tile::getGold).sum();
+            // todo: the building effects are applied to gross city gold production not net!, MINT EFFECT APPLIED!
             ArrayList<BuildingType> buildingTypes = city.getBuildings().stream().map(Building::getBuildingType).collect(Collectors.toCollection(ArrayList::new));
+            double cityGrossGold = city.getTerritory().stream().
+                    mapToInt(t -> (t.getGold() > 0 && buildingTypes.contains(BuildingType.MINT)) ? t.getGold() + 3 : t.getGold()).sum();
             if (buildingTypes.contains(BuildingType.MARKET)) cityGrossGold *= 1.25;
             if (buildingTypes.contains(BuildingType.BANK)) cityGrossGold *= 1.25;
             if (buildingTypes.contains(BuildingType.SATRAP_COURT)) cityGrossGold *= 1.5;
@@ -214,16 +266,20 @@ public class PlayerController {
             for (Building building : city.getBuildings()) {
                 cityGrossGold -= building.getCost();
             }
-            goldChange += cityGrossGold;
+            goldIncome += cityGrossGold;
         }
-        // +: terrains, terrain Features, resources, buildings cost __ not handling route  and unit cost
+        int unitMaintenanceCost = 1;
+        goldIncome -= unitMaintenanceCost * GameController.getCurrentPlayer().getUnits().size();
+        GameController.getCurrentPlayer().setGoldIncome((int) goldIncome);
+        GameController.getCurrentPlayer().updateGoldByIncome();
+        // +: terrains, terrain Features, resources, buildings cost , handling route  and unit cost
     }
 
-    private static void updateTechnology(){
+    private static void updateTechnology() { // TODO: 5/9/2022 THIS IS WRONG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         Player player = GameController.getGame().getCurrentPlayer();
         Technology inProgressTechnology = player.getTechnologyInProgress();
         if (inProgressTechnology != null) {
-            inProgressTechnology.setRemainingCost(inProgressTechnology.getRemainingCost() - player.getScience());
+            inProgressTechnology.setRemainingCost(inProgressTechnology.getRemainingCost() - player.getScienceIncome());
             if (inProgressTechnology.getRequiredCost() <= 0) {
                 player.addTechnology(inProgressTechnology);
                 player.setTechnologyInProgress(null);
@@ -232,12 +288,47 @@ public class PlayerController {
         }
     }
 
+    private static void updateScience() {
+        Player player = GameController.getCurrentPlayer();
+        int scienceIncome = 0;
+        if (player.getCities().size() > 0) scienceIncome += 3;
+        for (City city : player.getCities()) {
+            ArrayList<BuildingType> buildingTypes = city.getBuildings().stream().map(Building::getBuildingType).collect(Collectors.toCollection(ArrayList::new));
+            double cityScience = city.getPopulation();
+            if (buildingTypes.contains(BuildingType.LIBRARY)) cityScience += city.getPopulation() / 2;
+            if (buildingTypes.contains(BuildingType.UNIVERSITY)) {
+                for (Tile tile : city.getTerritory()) {
+                    if (tile.getTerrain().getTerrainFeature().equals(TerrainFeature.JUNGLE)) cityScience += 2;
+                }
+                cityScience *= 1.5;
+            }
+            if (buildingTypes.contains(BuildingType.PUBLIC_SCHOOL)) cityScience *= 1.5;
+        }
+        player.setScienceIncome(scienceIncome);
+    }
+
     public static boolean checkIfLost() {
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
     }
 
     public static boolean checkIfWon() {
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+    }
+
+    public static ArrayList<ResourceType> getPlayerWorkingResourceTypes(Player player) {
+        ArrayList<ResourceType> res = new ArrayList<>();
+        for (City city : player.getCities()) {
+            res.addAll(city.getWorkingResources());
+        }
+        return res;
+    }
+
+    public static ArrayList<BuildingType> getPlayerBuildingTypes(Player player) {
+        ArrayList<BuildingType> buildingTypes = new ArrayList<>();
+        for (City city : player.getCities()) {
+            buildingTypes.addAll(city.getBuildings().stream().map(Building::getBuildingType).toList());
+        }
+        return buildingTypes;
     }
 
 }

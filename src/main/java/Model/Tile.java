@@ -295,16 +295,19 @@ public class Tile {
 
     public int getFood() {
         // TODO: 4/17/2022 checks food income based on Terrain object and the improvements and resource and building
-        // Total food of a city is just sum of getFood()s of its tiles
-        throw new RuntimeException("NOT IMPLEMENTED!");
+        return terrain.getFood() +
+                ((resource.getNeededImprovement().name.equals(improvement.getName())) ? improvement.getAddedGold() : 0);
+
     }
 
     public int getGold() {
         // TODO: anything else?
-        // + : terrain, terrain Feature, resource if improved, rivers
+        // + : terrain, terrain Feature, resource  improved, rivers
         return terrain.getGold() +
-                ((resource.getNeededImprovement().name.equals(improvement.getName())) ? resource.getGold() : 0) +
-                (int) isRiver.values().stream().filter(i -> i.equals(1)).count();
+                ((hasCitizen) ? resource.getGold() : 0) +
+                ((resource.getNeededImprovement().name.equals(improvement.getName())) ? improvement.getAddedGold() : 0) +
+                (int) isRiver.values().stream().filter(i -> i.equals(1)).count() -
+                ((road == null) ? 0 : road.getType().getMaintenanceCost());
     }
 
     public int getProduction() {

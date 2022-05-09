@@ -46,4 +46,24 @@ public enum ResourceType {
         System.err.println("Resource Not Found!");
         return null;
     }
+
+    public boolean isBonus() {
+        return (this.ordinal() <= 5 && this.ordinal() > 0);
+    }
+
+    public boolean isStrategic() {
+        return (this.ordinal() >= 6 && this.ordinal() <= 8);
+    }
+
+    public boolean isLuxury() {
+        return (this.ordinal() >= 9);
+    }
+
+    public static ArrayList<ResourceType> getLuxuryResourceTypes() {
+        ArrayList<ResourceType> luxs = new ArrayList<>();
+        for (ResourceType value : ResourceType.values()) {
+            if (value.isLuxury()) luxs.add(value);
+        }
+        return luxs;
+    }
 }
