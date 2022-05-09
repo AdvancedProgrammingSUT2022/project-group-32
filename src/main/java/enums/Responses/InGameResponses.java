@@ -3,6 +3,7 @@ package enums.Responses;
 public class InGameResponses {
 
     public enum Building {
+        CITY_NOT_IN_POSSESS("selected city is not yours"),
         ALREADY_EXISTS("\"$\" already exists in this city"),
         IN_PROGRESS_BUILDING_CHANGED("In progress building changed to \"$\""),
         CITY_NOT_SELECTED("No city is selected"),
@@ -25,6 +26,7 @@ public class InGameResponses {
 
     public enum Unit {
         //GENERAL(FOR ALL)
+        CITY_NOT_SELECTED("No city is selected"),
         NO_UNIT_SELECTED("no unit is selected"),
         UNIT_NOT_AVAILABLE("selected unit is not available"),
         UNIT_NOT_IN_POSSESS("selected unit is not in possess"),
@@ -111,6 +113,7 @@ public class InGameResponses {
     }
     public enum City{
         // general
+        CITY_NOT_IN_POSSESS("selected city is not yours"),
         NO_CITY_SELECTED("you haven't selected any city yet"),
         LOCATION_NOT_VALID("the coordinates are not valid"),
         // citizen assigning/freeing
