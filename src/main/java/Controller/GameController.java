@@ -3,14 +3,11 @@ package Controller;
 import Model.*;
 import Model.Units.Troop;
 import Model.Units.Unit;
-import View.Panels.TroopSelectedPanel;
 import enums.BuildingType;
 import enums.Responses.Response;
-import enums.TerrainType;
 import enums.UnitType;
 
 import java.util.ArrayList;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class GameController {
@@ -21,7 +18,7 @@ public class GameController {
 
     private static void gameGenerator(ArrayList<Player> players, int mapH, int mapW) {
         Map randomMap = MapController.randomMap(mapH, mapW);
-        while(!randomMap.isConnected()){
+        while (!randomMap.isConnected()) {
             randomMap = MapController.randomMap(mapH, mapW);
         }
         game = new Game(randomMap, players);
@@ -29,7 +26,7 @@ public class GameController {
         // TODO: 4/24/2022 initializing players map and camera
     }
 
-    public static Player getCurrentPlayer(){
+    public static Player getCurrentPlayer() {
         return game.getCurrentPlayer();
     }
 
@@ -37,7 +34,7 @@ public class GameController {
         return game.getCurrentPlayer().getMap();
     }
 
-    public static Map getMap(){
+    public static Map getMap() {
         return game.getMap();
     }
 
@@ -65,8 +62,8 @@ public class GameController {
         GameController.selectedTroop = selectedTroop;
     }
 
-    public static Unit getSelectedUnitOrTroop(){
-        if(selectedUnit != null) return selectedUnit;
+    public static Unit getSelectedUnitOrTroop() {
+        if (selectedUnit != null) return selectedUnit;
         return selectedTroop;
     }
 
@@ -86,19 +83,19 @@ public class GameController {
 
         // TODO: initial gold, food, production, happiness, city population, .. must be set
         gameGenerator(players, 15, 15); // width and height chosen randomly
-        
+
         PlayerController.initializePlayers(players); // TODO: 4/26/2022 should be improved 
-        
+
         // starts a new game between users and responds accordingly
         return Response.GameMenu.GAME_CREATED;
     }
 
     public static Response.GameMenu selectCity(int row, int column) {
         City city = game.getMap().getTile(row, column).getCity();
-        if(city == null){
+        if (city == null) {
             return Response.GameMenu.NO_CITY_IN_TILE;
         }
-        if(city.getCapitalTile() != game.getMap().getTile(row, column)){
+        if (city.getCapitalTile() != game.getMap().getTile(row, column)) {
             return Response.GameMenu.NO_CITY_IN_TILE;
         }
         setSelectedUnit(null);
@@ -109,7 +106,7 @@ public class GameController {
 
     public static Response.GameMenu selectUnit(int row, int column) {
         Tile tile = game.getMap().getTile(row, column);
-        if(tile.getUnit() == null){
+        if (tile.getUnit() == null) {
             return Response.GameMenu.NO_UNIT_IN_TILE;
         }
         setSelectedUnit(tile.getUnit());
@@ -120,7 +117,7 @@ public class GameController {
 
     public static Response.GameMenu selectTroop(int row, int column) {
         Tile tile = game.getMap().getTile(row, column);
-        if(tile.getTroop() == null){
+        if (tile.getTroop() == null) {
             return Response.GameMenu.NO_TROOP_IN_TILE;
         }
         setSelectedUnit(null);
@@ -154,33 +151,56 @@ public class GameController {
 
     }
 
+    // same as above basically overriding
+    public static Response.GameMenu changeCamera(String direction) {
+        return changeCamera(direction, 1);
+    }
+
     ///         CHEAT CODES
 
     public static void cheatIncreaseTurn(int amount) {
 
     }
 
-    public static void cheatIncreaseMoney(int amount) {
-
+    public static void cheatIncreaseGold(int amount) {
+        Player player = getCurrentPlayer();
+        player.setGold(player.getGold() + amount);
+        // increases the current gold of the player
     }
 
-    public static void cheatPutUnit(UnitType unitType) {
-        // puts a unit on a selected tile for free if possible(?)
+    public static void cheatPutUnit(UnitType unitType, int row, int column) {
+        Player player = getCurrentPlayer();
+        Tile tile = getMap().getTile(row, column);
+        Unit unit = new Unit(tile, player, unitType);
+        unit.setRemainingCost(0);
+        // puts a unit in specified coordinates for free
     }
 
     public static void cheatBuildBuilding(BuildingType buildingType) {
         // builds a building in the selected city for free
     }
 
-    public static void cheatBuildCity(String name) {
+    public static void cheatBuildCity(String name, int row, int column) {
+        cheatPutUnit(UnitType.SETTLER, row, column);
+        Tile tile = getMap().getTile(row, column);
+        MapController.BuildCity(tile.getUnit(), name);
         // builds a city in the selected tile with the given name
     }
 
-    public static void cheatManipulateUnit(int health, int strength) {
-        // sets the health and strength of the selected unit
+    public static void immortalizeUnit(int health) {
+        Unit unit = selectedUnit;
+        unit.setHP(health);
+        // sets the HP of the selected unit to health
     }
 
-    public static void eyeOfSauron(){
+    public static void eyeOfSauron() {
+        Player player = getCurrentPlayer();
+        Map map = getMap();
+        for (int row = 0; row < map.getHeight(); row++) {
+            for (int column = 0; column < map.getWidth(); column++) {
+                player.getMap().setTile(row, column, new Tile(map.getTile(row, column)));
+            }
+        }
         // makes the whole map visible to a player (temporarily)
     }
 

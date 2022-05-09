@@ -1,6 +1,6 @@
 package enums;
 
-public enum RouteType {
+public enum RoadType {
     ROAD,
     RAILROAD
 }

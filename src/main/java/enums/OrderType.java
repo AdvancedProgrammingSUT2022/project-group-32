@@ -8,5 +8,6 @@ public enum OrderType {
     ALERT,
     HEAL,
     SETUP,
-    MOVING;
+    MOVING,
+    ROAD_BUILDING
 }

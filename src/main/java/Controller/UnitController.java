@@ -2,18 +2,14 @@ package Controller;
 
 import Model.Improvement;
 import Model.Map;
+import Model.Road;
 import Model.Tile;
 import Model.Units.Troop;
 import Model.Units.Unit;
-import View.GameMenu;
 import enums.*;
 import enums.Responses.InGameResponses;
-import enums.Responses.Response;
-import jdk.jshell.execution.Util;
-import org.mockito.internal.matchers.Or;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class UnitController {
     static final int INF = 9999;
@@ -27,6 +23,15 @@ public class UnitController {
             if (improvement != null) {
                 improvement.setRemainingTurns(improvement.getRemainingTurns() - 1);
                 if (improvement.getRemainingTurns() <= 0) {
+                    unit.setOrderType(OrderType.AWAKE);
+                }
+            }
+        }
+        if (unit.getOrderType() == OrderType.ROAD_BUILDING) {
+            Road road = unit.getTile().getRoad();
+            if (road != null) {
+                road.setRemainingTurns(road.getRemainingTurns() - 1);
+                if (road.getRemainingTurns() <= 0) {
                     unit.setOrderType(OrderType.AWAKE);
                 }
             }
@@ -49,7 +54,6 @@ public class UnitController {
                 unit.setOrderType(OrderType.AWAKE);
             }
         }
-        // TODO: 5/1/2022 garrison
     }
 
     // moves the selected unit to chosen destination
@@ -301,7 +305,7 @@ public class UnitController {
         return InGameResponses.Unit.BUILD_SUCCESSFUL;
     }
 
-    public static InGameResponses.Unit buildRoad(RouteType roadType) {
+    public static InGameResponses.Unit buildRoad(RoadType roadType) {
         Unit unit = GameController.getSelectedUnit();
         if (unit == null) {
             return InGameResponses.Unit.NO_UNIT_SELECTED;
@@ -316,14 +320,15 @@ public class UnitController {
             return InGameResponses.Unit.UNIT_NOT_A_WORKER;
         }
         Tile tile = unit.getTile();
-        if (tile.getRoadType() == RouteType.ROAD) {
+        if (tile.getRoadType() == RoadType.ROAD) {
             return InGameResponses.Unit.ROAD_ALREADY_EXISTS;
         }
-        if (tile.getRoadType() == RouteType.RAILROAD) {
+        if (tile.getRoadType() == RoadType.RAILROAD) {
             return InGameResponses.Unit.RAILROAD_ALREADY_EXISTS;
         }
-        tile.setRoadType(roadType); // note: road types take 1 turn to build right now
-        unit.setOrderType(OrderType.AWAKE);
+        Road road = new Road(roadType);
+        tile.setRoad(road);
+        unit.setOrderType(OrderType.ROAD_BUILDING);
         unit.setMP(0);
         return InGameResponses.Unit.BUILD_SUCCESSFUL;
     }
@@ -388,10 +393,15 @@ public class UnitController {
             return InGameResponses.Unit.UNIT_IS_TIRED;
         }
         Tile tile = unit.getTile();
+        if(tile.getCity() != null && tile.getCity().getOwner() == unit.getOwner()){
+            return InGameResponses.Unit.OWN_IMPROVEMENT;
+        }
         Improvement improvement;
         if ((improvement = tile.getImprovement()) != null) {
-            return InGameResponses.Unit.NO_IMPROVEMENT;
-        }
+            Road road;
+            if((road = tile.getRoad()) == null) return InGameResponses.Unit.NO_IMPROVEMENT;
+            road.setRemainingTurns(Math.max(road.getRemainingTurns() + 1, 3));
+        } // todo: can be implemented better
         improvement.setRemainingTurns(Math.max(improvement.getRemainingTurns() + 1, improvement.getRequiredTurns()));
         unit.setOrderType(OrderType.AWAKE);
         unit.setMP(0);
@@ -414,10 +424,12 @@ public class UnitController {
         }
         Tile tile = unit.getTile();
         if(tile.getImprovement() == null){
-            return InGameResponses.Unit.NO_IMPROVEMENT;
+            if(tile.getRoad() == null) return InGameResponses.Unit.NO_IMPROVEMENT;
+            unit.setOrderType(OrderType.ROAD_BUILDING);
+            unit.setMP(0);
+            return InGameResponses.Unit.REPAIR_SUCCESSFUL;
         }
         unit.setOrderType(OrderType.BUILDING);
-        unit.setMP(0);
         unit.setMP(0);
         return InGameResponses.Unit.REPAIR_SUCCESSFUL;
     }
