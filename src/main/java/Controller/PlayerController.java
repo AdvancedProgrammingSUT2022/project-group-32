@@ -130,9 +130,23 @@ public class PlayerController {
         }
         updateFieldOfView();
         updateTechnology();
-        updateSupplies();
+        updateFood();
         updateScience();
         updateGold(); // gold must be updated after science
+    }
+
+    private static void updateFood() { // citizen eat, death, settler no production
+        Player player = GameController.getCurrentPlayer();
+        for (City city : player.getCities()) {
+            int foodIncome = 0;
+            foodIncome += city.getTilesFoodIncome();
+            ArrayList<BuildingType> buildingTypes = city.getBuildings().stream().map(Building::getBuildingType).collect(Collectors.toCollection(ArrayList::new));
+            if (buildingTypes.contains(BuildingType.GRANARY)) foodIncome += 2;
+            if (buildingTypes.contains(BuildingType.WATER_MILL) && city.hasRiver()) {
+                foodIncome += 2;
+            }
+
+        }
     }
 
     public static void endTurn() {
@@ -202,6 +216,7 @@ public class PlayerController {
 
         // TODO: 4/17/2022
     }
+
 
     private static void updateGold() {
         // handles turn based coin changes - NOT HANDLING TRADES, BUYS, ...

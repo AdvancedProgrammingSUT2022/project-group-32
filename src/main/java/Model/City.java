@@ -272,6 +272,21 @@ public class City {
         return 0;
     }
 
+    public int getTilesFoodIncome() {
+        int tilesFood = 0;
+        for (Tile tile : territory) {
+            tilesFood += tile.getFood();
+        }
+        return tilesFood;
+    }
+
+    public boolean hasRiver() {
+        for (Tile tile : territory) {
+            if (tile.getIsRiver().containsValue(1)) return true;
+        }
+        return false;
+    }
+
     // TODO: 4/17/2022 getCitizenByID, removeCitizen, addTile, RemoveTile,( expand in Controller), getTile, getNeighbors, get
 
 

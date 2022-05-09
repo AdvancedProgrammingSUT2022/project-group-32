@@ -25,7 +25,6 @@ public class Player {
 
     private int scienceIncome;
     private int goldIncome;
-    private int food;
     private int XP;
     private int happiness;
     private int population;
@@ -137,19 +136,6 @@ public class Player {
 
     public void setGold(int gold) {
         this.gold = gold;
-    }
-
-    public int getScience() {
-        return science;
-    }
-
-
-    public int getFood() {
-        return food;
-    }
-
-    public void setFood(int food) {
-        this.food = food;
     }
 
     public int getRowP() {

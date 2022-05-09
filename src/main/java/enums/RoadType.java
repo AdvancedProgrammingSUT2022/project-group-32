@@ -1,13 +1,13 @@
 package enums;
 
-public enum RouteType {
+public enum RoadType {
     // costs are set DELLY
     ROAD(1),
     RAILROAD(2);
 
     private final int maintenanceCost;
 
-    RouteType(int maintenanceCost) {
+    RoadType(int maintenanceCost) {
         this.maintenanceCost = maintenanceCost;
     }
 

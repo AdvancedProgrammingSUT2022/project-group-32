@@ -46,7 +46,7 @@ public class Terrain {
     }
 
     public int getFood() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+        return terrainType.food + terrainFeature.food;
     }
 
     public int getProduction() {
