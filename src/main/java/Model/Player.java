@@ -1,5 +1,6 @@
 package Model;
 
+import Model.Resources.Resource;
 import Model.Units.Unit;
 import enums.BuildingType;
 import enums.Color;

@@ -184,8 +184,6 @@ public class Map {
         }
         Tile currentTile = finish;
         while (true) {
-            if (parent[currentTile.getRow()][currentTile.getColumn()] == null) {
-            }
             if (parent[currentTile.getRow()][currentTile.getColumn()].equals(start)) {
                 return currentTile;
             }

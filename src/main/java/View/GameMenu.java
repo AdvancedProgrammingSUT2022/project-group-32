@@ -25,7 +25,6 @@ public class GameMenu extends Menu {
         MILITARY_PANEL("military", x -> MilitaryPanel.run(x)),
         NOTIFICATIONS_PANEL("notifications", x -> NotificationsPanel.run(x)),
         RESEARCH_PANEL("research", x -> ResearchPanel.run(x)),
-        TROOP_SELECTED_PANEL("troopSelected", x -> TroopSelectedPanel.run(x)),
         UNIT_SELECTED_PANEL("unitSelected", x -> UnitSelectedPanel.run(x)),
         UNITS_PANEL("units", x -> UnitsPanel.run(x)),
         VICTORY_PANEL("victory", x -> VictoryPanel.run(x));
@@ -136,7 +135,7 @@ public class GameMenu extends Menu {
             System.out.println(response.getString(row + " " + column));
         } else {
             System.out.println(response.getString());
-            currentPanel = PanelType.TROOP_SELECTED_PANEL;
+            currentPanel = PanelType.UNIT_SELECTED_PANEL;
         }
     }
 

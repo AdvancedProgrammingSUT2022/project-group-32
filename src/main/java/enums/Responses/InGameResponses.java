@@ -3,6 +3,7 @@ package enums.Responses;
 public class InGameResponses {
 
     public enum Building {
+        CITY_NOT_IN_POSSESS("selected city is not yours"),
         ALREADY_EXISTS("\"$\" already exists in this city"),
         IN_PROGRESS_BUILDING_CHANGED("In progress building changed to \"$\""),
         CITY_NOT_SELECTED("No city is selected"),
@@ -25,9 +26,11 @@ public class InGameResponses {
 
     public enum Unit {
         //GENERAL(FOR ALL)
+        CITY_NOT_SELECTED("No city is selected"),
         NO_UNIT_SELECTED("no unit is selected"),
         UNIT_NOT_AVAILABLE("selected unit is not available"),
         UNIT_NOT_IN_POSSESS("selected unit is not in possess"),
+        CITY_NOT_IN_POSSESS("selected city is not yours"),
         UNIT_IS_TIRED("selected unit is out of moves"),
         //MOVE TO
         TILE_NOT_REACHABLE("movement to this position is not possible because its not reachable"),
@@ -48,6 +51,8 @@ public class InGameResponses {
         NO_IMPROVEMENT("there is no improvement on the current tile"),
         OWN_IMPROVEMENT("this improvement belongs to you, you can't pillage it"),
         //BUILD , REMOVE , REPAIR
+        INVALID_IMPROVEMENT("invalid improvement type"),
+        INVALID_ROAD("invalid road type"),
         UNIT_NOT_A_WORKER("selected unit is not a worker"),
         TILE_NOT_FOREST("selected unit is not on a forest tile"),
         //BUILD
@@ -72,6 +77,8 @@ public class InGameResponses {
         UNIT_BUILDING_PAUSED("unit building successfully paused"),
         UNIT_BUILDING_SUCCESSFUL("unit is being built successfully"),
         UNIT_ALREADY_IN_MAKING("a unit of this type is already being built"),
+        DO_NOT_HAVE_TECH("you don't have the required technology to build this unit"),
+        DO_NOT_HAVE_RESOURCE("you don't have the resources to build this unit"),
 
         //SUCCESS
         MOVETO_SUCCESSFUL("unit successfully moved"),
@@ -106,6 +113,7 @@ public class InGameResponses {
     }
     public enum City{
         // general
+        CITY_NOT_IN_POSSESS("selected city is not yours"),
         NO_CITY_SELECTED("you haven't selected any city yet"),
         LOCATION_NOT_VALID("the coordinates are not valid"),
         // citizen assigning/freeing
