@@ -3,6 +3,7 @@ package Model;
 import Model.Units.Troop;
 import Model.Units.Unit;
 import enums.BuildingType;
+import enums.ResourceType;
 import enums.UnitType;
 
 import java.util.ArrayList;
@@ -19,9 +20,10 @@ public class City {
     private Unit unitInProgress;
     private ArrayList<Unit> incompleteUnits;
     private int freeCitizens;
-    private int food, production, population, health, baseStrength;
+    private int foodIncome, production, population, health, baseStrength;
     private int sightRange;
     private Troop garrisonedTroop;
+    private int neededFoodForNewCitizen = 20, storedFoodForNewCitizen = 0;
 
     public City(String name, Player owner, Tile capitalTile, ArrayList<Tile> territory) {
         this.name = name;
@@ -72,12 +74,12 @@ public class City {
         this.buildings = buildings;
     }
 
-    public int getFood() {
-        return food;
+    public int getFoodIncome() {
+        return foodIncome;
     }
 
-    public void setFood(int food) {
-        this.food = food;
+    public void setFoodIncome(int foodIncome) {
+        this.foodIncome = foodIncome;
     }
 
     public int getProduction() {
@@ -94,6 +96,18 @@ public class City {
 
     public void setPopulation(int population) {
         this.population = population;
+    }
+
+    public void setNeededFoodForNewCitizen(int neededFoodForNewCitizen) {
+        this.neededFoodForNewCitizen = neededFoodForNewCitizen;
+    }
+
+    public int getStoredFoodForNewCitizen() {
+        return storedFoodForNewCitizen;
+    }
+
+    public void setStoredFoodForNewCitizen(int storedFoodForNewCitizen) {
+        this.storedFoodForNewCitizen = storedFoodForNewCitizen;
     }
 
     public int getFreeCitizens() {
@@ -118,6 +132,10 @@ public class City {
 
     public void setBaseStrength(int baseStrength) {
         this.baseStrength = baseStrength;
+    }
+
+    public int getNeededFoodForNewCitizen() {
+        return neededFoodForNewCitizen;
     }
 
     public int getSightRange() {
@@ -286,6 +304,26 @@ public class City {
         }
         return false;
     }
+
+    // adds to stored food for new citizen, if is possible adds new citizen;
+    public void updateNewCitizenStoredFood() {
+        storedFoodForNewCitizen += foodIncome;
+        if (storedFoodForNewCitizen > neededFoodForNewCitizen) {
+            storedFoodForNewCitizen -= neededFoodForNewCitizen;
+            population++;
+            freeCitizens++;
+            neededFoodForNewCitizen *= 1.4;
+        }
+    }
+
+    public ArrayList<ResourceType> getWorkingResources() {
+        ArrayList<ResourceType> resourceTypes = new ArrayList<>();
+        for (Tile tile : territory) {
+            if (tile.isHasCitizen()) resourceTypes.add(tile.getResourceType());
+        }
+        return resourceTypes;
+    }
+
 
     // TODO: 4/17/2022 getCitizenByID, removeCitizen, addTile, RemoveTile,( expand in Controller), getTile, getNeighbors, get
 

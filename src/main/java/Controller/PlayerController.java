@@ -133,6 +133,28 @@ public class PlayerController {
         updateFood();
         updateScience();
         updateGold(); // gold must be updated after science
+        updateHappiness();
+    }
+
+    private static void updateHappiness() {
+        int happiness = 0;
+        happiness -= GameController.getCurrentPlayer().getCities().size() * 3;
+
+        ArrayList<ResourceType> playerResources = getPlayerWorkingResourceTypes(GameController.getCurrentPlayer());
+        for (ResourceType luxuryResourceType : ResourceType.getLuxuryResourceTypes()) {
+            if (playerResources.contains(luxuryResourceType)) happiness += 4;
+        }
+
+
+        ArrayList<BuildingType> buildingTypes = getPlayerBuildingTypes(GameController.getCurrentPlayer());
+        if (buildingTypes.contains(BuildingType.BURIAL_TOMB)) happiness += 2;
+        if (buildingTypes.contains(BuildingType.CIRCUS)) happiness += 3; // TODO: 5/9/2022
+        if (buildingTypes.contains(BuildingType.COLOSSEUM)) happiness += 4;
+        if (buildingTypes.contains(BuildingType.SATRAP_COURT)) happiness += 2;
+
+        happiness -= GameController.getCurrentPlayer().getPopulation() / 10;
+
+        GameController.getCurrentPlayer().setHappiness(happiness);
     }
 
     private static void updateFood() { // citizen eat, death, settler no production
@@ -145,7 +167,19 @@ public class PlayerController {
             if (buildingTypes.contains(BuildingType.WATER_MILL) && city.hasRiver()) {
                 foodIncome += 2;
             }
+            int foodConsumption = city.getPopulation() * 2;
+            if (foodConsumption > foodIncome) {
+                city.setPopulation(foodIncome / 2);
+                city.setFoodIncome(0);
+                return;
+            }
+            if (city.getUnitInProgress().getUnitType().equals(UnitType.SETTLER)) {
+                city.setFoodIncome(0);
+                return;
+            }
 
+            city.setFoodIncome(foodIncome - foodConsumption);
+            city.updateNewCitizenStoredFood();
         }
     }
 
@@ -280,6 +314,22 @@ public class PlayerController {
 
     public static boolean checkIfWon() {
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+    }
+
+    public static ArrayList<ResourceType> getPlayerWorkingResourceTypes(Player player) {
+        ArrayList<ResourceType> res = new ArrayList<>();
+        for (City city : player.getCities()) {
+            res.addAll(city.getWorkingResources());
+        }
+        return res;
+    }
+
+    public static ArrayList<BuildingType> getPlayerBuildingTypes(Player player) {
+        ArrayList<BuildingType> buildingTypes = new ArrayList<>();
+        for (City city : player.getCities()) {
+            buildingTypes.addAll(city.getBuildings().stream().map(Building::getBuildingType).toList());
+        }
+        return buildingTypes;
     }
 
 }

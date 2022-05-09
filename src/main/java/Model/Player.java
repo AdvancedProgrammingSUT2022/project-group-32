@@ -52,7 +52,7 @@ public class Player {
         this.id = count;
         this.backgroundColor = Color.values()[this.id];
         this.color = Color.values()[this.id + 8];
-
+        this.happiness = 20;
         count++;
     }
 
@@ -154,7 +154,12 @@ public class Player {
         this.happiness = happiness;
     }
 
+    //updates when ever gotten
     public int getPopulation() {
+        population = 0;
+        for (City city : cities) {
+            population += city.getPopulation();
+        }
         return population;
     }
 
