@@ -1,5 +1,6 @@
 package Model;
 
+import Model.Units.Troop;
 import Model.Units.Unit;
 import enums.BuildingType;
 import enums.Color;
@@ -68,7 +69,6 @@ public class Player {
 
     public void setScienceIncome(int scienceIncome) {
         this.scienceIncome = scienceIncome;
-        System.err.println("is set to" + this.getScienceIncome());
     }
 
     public int getGoldIncome() {
@@ -224,6 +224,7 @@ public class Player {
             }
         }
         return null;
+
     }
 
     public Building getBuildingByType(BuildingType buildingType) {
@@ -372,5 +373,17 @@ public class Player {
             if (scienceIncome < 0) setScienceIncome(0);
             setGold(0);
         }
+    }
+
+    public int getProduction() {
+        return this.getCities().stream().mapToInt(City::getProduction).sum();
+    }
+
+    public int getTerritoryCount() {
+        return cities.stream().mapToInt(c -> c.getTerritory().size()).sum();
+    }
+
+    public int getTroopCount() {
+        return (int) units.stream().filter(u -> (u instanceof Troop)).count();
     }
 }

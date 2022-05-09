@@ -11,7 +11,9 @@ public class EconomyPanel extends GameMenu {
 
     public static void run(String command) {
         cities.addAll(GameController.getCurrentPlayer().getCities()); // this is what used every where, for same indexing ...
-
+        if (command.startsWith("economy panel")) {
+            printPanel();
+        }
     }
 
     private static void printPanel() {

@@ -16,6 +16,9 @@ public class CitiesPanel extends GameMenu {
 
     public static void run(String command) {
         initializeCities();
+        if (command.startsWith("cities panel")) {
+            printPanel();
+        }
 
     }
 

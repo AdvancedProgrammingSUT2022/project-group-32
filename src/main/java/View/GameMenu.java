@@ -2,7 +2,6 @@ package View;
 
 import Controller.GameController;
 import Controller.PlayerController;
-import Model.Game;
 import Model.Tile;
 import View.Panels.*;
 import enums.Responses.Response;
@@ -46,6 +45,7 @@ public class GameMenu extends Menu {
     public static void run(Scanner scanner) {
         String command;
         while (true) {
+            clearScreen();
             command = scanner.nextLine();
             if (command.startsWith("show map")) {
                 showMap(command);

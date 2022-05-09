@@ -1,7 +1,5 @@
 package View;
 
-import enums.Responses.Response;
-
 import java.util.Scanner;
 
 public class Menu {
@@ -55,7 +53,12 @@ public class Menu {
         System.out.println(currentMenu.name);
     }
 
-    protected static void invalidCommand(){
+    protected static void invalidCommand() {
         System.out.println("invalid command!");
+    }
+
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 }
