@@ -18,7 +18,7 @@ public class Tile {
     private Unit unit;
     private Troop troop;
     private FogState fogState;
-    private RouteType roadType; // can be null
+    private Road road; // can be null
     private HashMap<Integer, Integer> isRiver; // Clock-based directions: 0 - 2 - 4 - 6 - 8 - 10
     private boolean hasCitizen;
 
@@ -33,7 +33,7 @@ public class Tile {
         this.improvement = null;
         this.unit = null;
         this.troop = null;
-        this.roadType = null;
+        this.road = null;
         this.isRiver = new HashMap<>();
         isRiver.put(0, 0);
         isRiver.put(2, 0);
@@ -55,8 +55,9 @@ public class Tile {
         this.improvement = tile.improvement;
         this.unit = tile.unit;
         this.troop = tile.troop;
-        this.roadType = tile.roadType;
+        this.road = tile.road;
         this.isRiver = tile.isRiver;
+        // todo this should be debugged
     }
 
     public int getRow() {
@@ -155,12 +156,22 @@ public class Tile {
         this.resource = resource;
     }
 
-    public RouteType getRoadType() {
-        return roadType;
+    public Road getRoad() {
+        return road;
     }
 
-    public void setRoadType(RouteType roadType) {
-        this.roadType = roadType;
+    public void setRoad(Road road) {
+        this.road = road;
+    }
+
+    public RoadType getRoadType() {
+        if(this.road == null) return null;
+        return road.getType();
+    }
+
+    public void setRoadType(RoadType roadType) {
+        if(this.road == null) return;
+        this.road.setType(roadType);
     }
 
     public HashMap<Integer, Integer> getIsRiver() {
@@ -267,8 +278,15 @@ public class Tile {
         int direction = incomingTile.getDirectionTo(this);
         if(direction == -1) return 9999;
         mp += incomingTile.getIsRiver().get(direction);
-        if(this.roadType == RouteType.ROAD && incomingTile.roadType == RouteType.ROAD){
-            mp --;
+        if(this.getRoadType() == RoadType.ROAD && incomingTile.getRoadType() == RoadType.ROAD){
+            if(this.getRoad().getRemainingTurns() <= 0){
+                mp -= 1;
+            }
+        }
+        if(this.getRoadType() == RoadType.RAILROAD && incomingTile.getRoadType() == RoadType.RAILROAD){
+            if(this.getRoad().getRemainingTurns() <= 0){
+                mp -= 2;
+            }
         }
         return mp;
     }

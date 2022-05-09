@@ -44,6 +44,9 @@ public class InGameResponses {
         //FOUND
         UNIT_NOT_A_SETTLER("selected unit is not a settler"),
         CITY_FOUNDATION_NOT_POSSIBLE("city foundation in the current position is not possible"),
+        //PILLAGE
+        NO_IMPROVEMENT("there is no improvement on the current tile"),
+        OWN_IMPROVEMENT("this improvement belongs to you, you can't pillage it"),
         //BUILD , REMOVE , REPAIR
         UNIT_NOT_A_WORKER("selected unit is not a worker"),
         TILE_NOT_FOREST("selected unit is not on a forest tile"),
@@ -85,6 +88,7 @@ public class InGameResponses {
         DELETE_SUCCESSFUL("unit successfully deleted"),
         BUILD_SUCCESSFUL("successfully built"),
         REMOVE_SUCCESSFUL("successfully removed"),
+        PILLAGE_SUCCESSFUL("pillage successful"),
         REPAIR_SUCCESSFUL("successfully repaired");
 
         private final String message;
@@ -104,11 +108,22 @@ public class InGameResponses {
         // general
         NO_CITY_SELECTED("you haven't selected any city yet"),
         LOCATION_NOT_VALID("the coordinates are not valid"),
+        // citizen assigning/freeing
+        NO_FREE_CITIZEN("the city has no free citizens"),
+        TILE_NOT_IN_TERRITORY("selected tile is not inside this city"),
+        TILE_ALREADY_FULL("this tile already has a citizen working on it"),
+        TILE_IS_EMPTY("this tile has no citizen working on it"),
+        ASSIGNMENT_SUCCESSFUL("a citizen was successfully assigned to this tile"),
+        FREEING_SUCCESSFUL("the citizen is now unemployed"),
+        // purchase units
+        CAPITAL_IS_FULL("capital tile is currently fulled"),
+        NOT_ENOUGH_GOLD("not enough gold to buy the unit"),
+        UNIT_BUY_SUCCESSFUL("unit purchased successfully"),
         // purchase tile
         TILE_ALREADY_BOUGHT("tile is already bought"),
         CANT_BUY_TILE("this tile is not available to buy"),
         TILE_TOO_FAR("this tile is not near the selected city"),
-        BUY_SUCCESSFUL("tile purchased successfully");
+        TILE_BUY_SUCCESSFUL("tile purchased successfully");
 
 
         private final String message;
@@ -161,6 +176,24 @@ public class InGameResponses {
         private final String message;
 
         Select(String message) {
+            this.message = message;
+        }
+
+        // can get a string and adds it to corresponding location in the response message
+        public String getString(String... dynamicSubstring) {
+            String messageText = this.message;
+            if (dynamicSubstring.length == 0 || !messageText.contains("$")) return this.message;
+            return messageText.replaceFirst("\\$", dynamicSubstring[0]);
+        }
+    }
+    public enum Technology{
+        TECH_ALREADY_DONE("you have already researched this technology"),
+        TECH_NOT_YET_READY("you don't have the prerequisites for this technology"),
+        TECH_RESEARCHED("technology is being researched");
+
+        private final String message;
+
+        Technology(String message) {
             this.message = message;
         }
 

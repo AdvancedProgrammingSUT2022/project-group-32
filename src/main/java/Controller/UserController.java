@@ -99,6 +99,7 @@ public class UserController {
         }
         User user = new User(username, password, nickname);
         users.add(user);
+        saveUsers();
         return Response.LoginMenu.REGISTER_SUCCESSFUL;
     }
 
