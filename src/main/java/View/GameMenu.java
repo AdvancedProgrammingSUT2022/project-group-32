@@ -4,7 +4,6 @@ import Controller.GameController;
 import Controller.PlayerController;
 import Model.Tile;
 import View.Panels.*;
-import enums.Color;
 import enums.Responses.Response;
 
 import java.util.ArrayList;
@@ -77,12 +76,16 @@ public class GameMenu extends Menu {
         int tileColumn = GameController.getGame().getCurrentPlayer().getCameraColumn();
         Tile[][] map = GameController.getCurrentPlayerMap().getTiles();
         String[][] stringMap = MapMaker.getMap(map);
+        printTopBar();
         printMap(stringMap, MapMaker.getTileCenterRow(tileRow, tileColumn), MapMaker.getTileCenterColumn(tileRow, tileColumn));
     }
 
+    private static void printTopBar() {
+        System.out.println(MapMaker.getTopBar());
+    }
+
     private static void printMap(String[][] map, int cameraRow, int cameraColumn) {
-        System.out.println(Color.YELLOW_BOLD_BRIGHT.code + Color.GREEN_BACKGROUND.code + "Player : '" + GameController.getCurrentPlayer().getName() + "'"
-                + Color.RESET.code);
+
         for (int row = Math.max(0, cameraRow - SCREEN_HEIGHT / 2); row < Math.min(map.length, cameraRow + SCREEN_HEIGHT / 2); row++) {
             for (int column = Math.max(0, cameraColumn - SCREEN_WIDTH / 2);
                  column < Math.min(map[0].length, cameraColumn + SCREEN_WIDTH / 2);
