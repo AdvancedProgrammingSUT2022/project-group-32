@@ -11,6 +11,11 @@ public class Road {
         this.remainingTurns = 3;
     }
 
+    public Road(Road road){
+        this.type = road.type;
+        this.remainingTurns = road.remainingTurns;
+    }
+
     public RoadType getType() {
         return type;
     }

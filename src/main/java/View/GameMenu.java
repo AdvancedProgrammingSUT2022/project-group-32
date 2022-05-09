@@ -2,9 +2,12 @@ package View;
 
 import Controller.GameController;
 import Controller.PlayerController;
+import Model.Game;
 import Model.Tile;
 import View.Panels.*;
 import enums.Responses.Response;
+import enums.TechnologyType;
+import enums.UnitType;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -54,6 +57,8 @@ public class GameMenu extends Menu {
                 selectTroop(command);
             } else if (command.startsWith("select city")) {
                 selectCity(command);
+            } else if (command.startsWith("research tech")){
+                researchTech(command);
             } else if (command.startsWith("end game")) {
                 endGame(command);
             } else if (command.startsWith("open panel")) {
@@ -64,6 +69,8 @@ public class GameMenu extends Menu {
                 passTurn(command);
             } else if (command.startsWith("show current panel")) {
                 showCurrentPanel(command);
+            } else if(command.startsWith("cheat")){
+                checkCheats(command);
             } else {
                 runPanel(command);
             }
@@ -71,7 +78,7 @@ public class GameMenu extends Menu {
         }
     }
 
-    private static void showMap(String command) {
+    public static void showMap(String command) {
         int tileRow = GameController.getGame().getCurrentPlayer().getCameraRow(); // TODO: 4/25/2022 must be accessed better
         int tileColumn = GameController.getGame().getCurrentPlayer().getCameraColumn();
         Tile[][] map = GameController.getCurrentPlayerMap().getTiles();
@@ -156,6 +163,16 @@ public class GameMenu extends Menu {
         }
     }
 
+    private static void researchTech(String command){
+        ArrayList<String> parameters = CLI.getParameters(command, "t");
+        if(parameters == null){
+            invalidCommand();
+            return;
+        }
+        TechnologyType techType = TechnologyType.getTypeByName(parameters.get(0));
+        System.out.println(PlayerController.researchTech(techType));
+    }
+
     private static void showTurn(String command){
         System.out.println(GameController.getGame().getCurrentPlayer().getName());
     }
@@ -183,11 +200,70 @@ public class GameMenu extends Menu {
         currentPanel.function.accept(command);
     }
 
-    public static void showCurrentPanel(String command) {
+    protected static void showCurrentPanel(String command) {
         if(currentPanel == null){
             System.out.println("no panel is open");
             return;
         }
         System.out.println(currentPanel.name);
+    }
+
+    private static void checkCheats(String command){
+        if(command.startsWith("cheat increase gold")){
+            increaseGold(command);
+        } else if(command.startsWith("cheat put unit")){
+            putUnit(command);
+        } else if(command.startsWith("cheat build city")){
+            buildCity(command);
+        } else if(command.startsWith("cheat instant heal")){
+            instantHeal(command);
+        } else if(command.startsWith("cheat eye of sauron")){
+            eyeOfSauron();
+        } else{
+            invalidCommand();
+        }
+    }
+
+    private static void increaseGold(String command){
+        ArrayList<String> parameters = CLI.getParameters(command, "a");
+        if(parameters == null || !parameters.get(0).matches("-?\\d")){
+            invalidCommand();
+            return;
+        }
+        System.out.println(GameController.cheatIncreaseGold(Integer.parseInt(parameters.get(0))).getString());
+    }
+
+    private static void putUnit(String command){
+        ArrayList<String> parameters = CLI.getParameters(command, "l", "t");
+        if(parameters == null){
+            invalidCommand();
+            return;
+        }
+        int row = Integer.parseInt(parameters.get(0)), column = Integer.parseInt(parameters.get(1));
+        UnitType unitType = UnitType.getUnitTypeByName(parameters.get(2));
+        System.out.println(GameController.cheatPutUnit(unitType, row, column));
+    }
+
+    private static void buildCity(String command){
+        ArrayList<String> parameters = CLI.getParameters(command, "l", "cn");
+        if(parameters == null){
+            invalidCommand();
+            return;
+        }
+        int row = Integer.parseInt(parameters.get(0)), column = Integer.parseInt(parameters.get(1));
+        System.out.println(GameController.cheatBuildCity(parameters.get(2), row, column));
+    }
+
+    private static void instantHeal(String command){
+        ArrayList<String> parameters = CLI.getParameters(command, "a");
+        if(parameters == null || !parameters.get(0).matches("-?\\d")){
+            invalidCommand();
+            return;
+        }
+        System.out.println(GameController.cheatInstantHeal(Integer.parseInt(parameters.get(0))).getString());
+    }
+
+    private static void eyeOfSauron(){
+        System.out.println(GameController.eyeOfSauron());
     }
 }

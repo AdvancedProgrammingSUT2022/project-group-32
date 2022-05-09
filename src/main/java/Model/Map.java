@@ -3,6 +3,7 @@ package Model;
 import Controller.GameController;
 import Controller.MapController;
 import Model.Units.Unit;
+import View.GameMenu;
 import enums.TerrainType;
 
 import java.util.ArrayList;
@@ -184,6 +185,9 @@ public class Map {
         }
         Tile currentTile = finish;
         while (true) {
+            if(parent[currentTile.getRow()][currentTile.getColumn()] == null){
+                return currentTile;
+            }
             if (parent[currentTile.getRow()][currentTile.getColumn()].equals(start)) {
                 return currentTile;
             }

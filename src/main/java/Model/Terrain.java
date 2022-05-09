@@ -20,6 +20,13 @@ public class Terrain {
         else this.baseFeature = null;
     }
 
+    public Terrain(Terrain terrain){
+        this.terrainType = terrain.terrainType;
+        this.terrainFeature = terrain.terrainFeature;
+        this.baseFeature = terrain.baseFeature;
+        this.resourceType = terrain.resourceType;
+    }
+
     public TerrainType getTerrainType() {
         return terrainType;
     }

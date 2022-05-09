@@ -4,6 +4,7 @@ import Model.*;
 import Model.Units.Troop;
 import Model.Units.Unit;
 import enums.BuildingType;
+import enums.Responses.InGameResponses;
 import enums.Responses.Response;
 import enums.UnitType;
 
@@ -162,17 +163,20 @@ public class GameController {
 
     }
 
-    public static void cheatIncreaseGold(int amount) {
+    public static Response.GameMenu cheatIncreaseGold(int amount) {
         Player player = getCurrentPlayer();
         player.setGold(player.getGold() + amount);
+        return Response.GameMenu.CHEAT_SUCCESSFUL;
         // increases the current gold of the player
     }
 
-    public static void cheatPutUnit(UnitType unitType, int row, int column) {
+    public static Response.GameMenu cheatPutUnit(UnitType unitType, int row, int column) {
         Player player = getCurrentPlayer();
         Tile tile = getMap().getTile(row, column);
         Unit unit = new Unit(tile, player, unitType);
         unit.setRemainingCost(0);
+        PlayerController.updateFieldOfView(player);
+        return Response.GameMenu.CHEAT_SUCCESSFUL;
         // puts a unit in specified coordinates for free
     }
 
@@ -180,27 +184,32 @@ public class GameController {
         // builds a building in the selected city for free
     }
 
-    public static void cheatBuildCity(String name, int row, int column) {
+    public static Response.GameMenu cheatBuildCity(String name, int row, int column) {
         cheatPutUnit(UnitType.SETTLER, row, column);
         Tile tile = getMap().getTile(row, column);
         MapController.BuildCity(tile.getUnit(), name);
+        return Response.GameMenu.CHEAT_SUCCESSFUL;
         // builds a city in the selected tile with the given name
     }
 
-    public static void immortalizeUnit(int health) {
-        Unit unit = selectedUnit;
+    public static Response.GameMenu cheatInstantHeal(int health) {
+        Unit unit = getSelectedUnitOrTroop();
+        if(unit == null) return Response.GameMenu.NO_UNIT_SELECTED;
         unit.setHP(health);
+        return Response.GameMenu.CHEAT_SUCCESSFUL;
         // sets the HP of the selected unit to health
     }
 
-    public static void eyeOfSauron() {
+    public static Response.GameMenu eyeOfSauron() {
         Player player = getCurrentPlayer();
         Map map = getMap();
+        Tile[][] tiles = player.getMap().getTiles();
         for (int row = 0; row < map.getHeight(); row++) {
             for (int column = 0; column < map.getWidth(); column++) {
-                player.getMap().setTile(row, column, new Tile(map.getTile(row, column)));
+                tiles[row][column] = new Tile(map.getTile(row, column));
             }
         }
+        return Response.GameMenu.CHEAT_SUCCESSFUL;
         // makes the whole map visible to a player (temporarily)
     }
 
