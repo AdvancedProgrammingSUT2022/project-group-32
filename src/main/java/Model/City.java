@@ -4,10 +4,12 @@ import Model.Units.Troop;
 import Model.Units.Unit;
 import enums.BuildingType;
 import enums.ResourceType;
+import enums.TerrainFeature;
 import enums.UnitType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class City {
     private String name;
@@ -325,6 +327,24 @@ public class City {
             if (tile.isHasCitizen()) resourceTypes.add(tile.getResourceType());
         }
         return resourceTypes;
+    }
+
+    public int getGoldIncome() {
+        return territory.stream().mapToInt(Tile::getGold).sum();
+    }
+
+    public int getScienceIncome() {
+        ArrayList<BuildingType> buildingTypes = this.getBuildings().stream().map(Building::getBuildingType).collect(Collectors.toCollection(ArrayList::new));
+        double cityScience = this.getPopulation();
+        if (buildingTypes.contains(BuildingType.LIBRARY)) cityScience += this.getPopulation() / 2;
+        if (buildingTypes.contains(BuildingType.UNIVERSITY)) {
+            for (Tile tile : this.getTerritory()) {
+                if (tile.getTerrain().getTerrainFeature().equals(TerrainFeature.JUNGLE)) cityScience += 2;
+            }
+            cityScience *= 1.5;
+        }
+        if (buildingTypes.contains(BuildingType.PUBLIC_SCHOOL)) cityScience *= 1.5;
+        return (int) cityScience;
     }
 
 
