@@ -28,6 +28,7 @@ public class InGameResponses {
         NO_UNIT_SELECTED("no unit is selected"),
         UNIT_NOT_AVAILABLE("selected unit is not available"),
         UNIT_NOT_IN_POSSESS("selected unit is not in possess"),
+        CITY_NOT_IN_POSSESS("selected city is not yours"),
         UNIT_IS_TIRED("selected unit is out of moves"),
         //MOVE TO
         TILE_NOT_REACHABLE("movement to this position is not possible because its not reachable"),
@@ -72,6 +73,8 @@ public class InGameResponses {
         UNIT_BUILDING_PAUSED("unit building successfully paused"),
         UNIT_BUILDING_SUCCESSFUL("unit is being built successfully"),
         UNIT_ALREADY_IN_MAKING("a unit of this type is already being built"),
+        DO_NOT_HAVE_TECH("you don't have the required technology to build this unit"),
+        DO_NOT_HAVE_RESOURCE("you don't have the resources to build this unit"),
 
         //SUCCESS
         MOVETO_SUCCESSFUL("unit successfully moved"),

@@ -54,7 +54,14 @@ public class CityController {
      */
     public static InGameResponses.Unit buildUnit(UnitType unitType) {
         City city = GameController.getSelectedCity();
-
+        Player player = city.getOwner();
+        if(city.getOwner() != GameController.getCurrentPlayer()){
+            return InGameResponses.Unit.CITY_NOT_IN_POSSESS;
+        }
+        if(unitType.neededTech != null && player.getTechnologyByType(unitType.neededTech) == null){
+            return InGameResponses.Unit.DO_NOT_HAVE_TECH;
+        }
+        // TODO: 5/9/2022 check resources 
         // adding the previous one to the unfinished list
         if (city.getUnitInProgress() != null) {
             if(city.getUnitInProgress().getUnitType() == unitType){

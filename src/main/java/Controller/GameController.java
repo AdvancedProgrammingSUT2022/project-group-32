@@ -3,14 +3,11 @@ package Controller;
 import Model.*;
 import Model.Units.Troop;
 import Model.Units.Unit;
-import View.Panels.TroopSelectedPanel;
 import enums.BuildingType;
 import enums.Responses.Response;
-import enums.TerrainType;
 import enums.UnitType;
 
 import java.util.ArrayList;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class GameController {

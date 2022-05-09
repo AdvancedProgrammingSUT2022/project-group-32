@@ -174,8 +174,7 @@ public class PlayerController {
     public static void updateFieldOfView(Player player) {
         Map map = player.getMap();
         Map gameMap = GameController.getMap();
-        /*map = new Map(GameController.getGame().getMap());
-        return;*/
+
         clearView(map);
         ArrayList<Tile> inSight = new ArrayList<>();
         for (Unit unit : player.getUnits()) {
