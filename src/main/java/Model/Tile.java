@@ -27,7 +27,7 @@ public class Tile {
         this.column = column;
         this.terrain = terrain;
         this.fogState = fogState;
-        this.resource = null;
+        this.resource = new Resource(terrain.getResourceType(), this);
         this.ruin = ruin;
         this.city = null;
         this.improvement = null;

@@ -24,7 +24,11 @@ public class Resource {
         this.production = resourceType.production;
         this.name = resourceType.name;
         this.neededImprovement = resourceType.neededImprovement;
-        this.canBeFoundOns = new ArrayList<>(resourceType.possibleFeatures);
+        if(resourceType.possibleFeatures != null){
+            this.canBeFoundOns = new ArrayList<>(resourceType.possibleFeatures);
+        } else{
+            this.canBeFoundOns = new ArrayList<>();
+        }
     }
 
     public ResourceType getResourceType() {
