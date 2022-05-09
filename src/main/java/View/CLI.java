@@ -25,6 +25,7 @@ public class CLI {
         options.addOption(option);
         options.addOption("cn", "name", true, "City name"); // in show, select city
         options.addOption("c", "count", true, "how much to move in a direction");
+        options.addOption("t", "type", true, "can represent any type of anything");
         Option option2 = new Option("d", "direction", true, ""); // urdl <n>
         option2.setArgs(2);
         options.addOption(option2);

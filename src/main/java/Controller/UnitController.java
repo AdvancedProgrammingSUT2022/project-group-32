@@ -282,6 +282,9 @@ public class UnitController {
         if (unit.getUnitType() != UnitType.WORKER) {
             return InGameResponses.Unit.UNIT_NOT_A_WORKER;
         }
+        if(improvementType == null){
+            return InGameResponses.Unit.INVALID_IMPROVEMENT;
+        }
         Tile tile = unit.getTile();
         if (!improvementType.canBeOn.contains(tile.getBaseFeature()) && !improvementType.canBeOn.contains(tile.getTerrainFeature())) {
             return InGameResponses.Unit.BUILDING_NOT_POSSIBLE;
@@ -314,6 +317,9 @@ public class UnitController {
         }
         if (unit.getUnitType() != UnitType.WORKER) {
             return InGameResponses.Unit.UNIT_NOT_A_WORKER;
+        }
+        if(roadType == null){
+            return InGameResponses.Unit.INVALID_ROAD;
         }
         Tile tile = unit.getTile();
         if (tile.getRoadType() == RouteType.ROAD) {

@@ -33,5 +33,12 @@ public enum ImprovementType {
         this.canBeOn = canBeOn;
     }
 
-
+    public static ImprovementType getTypeByName(String name){
+        for (ImprovementType value : ImprovementType.values()) {
+            if(value.name.equals(name)){
+                return value;
+            }
+        }
+        return null;
+    }
 }

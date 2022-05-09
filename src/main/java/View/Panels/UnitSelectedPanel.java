@@ -5,6 +5,7 @@ import Controller.UnitController;
 import View.CLI;
 import View.GameMenu;
 import View.Menu;
+import enums.ImprovementType;
 
 import java.util.ArrayList;
 
@@ -16,18 +17,21 @@ public class UnitSelectedPanel extends GameMenu {
             GameMenu.currentPanel = null;
         } else if(command.startsWith("build city")){
             foundCity(command);
-        } else if(command.startsWith("show selected unit")){
+        } else if(command.startsWith("sleep")){
+            sleep();
+        }
+        else if(command.startsWith("show selected unit")){
             showSelected();
-        }  else {
+        } else {
             invalidCommand();
         }
     }
 
-    public static void showSelected(){
+    private static void showSelected(){
         System.out.println(GameController.getSelectedUnit().getTile().getRow() + " " + GameController.getSelectedUnit().getTile().getColumn());
     }
 
-    public static void moveTo(String command) {
+    private static void moveTo(String command) {
         ArrayList<String> parameters = CLI.getParameters(command, "l");
         if(parameters == null){
             invalidCommand();
@@ -37,7 +41,7 @@ public class UnitSelectedPanel extends GameMenu {
         System.out.println(UnitController.moveTo(row, column).getString());
     }
 
-    public static void foundCity(String command){
+    private static void foundCity(String command){
         ArrayList<String> parameters = CLI.getParameters(command, "cn");
         if(parameters == null){
             invalidCommand();
@@ -46,7 +50,37 @@ public class UnitSelectedPanel extends GameMenu {
         System.out.println(UnitController.foundCity(parameters.get(0)).getString());
     }
 
-    public static void setOrder(String command) {
-
+    private static void sleep(){
+        System.out.println(UnitController.sleep().getString());
     }
+
+    private static void alert(){
+        System.out.println(UnitController.alert().getString());
+    }
+
+    private static void fortify(){
+        System.out.println(UnitController.fortify().getString());
+    }
+
+    private static void heal(){
+        System.out.println(UnitController.heal().getString());
+    }
+
+    private static void wake(){
+        System.out.println(UnitController.wake().getString());
+    }
+
+    private static void delete(){
+        System.out.println(UnitController.delete().getString());
+    }
+
+    private static void buildImprovement(String command){
+        ArrayList<String> parameters = CLI.getParameters(command, "t");
+        if(parameters == null){
+            invalidCommand();
+            return;
+        }
+        System.out.println(UnitController.buildImprovement(ImprovementType.getTypeByName(parameters.get(0))).getString());
+    }
+
 }

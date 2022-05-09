@@ -47,6 +47,8 @@ public class InGameResponses {
         //PILLAGE
         NO_IMPROVEMENT("there is no improvement on the current tile"),
         //BUILD , REMOVE , REPAIR
+        INVALID_IMPROVEMENT("invalid improvement type"),
+        INVALID_ROAD("invalid road type"),
         UNIT_NOT_A_WORKER("selected unit is not a worker"),
         TILE_NOT_FOREST("selected unit is not on a forest tile"),
         //BUILD
