@@ -91,7 +91,7 @@ public class UnitController {
     }
 
     public static InGameResponses.Unit moveTo(int row, int column) {
-        Unit unit = GameController.getSelectedUnitOrTroop();
+        Unit unit = GameController.getSelectedUnit();
         Map map = GameController.getMap();
         if (unit == null) {
             return InGameResponses.Unit.UNIT_NOT_AVAILABLE;
@@ -113,7 +113,7 @@ public class UnitController {
 
     // these functions should affect isDone
     public static InGameResponses.Unit sleep() {
-        Unit unit = GameController.getSelectedUnitOrTroop();
+        Unit unit = GameController.getSelectedUnit();
         if (unit == null) {
             return InGameResponses.Unit.NO_UNIT_SELECTED;
         }
@@ -128,7 +128,7 @@ public class UnitController {
     }
 
     public static InGameResponses.Unit alert() {
-        Unit unit = GameController.getSelectedUnitOrTroop();
+        Unit unit = GameController.getSelectedUnit();
         if (unit == null) {
             return InGameResponses.Unit.NO_UNIT_SELECTED;
         }
@@ -146,7 +146,7 @@ public class UnitController {
     }
 
     public static InGameResponses.Unit fortify() {
-        Unit unit = GameController.getSelectedUnitOrTroop();
+        Unit unit = GameController.getSelectedUnit();
         if (unit == null) {
             return InGameResponses.Unit.NO_UNIT_SELECTED;
         }
@@ -164,7 +164,7 @@ public class UnitController {
     }
 
     public static InGameResponses.Unit heal() {
-        Unit unit = GameController.getSelectedUnitOrTroop();
+        Unit unit = GameController.getSelectedUnit();
         if (unit == null) {
             return InGameResponses.Unit.NO_UNIT_SELECTED;
         }
@@ -180,7 +180,7 @@ public class UnitController {
 
     public static InGameResponses.Unit setup() {
         // only for siege troops
-        Unit unit = GameController.getSelectedUnitOrTroop();
+        Unit unit = GameController.getSelectedUnit();
         if (unit == null) {
             return InGameResponses.Unit.NO_UNIT_SELECTED;
         }
@@ -206,7 +206,7 @@ public class UnitController {
 
     public static InGameResponses.Unit foundCity(String name) {
         // only for settlers
-        Unit unit = GameController.getSelectedUnitOrTroop();
+        Unit unit = GameController.getSelectedUnit();
         if (unit == null) {
             return InGameResponses.Unit.NO_UNIT_SELECTED;
         }
@@ -230,7 +230,7 @@ public class UnitController {
     }
 
     public static InGameResponses.Unit cancelOrder() {
-        Unit unit = GameController.getSelectedUnitOrTroop();
+        Unit unit = GameController.getSelectedUnit();
         if (unit == null) {
             return InGameResponses.Unit.NO_UNIT_SELECTED;
         }
@@ -242,7 +242,7 @@ public class UnitController {
     }
 
     public static InGameResponses.Unit wake() {
-        Unit unit = GameController.getSelectedUnitOrTroop();
+        Unit unit = GameController.getSelectedUnit();
         if (unit == null) {
             return InGameResponses.Unit.NO_UNIT_SELECTED;
         }
@@ -257,7 +257,7 @@ public class UnitController {
     }
 
     public static InGameResponses.Unit delete() {
-        Unit unit = GameController.getSelectedUnitOrTroop();
+        Unit unit = GameController.getSelectedUnit();
         if (unit == null) {
             return InGameResponses.Unit.NO_UNIT_SELECTED;
         }
@@ -270,7 +270,6 @@ public class UnitController {
         unit.getOwner().setGold(unit.getOwner().getGold() + unit.getCost() / 10);
         unit.destroy();
         GameController.setSelectedUnit(null);
-        GameController.setSelectedTroop(null);
         PlayerController.updateFieldOfView(unit.getOwner());
         return InGameResponses.Unit.DELETE_SUCCESSFUL;
     }

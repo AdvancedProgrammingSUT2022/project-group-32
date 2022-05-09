@@ -1,22 +1,57 @@
 package View.Panels;
 
+import Controller.GameController;
+import Model.City;
+import Model.Units.Troop;
 import Model.Units.Unit;
+import View.CLI;
 import View.GameMenu;
+import enums.Color;
+import enums.Responses.InGameResponses;
 
 import java.util.ArrayList;
 
 public class UnitsPanel extends GameMenu {
-    private static final ArrayList<Unit> playerUnits = new ArrayList<>();
-
     public static void run(String command) {
-
+        if (command.startsWith("show panel")) {
+            showPanel();
+        } else if (command.startsWith("open unit ")) {
+            openUnit(command);
+        } else {
+            invalidCommand();
+        }
     }
 
-    private static void printPanel() {
+    private static void showPanel() {
         int i = 0;
-        System.out.println("#  Name\tHP\tMP");
-        for (Unit unit : playerUnits) {
-            System.out.println(i + " -" + unit.getUnitType().name + "\t" + unit.getHP() + "\t" + unit.getMP());
+        for (Unit unit : GameController.getCurrentPlayer().getUnits()) {
+            i++;
+            printRow(unit.getOwner().getBackgroundColor().code + i + "  " + Color.RESET.code,
+                    unit.getUnitType().name,
+                    unit.getRow() + " " + unit.getColumn()
+            );
         }
+    }
+
+    private static void openUnit(String command) {
+        ArrayList<String> parameters = CLI.getParameters(command, "id");
+        if (parameters == null || !parameters.get(0).matches("-?\\d+")) {
+            invalidCommand();
+            return;
+        }
+        int id = Integer.parseInt(parameters.get(0)) - 1;
+        if (id < 0 || id >= GameController.getCurrentPlayer().getUnits().size()) {
+            System.out.println(InGameResponses.Info.INVALID_ID.getString());
+            return;
+        }
+        GameController.setSelectedUnit(GameController.getCurrentPlayer().getUnits().get(id));
+        currentPanel = PanelType.UNIT_SELECTED_PANEL;
+        System.out.println("unit opened successfully");
+    }
+
+    private static void printRow(String s1, String s2, String s3) {
+        String format = "|%1$-5s|%2$-15s|%3$-15s|";
+        System.out.format(format, s1, s2, s3);
+        System.out.println();
     }
 }

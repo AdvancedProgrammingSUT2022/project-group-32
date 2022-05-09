@@ -187,7 +187,6 @@ public class PlayerController {
         // TODO: 4/23/2022 does the necessary stuff at the end of the turn
         GameController.setSelectedCity(null);
         GameController.setSelectedUnit(null);
-        GameController.setSelectedTroop(null);
     }
 
     public static Response.GameMenu nextTurn() {
