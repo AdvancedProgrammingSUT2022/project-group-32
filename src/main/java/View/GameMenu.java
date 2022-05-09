@@ -76,7 +76,6 @@ public class GameMenu extends Menu {
             } else if (command.startsWith("economy panel")) {
                 currentPanel = PanelType.ECONOMY_PANEL;
             } else if (command.startsWith("cities panel")) {
-                System.err.println(" dfs");
                 currentPanel = PanelType.CITIES_PANEL;
             } else {
                 runPanel(command);

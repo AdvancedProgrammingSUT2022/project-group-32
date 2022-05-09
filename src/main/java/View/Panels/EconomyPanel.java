@@ -7,7 +7,7 @@ import View.GameMenu;
 import java.util.ArrayList;
 
 public class EconomyPanel extends GameMenu {
-    private static ArrayList<City> cities;
+    private static final ArrayList<City> cities = new ArrayList<>();
 
     public static void run(String command) {
         cities.addAll(GameController.getCurrentPlayer().getCities()); // this is what used every where, for same indexing ...

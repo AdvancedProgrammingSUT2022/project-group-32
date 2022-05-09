@@ -11,7 +11,7 @@ import java.util.Comparator;
 
 public class CitiesPanel extends GameMenu {
 
-    private static final ArrayList<City> cities = new ArrayList<>();
+    private static ArrayList<City> cities = new ArrayList<>();
 
 
     public static void run(String command) {
@@ -23,6 +23,7 @@ public class CitiesPanel extends GameMenu {
     }
 
     private static void initializeCities() {
+        cities = new ArrayList<>();
         for (Player player : GameController.getGame().getPlayers()) {
             cities.addAll(player.getCities());
         }
