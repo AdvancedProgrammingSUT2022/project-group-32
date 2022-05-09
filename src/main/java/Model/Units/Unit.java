@@ -1,5 +1,6 @@
 package Model.Units;
 
+import Model.Map;
 import Model.Player;
 import Model.Tile;
 import enums.OrderType;
@@ -140,10 +141,15 @@ public class Unit {
         return tile.getColumn();
     }
 
-    public void placeIn(Tile tile){
+    public void placeIn(Tile tile, Map map){
         this.MP -= tile.getMP(this.tile);
         if(tile.getCity() != null && !tile.getCity().getOwner().equals(this.owner)){
             this.MP = 0;
+        }
+        for (Tile neighbouringTile : tile.getNeighbouringTiles(map)) {
+            if(neighbouringTile.getTroop() != null && neighbouringTile.getTroop().getOwner() != this.owner){
+                this.MP = 0;
+            }
         }
         this.tile.takeUnit(this);
         tile.putUnit(this);

@@ -148,7 +148,7 @@ public class CityController {
             return InGameResponses.City.NOT_ENOUGH_GOLD;
         }
         player.setGold(player.getGold() - unit.getCost());
-        unit.placeIn(city.getCapitalTile());
+        unit.placeIn(city.getCapitalTile(), GameController.getMap());
         unit.setRemainingCost(0);
         return InGameResponses.City.UNIT_BUY_SUCCESSFUL;
     }

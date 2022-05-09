@@ -58,6 +58,9 @@ public class UnitController {
 
     // moves the selected unit to chosen destination
     public static void moveToDestination(Unit unit) {
+        if(!unit.getDestination().canFit(unit)){
+            unit.setDestination(null);
+        }
         if (unit.getDestination() == null || unit.getDestination() == unit.getTile()) {
             unit.setOrderType(OrderType.AWAKE);
             return;
@@ -72,14 +75,14 @@ public class UnitController {
                 System.err.println("The path is blocked");
                 for (Tile tile : currentTile.getNeighbouringTiles(GameController.getGame().getMap())) {
                     if (map.getDistanceTo(currentTile, destination) < map.getDistanceTo(tile, destination)) {
-                        unit.placeIn(tile);
+                        unit.placeIn(tile, map);
                         PlayerController.updateFieldOfView();
                         break;
                     }
                 }
                 break;
             }
-            unit.placeIn(nextTile);
+            unit.placeIn(nextTile, map);
             PlayerController.updateFieldOfView();
         }
         if (unit.getDestination() == unit.getTile()) {

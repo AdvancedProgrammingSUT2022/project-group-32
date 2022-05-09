@@ -251,7 +251,9 @@ public class Tile {
         if(unit instanceof Troop){
             return (this.troop == null);
         } else {
-            return (this.unit == null);
+            if(this.unit != null) return false;
+            if(this.troop != null && this.troop.getOwner() != unit.getOwner()) return false;
+            return true;
         }
     }
 

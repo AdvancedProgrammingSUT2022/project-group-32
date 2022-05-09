@@ -6,29 +6,35 @@ import View.CLI;
 import View.GameMenu;
 import View.Menu;
 import enums.ImprovementType;
+import enums.RoadType;
 
 import java.util.ArrayList;
 
 public class UnitSelectedPanel extends GameMenu {
     public static void run(String command) {
-        if(command.startsWith("move unit")){
-            moveTo(command);
-        } else if(command.startsWith("back")){
-            GameMenu.currentPanel = null;
-        } else if(command.startsWith("build city")){
-            foundCity(command);
-        } else if(command.startsWith("sleep")){
-            sleep();
-        }
-        else if(command.startsWith("show selected unit")){
-            showSelected();
-        } else {
-            invalidCommand();
-        }
+        if(command.startsWith("move unit")) moveTo(command);
+        else if(command.startsWith("back")) GameMenu.currentPanel = null;
+        else if(command.startsWith("build city")) foundCity(command);
+        else if(command.startsWith("sleep")) sleep();
+        else if(command.startsWith("alert")) alert();
+        else if(command.startsWith("fortify")) fortify();
+        else if(command.startsWith("heal")) heal();
+        else if(command.startsWith("wake")) wake();
+        else if(command.startsWith("delete")) delete();
+        else if(command.startsWith("build improvement")) buildImprovement(command);
+        else if(command.startsWith("build road")) buildRoad(command);
+        else if(command.startsWith("remove forest")) removeForest();
+        else if(command.startsWith("remove road")) removeRoute();
+        else if(command.startsWith("pillage")) pillage();
+        else if(command.startsWith("repair")) repair();
+        else if(command.startsWith("show selected unit")) showSelected();
+        else invalidCommand();
     }
 
     private static void showSelected(){
         System.out.println(GameController.getSelectedUnit().getTile().getRow() + " " + GameController.getSelectedUnit().getTile().getColumn());
+        System.out.println("type: " + GameController.getSelectedUnit().getUnitType().name);
+        System.out.println("owner: " + GameController.getSelectedUnit().getOwner().getName());
     }
 
     private static void moveTo(String command) {
@@ -83,4 +89,28 @@ public class UnitSelectedPanel extends GameMenu {
         System.out.println(UnitController.buildImprovement(ImprovementType.getTypeByName(parameters.get(0))).getString());
     }
 
+    private static void buildRoad(String command){
+        ArrayList<String> parameters = CLI.getParameters(command, "t");
+        if(parameters == null){
+            invalidCommand();
+            return;
+        }
+        System.out.println(UnitController.buildRoad(RoadType.getTypeByName(parameters.get(0))).getString());
+    }
+
+    private static void removeForest(){
+        System.out.println(UnitController.removeForest().getString());
+    }
+
+    private static void removeRoute(){
+        System.out.println(UnitController.removeRoute().getString());
+    }
+
+    private static void pillage(){
+        System.out.println(UnitController.pillage().getString());
+    }
+
+    private static void repair(){
+        System.out.println(UnitController.repair().getString());
+    }
 }
