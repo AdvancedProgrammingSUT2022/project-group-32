@@ -27,6 +27,18 @@ public class Improvement {
         this.requiredTurns = 6; // TODO: 5/2/2022 the number of turns should be determined
         this.remainingTurns = this.requiredTurns;
     }
+
+    public Improvement(Improvement improvement){
+        this.name = improvement.name;
+        this.improvementType = improvement.improvementType;
+        this.tile = improvement.tile; // fixme
+        this.addedFood = improvement.addedFood;
+        this.addedGold = improvement.addedGold;
+        this.addedProduction = improvement.addedProduction;
+        this.requiredTurns = 6;
+        this.remainingTurns = this.requiredTurns;
+    }
+
     public String getName() {
         return name;
     }

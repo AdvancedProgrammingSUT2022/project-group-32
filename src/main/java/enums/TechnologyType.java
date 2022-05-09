@@ -70,7 +70,7 @@ public enum TechnologyType {
      * gets a techName and returns corresponding enum
      * @return TechnologyType or null
      */
-    public static TechnologyType getEnumByName(String name) {
+    public static TechnologyType getTypeByName(String name) {
         for (TechnologyType technologyType : TechnologyType.values()) {
             if (technologyType.name.toLowerCase(Locale.ROOT).equals(name.toLowerCase(Locale.ROOT)))
                 return technologyType;

@@ -23,6 +23,7 @@ public class CLI {
         Option option = new Option("l", "location", true, ""); // [x] [y]
         option.setArgs(2);
         options.addOption(option);
+        options.addOption("a", "amount", true, "");
         options.addOption("cn", "name", true, "City name"); // in show, select city
         options.addOption("c", "count", true, "how much to move in a direction");
         options.addOption("t", "type", true, "can represent any type of anything");
@@ -68,7 +69,8 @@ public class CLI {
                     } catch (NumberFormatException e) {
                         return null;
                     }
-                } else values.add(cmd.getOptionValue(parameterKey));
+                }
+                else values.add(cmd.getOptionValue(parameterKey));
             }
             return values;
         } catch (ParseException e) {
