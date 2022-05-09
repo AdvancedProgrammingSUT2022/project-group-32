@@ -28,7 +28,7 @@ public class City {
         this.owner = owner;
         this.capitalTile = capitalTile;
         this.territory = territory;
-        this.freeCitizens = 0;
+        this.freeCitizens = 2;
         // TODO: 4/17/2022 sets buildings, citizens, gold, food, .... to default value. and empty arraylists
     }
 

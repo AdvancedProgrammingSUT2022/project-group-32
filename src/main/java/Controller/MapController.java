@@ -7,7 +7,6 @@ import Model.Tile;
 import Model.Units.Unit;
 import enums.FogState;
 import enums.ResourceType;
-import enums.Responses.Response;
 import enums.TerrainFeature;
 import enums.TerrainType;
 

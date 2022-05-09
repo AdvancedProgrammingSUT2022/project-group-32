@@ -8,8 +8,6 @@ import enums.CombatType;
 import enums.Responses.InGameResponses;
 import enums.UnitType;
 
-import java.util.ArrayList;
-
 public class CityController {
 
     // updates all there is about a city accordingly
@@ -56,7 +54,14 @@ public class CityController {
      */
     public static InGameResponses.Unit buildUnit(UnitType unitType) {
         City city = GameController.getSelectedCity();
-
+        Player player = city.getOwner();
+        if(city.getOwner() != GameController.getCurrentPlayer()){
+            return InGameResponses.Unit.CITY_NOT_IN_POSSESS;
+        }
+        if(unitType.neededTech != null && player.getTechnologyByType(unitType.neededTech) == null){
+            return InGameResponses.Unit.DO_NOT_HAVE_TECH;
+        }
+        // TODO: 5/9/2022 check resources 
         // adding the previous one to the unfinished list
         if (city.getUnitInProgress() != null) {
             if(city.getUnitInProgress().getUnitType() == unitType){
@@ -124,16 +129,64 @@ public class CityController {
     public static InGameResponses.Building pauseInProgressBuilding() {
         City city = GameController.getSelectedCity();
         if (city == null) return InGameResponses.Building.CITY_NOT_SELECTED;
-
         if (city.getBuildingInProgress() == null) return InGameResponses.Building.NO_BUILDING_IN_PROGRESS;
         city.addIncompleteBuilding(city.getBuildingInProgress());
         city.setBuildingInProgress(null);
         return InGameResponses.Building.BUILDING_PAUSED;
     }
 
-    public static void assignCitizenToTile() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+    public static InGameResponses.City buyUnit(UnitType unitType){
+        City city = GameController.getSelectedCity();
+        if(city == null) return InGameResponses.City.NO_CITY_SELECTED;
+        Tile pooch = new Tile(-1, -1, null, null, null); // this tile is temporary
+        Unit unit = new Unit(pooch, city.getOwner(), unitType);
+        if(!city.getCapitalTile().canFit(unit)){
+            return InGameResponses.City.CAPITAL_IS_FULL;
+        }
+        Player player = city.getOwner();
+        if(player.getGold() < unit.getCost()){
+            return InGameResponses.City.NOT_ENOUGH_GOLD;
+        }
+        player.setGold(player.getGold() - unit.getCost());
+        unit.placeIn(city.getCapitalTile());
+        unit.setRemainingCost(0);
+        return InGameResponses.City.UNIT_BUY_SUCCESSFUL;
+    }
 
+    public static InGameResponses.City assignCitizenToTile(int row, int column) {
+        City city = GameController.getSelectedCity();
+        if(city == null) return InGameResponses.City.NO_CITY_SELECTED;
+        if(city.getFreeCitizens() == 0){
+            return InGameResponses.City.NO_FREE_CITIZEN;
+        }
+        Tile tile = GameController.getMap().getTile(row, column);
+        if (tile == null) {
+            return InGameResponses.City.LOCATION_NOT_VALID;
+        }
+        if(tile.getCity() != city){
+            return InGameResponses.City.TILE_NOT_IN_TERRITORY;
+        }
+        if(tile.isHasCitizen()){
+            return InGameResponses.City.TILE_ALREADY_FULL;
+        }
+        tile.setHasCitizen(true);
+        city.setFreeCitizens(city.getFreeCitizens() - 1);
+        return InGameResponses.City.ASSIGNMENT_SUCCESSFUL;
+    }
+
+    public static InGameResponses.City freeCitizenFromTile(int row, int column) {
+        City city = GameController.getSelectedCity();
+        if(city == null) return InGameResponses.City.NO_CITY_SELECTED;
+        Tile tile = GameController.getMap().getTile(row, column);
+        if (tile == null) {
+            return InGameResponses.City.LOCATION_NOT_VALID;
+        }
+        if(!tile.isHasCitizen()){
+            return InGameResponses.City.TILE_IS_EMPTY;
+        }
+        tile.setHasCitizen(false);
+        city.setFreeCitizens(city.getFreeCitizens() + 1);
+        return InGameResponses.City.FREEING_SUCCESSFUL;
     }
 
     public static InGameResponses.City buyTile(int row, int column) {
@@ -161,6 +214,6 @@ public class CityController {
         tile.setCity(city);
         city.addTile(tile);
         city.getOwner().addTile(tile);
-        return InGameResponses.City.BUY_SUCCESSFUL;
+        return InGameResponses.City.TILE_BUY_SUCCESSFUL;
     }
 }
