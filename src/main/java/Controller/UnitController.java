@@ -59,7 +59,7 @@ public class UnitController {
     // moves the selected unit to chosen destination
     public static void moveToDestination(Unit unit) {
         if(!unit.getDestination().canFit(unit)){
-            unit.setDestination(null);
+            unit.setDestination(unit.getTile());
         }
         if (unit.getDestination() == null || unit.getDestination() == unit.getTile()) {
             unit.setOrderType(OrderType.AWAKE);
