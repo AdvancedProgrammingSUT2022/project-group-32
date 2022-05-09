@@ -75,8 +75,8 @@ public class MapController {
             tiles[i][width - 1] = new Tile(i, width - 1, new Terrain(TerrainType.OCEAN, TerrainFeature.NULL, ResourceType.NULL), FogState.UNKNOWN, null);
         }
         for (int i = 0; i < width; i++) {
-            tiles[0][i] = new Tile(0, i, new Terrain(TerrainType.OCEAN, TerrainFeature.NULL, ResourceType.NULL), FogState.UNKNOWN, null);
-            tiles[height - 1][i] = new Tile(height - 1, i, new Terrain(TerrainType.OCEAN, TerrainFeature.NULL, ResourceType.NULL), FogState.UNKNOWN, null);
+            tiles[0][i] = new Tile(0, i, new Terrain(TerrainType.OCEAN, TerrainFeature.ICE, ResourceType.NULL), FogState.UNKNOWN, null);
+            tiles[height - 1][i] = new Tile(height - 1, i, new Terrain(TerrainType.OCEAN, TerrainFeature.ICE, ResourceType.NULL), FogState.UNKNOWN, null);
         }
     }
 

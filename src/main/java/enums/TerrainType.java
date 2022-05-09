@@ -9,7 +9,7 @@ public enum TerrainType {
     GRASSLAND("Grassland", 2, 0, 0, -0.33, 1, new ArrayList<>(Arrays.asList(TerrainFeature.FOREST, TerrainFeature.MARSH)), TerrainFeature.GRASSLAND),
     HILL("Hill", 0, 2, 0, 0.25, 2, new ArrayList<>(Arrays.asList(TerrainFeature.FOREST, TerrainFeature.JUNGLE)), TerrainFeature.HILL),
     MOUNTAIN("Mountain", 0, 0, 0, 0.25, 9999, new ArrayList<>(Arrays.asList()), TerrainFeature.MOUNTAIN),
-    OCEAN("Ocean", 1, 0, 1, 0.0, 9999, new ArrayList<>(Arrays.asList()), TerrainFeature.OCEAN),
+    OCEAN("Ocean", 1, 0, 1, 0.0, 9999, new ArrayList<>(Arrays.asList(TerrainFeature.ICE)), TerrainFeature.OCEAN),
     PLAINS("Plains", 1, 1, 0, -0.33, 1, new ArrayList<>(Arrays.asList(TerrainFeature.FOREST, TerrainFeature.JUNGLE)), TerrainFeature.PLAINS),
     SNOW("Snow", 0, 0, 0, -0.33, 1, new ArrayList<>(Arrays.asList()), TerrainFeature.SNOW);
 
