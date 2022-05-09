@@ -31,6 +31,9 @@ public class City {
         this.capitalTile = capitalTile;
         this.territory = territory;
         this.freeCitizens = 2;
+        this.buildings = new ArrayList<>();
+        this.incompleteBuildings = new ArrayList<>();
+        this.incompleteUnits = new ArrayList<>();
         // TODO: 4/17/2022 sets buildings, citizens, gold, food, .... to default value. and empty arraylists
     }
 

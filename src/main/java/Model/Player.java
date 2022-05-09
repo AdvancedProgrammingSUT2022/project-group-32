@@ -1,6 +1,5 @@
 package Model;
 
-import Model.Resources.Resource;
 import Model.Units.Unit;
 import enums.BuildingType;
 import enums.Color;
@@ -69,6 +68,7 @@ public class Player {
 
     public void setScienceIncome(int scienceIncome) {
         this.scienceIncome = scienceIncome;
+        System.err.println("is set to" + this.getScienceIncome());
     }
 
     public int getGoldIncome() {
@@ -366,10 +366,11 @@ public class Player {
 
     public void updateGoldByIncome() {
         gold += goldIncome;
+        // only happens if income in negative
         if (gold < 0) {
-            scienceIncome -= goldIncome;
-            if (scienceIncome < 0) scienceIncome = 0;
-            gold = 0;
+            scienceIncome += goldIncome;
+            if (scienceIncome < 0) setScienceIncome(0);
+            setGold(0);
         }
     }
 }

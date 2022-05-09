@@ -252,8 +252,7 @@ public class Tile {
             return (this.troop == null);
         } else {
             if(this.unit != null) return false;
-            if(this.troop != null && this.troop.getOwner() != unit.getOwner()) return false;
-            return true;
+            return this.troop == null || this.troop.getOwner() == unit.getOwner();
         }
     }
 
@@ -295,17 +294,25 @@ public class Tile {
 
     public int getFood() {
         // TODO: 4/17/2022 checks food income based on Terrain object and the improvements and resource and building
+        if (getResourceType().equals(ResourceType.NULL))
+            return terrain.getFood();
+        if (improvement == null) {
+            return terrain.getFood() + ((hasCitizen) ? getResourceType().food : 0);
+        }
         return terrain.getFood() +
-                ((resource.getNeededImprovement().name.equals(improvement.getName())) ? improvement.getAddedGold() : 0);
-
+                ((hasCitizen) ? getResourceType().food : 0) +
+                ((hasCitizen && getResourceType().neededImprovement.name.equals(improvement.getName())) ? improvement.getAddedGold() : 0);
     }
 
     public int getGold() {
         // TODO: anything else?
         // + : terrain, terrain Feature, resource  improved, rivers
+        int improvementGold = 0;
+        if (!getResourceType().equals(ResourceType.NULL))
+            if (getResourceType().neededImprovement.equals(improvement)) improvementGold = improvement.getAddedGold();
         return terrain.getGold() +
-                ((hasCitizen) ? resource.getGold() : 0) +
-                ((resource.getNeededImprovement().name.equals(improvement.getName())) ? improvement.getAddedGold() : 0) +
+                ((hasCitizen) ? getResourceType().gold : 0) +
+                improvementGold +
                 (int) isRiver.values().stream().filter(i -> i.equals(1)).count() -
                 ((road == null) ? 0 : road.getType().getMaintenanceCost());
     }

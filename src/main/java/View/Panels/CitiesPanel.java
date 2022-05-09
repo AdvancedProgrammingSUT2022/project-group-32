@@ -7,4 +7,8 @@ public class CitiesPanel extends GameMenu {
 
 
     }
+
+    private static void printPanel() {
+
+    }
 }

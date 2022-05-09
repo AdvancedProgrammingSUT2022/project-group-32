@@ -173,7 +173,7 @@ public class PlayerController {
                 city.setFoodIncome(0);
                 return;
             }
-            if (city.getUnitInProgress().getUnitType().equals(UnitType.SETTLER)) {
+            if (city.getUnitInProgress() != null && city.getUnitInProgress().getUnitType().equals(UnitType.SETTLER)) {
                 city.setFoodIncome(0);
                 return;
             }
@@ -304,6 +304,7 @@ public class PlayerController {
             }
             if (buildingTypes.contains(BuildingType.PUBLIC_SCHOOL)) cityScience *= 1.5;
         }
+        System.err.println(scienceIncome);
         player.setScienceIncome(scienceIncome);
     }
 

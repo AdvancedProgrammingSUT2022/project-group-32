@@ -67,6 +67,7 @@ public class GameMenu extends Menu {
             } else {
                 runPanel(command);
             }
+            if (!command.startsWith("show map")) showMap(command);
         }
     }
 
