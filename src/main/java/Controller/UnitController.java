@@ -367,6 +367,54 @@ public class UnitController {
         return InGameResponses.Unit.REMOVE_SUCCESSFUL;
     }
 
+    public static InGameResponses.Unit removeJungle() {
+        Unit unit = GameController.getSelectedUnit();
+        if (unit == null) {
+            return InGameResponses.Unit.NO_UNIT_SELECTED;
+        }
+        if (unit.getOwner() != GameController.getCurrentPlayer()) {
+            return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
+        }
+        if (unit.getMP() <= 0) {
+            return InGameResponses.Unit.UNIT_IS_TIRED;
+        }
+        if (unit.getUnitType() != UnitType.WORKER) {
+            return InGameResponses.Unit.UNIT_NOT_A_WORKER;
+        }
+        Tile tile = unit.getTile();
+        if (tile.getTerrainFeature() != TerrainFeature.JUNGLE) {
+            return InGameResponses.Unit.TILE_NOT_JUNGLE;
+        }
+        tile.getTerrain().setTerrainFeature(null); // note: deforestation takes 1 turn
+        unit.setOrderType(OrderType.AWAKE);
+        unit.setMP(0);
+        return InGameResponses.Unit.REMOVE_SUCCESSFUL;
+    }
+
+    public static InGameResponses.Unit removeMarsh() {
+        Unit unit = GameController.getSelectedUnit();
+        if (unit == null) {
+            return InGameResponses.Unit.NO_UNIT_SELECTED;
+        }
+        if (unit.getOwner() != GameController.getCurrentPlayer()) {
+            return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
+        }
+        if (unit.getMP() <= 0) {
+            return InGameResponses.Unit.UNIT_IS_TIRED;
+        }
+        if (unit.getUnitType() != UnitType.WORKER) {
+            return InGameResponses.Unit.UNIT_NOT_A_WORKER;
+        }
+        Tile tile = unit.getTile();
+        if (tile.getTerrainFeature() != TerrainFeature.MARSH) {
+            return InGameResponses.Unit.TILE_NOT_MARSH;
+        }
+        tile.getTerrain().setTerrainFeature(null); // note: deforestation takes 1 turn
+        unit.setOrderType(OrderType.AWAKE);
+        unit.setMP(0);
+        return InGameResponses.Unit.REMOVE_SUCCESSFUL;
+    }
+
     public static InGameResponses.Unit removeRoute() {
         Unit unit = GameController.getSelectedUnit();
         if (unit == null) {

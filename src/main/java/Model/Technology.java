@@ -10,6 +10,7 @@ public class Technology {
     private final TechnologyType technologyType;
     private int requiredCost;
     private int remainingCost;
+    private String unlocks;
 
     public Technology(TechnologyType technologyType) {
         this.technologyType = technologyType;
@@ -17,6 +18,7 @@ public class Technology {
         this.neededTechs = technologyType.neededTechs;
         this.requiredCost = technologyType.cost;
         this.remainingCost = this.requiredCost;
+        this.unlocks = technologyType.unlocks;
     }
 
     public ArrayList<TechnologyType> getNeededTechs() {
@@ -45,5 +47,13 @@ public class Technology {
 
     public void setRemainingCost(int remainingCost) {
         this.remainingCost = remainingCost;
+    }
+
+    public String getUnlocks() {
+        return unlocks;
+    }
+
+    public void setUnlocks(String unlocks) {
+        this.unlocks = unlocks;
     }
 }
