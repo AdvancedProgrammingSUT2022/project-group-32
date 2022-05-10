@@ -19,7 +19,6 @@ public class Unit {
     private Tile destination;
     private int remainingCost;
     private OrderType orderType;
-    // TODO: 4/17/2022 : Unit order handling (orders should be passed on between turns)
 
     public Unit(Tile tile, Player owner, UnitType unitType) {
         this.tile = tile;
@@ -29,7 +28,8 @@ public class Unit {
         this.health = 10;
         this.cost = unitType.cost;
         this.movement = unitType.movement;
-        this.sightRange = 2;
+        this.sightRange = 3;
+        if(unitType == UnitType.CATAPULT) this.sightRange = 2;
         this.HP = this.health;
         this.MP = this.movement;
         this.remainingCost = this.cost;
@@ -139,7 +139,8 @@ public class Unit {
     }
 
     public void placeIn(Tile tile, Map map){
-        this.MP -= tile.getMP(this.tile);
+        if(unitType == UnitType.SCOUT) this.MP --;
+        else this.MP -= tile.getMP(this.tile);
         if(tile.getCity() != null && !tile.getCity().getOwner().equals(this.owner)){
             this.MP = 0;
         }

@@ -74,6 +74,10 @@ public class GameMenu extends Menu {
                 currentPanel = PanelType.ECONOMY_PANEL;
             } else if (command.startsWith("cities panel")) {
                 currentPanel = PanelType.CITIES_PANEL;
+            } else if (command.startsWith("units panel")) {
+                currentPanel = PanelType.UNITS_PANEL;
+            } else if (command.startsWith("notifications panel")) {
+                currentPanel = PanelType.NOTIFICATIONS_PANEL;
             } else if (command.startsWith("military panel")) {
                 currentPanel = PanelType.MILITARY_PANEL;
             } else {
@@ -247,7 +251,11 @@ public class GameMenu extends Menu {
         }
         int row = Integer.parseInt(parameters.get(0)), column = Integer.parseInt(parameters.get(1));
         UnitType unitType = UnitType.getUnitTypeByName(parameters.get(2));
-        System.out.println(GameController.cheatPutUnit(unitType, row, column));
+        if(unitType == null){
+            System.out.println("invalid unitType you sneaky weasel!");
+            return;
+        }
+        System.out.println(GameController.cheatPutUnit(unitType, row, column).getString());
     }
 
     private static void buildCity(String command){
@@ -257,7 +265,7 @@ public class GameMenu extends Menu {
             return;
         }
         int row = Integer.parseInt(parameters.get(0)), column = Integer.parseInt(parameters.get(1));
-        System.out.println(GameController.cheatBuildCity(parameters.get(2), row, column));
+        System.out.println(GameController.cheatBuildCity(parameters.get(2), row, column).getString());
     }
 
     private static void instantHeal(String command){
@@ -270,6 +278,6 @@ public class GameMenu extends Menu {
     }
 
     private static void eyeOfSauron(){
-        System.out.println(GameController.eyeOfSauron());
+        System.out.println(GameController.eyeOfSauron().getString());
     }
 }

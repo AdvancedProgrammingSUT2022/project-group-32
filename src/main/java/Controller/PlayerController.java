@@ -53,50 +53,6 @@ public class PlayerController {
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
     }
 
-    public static String citiesPanelInfo() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-    }
-
-    public static String dealsPanelInfo() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-    }
-
-    public static String demographicsPanelInfo() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-    }
-
-    public static String diplomaticPanelInfo() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-    }
-
-    public static String diplomacyPanelInfo() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-    }
-
-    public static String economyPanelInfo() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-    }
-
-    public static String militaryPanelInfo() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-    }
-
-    public static String notificationsPanelInfo() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-    }
-
-    public static String researchPanelInfo() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-    }
-
-    public static String unitsPanelInfo() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-    }
-
-    public static String victoryPanelInfo() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-    }
-
     public static InGameResponses.Technology researchTech(TechnologyType technologyType){
         Player player = GameController.getCurrentPlayer();
         if(technologyType == null){
@@ -287,7 +243,7 @@ public class PlayerController {
         // +: terrains, terrain Features, resources, buildings cost , handling route  and unit cost
     }
 
-    private static void updateTechnology() { // TODO: 5/9/2022 THIS IS WRONG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    private static void updateTechnology() {
         Player player = GameController.getGame().getCurrentPlayer();
         Technology inProgressTechnology = player.getTechnologyInProgress();
         if (inProgressTechnology != null) {
@@ -295,7 +251,8 @@ public class PlayerController {
             if (inProgressTechnology.getRequiredCost() <= 0) {
                 player.addTechnology(inProgressTechnology);
                 player.setTechnologyInProgress(null);
-                // TODO: 4/27/2022 tech fininsh popup and Logic, new build required
+                int turn = GameController.getTurn();
+                player.addNotification(turn + ": " + inProgressTechnology.getName() + " technology is fully researched");
             }
         }
     }

@@ -130,7 +130,7 @@ public class MapController {
                 }
 
                 ResourceType resourceType = ResourceType.NULL;
-                if (random.nextInt(4) == 0) {
+                if (random.nextInt(6) == 0) {
                     ArrayList<ResourceType> possibleResources = terrainType.baseFeature.possibleResources;
                     if (terrainFeature != null) possibleResources.addAll(terrainFeature.possibleResources);
                     if (!possibleResources.isEmpty()) {
@@ -152,6 +152,9 @@ public class MapController {
         ArrayList<Tile> territory = tile.getNeighbouringTiles(map);
         territory.add(tile);
         City city = new City(name, unit.getOwner(), tile, territory);
+        for (Tile tile1 : territory) {
+            tile1.setCity(city);
+        }
         unit.getOwner().addCity(city);
         unit.getOwner().addTile(tile);
         unit.getOwner().addNotification(GameController.getTurn() + ": the city of " + name + " has been constructed");

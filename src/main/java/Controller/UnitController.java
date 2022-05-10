@@ -101,7 +101,7 @@ public class UnitController {
         if (!unit.getOwner().equals(GameController.getGame().getCurrentPlayer())) {
             return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
         }
-        if (map.getDistanceTo(unit.getTile(), map.getTile(row, column)) == INF) {
+        if (map.getDistanceTo(unit.getTile(), map.getTile(row, column)) >= INF) {
             return InGameResponses.Unit.TILE_NOT_REACHABLE;
         }
         if (!map.getTile(row, column).canFit(unit)) {
