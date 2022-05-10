@@ -57,8 +57,6 @@ public class GameMenu extends Menu {
                 selectTroop(command);
             } else if (command.startsWith("select city")) {
                 selectCity(command);
-            } else if (command.startsWith("research tech")) {
-                researchTech(command);
             } else if (command.startsWith("end game")) {
                 endGame(command);
             } else if (command.startsWith("open panel")) {
@@ -167,16 +165,6 @@ public class GameMenu extends Menu {
             System.out.println(response.getString());
             currentPanel = PanelType.CITY_SELECTED_PANEL;
         }
-    }
-
-    private static void researchTech(String command){
-        ArrayList<String> parameters = CLI.getParameters(command, "t");
-        if(parameters == null){
-            invalidCommand();
-            return;
-        }
-        TechnologyType techType = TechnologyType.getTypeByName(parameters.get(0));
-        System.out.println(PlayerController.researchTech(techType));
     }
 
     private static void showTurn(String command){

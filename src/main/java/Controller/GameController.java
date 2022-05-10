@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 public class GameController {
     private static Game game;
     private static Unit selectedUnit;
-    private static Troop selectedTroop;
     private static City selectedCity;
 
     private static void gameGenerator(ArrayList<Player> players, int mapH, int mapW) {
@@ -48,25 +47,16 @@ public class GameController {
         GameController.game = game;
     }
 
+    public static int getTurn(){
+        return game.getTurnCount();
+    }
+
     public static Unit getSelectedUnit() {
         return selectedUnit;
     }
 
     public static void setSelectedUnit(Unit selectedUnit) {
         GameController.selectedUnit = selectedUnit;
-    }
-
-    public static Troop getSelectedTroop() {
-        return selectedTroop;
-    }
-
-    public static void setSelectedTroop(Troop selectedTroop) {
-        GameController.selectedTroop = selectedTroop;
-    }
-
-    public static Unit getSelectedUnitOrTroop() {
-        if (selectedUnit != null) return selectedUnit;
-        return selectedTroop;
     }
 
     public static City getSelectedCity() {
@@ -101,7 +91,6 @@ public class GameController {
             return Response.GameMenu.NO_CITY_IN_TILE;
         }
         setSelectedUnit(null);
-        setSelectedTroop(null);
         setSelectedCity(city);
         return Response.GameMenu.CITY_SELECTED;
     }
@@ -112,7 +101,6 @@ public class GameController {
             return Response.GameMenu.NO_UNIT_IN_TILE;
         }
         setSelectedUnit(tile.getUnit());
-        setSelectedTroop(null);
         setSelectedCity(null);
         return Response.GameMenu.UNIT_SELECTED;
     }
@@ -122,8 +110,7 @@ public class GameController {
         if (tile.getTroop() == null) {
             return Response.GameMenu.NO_TROOP_IN_TILE;
         }
-        setSelectedUnit(null);
-        setSelectedTroop(tile.getTroop());
+        setSelectedUnit(tile.getTroop());
         setSelectedCity(null);
         return Response.GameMenu.TROOP_SELECTED;
     }
@@ -196,7 +183,7 @@ public class GameController {
     }
 
     public static Response.GameMenu cheatInstantHeal(int health) {
-        Unit unit = getSelectedUnitOrTroop();
+        Unit unit = getSelectedUnit();
         if(unit == null) return Response.GameMenu.NO_UNIT_SELECTED;
         unit.setHP(health);
         return Response.GameMenu.CHEAT_SUCCESSFUL;

@@ -24,6 +24,7 @@ public class UnitController {
                 improvement.setRemainingTurns(improvement.getRemainingTurns() - 1);
                 if (improvement.getRemainingTurns() <= 0) {
                     unit.setOrderType(OrderType.AWAKE);
+                    unit.getOwner().addNotification(GameController.getTurn() + ": the improvement was built");
                 }
             }
         }
@@ -33,6 +34,7 @@ public class UnitController {
                 road.setRemainingTurns(road.getRemainingTurns() - 1);
                 if (road.getRemainingTurns() <= 0) {
                     unit.setOrderType(OrderType.AWAKE);
+                    unit.getOwner().addNotification(GameController.getTurn() + ": the road was built");
                 }
             }
         }
@@ -91,7 +93,7 @@ public class UnitController {
     }
 
     public static InGameResponses.Unit moveTo(int row, int column) {
-        Unit unit = GameController.getSelectedUnitOrTroop();
+        Unit unit = GameController.getSelectedUnit();
         Map map = GameController.getMap();
         if (unit == null) {
             return InGameResponses.Unit.UNIT_NOT_AVAILABLE;
@@ -113,7 +115,7 @@ public class UnitController {
 
     // these functions should affect isDone
     public static InGameResponses.Unit sleep() {
-        Unit unit = GameController.getSelectedUnitOrTroop();
+        Unit unit = GameController.getSelectedUnit();
         if (unit == null) {
             return InGameResponses.Unit.NO_UNIT_SELECTED;
         }
@@ -128,7 +130,7 @@ public class UnitController {
     }
 
     public static InGameResponses.Unit alert() {
-        Unit unit = GameController.getSelectedUnitOrTroop();
+        Unit unit = GameController.getSelectedUnit();
         if (unit == null) {
             return InGameResponses.Unit.NO_UNIT_SELECTED;
         }
@@ -146,7 +148,7 @@ public class UnitController {
     }
 
     public static InGameResponses.Unit fortify() {
-        Unit unit = GameController.getSelectedUnitOrTroop();
+        Unit unit = GameController.getSelectedUnit();
         if (unit == null) {
             return InGameResponses.Unit.NO_UNIT_SELECTED;
         }
@@ -164,7 +166,7 @@ public class UnitController {
     }
 
     public static InGameResponses.Unit heal() {
-        Unit unit = GameController.getSelectedUnitOrTroop();
+        Unit unit = GameController.getSelectedUnit();
         if (unit == null) {
             return InGameResponses.Unit.NO_UNIT_SELECTED;
         }
@@ -180,7 +182,7 @@ public class UnitController {
 
     public static InGameResponses.Unit setup() {
         // only for siege troops
-        Unit unit = GameController.getSelectedUnitOrTroop();
+        Unit unit = GameController.getSelectedUnit();
         if (unit == null) {
             return InGameResponses.Unit.NO_UNIT_SELECTED;
         }
@@ -206,7 +208,7 @@ public class UnitController {
 
     public static InGameResponses.Unit foundCity(String name) {
         // only for settlers
-        Unit unit = GameController.getSelectedUnitOrTroop();
+        Unit unit = GameController.getSelectedUnit();
         if (unit == null) {
             return InGameResponses.Unit.NO_UNIT_SELECTED;
         }
@@ -230,7 +232,7 @@ public class UnitController {
     }
 
     public static InGameResponses.Unit cancelOrder() {
-        Unit unit = GameController.getSelectedUnitOrTroop();
+        Unit unit = GameController.getSelectedUnit();
         if (unit == null) {
             return InGameResponses.Unit.NO_UNIT_SELECTED;
         }
@@ -242,7 +244,7 @@ public class UnitController {
     }
 
     public static InGameResponses.Unit wake() {
-        Unit unit = GameController.getSelectedUnitOrTroop();
+        Unit unit = GameController.getSelectedUnit();
         if (unit == null) {
             return InGameResponses.Unit.NO_UNIT_SELECTED;
         }
@@ -257,7 +259,7 @@ public class UnitController {
     }
 
     public static InGameResponses.Unit delete() {
-        Unit unit = GameController.getSelectedUnitOrTroop();
+        Unit unit = GameController.getSelectedUnit();
         if (unit == null) {
             return InGameResponses.Unit.NO_UNIT_SELECTED;
         }
@@ -270,7 +272,6 @@ public class UnitController {
         unit.getOwner().setGold(unit.getOwner().getGold() + unit.getCost() / 10);
         unit.destroy();
         GameController.setSelectedUnit(null);
-        GameController.setSelectedTroop(null);
         PlayerController.updateFieldOfView(unit.getOwner());
         return InGameResponses.Unit.DELETE_SUCCESSFUL;
     }
@@ -359,6 +360,54 @@ public class UnitController {
         Tile tile = unit.getTile();
         if (tile.getTerrainFeature() != TerrainFeature.FOREST) {
             return InGameResponses.Unit.TILE_NOT_FOREST;
+        }
+        tile.getTerrain().setTerrainFeature(null); // note: deforestation takes 1 turn
+        unit.setOrderType(OrderType.AWAKE);
+        unit.setMP(0);
+        return InGameResponses.Unit.REMOVE_SUCCESSFUL;
+    }
+
+    public static InGameResponses.Unit removeJungle() {
+        Unit unit = GameController.getSelectedUnit();
+        if (unit == null) {
+            return InGameResponses.Unit.NO_UNIT_SELECTED;
+        }
+        if (unit.getOwner() != GameController.getCurrentPlayer()) {
+            return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
+        }
+        if (unit.getMP() <= 0) {
+            return InGameResponses.Unit.UNIT_IS_TIRED;
+        }
+        if (unit.getUnitType() != UnitType.WORKER) {
+            return InGameResponses.Unit.UNIT_NOT_A_WORKER;
+        }
+        Tile tile = unit.getTile();
+        if (tile.getTerrainFeature() != TerrainFeature.JUNGLE) {
+            return InGameResponses.Unit.TILE_NOT_JUNGLE;
+        }
+        tile.getTerrain().setTerrainFeature(null); // note: deforestation takes 1 turn
+        unit.setOrderType(OrderType.AWAKE);
+        unit.setMP(0);
+        return InGameResponses.Unit.REMOVE_SUCCESSFUL;
+    }
+
+    public static InGameResponses.Unit removeMarsh() {
+        Unit unit = GameController.getSelectedUnit();
+        if (unit == null) {
+            return InGameResponses.Unit.NO_UNIT_SELECTED;
+        }
+        if (unit.getOwner() != GameController.getCurrentPlayer()) {
+            return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
+        }
+        if (unit.getMP() <= 0) {
+            return InGameResponses.Unit.UNIT_IS_TIRED;
+        }
+        if (unit.getUnitType() != UnitType.WORKER) {
+            return InGameResponses.Unit.UNIT_NOT_A_WORKER;
+        }
+        Tile tile = unit.getTile();
+        if (tile.getTerrainFeature() != TerrainFeature.MARSH) {
+            return InGameResponses.Unit.TILE_NOT_MARSH;
         }
         tile.getTerrain().setTerrainFeature(null); // note: deforestation takes 1 turn
         unit.setOrderType(OrderType.AWAKE);

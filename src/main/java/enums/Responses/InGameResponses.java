@@ -55,6 +55,8 @@ public class InGameResponses {
         INVALID_ROAD("invalid road type"),
         UNIT_NOT_A_WORKER("selected unit is not a worker"),
         TILE_NOT_FOREST("selected unit is not on a forest tile"),
+        TILE_NOT_JUNGLE("selected unit is not on a jungle tile"),
+        TILE_NOT_MARSH("selected unit is not on a marsh tile"),
         //BUILD
         ROAD_ALREADY_EXISTS("road already exists in the current position"),
         RAILROAD_ALREADY_EXISTS("railroad already exists in the current position"),
@@ -197,7 +199,8 @@ public class InGameResponses {
     public enum Technology{
         TECH_ALREADY_DONE("you have already researched this technology"),
         TECH_NOT_YET_READY("you don't have the prerequisites for this technology"),
-        TECH_RESEARCHED("technology is being researched");
+        TECH_RESEARCHED("technology is being researched"),
+        TECH_INVALID("invalid technology");
 
         private final String message;
 

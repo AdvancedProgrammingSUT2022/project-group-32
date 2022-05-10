@@ -99,6 +99,9 @@ public class PlayerController {
 
     public static InGameResponses.Technology researchTech(TechnologyType technologyType){
         Player player = GameController.getCurrentPlayer();
+        if(technologyType == null){
+            return InGameResponses.Technology.TECH_INVALID;
+        }
         if(player.getTechnologyByType(technologyType) != null){
             return InGameResponses.Technology.TECH_RESEARCHED;
         }
@@ -107,7 +110,9 @@ public class PlayerController {
                 return InGameResponses.Technology.TECH_NOT_YET_READY; // can be dynamic
             }
         }
-        player.addIncompleteTechnology(player.getTechnologyInProgress());
+        if(player.getTechnologyInProgress() != null){
+            player.addIncompleteTechnology(player.getTechnologyInProgress());
+        }
         player.setTechnologyInProgress(null);
         Technology technology = new Technology(technologyType);
         if (player.getIncompleteTechnologyByType(technologyType) != null){
@@ -187,7 +192,6 @@ public class PlayerController {
         // TODO: 4/23/2022 does the necessary stuff at the end of the turn
         GameController.setSelectedCity(null);
         GameController.setSelectedUnit(null);
-        GameController.setSelectedTroop(null);
     }
 
     public static Response.GameMenu nextTurn() {

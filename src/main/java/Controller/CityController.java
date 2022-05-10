@@ -26,7 +26,7 @@ public class CityController {
             if (inProgressBuilding.getRemainingCost() <= 0) {
                 city.addBuilding(inProgressBuilding);
                 city.setBuildingInProgress(null);
-                // todo: build finished popup and start new building popUp
+                player.addNotification(GameController.getTurn() + ": " + inProgressBuilding.getBuildingType() + " was built in " + city.getName());
             }
         }
         // Unit
@@ -41,7 +41,7 @@ public class CityController {
                     return;
                 }
                 city.getCapitalTile().putUnit(inProgressUnit);
-                // TODO: 5/2/2022 build finished popup maybe??
+                player.addNotification(GameController.getTurn() + ": " + inProgressUnit.getUnitType() + " was built in " + city.getName());
             }
         }
     }
