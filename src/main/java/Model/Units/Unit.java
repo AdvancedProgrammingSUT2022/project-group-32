@@ -9,11 +9,11 @@ import enums.UnitType;
 public class Unit {
     private Tile tile;
     private Player owner;
-    private int health;
+    private final int health; // this is for refrence
     private int cost;
     private int movement;
     private int MP; // needs to be refilled at the end of each turn
-    private int HP;
+    private int HP; // this is what changes in attacks
     private int sightRange;
     private UnitType unitType;
     private Tile destination;
@@ -57,9 +57,6 @@ public class Unit {
         return health;
     }
 
-    public void setHealth(int health) {
-        this.health = health;
-    }
 
     public int getCost() {
         return cost;

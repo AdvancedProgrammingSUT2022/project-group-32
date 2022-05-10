@@ -5,7 +5,6 @@ import Controller.PlayerController;
 import Model.Tile;
 import View.Panels.*;
 import enums.Responses.Response;
-import enums.TechnologyType;
 import enums.UnitType;
 
 import java.util.ArrayList;
@@ -75,6 +74,8 @@ public class GameMenu extends Menu {
                 currentPanel = PanelType.ECONOMY_PANEL;
             } else if (command.startsWith("cities panel")) {
                 currentPanel = PanelType.CITIES_PANEL;
+            } else if (command.startsWith("military panel")) {
+                currentPanel = PanelType.MILITARY_PANEL;
             } else {
                 runPanel(command);
             }

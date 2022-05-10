@@ -34,6 +34,7 @@ public class CityController {
         if (inProgressUnit != null) {
             inProgressUnit.setRemainingCost(inProgressUnit.getRemainingCost() - city.getProductionIncome());
             if (inProgressUnit.getRemainingCost() <= 0) {
+                inProgressUnit.setRemainingCost(0);
                 player.addUnit(inProgressUnit);
                 city.setUnitInProgress(null);
                 if(!city.getCapitalTile().canFit(inProgressUnit)){

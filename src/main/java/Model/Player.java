@@ -14,7 +14,7 @@ public class Player {
     private final User user;
     private final String name;
     private Map map;
-    private final ArrayList<Unit> units;
+    private final ArrayList<Unit> units; // Only complete units are here
     private final ArrayList<Building> buildings;
     private final ArrayList<Technology> technologies;
     private Technology technologyInProgress;
@@ -202,6 +202,7 @@ public class Player {
     }
 
     public void addUnit(Unit unit) {
+        unit.setRemainingCost(0);
         this.units.add(unit);
     }
 
