@@ -163,6 +163,7 @@ public class GameController {
         Tile tile = getMap().getTile(row, column);
         Unit unit = new Unit(tile, player, unitType);
         unit.setRemainingCost(0);
+        player.addUnit(unit);
         PlayerController.updateFieldOfView(player);
         return Response.GameMenu.CHEAT_SUCCESSFUL;
         // puts a unit in specified coordinates for free
@@ -176,6 +177,7 @@ public class GameController {
         cheatPutUnit(UnitType.SETTLER, row, column);
         Tile tile = getMap().getTile(row, column);
         MapController.BuildCity(tile.getUnit(), name);
+        getCurrentPlayer().addCity(tile.getCity());
         tile.getUnit().destroy();
         PlayerController.updateFieldOfView(GameController.getCurrentPlayer());
         return Response.GameMenu.CHEAT_SUCCESSFUL;

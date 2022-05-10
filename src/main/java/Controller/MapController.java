@@ -130,7 +130,7 @@ public class MapController {
                 }
 
                 ResourceType resourceType = ResourceType.NULL;
-                if (random.nextInt(4) == 0) {
+                if (random.nextInt(6) == 0) {
                     ArrayList<ResourceType> possibleResources = terrainType.baseFeature.possibleResources;
                     if (terrainFeature != null) possibleResources.addAll(terrainFeature.possibleResources);
                     if (!possibleResources.isEmpty()) {
