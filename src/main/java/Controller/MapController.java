@@ -154,6 +154,7 @@ public class MapController {
         City city = new City(name, unit.getOwner(), tile, territory);
         unit.getOwner().addCity(city);
         unit.getOwner().addTile(tile);
+        unit.getOwner().addNotification(GameController.getTurn() + ": the city of " + name + " has been constructed");
         tile.setCity(city);
     }
 

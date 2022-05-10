@@ -47,6 +47,10 @@ public class GameController {
         GameController.game = game;
     }
 
+    public static int getTurn(){
+        return game.getTurnCount();
+    }
+
     public static Unit getSelectedUnit() {
         return selectedUnit;
     }

@@ -24,6 +24,7 @@ public class UnitController {
                 improvement.setRemainingTurns(improvement.getRemainingTurns() - 1);
                 if (improvement.getRemainingTurns() <= 0) {
                     unit.setOrderType(OrderType.AWAKE);
+                    unit.getOwner().addNotification(GameController.getTurn() + ": the improvement was built");
                 }
             }
         }
@@ -33,6 +34,7 @@ public class UnitController {
                 road.setRemainingTurns(road.getRemainingTurns() - 1);
                 if (road.getRemainingTurns() <= 0) {
                     unit.setOrderType(OrderType.AWAKE);
+                    unit.getOwner().addNotification(GameController.getTurn() + ": the road was built");
                 }
             }
         }
