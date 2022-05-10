@@ -50,6 +50,6 @@ public class ResearchPanel extends GameMenu {
             int turnsLeft = (technology.getRemainingCost() + player.getScienceIncome() - 1) / player.getScienceIncome();
             System.out.println(turnsLeft + " turns left to be completely researched");
         }
-        System.out.println(technology.getUnlocks());
+        System.out.println("unlocks: " + technology.getUnlocks());
     }
 }
