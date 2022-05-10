@@ -24,6 +24,8 @@ public class UnitSelectedPanel extends GameMenu {
         else if(command.startsWith("build improvement")) buildImprovement(command);
         else if(command.startsWith("build road")) buildRoad(command);
         else if(command.startsWith("remove forest")) removeForest();
+        else if(command.startsWith("remove jungle")) removeJungle();
+        else if(command.startsWith("remove marsh")) removeMarsh();
         else if(command.startsWith("remove road")) removeRoute();
         else if(command.startsWith("pillage")) pillage();
         else if(command.startsWith("repair")) repair();
@@ -100,6 +102,14 @@ public class UnitSelectedPanel extends GameMenu {
 
     private static void removeForest(){
         System.out.println(UnitController.removeForest().getString());
+    }
+
+    private static void removeJungle(){
+        System.out.println(UnitController.removeJungle().getString());
+    }
+
+    private static void removeMarsh(){
+        System.out.println(UnitController.removeMarsh().getString());
     }
 
     private static void removeRoute(){
