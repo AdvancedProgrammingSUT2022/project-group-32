@@ -68,6 +68,15 @@ public class MapMaker {
         fillPartOfRow(map, centerRow - 2, centerColumn - 3, centerColumn + 3, color);
         fillPartOfRow(map, centerRow + 2, centerColumn - 3, centerColumn + 3, color);
 
+        // CITY NAME
+        if(tile.getFogState() != FogState.UNKNOWN && tile.getCity()!= null){
+            if(tile.getCity().getCapitalTile().getRow() == tileRow && tile.getCity().getCapitalTile().getColumn() == tileColumn){
+                map[centerRow - 2][centerColumn - 1] = sC("" + tile.getCity().getName().charAt(0), Color.WHITE_BRIGHT.code);
+                map[centerRow - 2][centerColumn] = sC("" + tile.getCity().getName().charAt(1), Color.WHITE_BRIGHT.code);
+                map[centerRow - 2][centerColumn + 1] = sC("" + tile.getCity().getName().charAt(2), Color.WHITE_BRIGHT.code);
+            }
+        }
+
         // TILE COORDINATES
         if (tileRow > 9) map[centerRow - 1][centerColumn - 2] = sC("" + tileRow / 10, color);
         map[centerRow - 1][centerColumn - 1] = sC("" + tileRow % 10, color);
@@ -127,9 +136,11 @@ public class MapMaker {
         if(tile.getFogState() != FogState.UNKNOWN){
             // Terrain
             // TODO: 4/26/2022 showing resources 
-            map[centerRow + 1][centerColumn - 1] = sC(tile.getTerrain().getTerrainType().name.substring(0, 1), Color.BLUE_BOLD_BRIGHT.code);
-            map[centerRow + 1][centerColumn] = sC(",", color);
-            map[centerRow + 1][centerColumn + 1] = sC(tile.getTerrain().getTerrainFeature().name.substring(0, 1), Color.RED_BACKGROUND.code);
+            map[centerRow + 1][centerColumn - 2] = sC(tile.getTerrain().getTerrainType().name.substring(0, 1), Color.BLUE_BOLD_BRIGHT.code);
+            map[centerRow + 1][centerColumn - 1] = sC(",", color);
+            map[centerRow + 1][centerColumn] = sC(tile.getTerrain().getTerrainFeature().name.substring(0, 1), Color.GREEN_BOLD_BRIGHT.code);
+            map[centerRow + 1][centerColumn + 1] = sC(",", color);
+            map[centerRow + 1][centerColumn + 2] = sC(tile.getTerrain().getResourceType().name.substring(0, 1), Color.YELLOW_BOLD_BRIGHT.code);
         }
         
     }

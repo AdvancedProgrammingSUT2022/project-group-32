@@ -37,7 +37,6 @@ public class Player {
     private final Color color;
 
     public Player(User user, int cameraRow, int cameraColumn) {
-        // TODO: 4/21/2022 players map must be set after all players are created
         this.user = user;
         this.name = user.getNickname();
         this.cameraRow = cameraRow;
@@ -55,12 +54,6 @@ public class Player {
         this.color = Color.values()[this.id + 8];
         this.happiness = 20;
         count++;
-    }
-
-    public String showMap() {
-        // shows players view of the map - currently in string form to be later replaces with graphics
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-        // TODO: 4/18/2022
     }
 
     public int getScienceIncome() {

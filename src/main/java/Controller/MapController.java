@@ -152,6 +152,9 @@ public class MapController {
         ArrayList<Tile> territory = tile.getNeighbouringTiles(map);
         territory.add(tile);
         City city = new City(name, unit.getOwner(), tile, territory);
+        for (Tile tile1 : territory) {
+            tile1.setCity(city);
+        }
         unit.getOwner().addCity(city);
         unit.getOwner().addTile(tile);
         unit.getOwner().addNotification(GameController.getTurn() + ": the city of " + name + " has been constructed");
