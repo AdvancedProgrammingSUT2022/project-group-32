@@ -44,12 +44,12 @@ public class ResearchPanel extends GameMenu {
         }
         System.out.println(technology.getName());
         if(player.getScienceIncome() == 0){
-            System.out.println("will be finished in 'vaghte gole ney'");
+            System.out.println("will be finished when pigs fly");
         }
         else{
             int turnsLeft = (technology.getRemainingCost() + player.getScienceIncome() - 1) / player.getScienceIncome();
             System.out.println(turnsLeft + " turns left to be completely researched");
         }
-        System.out.println(technology.getUnlocks());
+        System.out.println("unlocks: " + technology.getUnlocks());
     }
 }
