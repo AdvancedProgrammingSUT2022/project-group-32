@@ -338,7 +338,8 @@ public class Tile {
     }
 
     private boolean isImprovementGettable() {
-        return getResourceType().neededImprovement.equals(getImprovement().getImprovementType());
+        return getResourceType().neededImprovement.equals(getImprovement().getImprovementType()) &&
+                getImprovement().getRemainingTurns() == 0;
     }
 
 }
