@@ -29,6 +29,7 @@ public class UnitSelectedPanel extends GameMenu {
         else if(command.startsWith("remove road")) removeRoute();
         else if(command.startsWith("pillage")) pillage();
         else if(command.startsWith("repair")) repair();
+        else if(command.startsWith("set up")) setup();
         else if(command.startsWith("show selected unit")) showSelected();
         else invalidCommand();
     }
@@ -122,5 +123,9 @@ public class UnitSelectedPanel extends GameMenu {
 
     private static void repair(){
         System.out.println(UnitController.repair().getString());
+    }
+
+    private static void setup(){
+        System.out.println(UnitController.setup().getString());
     }
 }

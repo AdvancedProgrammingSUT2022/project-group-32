@@ -75,6 +75,12 @@ public class GameMenu extends Menu {
                 currentPanel = PanelType.ECONOMY_PANEL;
             } else if (command.startsWith("cities panel")) {
                 currentPanel = PanelType.CITIES_PANEL;
+            } else if (command.startsWith("units panel")) {
+                currentPanel = PanelType.CITIES_PANEL;
+            } else if (command.startsWith("notifications panel")) {
+                currentPanel = PanelType.CITIES_PANEL;
+            } else if (command.startsWith("military panel")) {
+                currentPanel = PanelType.CITIES_PANEL;
             } else {
                 runPanel(command);
             }
