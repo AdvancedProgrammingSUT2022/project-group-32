@@ -136,9 +136,16 @@ public class PlayerController {
         updateFieldOfView();
         updateTechnology();
         updateFood();
+        updateProduction();
         updateScience();
         updateGold(); // gold must be updated after science
         updateHappiness();
+    }
+
+    private static void updateProduction() {
+        for (City city : GameController.getCurrentPlayer().getCities()) {
+            city.updateProduction();
+        }
     }
 
     private static void updateHappiness() {
@@ -164,6 +171,7 @@ public class PlayerController {
 
     private static void updateFood() { // citizen eat, death, settler no production
         Player player = GameController.getCurrentPlayer();
+        // TODO: 5/10/2022 the content of while must be transferred to a method in CITY
         for (City city : player.getCities()) {
             int foodIncome = 0;
             foodIncome += city.getTilesFoodIncome();
@@ -301,6 +309,7 @@ public class PlayerController {
         }
         player.setScienceIncome(scienceIncome);
     }
+
 
     public static boolean checkIfLost() {
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");

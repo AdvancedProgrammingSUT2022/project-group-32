@@ -376,7 +376,7 @@ public class Player {
     }
 
     public int getProduction() {
-        return this.getCities().stream().mapToInt(City::getProduction).sum();
+        return this.getCities().stream().mapToInt(City::getProductionIncome).sum();
     }
 
     public int getTerritoryCount() {

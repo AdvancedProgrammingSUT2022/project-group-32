@@ -7,6 +7,7 @@ import enums.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Tile {
     private int row, column;
@@ -295,33 +296,49 @@ public class Tile {
 
     public int getFood() {
         // TODO: 4/17/2022 checks food income based on Terrain object and the improvements and resource and building
-        if (getResourceType().equals(ResourceType.NULL))
-            return terrain.getFood();
-        if (improvement == null) {
-            return terrain.getFood() + ((hasCitizen) ? getResourceType().food : 0);
-        }
+        if (!hasCitizen) return 0;
         return terrain.getFood() +
-                ((hasCitizen) ? getResourceType().food : 0) +
-                ((hasCitizen && getResourceType().neededImprovement.name.equals(improvement.getName())) ? improvement.getAddedGold() : 0);
+                (isResourceGettable() ? getResourceType().food : 0) +
+                (isImprovementGettable() ? getImprovement().getAddedFood() : 0);
     }
 
     public int getGold() {
         // TODO: anything else?
         // + : terrain, terrain Feature, resource  improved, rivers
-        int improvementGold = 0;
-        if (!getResourceType().equals(ResourceType.NULL))
-            if (getResourceType().neededImprovement.equals(improvement)) improvementGold = improvement.getAddedGold();
+        if (!hasCitizen) return 0;
         return terrain.getGold() +
-                ((hasCitizen) ? getResourceType().gold : 0) +
-                improvementGold +
+                (isResourceGettable() ? getResourceType().gold : 0) +
+                (isImprovementGettable() ? getImprovement().getAddedGold() : 0) +
                 (int) isRiver.values().stream().filter(i -> i.equals(1)).count() -
                 ((road == null) ? 0 : road.getType().getMaintenanceCost());
     }
 
     public int getProduction() {
         // TODO: 4/17/2022 checks production income based on Terrain object and the improvements and resource
-        throw new RuntimeException("NOT IMPLEMENTED!");
+        if (!hasCitizen) return 0;
+        return terrain.getProduction() +
+                (isResourceGettable() ? getResourceType().production : 0) +
+                (isImprovementGettable() ? getImprovement().getAddedProduction() : 0);
 
+    }
+
+    private boolean isResourceGettable() {
+        List<TechnologyType> ownerTechs = city.getOwner().getTechnologies().stream().map(Technology::getTechnologyType).toList();
+        if (!hasCitizen) return false;
+        if (getResourceType().equals(ResourceType.NULL)) return false;
+        if (!getResourceType().neededImprovement.equals(getImprovement().getImprovementType())) return false;
+        if (getResourceType().isStrategic()) {
+            if (getResourceType().equals(ResourceType.COAL) && !ownerTechs.contains(TechnologyType.SCIENTIFIC_THEORY))
+                return false;
+            if (getResourceType().equals(ResourceType.HORSES) && !ownerTechs.contains(TechnologyType.ANIMAL_HUSBANDRY))
+                return false;
+            return !getResourceType().equals(ResourceType.IRON) || ownerTechs.contains(TechnologyType.MINING);
+        }
+        return true;
+    }
+
+    private boolean isImprovementGettable() {
+        return getResourceType().neededImprovement.equals(getImprovement().getImprovementType());
     }
 
 }

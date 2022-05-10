@@ -28,7 +28,7 @@ public class EconomyPanel extends GameMenu {
                     city.getFoodIncome() + "",
                     city.getGoldIncome() + "",
                     city.getScienceIncome() + "",
-                    city.getProduction() + "",
+                    city.getProductionIncome() + "",
                     (((city.getBuildingInProgress() == null) ? "-" : city.getBuildingInProgress().getName()))
             );
 

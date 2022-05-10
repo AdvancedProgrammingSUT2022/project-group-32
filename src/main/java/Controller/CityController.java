@@ -22,7 +22,7 @@ public class CityController {
         // Building
         Building inProgressBuilding = city.getBuildingInProgress();
         if (inProgressBuilding != null) {
-            inProgressBuilding.setRemainingCost(inProgressBuilding.getRemainingCost() - city.getProduction()); // production should be completed
+            inProgressBuilding.setRemainingCost(inProgressBuilding.getRemainingCost() - city.getProductionIncome()); // production should be completed
             if (inProgressBuilding.getRemainingCost() <= 0) {
                 city.addBuilding(inProgressBuilding);
                 city.setBuildingInProgress(null);
@@ -32,7 +32,7 @@ public class CityController {
         // Unit
         Unit inProgressUnit = city.getUnitInProgress();
         if (inProgressUnit != null) {
-            inProgressUnit.setRemainingCost(inProgressUnit.getRemainingCost() - city.getProduction());
+            inProgressUnit.setRemainingCost(inProgressUnit.getRemainingCost() - city.getProductionIncome());
             if (inProgressUnit.getRemainingCost() <= 0) {
                 player.addUnit(inProgressUnit);
                 city.setUnitInProgress(null);
