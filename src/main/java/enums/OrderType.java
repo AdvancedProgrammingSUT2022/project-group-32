@@ -9,5 +9,6 @@ public enum OrderType {
     HEAL,
     SETUP,
     MOVING,
-    ROAD_BUILDING
+    ROAD_BUILDING,
+    REMOVING
 }

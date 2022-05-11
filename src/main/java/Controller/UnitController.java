@@ -1,9 +1,6 @@
 package Controller;
 
-import Model.Improvement;
-import Model.Map;
-import Model.Road;
-import Model.Tile;
+import Model.*;
 import Model.Units.Troop;
 import Model.Units.Unit;
 import enums.*;
@@ -22,6 +19,7 @@ public class UnitController {
             Improvement improvement = unit.getTile().getImprovement();
             if (improvement != null) {
                 improvement.setRemainingTurns(improvement.getRemainingTurns() - 1);
+                unit.setMP(0);
                 if (improvement.getRemainingTurns() <= 0) {
                     unit.setOrderType(OrderType.AWAKE);
                     unit.getOwner().addNotification(GameController.getTurn() + ": the improvement was built");
@@ -32,10 +30,21 @@ public class UnitController {
             Road road = unit.getTile().getRoad();
             if (road != null) {
                 road.setRemainingTurns(road.getRemainingTurns() - 1);
+                unit.setMP(0);
                 if (road.getRemainingTurns() <= 0) {
                     unit.setOrderType(OrderType.AWAKE);
                     unit.getOwner().addNotification(GameController.getTurn() + ": the road was built");
                 }
+            }
+        }
+        if (unit.getOrderType() == OrderType.REMOVING) {
+            Terrain terrain = unit.getTile().getTerrain();
+            terrain.setFeatureHP(terrain.getFeatureHP() - 1);
+            unit.setMP(0);
+            if (terrain.getFeatureHP() == 0) {
+                terrain.setTerrainFeature(null);
+                unit.setOrderType(OrderType.AWAKE);
+                unit.getOwner().addNotification(GameController.getTurn() + ": the feature was removed");
             }
         }
         if (Arrays.asList(OrderType.ALERT, OrderType.FORTIFY).contains(unit.getOrderType())) {
@@ -60,7 +69,7 @@ public class UnitController {
 
     // moves the selected unit to chosen destination
     public static void moveToDestination(Unit unit) {
-        if(!unit.getDestination().canFit(unit)){
+        if (!unit.getDestination().canFit(unit)) {
             unit.setDestination(unit.getTile());
         }
         if (unit.getDestination() == null || unit.getDestination() == unit.getTile()) {
@@ -290,12 +299,17 @@ public class UnitController {
         if (unit.getUnitType() != UnitType.WORKER) {
             return InGameResponses.Unit.UNIT_NOT_A_WORKER;
         }
-        if(improvementType == null){
+        if (improvementType == null) {
             return InGameResponses.Unit.INVALID_IMPROVEMENT;
         }
         Tile tile = unit.getTile();
         if (!improvementType.canBeOn.contains(tile.getBaseFeature()) && !improvementType.canBeOn.contains(tile.getTerrainFeature())) {
             return InGameResponses.Unit.BUILDING_NOT_POSSIBLE;
+        }
+        if (improvementType == ImprovementType.FARM || improvementType == ImprovementType.MINE) {
+            if (Arrays.asList(TerrainFeature.MARSH, TerrainFeature.JUNGLE, TerrainFeature.FOREST).contains(tile.getTerrainFeature())) {
+                return InGameResponses.Unit.BLOCKED_BY_FEATURE;
+            }
         }
         if (tile.getImprovement().getImprovementType() == improvementType) {
             if (tile.getImprovement().getRemainingTurns() <= 0) return InGameResponses.Unit.IMPROVEMENT_ALREADY_EXISTS;
@@ -326,7 +340,7 @@ public class UnitController {
         if (unit.getUnitType() != UnitType.WORKER) {
             return InGameResponses.Unit.UNIT_NOT_A_WORKER;
         }
-        if(roadType == null){
+        if (roadType == null) {
             return InGameResponses.Unit.INVALID_ROAD;
         }
         Tile tile = unit.getTile();
@@ -361,9 +375,7 @@ public class UnitController {
         if (tile.getTerrainFeature() != TerrainFeature.FOREST) {
             return InGameResponses.Unit.TILE_NOT_FOREST;
         }
-        tile.getTerrain().setTerrainFeature(null); // note: deforestation takes 1 turn
-        unit.setOrderType(OrderType.AWAKE);
-        unit.setMP(0);
+        unit.setOrderType(OrderType.REMOVING);
         return InGameResponses.Unit.REMOVE_SUCCESSFUL;
     }
 
@@ -385,9 +397,7 @@ public class UnitController {
         if (tile.getTerrainFeature() != TerrainFeature.JUNGLE) {
             return InGameResponses.Unit.TILE_NOT_JUNGLE;
         }
-        tile.getTerrain().setTerrainFeature(null); // note: deforestation takes 1 turn
-        unit.setOrderType(OrderType.AWAKE);
-        unit.setMP(0);
+        unit.setOrderType(OrderType.REMOVING);
         return InGameResponses.Unit.REMOVE_SUCCESSFUL;
     }
 
@@ -409,9 +419,7 @@ public class UnitController {
         if (tile.getTerrainFeature() != TerrainFeature.MARSH) {
             return InGameResponses.Unit.TILE_NOT_MARSH;
         }
-        tile.getTerrain().setTerrainFeature(null); // note: deforestation takes 1 turn
-        unit.setOrderType(OrderType.AWAKE);
-        unit.setMP(0);
+        unit.setOrderType(OrderType.REMOVING);
         return InGameResponses.Unit.REMOVE_SUCCESSFUL;
     }
 
@@ -451,13 +459,13 @@ public class UnitController {
             return InGameResponses.Unit.UNIT_IS_TIRED;
         }
         Tile tile = unit.getTile();
-        if(tile.getCity() != null && tile.getCity().getOwner() == unit.getOwner()){
+        if (tile.getCity() != null && tile.getCity().getOwner() == unit.getOwner()) {
             return InGameResponses.Unit.OWN_IMPROVEMENT;
         }
         Improvement improvement;
         if ((improvement = tile.getImprovement()) != null) {
             Road road;
-            if((road = tile.getRoad()) == null) return InGameResponses.Unit.NO_IMPROVEMENT;
+            if ((road = tile.getRoad()) == null) return InGameResponses.Unit.NO_IMPROVEMENT;
             road.setRemainingTurns(Math.max(road.getRemainingTurns() + 1, 3));
         } // todo: can be implemented better
         improvement.setRemainingTurns(Math.max(improvement.getRemainingTurns() + 1, improvement.getRequiredTurns()));
@@ -481,8 +489,8 @@ public class UnitController {
             return InGameResponses.Unit.UNIT_NOT_A_WORKER;
         }
         Tile tile = unit.getTile();
-        if(tile.getImprovement() == null){
-            if(tile.getRoad() == null) return InGameResponses.Unit.NO_IMPROVEMENT;
+        if (tile.getImprovement() == null) {
+            if (tile.getRoad() == null) return InGameResponses.Unit.NO_IMPROVEMENT;
             unit.setOrderType(OrderType.ROAD_BUILDING);
             unit.setMP(0);
             return InGameResponses.Unit.REPAIR_SUCCESSFUL;

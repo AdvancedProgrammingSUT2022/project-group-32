@@ -58,6 +58,7 @@ public class InGameResponses {
         TILE_NOT_JUNGLE("selected unit is not on a jungle tile"),
         TILE_NOT_MARSH("selected unit is not on a marsh tile"),
         //BUILD
+        BLOCKED_BY_FEATURE("the feature of this tile doesn't allow for building this improvement. you must remove it first"),
         ROAD_ALREADY_EXISTS("road already exists in the current position"),
         RAILROAD_ALREADY_EXISTS("railroad already exists in the current position"),
         IMPROVEMENT_ALREADY_EXISTS("this improvement already exists in the current position"),

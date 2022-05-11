@@ -11,6 +11,7 @@ public class Terrain {
     private TerrainFeature terrainFeature;
     private final TerrainFeature baseFeature; // terrainType and baseFeature are same baseTerrain but in different enums
     private final ResourceType resourceType;
+    private int featureHP;
 
     public Terrain(TerrainType terrainType, TerrainFeature terrainFeature, ResourceType resourceType) {
         this.terrainType = terrainType;
@@ -18,6 +19,10 @@ public class Terrain {
         this.resourceType = resourceType;
         if(terrainType != null) this.baseFeature = terrainType.baseFeature;
         else this.baseFeature = null;
+        if(terrainFeature == TerrainFeature.FOREST) featureHP = 4;
+        else if(terrainFeature == TerrainFeature.JUNGLE) featureHP = 7;
+        else if(terrainFeature == TerrainFeature.MARSH) featureHP = 6;
+        else featureHP = INF;
     }
 
     public Terrain(Terrain terrain){
@@ -62,5 +67,13 @@ public class Terrain {
 
     public int getGold() {
         return terrainType.gold + terrainFeature.gold;
+    }
+
+    public int getFeatureHP() {
+        return featureHP;
+    }
+
+    public void setFeatureHP(int featureHP) {
+        this.featureHP = featureHP;
     }
 }
