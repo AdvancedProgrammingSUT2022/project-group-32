@@ -105,7 +105,7 @@ public class Response {
         // no response
 
         // CURRENT MENU
-        CURRENT_MENU("Profile menu");
+        CURRENT_MENU("Profile menu"), SAME_PASSWORD("new password is identical to the old one");
 
         private final String message;
 

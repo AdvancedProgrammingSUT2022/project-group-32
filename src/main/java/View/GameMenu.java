@@ -80,6 +80,8 @@ public class GameMenu extends Menu {
                 currentPanel = PanelType.NOTIFICATIONS_PANEL;
             } else if (command.startsWith("military panel")) {
                 currentPanel = PanelType.MILITARY_PANEL;
+            } else if (command.startsWith("research panel")) {
+                currentPanel = PanelType.RESEARCH_PANEL;
             } else {
                 runPanel(command);
             }

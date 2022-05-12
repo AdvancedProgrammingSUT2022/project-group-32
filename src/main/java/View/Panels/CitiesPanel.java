@@ -2,14 +2,12 @@ package View.Panels;
 
 import Controller.GameController;
 import Model.City;
-import Model.Player;
 import View.CLI;
 import View.GameMenu;
 import enums.Color;
 import enums.Responses.InGameResponses;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class CitiesPanel extends GameMenu {
     public static void run(String command) {
@@ -24,7 +22,7 @@ public class CitiesPanel extends GameMenu {
 
     private static void showPanel() {
         int i = 0;
-        System.out.println("### CITIES");
+        printRow("#", "Name", "Owner");
         for (City city : GameController.getCurrentPlayer().getCities()) {
             i++;
             printRow(city.getOwner().getBackgroundColor().code + i + "  " + Color.RESET.code,
@@ -36,16 +34,18 @@ public class CitiesPanel extends GameMenu {
 
     private static void openCity(String command){
         ArrayList<String> parameters = CLI.getParameters(command, "id");
-        if(parameters == null || !parameters.get(0).matches("-?\\d+")){
+        if (parameters == null || !parameters.get(0).matches("-?\\d+")) {
             invalidCommand();
             return;
         }
         int id = Integer.parseInt(parameters.get(0)) - 1;
-        if (id < 0 || id >= GameController.getCurrentPlayer().getCities().size()){
+        if (id < 0 || id >= GameController.getCurrentPlayer().getCities().size()) {
             System.out.println(InGameResponses.Info.INVALID_ID.getString());
             return;
         }
-        GameController.setSelectedCity(GameController.getCurrentPlayer().getCities().get(id));
+        City city = GameController.getCurrentPlayer().getCities().get(id);
+        GameController.moveCameraToCity(city);
+        GameController.setSelectedCity(city);
         currentPanel = PanelType.CITY_SELECTED_PANEL;
         System.out.println("city opened successfully");
     }
