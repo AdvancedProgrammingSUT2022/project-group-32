@@ -1,8 +1,6 @@
 package View.Panels;
 
 import Controller.GameController;
-import Model.City;
-import Model.Units.Troop;
 import Model.Units.Unit;
 import View.CLI;
 import View.GameMenu;
@@ -24,6 +22,7 @@ public class UnitsPanel extends GameMenu {
 
     private static void showPanel() {
         int i = 0;
+        printRow("id", "Type", "Location");
         for (Unit unit : GameController.getCurrentPlayer().getUnits()) {
             i++;
             printRow(unit.getOwner().getBackgroundColor().code + i + "  " + Color.RESET.code,
@@ -50,7 +49,7 @@ public class UnitsPanel extends GameMenu {
     }
 
     private static void printRow(String s1, String s2, String s3) {
-        String format = "|%1$-5s|%2$-15s|%3$-15s|";
+        String format = "|%1$-3s|%2$-15s|%3$-15s|";
         System.out.format(format, s1, s2, s3);
         System.out.println();
     }

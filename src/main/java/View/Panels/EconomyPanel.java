@@ -11,14 +11,13 @@ public class EconomyPanel extends GameMenu {
 
     public static void run(String command) {
         cities.addAll(GameController.getCurrentPlayer().getCities()); // this is what used every where, for same indexing ...
-        if (command.startsWith("show")) {
+        if (command.startsWith("show panel")) {
             printPanel();
         }
     }
 
     private static void printPanel() {
         int i = 0;
-        System.out.println("### ECONOMY");
         printRow("#", "Name", "Population", "Food", "Gold", "Science", "Production", "Building");
         for (City city : cities) {
             i++;

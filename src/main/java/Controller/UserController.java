@@ -67,7 +67,7 @@ public class UserController {
         if (password.matches("[^0-9]+")) return false;
         if (password.matches("[^a-z]+")) return false;
         if (password.matches("[^A-Z]+")) return false;
-        return !password.matches("[^*.!@$%^&(){}\\[\\]:;<>,?/~_+\\-=|]+");
+        return !password.matches("[^*.!@#$%^&(){}\\[\\]:;<>,?/~_+\\-=|]+");
     }
 
     private static boolean IsNameValid(String name) {
@@ -122,6 +122,9 @@ public class UserController {
         }
         if (!isPasswordStrong(newPW)) {
             return Response.ProfileMenu.WEAK_NEW_PASSWORD;
+        }
+        if (oldPW.equals(newPW)) {
+            return Response.ProfileMenu.SAME_PASSWORD;
         }
         currentUser.setPassword(newPW);
         return Response.ProfileMenu.SUCCESSFUL_PASSWORD_CHANGE;

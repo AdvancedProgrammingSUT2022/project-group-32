@@ -1,11 +1,9 @@
 package Controller;
 
 import Model.*;
-import Model.Units.Troop;
 import Model.Units.Unit;
 import enums.BuildingType;
 import enums.FogState;
-import enums.Responses.InGameResponses;
 import enums.Responses.Response;
 import enums.UnitType;
 
@@ -145,6 +143,9 @@ public class GameController {
         return changeCamera(direction, 1);
     }
 
+    public static void moveCameraToCity(City city) {
+        GameController.getCurrentPlayer().setCamera(city.getCapitalTile().getRow(), city.getCapitalTile().getColumn());
+    }
     ///         CHEAT CODES
 
     public static void cheatIncreaseTurn(int amount) {

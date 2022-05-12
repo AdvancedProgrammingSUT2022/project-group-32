@@ -18,20 +18,17 @@ public class ProfileMenu extends Menu {
             }
             else if (command.startsWith("change password")){
                 changePassword(command);
-            }
-            else if (command.startsWith("change nickname")){
+            } else if (command.startsWith("change nickname")) {
                 changeNickname(command);
-            }
-            else if (command.startsWith("delete account")){
+            } else if (command.startsWith("change username")) {
+                System.out.println("sorry, you can't change your username, I know it sucks :)");
+            } else if (command.startsWith("delete account")) {
                 deleteAccount(command);
-            }
-            else if (command.startsWith("show scoreboard")){
+            } else if (command.startsWith("show scoreboard")) {
                 showScoreboard(command);
-            }
-            else if(command.startsWith("current menu")){
+            } else if (command.startsWith("current menu")) {
                 showCurrentMenu();
-            }
-            else{
+            } else{
                 invalidCommand();
             }
         }

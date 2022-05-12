@@ -47,7 +47,7 @@ public class MapMaker {
     private static void initMap(String[][] map) {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[0].length; j++) {
-                map[i][j] = Color.BLUE_BACKGROUND.code + " " + Color.RESET.code;
+                map[i][j] = Color.WHITE_BACKGROUND.code + " " + Color.RESET.code;
             }
         }
     }
@@ -61,16 +61,28 @@ public class MapMaker {
         int centerRow = getTileCenterRow(tileRow, tileColumn);
         int centerColumn = getTileCenterColumn(tileRow, tileColumn);
 
+
+        // fill if unknown
+        if (tile.getFogState() == FogState.UNKNOWN) {
+//            String UnknownColor  = Color.WHITE_BACKGROUND.code;
+//            fillPartOfRow(map, centerRow, centerColumn - 6, centerColumn + 6, UnknownColor);
+//            fillPartOfRow(map, centerRow - 1, centerColumn - 6, centerColumn + 6, UnknownColor);
+//            fillPartOfRow(map, centerRow + 1, centerColumn - 6, centerColumn + 6, UnknownColor);
+//            fillPartOfRow(map, centerRow - 2, centerColumn - 5, centerColumn + 5, UnknownColor);
+//            fillPartOfRow(map, centerRow + 2, centerColumn - 5, centerColumn + 5, UnknownColor);
+//            fillPartOfRow(map, centerRow + 3, centerColumn - 4, centerColumn + 4, UnknownColor);
+//            fillPartOfRow(map, centerRow - 2, centerColumn - 4, centerColumn + 4, UnknownColor);
+            return;
+        }
         // TILE BACKGROUND
         fillPartOfRow(map, centerRow, centerColumn - 5, centerColumn + 5, color);
         fillPartOfRow(map, centerRow - 1, centerColumn - 4, centerColumn + 4, color);
         fillPartOfRow(map, centerRow + 1, centerColumn - 4, centerColumn + 4, color);
         fillPartOfRow(map, centerRow - 2, centerColumn - 3, centerColumn + 3, color);
         fillPartOfRow(map, centerRow + 2, centerColumn - 3, centerColumn + 3, color);
-
         // CITY NAME
-        if(tile.getFogState() != FogState.UNKNOWN && tile.getCity()!= null){
-            if(tile.getCity().getCapitalTile().getRow() == tileRow && tile.getCity().getCapitalTile().getColumn() == tileColumn){
+        if (tile.getFogState() != FogState.UNKNOWN && tile.getCity() != null) {
+            if (tile.getCity().getCapitalTile().getRow() == tileRow && tile.getCity().getCapitalTile().getColumn() == tileColumn) {
                 map[centerRow - 2][centerColumn - 1] = sC("" + tile.getCity().getName().charAt(0), Color.WHITE_BRIGHT.code);
                 map[centerRow - 2][centerColumn] = sC("" + tile.getCity().getName().charAt(1), Color.WHITE_BRIGHT.code);
                 map[centerRow - 2][centerColumn + 1] = sC("" + tile.getCity().getName().charAt(2), Color.WHITE_BRIGHT.code);
@@ -123,12 +135,12 @@ public class MapMaker {
         if(tile.getFogState() == FogState.VISIBLE){
             // UNIT
             if (tile.getUnit() != null) {
-                map[centerRow][centerColumn - 1] = sCB(tile.getUnit().getUnitType().name().substring(0, 1), (tile.getUnit().getOwner().getColor()).code, color);
+                map[centerRow][centerColumn - 1] = sC(tile.getUnit().getUnitType().name().substring(0, 1), (tile.getUnit().getOwner().getColor()).code);
             }
 
             // TROOP
             if (tile.getTroop() != null) {
-                map[centerRow][centerColumn + 1] = sCB(tile.getTroop().getUnitType().name().substring(0, 1), (tile.getTroop().getOwner().getColor()).code, color);
+                map[centerRow][centerColumn + 1] = sC(tile.getTroop().getUnitType().name().substring(0, 1), (tile.getTroop().getOwner().getColor()).code);
             }
         }
         

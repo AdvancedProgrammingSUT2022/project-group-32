@@ -80,6 +80,8 @@ public class GameMenu extends Menu {
                 currentPanel = PanelType.NOTIFICATIONS_PANEL;
             } else if (command.startsWith("military panel")) {
                 currentPanel = PanelType.MILITARY_PANEL;
+            } else if (command.startsWith("research panel")) {
+                currentPanel = PanelType.RESEARCH_PANEL;
             } else {
                 runPanel(command);
             }
@@ -121,7 +123,6 @@ public class GameMenu extends Menu {
         }
         int amount = Integer.parseInt(parameters.get(1));
         System.out.println(GameController.changeCamera(parameters.get(0), amount).getString());
-        showMap(command);
     }
 
     private static void selectUnit(String command) {
