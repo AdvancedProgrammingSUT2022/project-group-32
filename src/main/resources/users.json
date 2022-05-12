@@ -1,1 +1,20 @@
-[{"username":"Emad","password":"QWERqwer1234!@#$","nickname":"EmadEJ","score":0},{"username":"user2","password":"pP1234567\u0026","nickname":"niki","score":0},{"username":"user1","password":"pP1234567\u0026","nickname":"nikii","score":0}]
+[
+  {
+    "username": "Emad",
+    "password": "QWERqwer1234!@#$",
+    "nickname": "EmadEJ",
+    "score": 0
+  },
+  {
+    "username": "user2",
+    "password": "pP1234567\u0026",
+    "nickname": "niki",
+    "score": 0
+  },
+  {
+    "username": "user1",
+    "password": "pP1234567\u0026",
+    "nickname": "nikii",
+    "score": 0
+  }
+]

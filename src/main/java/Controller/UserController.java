@@ -171,4 +171,8 @@ public class UserController {
         }
     }
 
+    public static void addUser(String username, String password, String nickname) {
+        users.add(new User(username, password, nickname));
+    }
+
 }

@@ -28,4 +28,35 @@ public class UserControllerTest {
         Assert.assertEquals(UserController.changePassword(oldPass, "123"), WEAK_NEW_PASSWORD);
         Assert.assertEquals(UserController.changePassword(oldPass, "pP123123%"), SUCCESSFUL_PASSWORD_CHANGE);
     }
+
+
+    @Test
+    public void testNicknameChange() {
+        UserController.setCurrentUser(user);
+        UserController.addUser("ali", "ali", "ali");
+        Assert.assertEquals(UserController.changeNickname(" "), INVALID_NICKNAME_FORMAT);
+        Assert.assertEquals(UserController.changeNickname("ali"), NICKNAME_EXISTS);
+        Assert.assertEquals(UserController.changeNickname("jkdshfas"), SUCCESSFUL_NICKNAME_CHANGE);
+    }
+
+    @Test
+    public void logoutTest() {
+        Assert.assertEquals(UserController.logout(), Response.MainMenu.SUCCESSFUL_LOGOUT);
+    }
+
+    @Test
+    public void registerTest() {
+        UserController.addUser("ali", "ali", "ali");
+        Assert.assertEquals(UserController.register("", "", ""), Response.LoginMenu.INVALID_USERNAME_FORMAT);
+        Assert.assertEquals(UserController.register("skljafd", "asdfasd", ""), Response.LoginMenu.INVALID_NICKNAME_FORMAT);
+        Assert.assertEquals(UserController.register("skljafd", "", "asdfasdf"), Response.LoginMenu.INVALID_PASSWORD_FORMAT);
+        Assert.assertEquals(UserController.register("ali", "asdf", "asdfasdf"), Response.LoginMenu.USERNAME_EXISTS);
+    }
+
+    @Test
+    public void LoginTest() {
+        UserController.addUser("ali", "ali", "ali");
+        Assert.assertEquals(UserController.login("ali", "ali"), Response.LoginMenu.LOGIN_SUCCESSFUL);
+        Assert.assertEquals(UserController.login("ali", "ali34"), Response.LoginMenu.USERNAME_PASSWORD_DONT_MATCH);
+    }
 }
