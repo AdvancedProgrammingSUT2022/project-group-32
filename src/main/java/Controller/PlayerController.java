@@ -92,16 +92,9 @@ public class PlayerController {
         updateFieldOfView();
         updateTechnology();
         updateFood();
-        updateProduction();
         updateScience();
         updateGold(); // gold must be updated after science
         updateHappiness();
-    }
-
-    private static void updateProduction() {
-        for (City city : GameController.getCurrentPlayer().getCities()) {
-            city.updateProduction();
-        }
     }
 
     private static void updateHappiness() {
@@ -203,6 +196,7 @@ public class PlayerController {
             }
         }
         for (Tile tile : inSight) {
+            if(tile == null) continue;
             map.setTile(tile.getRow(), tile.getColumn(), new Tile(tile));
             map.getTile(tile.getRow(), tile.getColumn()).setFogState(FogState.VISIBLE);
         }

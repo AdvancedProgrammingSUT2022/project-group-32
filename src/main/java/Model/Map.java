@@ -216,6 +216,7 @@ public class Map {
         while (range-- > 0) {
             ArrayList<Tile> looked = new ArrayList<>();
             for (Tile tile1 : inSight) {
+                if(tile1 == null) continue;
                 if (tile1.getTerrainType().equals(TerrainType.MOUNTAIN)
                         && !tile.getTerrainType().equals(TerrainType.HILL)) {
                     continue;

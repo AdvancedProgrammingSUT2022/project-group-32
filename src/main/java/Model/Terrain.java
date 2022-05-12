@@ -62,7 +62,7 @@ public class Terrain {
     }
 
     public int getProduction() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+        return terrainType.production + terrainFeature.production;
     }
 
     public int getGold() {

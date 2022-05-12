@@ -35,13 +35,15 @@ public class CityController {
             inProgressUnit.setRemainingCost(inProgressUnit.getRemainingCost() - city.getProductionIncome());
             if (inProgressUnit.getRemainingCost() <= 0) {
                 inProgressUnit.setRemainingCost(0);
-                player.addUnit(inProgressUnit);
-                city.setUnitInProgress(null);
                 if(!city.getCapitalTile().canFit(inProgressUnit)){
                     System.err.println("unit can't be made because there exists a unit on the tile already");
                     return;
                 }
+                player.addUnit(inProgressUnit);
+                city.setUnitInProgress(null);
                 city.getCapitalTile().putUnit(inProgressUnit);
+                inProgressUnit.setTile(city.getCapitalTile());
+                inProgressUnit.setDestination(city.getCapitalTile());
                 player.addNotification(GameController.getTurn() + ": " + inProgressUnit.getUnitType() + " was built in " + city.getName());
             }
         }

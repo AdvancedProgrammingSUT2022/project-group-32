@@ -326,6 +326,7 @@ public class Tile {
         List<TechnologyType> ownerTechs = city.getOwner().getTechnologies().stream().map(Technology::getTechnologyType).toList();
         if (!hasCitizen) return false;
         if (getResourceType().equals(ResourceType.NULL)) return false;
+        if(getImprovement() == null) return false;
         if (!getResourceType().neededImprovement.equals(getImprovement().getImprovementType())) return false;
         if (getResourceType().isStrategic()) {
             if (getResourceType().equals(ResourceType.COAL) && !ownerTechs.contains(TechnologyType.SCIENTIFIC_THEORY))
@@ -338,6 +339,7 @@ public class Tile {
     }
 
     private boolean isImprovementGettable() {
+        if(getImprovement() == null) return false;
         return getResourceType().neededImprovement.equals(getImprovement().getImprovementType()) &&
                 getImprovement().getRemainingTurns() == 0;
     }

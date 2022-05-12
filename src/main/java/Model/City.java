@@ -22,7 +22,7 @@ public class City {
     private Unit unitInProgress;
     private ArrayList<Unit> incompleteUnits;
     private int freeCitizens;
-    private int foodIncome, productionIncome, population, health, baseStrength;
+    private int foodIncome, population, health, baseStrength;
     private int sightRange;
     private Troop garrisonedTroop;
     private int neededFoodForNewCitizen = 20, storedFoodForNewCitizen = 0;
@@ -87,19 +87,11 @@ public class City {
         this.foodIncome = foodIncome;
     }
 
-    public int getProductionIncome() {
-        return productionIncome;
-    }
-
-    public void updateProduction() { // TODO: 5/10/2022 building effets must applied later
+    public int getProductionIncome() { // TODO: 5/10/2022 building effects must applied later
         int production = 0;
         production += territory.stream().mapToInt(Tile::getProduction).sum();
         production += freeCitizens;
-        productionIncome = production;
-    }
-
-    public void setProductionIncome(int productionIncome) {
-        this.productionIncome = productionIncome;
+        return production;
     }
 
     public int getPopulation() {
