@@ -11,7 +11,7 @@ import java.util.Comparator;
 
 public class DemographicsPanel extends GameMenu {
     public static void run(String command) {
-        if (command.startsWith("show")) {
+        if (command.startsWith("show panel")) {
             printPanel();
         }
     }

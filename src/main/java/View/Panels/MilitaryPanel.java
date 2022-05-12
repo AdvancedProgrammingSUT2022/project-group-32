@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class MilitaryPanel extends GameMenu {
     public static void run(String command) {
-        if (command.startsWith("show")) {
+        if (command.startsWith("show panel")) {
             printPanel();
         }
     }
