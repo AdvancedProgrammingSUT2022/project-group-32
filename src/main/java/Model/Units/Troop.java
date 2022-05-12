@@ -65,8 +65,4 @@ public class Troop extends Unit {
         return neededTechnology;
     }
 
-    @Override
-    public void initPlaceIn(Tile tile){
-        tile.putUnit(this);
-    }
 }

@@ -39,6 +39,7 @@ public class City {
         this.HP = 20;
         this.baseStrength = 20;
         this.hasAttacked = false;
+        this.sightRange = 2;
         // TODO: 4/17/2022 sets buildings, citizens, gold, food, .... to default value.
     }
 

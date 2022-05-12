@@ -220,11 +220,11 @@ public class UnitController {
         if (unit.getMP() <= 0) {
             return InGameResponses.Unit.UNIT_IS_TIRED;
         }
-        if(!(unit instanceof Troop)){
+        if (!(unit instanceof Troop)) {
             return InGameResponses.Unit.UNIT_NOT_MILITARY;
         }
         City city = unit.getTile().getCity();
-        if(city == null || city.getOwner() != unit.getOwner()){
+        if (city == null || city.getOwner() != unit.getOwner()) {
             return InGameResponses.Unit.UNIT_NOT_PRESENT_IN_CITY;
         }
         city.setGarrisonedTroop(((Troop) unit));
@@ -243,36 +243,34 @@ public class UnitController {
         if (unit.getMP() <= 0) {
             return InGameResponses.Unit.UNIT_IS_TIRED;
         }
-        if(!(unit instanceof Troop)){
+        if (!(unit instanceof Troop)) {
             return InGameResponses.Unit.UNIT_NOT_MILITARY;
         }
-        if(unit.getUnitType().combatType == CombatType.SIEGE && unit.getOrderType() != OrderType.SETUP) {
+        if (unit.getUnitType().combatType == CombatType.SIEGE && unit.getOrderType() != OrderType.SETUP) {
             return InGameResponses.Unit.UNIT_NOT_SETUP;
         }
         Map map = GameController.getMap();
         Tile tile1 = unit.getTile(), tile2 = map.getTile(row, column);
-        if(map.getDistanceTo(tile1, tile2) > ((Troop) unit).getRange()){
+        if (!map.lookAroundInRange(tile1, Math.max(1, ((Troop) unit).getRange())).contains(tile2)) {
             return InGameResponses.Unit.UNIT_OUT_OF_RANGE;
         }
-        if(tile2.getTroop() == null && tile2.getCity().getCapitalTile() != tile2){
+        if (tile2.getTroop() == null && tile2.getCity().getCapitalTile() != tile2) {
             return InGameResponses.Unit.TARGET_EMPTY;
         }
-        if(((Troop) unit).getRange() == 0){
-            if(tile2.getCity().getCapitalTile() == tile2){
-                if(tile2.getCity().getOwner() == unit.getOwner()) return InGameResponses.Unit.OWN_TARGET;
+        if (((Troop) unit).getRange() == 0) {
+            if (tile2.getCity().getCapitalTile() == tile2) {
+                if (tile2.getCity().getOwner() == unit.getOwner()) return InGameResponses.Unit.OWN_TARGET;
                 CombatController.meleeAttack(((Troop) unit), tile2.getCity());
-            }
-            else{
-                if(tile2.getTroop().getOwner() == unit.getOwner()) return InGameResponses.Unit.OWN_TARGET;
+            } else {
+                if (tile2.getTroop().getOwner() == unit.getOwner()) return InGameResponses.Unit.OWN_TARGET;
                 CombatController.meleeAttack(((Troop) unit), tile2.getTroop());
             }
         } else {
-            if(tile2.getCity().getCapitalTile() == tile2){
-                if(tile2.getCity().getOwner() == unit.getOwner()) return InGameResponses.Unit.OWN_TARGET;
+            if (tile2.getCity().getCapitalTile() == tile2) {
+                if (tile2.getCity().getOwner() == unit.getOwner()) return InGameResponses.Unit.OWN_TARGET;
                 CombatController.rangedAttack(((Troop) unit), tile2.getCity());
-            }
-            else{
-                if(tile2.getTroop().getOwner() == unit.getOwner()) return InGameResponses.Unit.OWN_TARGET;
+            } else {
+                if (tile2.getTroop().getOwner() == unit.getOwner()) return InGameResponses.Unit.OWN_TARGET;
                 CombatController.rangedAttack(((Troop) unit), tile2.getTroop());
             }
         }

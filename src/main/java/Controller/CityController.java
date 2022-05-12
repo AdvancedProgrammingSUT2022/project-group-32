@@ -36,7 +36,7 @@ public class CityController {
             inProgressUnit.setRemainingCost(inProgressUnit.getRemainingCost() - city.getProductionIncome());
             if (inProgressUnit.getRemainingCost() <= 0) {
                 inProgressUnit.setRemainingCost(0);
-                if(!city.getCapitalTile().canFit(inProgressUnit)){
+                if (!city.getCapitalTile().canFit(inProgressUnit)) {
                     System.err.println("unit can't be made because there exists a unit on the tile already");
                     return;
                 }
@@ -60,16 +60,16 @@ public class CityController {
         City city = GameController.getSelectedCity();
         if (city == null) return InGameResponses.Unit.CITY_NOT_SELECTED;
         Player player = city.getOwner();
-        if(city.getOwner() != GameController.getCurrentPlayer()){
+        if (city.getOwner() != GameController.getCurrentPlayer()) {
             return InGameResponses.Unit.CITY_NOT_IN_POSSESS;
         }
-        if(unitType.neededTech != null && player.getTechnologyByType(unitType.neededTech) == null){
+        if (unitType.neededTech != null && player.getTechnologyByType(unitType.neededTech) == null) {
             return InGameResponses.Unit.DO_NOT_HAVE_TECH;
         }
         // TODO: 5/9/2022 check resources 
         // adding the previous one to the unfinished list
         if (city.getUnitInProgress() != null) {
-            if(city.getUnitInProgress().getUnitType() == unitType){
+            if (city.getUnitInProgress().getUnitType() == unitType) {
                 return InGameResponses.Unit.UNIT_ALREADY_IN_MAKING;
             }
             city.addIncompleteUnit(city.getUnitInProgress());
@@ -95,7 +95,7 @@ public class CityController {
     public static InGameResponses.Unit pauseInProgressUnit() {
         City city = GameController.getSelectedCity();
         if (city == null) return InGameResponses.Unit.CITY_NOT_SELECTED;
-        if(city.getOwner() != GameController.getCurrentPlayer()){
+        if (city.getOwner() != GameController.getCurrentPlayer()) {
             return InGameResponses.Unit.CITY_NOT_IN_POSSESS;
         }
         Unit unit = city.getUnitInProgress();
@@ -113,7 +113,7 @@ public class CityController {
         City city = GameController.getSelectedCity();
         if (city == null) return InGameResponses.Building.CITY_NOT_SELECTED;
 
-        if(city.getOwner() != GameController.getCurrentPlayer()){
+        if (city.getOwner() != GameController.getCurrentPlayer()) {
             return InGameResponses.Building.CITY_NOT_IN_POSSESS;
         }
 
@@ -142,28 +142,31 @@ public class CityController {
     public static InGameResponses.Building pauseInProgressBuilding() {
         City city = GameController.getSelectedCity();
         if (city == null) return InGameResponses.Building.CITY_NOT_SELECTED;
-        if(city.getOwner() != GameController.getCurrentPlayer()) return InGameResponses.Building.CITY_NOT_IN_POSSESS;
+        if (city.getOwner() != GameController.getCurrentPlayer()) return InGameResponses.Building.CITY_NOT_IN_POSSESS;
         if (city.getBuildingInProgress() == null) return InGameResponses.Building.NO_BUILDING_IN_PROGRESS;
         city.addIncompleteBuilding(city.getBuildingInProgress());
         city.setBuildingInProgress(null);
         return InGameResponses.Building.BUILDING_PAUSED;
     }
 
-    public static InGameResponses.City buyUnit(UnitType unitType){
+    public static InGameResponses.City buyUnit(UnitType unitType) {
         City city = GameController.getSelectedCity();
-        if(city == null) return InGameResponses.City.NO_CITY_SELECTED;
-        if(city.getOwner() != GameController.getCurrentPlayer()){
+        if (city == null) return InGameResponses.City.NO_CITY_SELECTED;
+        if (city.getOwner() != GameController.getCurrentPlayer()) {
             return InGameResponses.City.CITY_NOT_IN_POSSESS;
         }
         Tile pooch = new Tile(-1, -1, null, null, null); // this tile is temporary
         Unit unit;
-        if(unitType.combatType == CombatType.CIVILIAN) unit = new Unit(pooch, city.getOwner(), unitType);
-        else unit = new Troop(pooch, city.getOwner(), unitType);
-        if(!city.getCapitalTile().canFit(unit)){
+        if (unitType.combatType == CombatType.CIVILIAN) {
+            unit = new Unit(pooch, city.getOwner(), unitType);
+        } else {
+            unit = new Troop(pooch, city.getOwner(), unitType);
+        }
+        if (!city.getCapitalTile().canFit(unit)) {
             return InGameResponses.City.CAPITAL_IS_FULL;
         }
         Player player = city.getOwner();
-        if(player.getGold() < unit.getCost()){
+        if (player.getGold() < unit.getCost()) {
             return InGameResponses.City.NOT_ENOUGH_GOLD;
         }
         player.setGold(player.getGold() - unit.getCost());
@@ -174,21 +177,21 @@ public class CityController {
 
     public static InGameResponses.City assignCitizenToTile(int row, int column) {
         City city = GameController.getSelectedCity();
-        if(city == null) return InGameResponses.City.NO_CITY_SELECTED;
-        if(city.getOwner() != GameController.getCurrentPlayer()){
+        if (city == null) return InGameResponses.City.NO_CITY_SELECTED;
+        if (city.getOwner() != GameController.getCurrentPlayer()) {
             return InGameResponses.City.CITY_NOT_IN_POSSESS;
         }
-        if(city.getFreeCitizens() == 0){
+        if (city.getFreeCitizens() == 0) {
             return InGameResponses.City.NO_FREE_CITIZEN;
         }
         Tile tile = GameController.getMap().getTile(row, column);
         if (tile == null) {
             return InGameResponses.City.LOCATION_NOT_VALID;
         }
-        if(tile.getCity() != city){
+        if (tile.getCity() != city) {
             return InGameResponses.City.TILE_NOT_IN_TERRITORY;
         }
-        if(tile.isHasCitizen()){
+        if (tile.isHasCitizen()) {
             return InGameResponses.City.TILE_ALREADY_FULL;
         }
         tile.setHasCitizen(true);
@@ -198,18 +201,18 @@ public class CityController {
 
     public static InGameResponses.City freeCitizenFromTile(int row, int column) {
         City city = GameController.getSelectedCity();
-        if(city == null) return InGameResponses.City.NO_CITY_SELECTED;
-        if(city.getOwner() != GameController.getCurrentPlayer()){
+        if (city == null) return InGameResponses.City.NO_CITY_SELECTED;
+        if (city.getOwner() != GameController.getCurrentPlayer()) {
             return InGameResponses.City.CITY_NOT_IN_POSSESS;
         }
         Tile tile = GameController.getMap().getTile(row, column);
         if (tile == null) {
             return InGameResponses.City.LOCATION_NOT_VALID;
         }
-        if(tile.getCity() != city){
+        if (tile.getCity() != city) {
             return InGameResponses.City.TILE_NOT_IN_TERRITORY;
         }
-        if(!tile.isHasCitizen()){
+        if (!tile.isHasCitizen()) {
             return InGameResponses.City.TILE_IS_EMPTY;
         }
         tile.setHasCitizen(false);
@@ -223,7 +226,7 @@ public class CityController {
         if (city == null) {
             return InGameResponses.City.NO_CITY_SELECTED;
         }
-        if(city.getOwner() != GameController.getCurrentPlayer()){
+        if (city.getOwner() != GameController.getCurrentPlayer()) {
             return InGameResponses.City.CITY_NOT_IN_POSSESS;
         }
         Tile tile = GameController.getMap().getTile(row, column);
@@ -251,21 +254,21 @@ public class CityController {
     public static InGameResponses.City attack(int row, int column) {
         Map map = GameController.getMap();
         City city = GameController.getSelectedCity();
-        if(city == null) return InGameResponses.City.NO_CITY_SELECTED;
-        if(city.getOwner() != GameController.getCurrentPlayer()){
+        if (city == null) return InGameResponses.City.NO_CITY_SELECTED;
+        if (city.getOwner() != GameController.getCurrentPlayer()) {
             return InGameResponses.City.CITY_NOT_IN_POSSESS;
         }
         Tile tile = map.getTile(row, column);
-        if(tile.getTroop() == null) {
+        if (tile.getTroop() == null) {
             return InGameResponses.City.TILE_EMPTY;
         }
-        if(tile.getTroop().getOwner() == city.getOwner()){
+        if (tile.getTroop().getOwner() == city.getOwner()) {
             return InGameResponses.City.OWN_TARGET;
         }
-        if(tile.getCity() != city) {
+        if (tile.getCity() != city) {
             return InGameResponses.City.TILE_NOT_IN_TERRITORY;
         }
-        if(map.getDistanceTo(city.getCapitalTile(), tile) > 2){
+        if (map.getDistanceTo(city.getCapitalTile(), tile) > 2) {
             return InGameResponses.City.TILE_OUT_OF_RANGE;
         }
         CombatController.rangedAttack(city, tile.getTroop());

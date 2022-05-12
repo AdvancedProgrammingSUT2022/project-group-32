@@ -29,8 +29,6 @@ public class PlayerController {
             player.setCamera(initialTile); // setting camera to capital
             Unit unit = new Unit(initialTile, player, UnitType.SETTLER);
             Troop troop = new Troop(initialTile, player, UnitType.WARRIOR);
-            initialTile.putUnit(unit);
-            initialTile.putUnit(troop);
             player.addUnit(unit); // adding initial units
             player.addUnit(troop);
             player.setMap(new Map(game.getMap())); // deep copying map

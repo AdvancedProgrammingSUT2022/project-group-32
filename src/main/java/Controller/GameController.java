@@ -165,7 +165,7 @@ public class GameController {
         Player player = getCurrentPlayer();
         Tile tile = getMap().getTile(row, column);
         Unit unit;
-        if(unitType.combatType != CombatType.CIVILIAN){
+        if(unitType.combatType == CombatType.CIVILIAN){
             unit = new Unit(tile, player, unitType);
         } else {
             unit = new Troop(tile, player, unitType);

@@ -37,7 +37,7 @@ public class Unit {
         this.remainingCost = this.cost;
         this.combatType = unitType.combatType;
         this.orderType = OrderType.AWAKE;
-        if(tile != null) this.initPlaceIn(tile);
+        if(tile != null) tile.putUnit(this);
     }
 
     public Tile getTile() {
@@ -162,10 +162,6 @@ public class Unit {
         this.tile.takeUnit(this);
         tile.putUnit(this);
         this.tile = tile;
-    }
-
-    public void initPlaceIn(Tile tile){
-        tile.putUnit(this);
     }
 
     public void destroy(){

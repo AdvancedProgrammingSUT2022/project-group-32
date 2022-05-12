@@ -159,6 +159,7 @@ public class MapController {
         unit.getOwner().addTile(tile);
         unit.getOwner().addNotification(GameController.getTurn() + ": the city of " + name + " has been constructed");
         tile.setCity(city);
+        PlayerController.updateFieldOfView(city.getOwner());
     }
 
 }
