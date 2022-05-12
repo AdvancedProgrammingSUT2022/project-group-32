@@ -259,16 +259,20 @@ public class UnitController {
         }
         if(((Troop) unit).getRange() == 0){
             if(tile2.getCity().getCapitalTile() == tile2){
+                if(tile2.getCity().getOwner() == unit.getOwner()) return InGameResponses.Unit.OWN_TARGET;
                 CombatController.meleeAttack(((Troop) unit), tile2.getCity());
             }
             else{
+                if(tile2.getTroop().getOwner() == unit.getOwner()) return InGameResponses.Unit.OWN_TARGET;
                 CombatController.meleeAttack(((Troop) unit), tile2.getTroop());
             }
         } else {
             if(tile2.getCity().getCapitalTile() == tile2){
+                if(tile2.getCity().getOwner() == unit.getOwner()) return InGameResponses.Unit.OWN_TARGET;
                 CombatController.rangedAttack(((Troop) unit), tile2.getCity());
             }
             else{
+                if(tile2.getTroop().getOwner() == unit.getOwner()) return InGameResponses.Unit.OWN_TARGET;
                 CombatController.rangedAttack(((Troop) unit), tile2.getTroop());
             }
         }

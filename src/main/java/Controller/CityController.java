@@ -14,6 +14,7 @@ public class CityController {
     public static void updateCity(City city) {
         // todo: updates resources, population, ... after a turn has passed.
         // gold updates is PlayerController.updateGold
+        city.setHP(Math.min(city.getHP() + 1, 20));
         updateInProgressBuildsTurns(city);
     }
 
@@ -155,7 +156,9 @@ public class CityController {
             return InGameResponses.City.CITY_NOT_IN_POSSESS;
         }
         Tile pooch = new Tile(-1, -1, null, null, null); // this tile is temporary
-        Unit unit = new Unit(pooch, city.getOwner(), unitType);
+        Unit unit;
+        if(unitType.combatType == CombatType.CIVILIAN) unit = new Unit(pooch, city.getOwner(), unitType);
+        else unit = new Troop(pooch, city.getOwner(), unitType);
         if(!city.getCapitalTile().canFit(unit)){
             return InGameResponses.City.CAPITAL_IS_FULL;
         }
@@ -255,6 +258,9 @@ public class CityController {
         Tile tile = map.getTile(row, column);
         if(tile.getTroop() == null) {
             return InGameResponses.City.TILE_EMPTY;
+        }
+        if(tile.getTroop().getOwner() == city.getOwner()){
+            return InGameResponses.City.OWN_TARGET;
         }
         if(tile.getCity() != city) {
             return InGameResponses.City.TILE_NOT_IN_TERRITORY;

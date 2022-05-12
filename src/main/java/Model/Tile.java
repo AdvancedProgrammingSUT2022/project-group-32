@@ -259,11 +259,11 @@ public class Tile {
     }
 
     public void putUnit(Unit unit){
-        if(unit instanceof Troop){
-            this.troop = (Troop) unit;
-        } else {
-            this.unit = unit;
-        }
+        this.unit = unit;
+    }
+
+    public void putUnit(Troop troop){
+        this.troop = troop;
     }
 
     public void takeUnit(Unit unit){

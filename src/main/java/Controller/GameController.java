@@ -4,6 +4,7 @@ import Model.*;
 import Model.Units.Troop;
 import Model.Units.Unit;
 import enums.BuildingType;
+import enums.CombatType;
 import enums.FogState;
 import enums.Responses.InGameResponses;
 import enums.Responses.Response;
@@ -161,7 +162,12 @@ public class GameController {
     public static Response.GameMenu cheatPutUnit(UnitType unitType, int row, int column) {
         Player player = getCurrentPlayer();
         Tile tile = getMap().getTile(row, column);
-        Unit unit = new Unit(tile, player, unitType);
+        Unit unit;
+        if(unitType.combatType != CombatType.CIVILIAN){
+            unit = new Unit(tile, player, unitType);
+        } else {
+            unit = new Troop(tile, player, unitType);
+        }
         unit.setRemainingCost(0);
         player.addUnit(unit);
         PlayerController.updateFieldOfView(player);

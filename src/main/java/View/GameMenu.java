@@ -121,7 +121,6 @@ public class GameMenu extends Menu {
         }
         int amount = Integer.parseInt(parameters.get(1));
         System.out.println(GameController.changeCamera(parameters.get(0), amount).getString());
-        showMap(command);
     }
 
     private static void selectUnit(String command) {

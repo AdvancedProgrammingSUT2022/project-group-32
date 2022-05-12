@@ -142,7 +142,8 @@ public class City {
     }
 
     public double getStrength(){
-        double strength = baseStrength + population + garrisonedTroop.getMeleeStrength();
+        double strength = baseStrength + population;
+        if(garrisonedTroop != null) strength += garrisonedTroop.getMeleeStrength();
         if(capitalTile.getTerrainType().equals(TerrainType.HILL)){
             strength *= 1.2;
         }

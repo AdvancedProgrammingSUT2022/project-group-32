@@ -12,7 +12,6 @@ public class Troop extends Unit {
     private int rangedStrength;
     private int range;
     private int fortifyBonus;
-    private CombatType combatType;
     private final ResourceType neededResource;
     private final TechnologyType neededTechnology;
 
@@ -22,7 +21,6 @@ public class Troop extends Unit {
         this.rangedStrength = unitType.rangedStrength;
         this.range = unitType.range;
         this.fortifyBonus = 0;
-        this.combatType = unitType.combatType;
         this.neededResource = unitType.neededResource;
         this.neededTechnology = unitType.neededTech;
     }
@@ -51,14 +49,6 @@ public class Troop extends Unit {
         this.range = range;
     }
 
-    public CombatType getCombatType() {
-        return combatType;
-    }
-
-    public void setCombatType(CombatType combatType) {
-        this.combatType = combatType;
-    }
-
     public int getFortifyBonus() {
         return fortifyBonus;
     }
@@ -73,5 +63,10 @@ public class Troop extends Unit {
 
     public TechnologyType getNeededTechnology() {
         return neededTechnology;
+    }
+
+    @Override
+    public void initPlaceIn(Tile tile){
+        tile.putUnit(this);
     }
 }

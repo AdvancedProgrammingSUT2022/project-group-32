@@ -3,6 +3,7 @@ package Model.Units;
 import Model.Map;
 import Model.Player;
 import Model.Tile;
+import enums.CombatType;
 import enums.OrderType;
 import enums.UnitType;
 
@@ -19,6 +20,7 @@ public class Unit {
     private Tile destination;
     private int remainingCost;
     private OrderType orderType;
+    private CombatType combatType;
 
     public Unit(Tile tile, Player owner, UnitType unitType) {
         this.tile = tile;
@@ -33,8 +35,9 @@ public class Unit {
         this.HP = this.health;
         this.MP = this.movement;
         this.remainingCost = this.cost;
+        this.combatType = unitType.combatType;
         this.orderType = OrderType.AWAKE;
-        if(this.tile != null) this.tile.putUnit(this);
+        if(tile != null) this.initPlaceIn(tile);
     }
 
     public Tile getTile() {
@@ -105,6 +108,14 @@ public class Unit {
         this.unitType = unitType;
     }
 
+    public CombatType getCombatType() {
+        return combatType;
+    }
+
+    public void setCombatType(CombatType combatType) {
+        this.combatType = combatType;
+    }
+
     public Tile getDestination() {
         return destination;
     }
@@ -151,6 +162,10 @@ public class Unit {
         this.tile.takeUnit(this);
         tile.putUnit(this);
         this.tile = tile;
+    }
+
+    public void initPlaceIn(Tile tile){
+        tile.putUnit(this);
     }
 
     public void destroy(){

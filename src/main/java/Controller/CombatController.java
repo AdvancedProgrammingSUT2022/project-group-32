@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.City;
+import Model.Player;
 import Model.Tile;
 import Model.Units.Troop;
 import Model.Units.Unit;
@@ -20,7 +21,8 @@ public class CombatController {
         else attacker.setMP(0);
         attacker.setFortifyBonus(0);
 
-        defender.setHP(defender.getHP() - defender.getHealth() * (attPower / (defPower * 2)));
+        if(defPower >= 0) defender.setHP(defender.getHP() - defender.getHealth() * (attPower / (defPower * 2)));
+        else defender.setHP(0);
         attacker.setHP(attacker.getHP() - attacker.getHealth() * (defPower / (attPower * 2)));
 
         if(attacker.getHP() <= 0){
@@ -28,7 +30,7 @@ public class CombatController {
             attacker.getOwner().addNotification(GameController.getTurn() + ": a unit of yours has died!");
         } else if(defender.getHP() <= 0){
             attacker.placeIn(defender.getCapitalTile(), GameController.getMap());
-            captureCity(defender);
+            captureCity(attacker.getOwner(), defender);
         }
     }
 
@@ -45,7 +47,8 @@ public class CombatController {
         else attacker.setMP(0);
         attacker.setFortifyBonus(0);
 
-        defender.setHP(defender.getHP() - defender.getHealth() * (attPower / (defPower * 2)));
+        if(defPower >= 0) defender.setHP(defender.getHP() - defender.getHealth() * (attPower / (defPower * 2)));
+        else defender.setHP(0);
         defender.setHP(Math.max(defender.getHP(), 1));
     }
 
@@ -57,14 +60,20 @@ public class CombatController {
 
         attacker.setHasAttacked(true);
         defender.setHP(defender.getHP() - defender.getHealth() * (attPower / (defPower * 2)));
+
         if(defender.getHP() <= 0) {
             defender.destroy();
             defender.getOwner().addNotification(GameController.getTurn() + ": a unit of yours has died!");
         }
     }
 
-    public static void captureCity(City enemyCity) {
-        Unit unit = GameController.getSelectedUnit();
+    public static void captureCity(Player player, City city) {
+        int turn = GameController.getTurn();
+        city.getOwner().addNotification(turn + ": you have lost the city of " + city.getName());
+        city.getOwner().removeCity(city);
+        city.setOwner(player);
+        player.addCity(city);
+        player.addNotification(turn + ": you have have captured the city of" + city.getName());
     }
 
     public static void captureUnit(Unit enemyUnit) {

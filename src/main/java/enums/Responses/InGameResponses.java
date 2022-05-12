@@ -47,6 +47,7 @@ public class InGameResponses {
         UNIT_NOT_SETUP("the siege unit is not yet set up"),
         UNIT_OUT_OF_RANGE("unit is out of range"),
         TARGET_EMPTY("target is empty (no city or troop on it)"),
+        OWN_TARGET("selected target is not an enemy"),
         //FOUND
         UNIT_NOT_A_SETTLER("selected unit is not a settler"),
         CITY_FOUNDATION_NOT_POSSIBLE("city foundation in the current position is not possible"),
@@ -142,6 +143,7 @@ public class InGameResponses {
         CITY_TIRED("the city has already attacked this turn"),
         TILE_OUT_OF_RANGE("the given tile is too far to be attacked by the city"),
         TILE_EMPTY("no troop exists in the selected tile"),
+        OWN_TARGET("selected target is not an enemy"),
         ATTACK_SUCCESSFUL("city attacked successfully");
 
         private final String message;
