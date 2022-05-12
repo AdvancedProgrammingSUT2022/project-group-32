@@ -2,6 +2,7 @@ package View.Panels;
 
 import Controller.CityController;
 import Controller.GameController;
+import Controller.UnitController;
 import Model.City;
 import View.CLI;
 import View.GameMenu;
@@ -20,7 +21,8 @@ public class CitySelectedPanel extends GameMenu {
         else if (command.startsWith("assign citizen")) assignCitizen(command);
         else if (command.startsWith("free citizen")) freeCitizen(command);
         else if (command.startsWith("buy tile")) buyTile(command);
-        else if (command.startsWith("show banner")) showBanner(command);
+        else if (command.startsWith("attack")) attack(command);
+        else if (command.startsWith("show banner")) showBanner();
         else if (command.startsWith("back")) currentPanel = null;
         else invalidCommand();
     }
@@ -87,10 +89,23 @@ public class CitySelectedPanel extends GameMenu {
         System.out.println(CityController.buyTile(row, column));
     }
 
-    private static void showBanner(String command) {
+    private static void attack(String command) {
+        ArrayList<String> parameters = CLI.getParameters(command, "l");
+        if (parameters == null) {
+            invalidCommand();
+            return;
+        }
+        int row = Integer.parseInt(parameters.get(0)), column = Integer.parseInt(parameters.get(1));
+        System.out.println(CityController.attack(row, column).getString());
+    }
+
+    private static void showBanner() {
         City city = GameController.getSelectedCity();
         System.out.println(city.getOwner().getBackgroundColor().code
                 + city.getName() + " owned by " + city.getOwner().getName() + Color.RESET.code);
+        System.out.println("location: " + city.getCapitalTile().getRow() + "," + city.getCapitalTile().getColumn());
+        System.out.println("HP: " + city.getHP());
+        System.out.println("strength: " + city.getStrength());
         System.out.println("population: " + city.getPopulation());
         System.out.println("production: " + city.getProductionIncome());
         System.out.println("food: " + city.getFoodIncome());
@@ -101,6 +116,5 @@ public class CitySelectedPanel extends GameMenu {
             int remainingTurns = (city.getUnitInProgress().getRemainingCost() + city.getProductionIncome() - 1) / city.getProductionIncome();
             System.out.println("will be completed in: " + remainingTurns);
         }
-
     }
 }

@@ -76,4 +76,8 @@ public class Terrain {
     public void setFeatureHP(int featureHP) {
         this.featureHP = featureHP;
     }
+
+    public double getCombat(){
+        return terrainType.combat + terrainFeature.combat;
+    }
 }

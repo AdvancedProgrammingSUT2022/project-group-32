@@ -44,6 +44,9 @@ public class InGameResponses {
         UNIT_NOT_SIEGE("selected unit is not a siege unit"),
         //ATTACK
         ATTACK_NOT_POSSIBLE("attack to this position is not possible"),
+        UNIT_NOT_SETUP("the siege unit is not yet set up"),
+        UNIT_OUT_OF_RANGE("unit is out of range"),
+        TARGET_EMPTY("target is empty (no city or troop on it)"),
         //FOUND
         UNIT_NOT_A_SETTLER("selected unit is not a settler"),
         CITY_FOUNDATION_NOT_POSSIBLE("city foundation in the current position is not possible"),
@@ -134,8 +137,12 @@ public class InGameResponses {
         TILE_ALREADY_BOUGHT("tile is already bought"),
         CANT_BUY_TILE("this tile is not available to buy"),
         TILE_TOO_FAR("this tile is not near the selected city"),
-        TILE_BUY_SUCCESSFUL("tile purchased successfully");
-
+        TILE_BUY_SUCCESSFUL("tile purchased successfully"),
+        // attack
+        CITY_TIRED("the city has already attacked this turn"),
+        TILE_OUT_OF_RANGE("the given tile is too far to be attacked by the city"),
+        TILE_EMPTY("no troop exists in the selected tile"),
+        ATTACK_SUCCESSFUL("city attacked successfully");
 
         private final String message;
 

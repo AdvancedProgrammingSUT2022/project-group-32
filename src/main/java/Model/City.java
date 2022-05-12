@@ -2,10 +2,7 @@ package Model;
 
 import Model.Units.Troop;
 import Model.Units.Unit;
-import enums.BuildingType;
-import enums.ResourceType;
-import enums.TerrainFeature;
-import enums.UnitType;
+import enums.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +23,8 @@ public class City {
     private int sightRange;
     private Troop garrisonedTroop;
     private int neededFoodForNewCitizen = 20, storedFoodForNewCitizen = 0;
-    private int HP;
+    private double HP;
+    private boolean hasAttacked;
 
     public City(String name, Player owner, Tile capitalTile, ArrayList<Tile> territory) {
         this.name = name;
@@ -37,8 +35,11 @@ public class City {
         this.buildings = new ArrayList<>();
         this.incompleteBuildings = new ArrayList<>();
         this.incompleteUnits = new ArrayList<>();
+        this.health = 20;
         this.HP = 20;
-        // TODO: 4/17/2022 sets buildings, citizens, gold, food, .... to default value. and empty arraylists
+        this.baseStrength = 20;
+        this.hasAttacked = false;
+        // TODO: 4/17/2022 sets buildings, citizens, gold, food, .... to default value.
     }
 
     public String getName() {
@@ -140,6 +141,22 @@ public class City {
         this.baseStrength = baseStrength;
     }
 
+    public double getStrength(){
+        double strength = baseStrength + population + garrisonedTroop.getMeleeStrength();
+        if(capitalTile.getTerrainType().equals(TerrainType.HILL)){
+            strength *= 1.2;
+        }
+        return strength;
+    }
+
+    public boolean HasAttacked() {
+        return hasAttacked;
+    }
+
+    public void setHasAttacked(boolean hasAttacked) {
+        this.hasAttacked = hasAttacked;
+    }
+
     public int getNeededFoodForNewCitizen() {
         return neededFoodForNewCitizen;
     }
@@ -192,11 +209,11 @@ public class City {
         this.garrisonedTroop = garrisonedTroop;
     }
 
-    public int getHP() {
+    public double getHP() {
         return HP;
     }
 
-    public void setHP(int HP) {
+    public void setHP(double HP) {
         this.HP = HP;
     }
 
@@ -297,11 +314,6 @@ public class City {
             units.addAll(Arrays.asList(tile.getUnit()));
         }
         return units;
-    }
-
-    private int getStrength() {
-        // TODO: 4/17/2022  by units and baseStrength
-        return 0;
     }
 
     public int getTilesFoodIncome() {
