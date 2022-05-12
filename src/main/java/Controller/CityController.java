@@ -244,4 +244,25 @@ public class CityController {
         city.getOwner().addTile(tile);
         return InGameResponses.City.TILE_BUY_SUCCESSFUL;
     }
+
+    public static InGameResponses.City attack(int row, int column) {
+        Map map = GameController.getMap();
+        City city = GameController.getSelectedCity();
+        if(city == null) return InGameResponses.City.NO_CITY_SELECTED;
+        if(city.getOwner() != GameController.getCurrentPlayer()){
+            return InGameResponses.City.CITY_NOT_IN_POSSESS;
+        }
+        Tile tile = map.getTile(row, column);
+        if(tile.getTroop() == null) {
+            return InGameResponses.City.TILE_EMPTY;
+        }
+        if(tile.getCity() != city) {
+            return InGameResponses.City.TILE_NOT_IN_TERRITORY;
+        }
+        if(map.getDistanceTo(city.getCapitalTile(), tile) > 2){
+            return InGameResponses.City.TILE_OUT_OF_RANGE;
+        }
+        CombatController.rangedAttack(city, tile.getTroop());
+        return InGameResponses.City.ATTACK_SUCCESSFUL;
+    }
 }

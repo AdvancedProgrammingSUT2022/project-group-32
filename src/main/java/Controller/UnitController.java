@@ -232,8 +232,47 @@ public class UnitController {
         return InGameResponses.Unit.GARRISON_SUCCESSFUL;
     }
 
-    public static InGameResponses.Unit attack(int x, int y) {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+    public static InGameResponses.Unit attack(int row, int column) {
+        Unit unit = GameController.getSelectedUnit();
+        if (unit == null) {
+            return InGameResponses.Unit.NO_UNIT_SELECTED;
+        }
+        if (unit.getOwner() != GameController.getCurrentPlayer()) {
+            return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
+        }
+        if (unit.getMP() <= 0) {
+            return InGameResponses.Unit.UNIT_IS_TIRED;
+        }
+        if(!(unit instanceof Troop)){
+            return InGameResponses.Unit.UNIT_NOT_MILITARY;
+        }
+        if(unit.getUnitType().combatType == CombatType.SIEGE && unit.getOrderType() != OrderType.SETUP) {
+            return InGameResponses.Unit.UNIT_NOT_SETUP;
+        }
+        Map map = GameController.getMap();
+        Tile tile1 = unit.getTile(), tile2 = map.getTile(row, column);
+        if(map.getDistanceTo(tile1, tile2) > ((Troop) unit).getRange()){
+            return InGameResponses.Unit.UNIT_OUT_OF_RANGE;
+        }
+        if(tile2.getTroop() == null && tile2.getCity().getCapitalTile() != tile2){
+            return InGameResponses.Unit.TARGET_EMPTY;
+        }
+        if(((Troop) unit).getRange() == 0){
+            if(tile2.getCity().getCapitalTile() == tile2){
+                CombatController.meleeAttack(((Troop) unit), tile2.getCity());
+            }
+            else{
+                CombatController.meleeAttack(((Troop) unit), tile2.getTroop());
+            }
+        } else {
+            if(tile2.getCity().getCapitalTile() == tile2){
+                CombatController.rangedAttack(((Troop) unit), tile2.getCity());
+            }
+            else{
+                CombatController.rangedAttack(((Troop) unit), tile2.getTroop());
+            }
+        }
+        return InGameResponses.Unit.ATTACK_SUCCESSFUL;
         // uses combat controller if needed
         // remember to make fortify bonus equal to 0
     }

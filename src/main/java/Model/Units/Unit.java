@@ -13,7 +13,7 @@ public class Unit {
     private int cost;
     private int movement;
     private int MP; // needs to be refilled at the end of each turn
-    private int HP; // this is what changes in attacks
+    private double HP; // this is what changes in attacks
     private int sightRange;
     private UnitType unitType;
     private Tile destination;
@@ -81,11 +81,11 @@ public class Unit {
         this.MP = MP;
     }
 
-    public int getHP() {
+    public double getHP() {
         return HP;
     }
 
-    public void setHP(int HP) {
+    public void setHP(double HP) {
         this.HP = HP;
     }
 
