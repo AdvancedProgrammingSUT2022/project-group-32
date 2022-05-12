@@ -39,7 +39,7 @@ public class InGameResponses {
         UNIT_NOT_MILITARY("selected unit is non-military"),
         UNIT_CANT_FORTIFY("selected unit can't fortify"),
         //GARRISON
-        UNIT_NOT_PRESENT_IN_CITY("unit is not present in the city"),
+        UNIT_NOT_PRESENT_IN_CITY("unit is not present in your city"),
         //SETUP
         UNIT_NOT_SIEGE("selected unit is not a siege unit"),
         //ATTACK
@@ -89,7 +89,7 @@ public class InGameResponses {
         ALERT_SUCCESSFUL("unit successfully alerted"),
         FORTIFY_SUCCESSFUL("unit successfully fortified"),
         HEAL_SUCCESSFUL("unit is successfully healing"),
-        GARRISON__SUCCESSFUL("unit successfully garrisoned"),
+        GARRISON_SUCCESSFUL("unit successfully garrisoned"),
         SETUP_SUCCESSFUL("unit successfully setup"),
         ATTACK_SUCCESSFUL("unit successfully attacked"),
         FOUND_SUCCESSFUL("city successfully founded"),

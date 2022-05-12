@@ -6,6 +6,7 @@ import View.CLI;
 import View.GameMenu;
 import View.Menu;
 import enums.ImprovementType;
+import enums.Responses.InGameResponses;
 import enums.RoadType;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class UnitSelectedPanel extends GameMenu {
         else if(command.startsWith("pillage")) pillage();
         else if(command.startsWith("repair")) repair();
         else if(command.startsWith("set up")) setup();
+        else if(command.startsWith("garrison")) garrison();
         else if(command.startsWith("show selected unit")) showSelected();
         else invalidCommand();
     }
@@ -128,4 +130,9 @@ public class UnitSelectedPanel extends GameMenu {
     private static void setup(){
         System.out.println(UnitController.setup().getString());
     }
+
+    private static void garrison(){
+        System.out.println(UnitController.garrison().getString());
+    }
+
 }

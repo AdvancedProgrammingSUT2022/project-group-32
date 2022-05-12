@@ -2,19 +2,24 @@ package Controller;
 
 import Model.City;
 import Model.Tile;
+import Model.Units.Troop;
 import Model.Units.Unit;
 
 public class CombatController {
-    public static void attackUnit(Unit unit) {
+    public static void meleeAttack(Troop attacker, Unit defender) {
 
     }
 
-    public static void attackCity(Unit unit) {
+    public static void meleeAttack(Troop attacker, City defender) {
 
     }
 
-    public static void attackTile(Tile tile) {
-        // decides whether selected unit should attack a tile or city
+    public static void rangedAttack(Troop attacker, Unit defender) {
+
+    }
+
+    public static void rangedAttack(Troop attacker, City defender) {
+
     }
 
     public static void captureCity(City enemyCity) {

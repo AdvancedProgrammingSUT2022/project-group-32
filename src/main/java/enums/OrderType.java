@@ -10,5 +10,6 @@ public enum OrderType {
     SETUP,
     MOVING,
     ROAD_BUILDING,
-    REMOVING
+    REMOVING,
+    GARRISONED
 }

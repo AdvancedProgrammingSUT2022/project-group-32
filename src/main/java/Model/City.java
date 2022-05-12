@@ -26,6 +26,7 @@ public class City {
     private int sightRange;
     private Troop garrisonedTroop;
     private int neededFoodForNewCitizen = 20, storedFoodForNewCitizen = 0;
+    private int HP;
 
     public City(String name, Player owner, Tile capitalTile, ArrayList<Tile> territory) {
         this.name = name;
@@ -36,6 +37,7 @@ public class City {
         this.buildings = new ArrayList<>();
         this.incompleteBuildings = new ArrayList<>();
         this.incompleteUnits = new ArrayList<>();
+        this.HP = 20;
         // TODO: 4/17/2022 sets buildings, citizens, gold, food, .... to default value. and empty arraylists
     }
 
@@ -188,6 +190,14 @@ public class City {
 
     public void setGarrisonedTroop(Troop garrisonedTroop) {
         this.garrisonedTroop = garrisonedTroop;
+    }
+
+    public int getHP() {
+        return HP;
+    }
+
+    public void setHP(int HP) {
+        this.HP = HP;
     }
 
     public void addTile(Tile tile) {

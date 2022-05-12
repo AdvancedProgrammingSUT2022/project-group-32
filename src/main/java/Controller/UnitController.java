@@ -209,6 +209,29 @@ public class UnitController {
         return InGameResponses.Unit.SETUP_SUCCESSFUL;
     }
 
+    public static InGameResponses.Unit garrison() {
+        Unit unit = GameController.getSelectedUnit();
+        if (unit == null) {
+            return InGameResponses.Unit.NO_UNIT_SELECTED;
+        }
+        if (unit.getOwner() != GameController.getCurrentPlayer()) {
+            return InGameResponses.Unit.UNIT_NOT_IN_POSSESS;
+        }
+        if (unit.getMP() <= 0) {
+            return InGameResponses.Unit.UNIT_IS_TIRED;
+        }
+        if(!(unit instanceof Troop)){
+            return InGameResponses.Unit.UNIT_NOT_MILITARY;
+        }
+        City city = unit.getTile().getCity();
+        if(city == null || city.getOwner() != unit.getOwner()){
+            return InGameResponses.Unit.UNIT_NOT_PRESENT_IN_CITY;
+        }
+        city.setGarrisonedTroop(((Troop) unit));
+        unit.setOrderType(OrderType.GARRISONED);
+        return InGameResponses.Unit.GARRISON_SUCCESSFUL;
+    }
+
     public static InGameResponses.Unit attack(int x, int y) {
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
         // uses combat controller if needed
