@@ -30,12 +30,12 @@ public class Unit {
         this.health = 10;
         this.cost = unitType.cost;
         this.movement = unitType.movement;
-        this.sightRange = 3;
-        if(unitType == UnitType.CATAPULT) this.sightRange = 2;
         this.HP = this.health;
         this.MP = this.movement;
         this.remainingCost = this.cost;
         this.combatType = unitType.combatType;
+        this.sightRange = 2;
+        if(this.combatType.equals(CombatType.SIEGE) || unitType == UnitType.PANZER) this.sightRange = 1;
         this.orderType = OrderType.AWAKE;
         if(tile != null) tile.putUnit(this);
     }

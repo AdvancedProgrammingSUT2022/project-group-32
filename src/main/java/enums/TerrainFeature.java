@@ -36,4 +36,8 @@ public enum TerrainFeature {
         this.movement = movement;
         this.possibleResources = possibleResources;
     }
+
+    public static ArrayList<TerrainFeature> getRoughTerrain(){
+        return new ArrayList<>(Arrays.asList(TerrainFeature.FOREST, TerrainFeature.JUNGLE, TerrainFeature.MARSH, TerrainFeature.HILL));
+    }
 }

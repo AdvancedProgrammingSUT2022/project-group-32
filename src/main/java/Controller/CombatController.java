@@ -6,8 +6,12 @@ import Model.Tile;
 import Model.Units.Troop;
 import Model.Units.Unit;
 import enums.CombatType;
+import enums.UnitType;
+
+import java.util.Arrays;
 
 public class CombatController {
+
     public static void meleeAttack(Troop attacker, Unit defender) {
 
     }
@@ -15,6 +19,7 @@ public class CombatController {
     public static void meleeAttack(Troop attacker, City defender) {
         double attPower = attacker.getMeleeStrength() * (attacker.getHP() / attacker.getHealth());
         attPower *= 1 + attacker.getTile().getTerrain().getCombat();
+        if(attacker.getUnitType().equals(UnitType.TANK)) attPower *= 0.9;
         double defPower = defender.getStrength();
 
         if(attacker.getUnitType().combatType == CombatType.MOUNTED) attacker.setMP(attacker.getMP() - 1);
@@ -41,6 +46,7 @@ public class CombatController {
     public static void rangedAttack(Troop attacker, City defender) {
         double attPower = attacker.getRangedStrength() * (attacker.getHP() / attacker.getHealth());
         attPower *= 1 + attacker.getTile().getTerrain().getCombat();
+        if(attacker.getCombatType().equals(CombatType.SIEGE)) attPower *= 1.1;
         double defPower = defender.getStrength();
 
         if(attacker.getUnitType().combatType == CombatType.MOUNTED) attacker.setMP(attacker.getMP() - 1);
@@ -57,6 +63,8 @@ public class CombatController {
         double defPower = defender.getMeleeStrength();
         defPower *= 1 + defender.getTile().getTerrain().getCombat();
         defPower *= 1 + 0.25 * defender.getFortifyBonus();
+        if(defender.getCombatType().equals(CombatType.SIEGE)) defPower *= 1.1;
+        if(defender.getUnitType().equals(UnitType.TANK)) defPower *= 0.9;
 
         attacker.setHasAttacked(true);
         defender.setHP(defender.getHP() - defender.getHealth() * (attPower / (defPower * 2)));
