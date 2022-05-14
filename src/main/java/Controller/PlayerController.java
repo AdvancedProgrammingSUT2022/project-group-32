@@ -90,12 +90,13 @@ public class PlayerController {
         for (City city : player.getCities()) {
             CityController.updateCity(city);
         }
-        updateFieldOfView();
         updateTechnology();
         updateFood();
         updateScience();
         updateGold(); // gold must be updated after science
         updateHappiness();
+        updateFieldOfView();
+
     }
 
     private static void updateHappiness() {

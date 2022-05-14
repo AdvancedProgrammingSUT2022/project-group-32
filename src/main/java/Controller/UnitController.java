@@ -41,8 +41,8 @@ public class UnitController {
             Terrain terrain = unit.getTile().getTerrain();
             terrain.setFeatureHP(terrain.getFeatureHP() - 1);
             unit.setMP(0);
-            if (terrain.getFeatureHP() == 0) {
-                terrain.setTerrainFeature(null);
+            if (terrain.getFeatureHP() <= 0) {
+                terrain.setTerrainFeature(TerrainFeature.NULL);
                 unit.setOrderType(OrderType.AWAKE);
                 unit.getOwner().addNotification(GameController.getTurn() + ": the feature was removed");
             }
@@ -73,7 +73,7 @@ public class UnitController {
             unit.setDestination(unit.getTile());
         }
         if (unit.getDestination() == null || unit.getDestination() == unit.getTile()) {
-            unit.setOrderType(OrderType.AWAKE);
+            if(unit.getOrderType() == OrderType.MOVING) unit.setOrderType(OrderType.AWAKE);
             return;
         }
         if (unit instanceof Troop) ((Troop) unit).setFortifyBonus(0); // setting fortify bonus to 0 when moving
@@ -372,7 +372,6 @@ public class UnitController {
             for (TerrainFeature terrainFeature : improvementType.canBeOn) {
                 System.out.println(terrainFeature);
             }
-            System.out.println("###");
             for (ResourceType improvingResource : improvementType.improvingResources) {
                 System.out.println(improvingResource);
             }
@@ -418,6 +417,12 @@ public class UnitController {
         if (roadType == null) {
             return InGameResponses.Unit.INVALID_ROAD;
         }
+        if (unit.getOwner().getTechnologyByType(TechnologyType.THE_WHEEL) == null) {
+            return InGameResponses.Unit.NO_THE_WHEEL;
+        }
+        if (roadType == RoadType.RAILROAD && unit.getOwner().getTechnologyByType(TechnologyType.RAILROAD) == null) {
+            return InGameResponses.Unit.NO_RAILROAD;
+        }
         Tile tile = unit.getTile();
         if (tile.getRoadType() == RoadType.ROAD) {
             return InGameResponses.Unit.ROAD_ALREADY_EXISTS;
@@ -446,6 +451,9 @@ public class UnitController {
         if (unit.getUnitType() != UnitType.WORKER) {
             return InGameResponses.Unit.UNIT_NOT_A_WORKER;
         }
+        if (unit.getOwner().getTechnologyByType(TechnologyType.MINING) == null) {
+            return InGameResponses.Unit.NO_MINING;
+        }
         Tile tile = unit.getTile();
         if (tile.getTerrainFeature() != TerrainFeature.FOREST) {
             return InGameResponses.Unit.TILE_NOT_FOREST;
@@ -468,6 +476,9 @@ public class UnitController {
         if (unit.getUnitType() != UnitType.WORKER) {
             return InGameResponses.Unit.UNIT_NOT_A_WORKER;
         }
+        if (unit.getOwner().getTechnologyByType(TechnologyType.BRONZE_WORKING) == null) {
+            return InGameResponses.Unit.NO_BRONZE_WORKING;
+        }
         Tile tile = unit.getTile();
         if (tile.getTerrainFeature() != TerrainFeature.JUNGLE) {
             return InGameResponses.Unit.TILE_NOT_JUNGLE;
@@ -489,6 +500,9 @@ public class UnitController {
         }
         if (unit.getUnitType() != UnitType.WORKER) {
             return InGameResponses.Unit.UNIT_NOT_A_WORKER;
+        }
+        if (unit.getOwner().getTechnologyByType(TechnologyType.MASONRY) == null) {
+            return InGameResponses.Unit.NO_MASONRY;
         }
         Tile tile = unit.getTile();
         if (tile.getTerrainFeature() != TerrainFeature.MARSH) {
@@ -538,7 +552,7 @@ public class UnitController {
             return InGameResponses.Unit.OWN_IMPROVEMENT;
         }
         Improvement improvement;
-        if ((improvement = tile.getImprovement()) != null) {
+        if ((improvement = tile.getImprovement()) == null) {
             Road road;
             if ((road = tile.getRoad()) == null) return InGameResponses.Unit.NO_IMPROVEMENT;
             road.setRemainingTurns(Math.max(road.getRemainingTurns() + 1, 3));

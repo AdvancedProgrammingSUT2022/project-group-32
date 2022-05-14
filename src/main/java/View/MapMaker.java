@@ -84,9 +84,9 @@ public class MapMaker {
         // CITY NAME
         if (tile.getFogState() != FogState.UNKNOWN && tile.getCity() != null) {
             if (tile.getCity().getCapitalTile().getRow() == tileRow && tile.getCity().getCapitalTile().getColumn() == tileColumn) {
-                map[centerRow - 2][centerColumn - 1] = sC("" + tile.getCity().getName().charAt(0), Color.WHITE_BRIGHT.code);
-                map[centerRow - 2][centerColumn] = sC("" + tile.getCity().getName().charAt(1), Color.WHITE_BRIGHT.code);
-                map[centerRow - 2][centerColumn + 1] = sC("" + tile.getCity().getName().charAt(2), Color.WHITE_BRIGHT.code);
+                map[centerRow - 2][centerColumn - 1] = sC("" + tile.getCity().getName().charAt(0), tile.getCity().getOwner().getColor().code);
+                map[centerRow - 2][centerColumn] = sC("" + tile.getCity().getName().charAt(1), tile.getCity().getOwner().getColor().code);
+                map[centerRow - 2][centerColumn + 1] = sC("" + tile.getCity().getName().charAt(2), tile.getCity().getOwner().getColor().code);
             }
         }
 
@@ -136,12 +136,16 @@ public class MapMaker {
         if(tile.getFogState() == FogState.VISIBLE){
             // UNIT
             if (tile.getUnit() != null) {
-                map[centerRow][centerColumn - 1] = sC(tile.getUnit().getUnitType().name().substring(0, 1), (tile.getUnit().getOwner().getColor()).code);
+                map[centerRow][centerColumn - 3] = sC(tile.getUnit().getUnitType().name().substring(0, 1), (tile.getUnit().getOwner().getColor()).code);
+                map[centerRow][centerColumn - 2] = sC(tile.getUnit().getUnitType().name().substring(1, 2), (tile.getUnit().getOwner().getColor()).code);
+                map[centerRow][centerColumn - 1] = sC(tile.getUnit().getUnitType().name().substring(2, 3), (tile.getUnit().getOwner().getColor()).code);
             }
-
+            map[centerRow][centerColumn] = sC("-", color);
             // TROOP
             if (tile.getTroop() != null) {
                 map[centerRow][centerColumn + 1] = sC(tile.getTroop().getUnitType().name().substring(0, 1), (tile.getTroop().getOwner().getColor()).code);
+                map[centerRow][centerColumn + 2] = sC(tile.getTroop().getUnitType().name().substring(1, 2), (tile.getTroop().getOwner().getColor()).code);
+                map[centerRow][centerColumn + 3] = sC(tile.getTroop().getUnitType().name().substring(2, 3), (tile.getTroop().getOwner().getColor()).code);
             }
         }
         

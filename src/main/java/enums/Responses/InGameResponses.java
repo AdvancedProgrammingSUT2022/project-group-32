@@ -68,8 +68,13 @@ public class InGameResponses {
         IMPROVEMENT_ALREADY_EXISTS("this improvement already exists in the current position"),
         BUILDING_NOT_POSSIBLE("building not possible in the current position"),
         CONTINUING_BUILDING("worker is continuing the building"),
+        NO_THE_WHEEL("you haven't researched The Wheel technology yet"),
+        NO_RAILROAD("you haven't researched Railroad technology yet"),
         //REMOVE
         ROUTE_NOT_AVAILABLE("selected unit is not on a tile with a route"),
+        NO_BRONZE_WORKING("you haven't researched Bronze Working technology yet"),
+        NO_MASONRY("you haven't researched Masonry technology yet"),
+        NO_MINING("you haven't researched Mining technology yet"),
         //REPAIR
         RUIN_NOT_AVAILABLE("ruin is not available in the current position"),
         //BUILDING THE UNIT
