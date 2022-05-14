@@ -3,9 +3,9 @@ package Model.Units;
 import Model.Map;
 import Model.Player;
 import Model.Tile;
-import enums.CombatType;
-import enums.OrderType;
-import enums.UnitType;
+import enums.Types.CombatType;
+import enums.Types.OrderType;
+import enums.Types.UnitType;
 
 public class Unit {
     private Tile tile;
@@ -35,9 +35,9 @@ public class Unit {
         this.remainingCost = this.cost;
         this.combatType = unitType.combatType;
         this.sightRange = 2;
-        if(this.combatType.equals(CombatType.SIEGE) || unitType == UnitType.PANZER) this.sightRange = 1;
+        if (this.combatType.equals(CombatType.SIEGE) || unitType == UnitType.PANZER) this.sightRange = 1;
         this.orderType = OrderType.AWAKE;
-        if(tile != null) tile.putUnit(this);
+        if (tile != null) tile.putUnit(this);
     }
 
     public Tile getTile() {
@@ -140,22 +140,22 @@ public class Unit {
         this.orderType = orderType;
     }
 
-    public int getRow(){
+    public int getRow() {
         return tile.getRow();
     }
 
-    public int getColumn(){
+    public int getColumn() {
         return tile.getColumn();
     }
 
-    public void placeIn(Tile tile, Map map){
-        if(unitType == UnitType.SCOUT) this.MP --;
+    public void placeIn(Tile tile, Map map) {
+        if (unitType == UnitType.SCOUT) this.MP--;
         else this.MP -= tile.getMP(this.tile);
-        if(tile.getCity() != null && !tile.getCity().getOwner().equals(this.owner)){
+        if (tile.getCity() != null && !tile.getCity().getOwner().equals(this.owner)) {
             this.MP = 0;
         }
         for (Tile neighbouringTile : tile.getNeighbouringTiles(map)) {
-            if(neighbouringTile.getTroop() != null && neighbouringTile.getTroop().getOwner() != this.owner){
+            if (neighbouringTile.getTroop() != null && neighbouringTile.getTroop().getOwner() != this.owner) {
                 this.MP = 0;
             }
         }
@@ -164,7 +164,7 @@ public class Unit {
         this.tile = tile;
     }
 
-    public void destroy(){
+    public void destroy() {
         this.tile.takeUnit(this);
         this.owner.removeUnit(this);
     }

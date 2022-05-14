@@ -3,7 +3,7 @@ package Model;
 import Model.Resources.Resource;
 import Model.Units.Troop;
 import Model.Units.Unit;
-import enums.*;
+import enums.Types.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +28,7 @@ public class Tile {
         this.column = column;
         this.terrain = terrain;
         this.fogState = fogState;
-        if(terrain.getResourceType() != null) this.resource = new Resource(terrain.getResourceType(), this);
+        if (terrain.getResourceType() != null) this.resource = new Resource(terrain.getResourceType(), this);
         this.ruin = ruin;
         this.city = null;
         this.improvement = null;
@@ -45,7 +45,7 @@ public class Tile {
     }
 
     // builds a tile based on a tile
-    public Tile(Tile tile){
+    public Tile(Tile tile) {
         this.row = tile.row;
         this.column = tile.column;
         this.terrain = tile.terrain;
@@ -167,12 +167,12 @@ public class Tile {
     }
 
     public RoadType getRoadType() {
-        if(this.road == null) return null;
+        if (this.road == null) return null;
         return road.getType();
     }
 
     public void setRoadType(RoadType roadType) {
-        if(this.road == null) return;
+        if (this.road == null) return;
         this.road.setType(roadType);
     }
 
@@ -184,11 +184,11 @@ public class Tile {
         this.isRiver = isRiver;
     }
 
-    public void setRiverInDirection(int direction, int river){
+    public void setRiverInDirection(int direction, int river) {
         isRiver.put(direction, river);
     }
 
-    public int getRiverInDirection(int direction){
+    public int getRiverInDirection(int direction) {
         return isRiver.get(direction);
     }
 
@@ -200,48 +200,46 @@ public class Tile {
         this.hasCitizen = hasCitizen;
     }
 
-    public int getDirectionTo(Tile tile){
-        if(tile.column == this.column){
-            if(tile.row == this.row - 1) return 0;
-            if(tile.row == this.row + 1) return 6;
+    public int getDirectionTo(Tile tile) {
+        if (tile.column == this.column) {
+            if (tile.row == this.row - 1) return 0;
+            if (tile.row == this.row + 1) return 6;
         }
-        if(this.column % 2 == 0){
-            if(this.row == tile.row && this.column - 1 == tile.column) return 10;
-            if(this.row == tile.row && this.column + 1 == tile.column) return 2;
-            if(this.row + 1 == tile.row && this.column - 1 == tile.column) return 8;
-            if(this.row + 1 == tile.row && this.column + 1 == tile.column) return 4;
-        }
-        else{
-            if(this.row - 1 == tile.row && this.column - 1 == tile.column) return 10;
-            if(this.row - 1 == tile.row && this.column + 1 == tile.column) return 2;
-            if(this.row == tile.row && this.column - 1 == tile.column) return 8;
-            if(this.row == tile.row && this.column + 1 == tile.column) return 4;
+        if (this.column % 2 == 0) {
+            if (this.row == tile.row && this.column - 1 == tile.column) return 10;
+            if (this.row == tile.row && this.column + 1 == tile.column) return 2;
+            if (this.row + 1 == tile.row && this.column - 1 == tile.column) return 8;
+            if (this.row + 1 == tile.row && this.column + 1 == tile.column) return 4;
+        } else {
+            if (this.row - 1 == tile.row && this.column - 1 == tile.column) return 10;
+            if (this.row - 1 == tile.row && this.column + 1 == tile.column) return 2;
+            if (this.row == tile.row && this.column - 1 == tile.column) return 8;
+            if (this.row == tile.row && this.column + 1 == tile.column) return 4;
         }
         return -1; // meaning they are not neighbours
     }
 
-    public Tile getTileInDirection(Map map, int direction){
-        if(direction == 0) return map.getTile(this.row - 1, this.column);
-        if(direction == 6) return map.getTile(this.row + 1, this.column);
-        if(this.column % 2 == 0){
-            if(direction == 10) return map.getTile(this.row, this.column - 1);
-            if(direction == 2) return map.getTile(this.row, this.column + 1);
-            if(direction == 8) return map.getTile(this.row + 1, this.column - 1);
-            if(direction == 4) return map.getTile(this.row + 1, this.column + 1);
-        }
-        else{
-            if(direction == 10) return map.getTile(this.row - 1, this.column - 1);
-            if(direction == 2) return map.getTile(this.row - 1, this.column + 1);
-            if(direction == 8) return map.getTile(this.row, this.column - 1);
-            if(direction == 4) return map.getTile(this.row, this.column + 1);
+    public Tile getTileInDirection(Map map, int direction) {
+        if (direction == 0) return map.getTile(this.row - 1, this.column);
+        if (direction == 6) return map.getTile(this.row + 1, this.column);
+        if (this.column % 2 == 0) {
+            if (direction == 10) return map.getTile(this.row, this.column - 1);
+            if (direction == 2) return map.getTile(this.row, this.column + 1);
+            if (direction == 8) return map.getTile(this.row + 1, this.column - 1);
+            if (direction == 4) return map.getTile(this.row + 1, this.column + 1);
+        } else {
+            if (direction == 10) return map.getTile(this.row - 1, this.column - 1);
+            if (direction == 2) return map.getTile(this.row - 1, this.column + 1);
+            if (direction == 8) return map.getTile(this.row, this.column - 1);
+            if (direction == 4) return map.getTile(this.row, this.column + 1);
         }
         return null;
     }
 
-    public ArrayList<Tile> getNeighbouringTiles(Map map){
+    public ArrayList<Tile> getNeighbouringTiles(Map map) {
         ArrayList<Tile> tiles = new ArrayList<>();
-        for(int d = 0; d < 12; d += 2){
-            if(this.getTileInDirection(map, d) != null){
+        for (int d = 0; d < 12; d += 2) {
+            if (this.getTileInDirection(map, d) != null) {
                 tiles.add(this.getTileInDirection(map, d));
             }
         }
@@ -249,25 +247,25 @@ public class Tile {
     }
 
     // the next 3 methods are for both troops and normal units
-    public boolean canFit(Unit unit){
-        if(unit instanceof Troop){
+    public boolean canFit(Unit unit) {
+        if (unit instanceof Troop) {
             return (this.troop == null);
         } else {
-            if(this.unit != null) return false;
+            if (this.unit != null) return false;
             return this.troop == null || this.troop.getOwner() == unit.getOwner();
         }
     }
 
-    public void putUnit(Unit unit){
-        if(unit instanceof Troop){
+    public void putUnit(Unit unit) {
+        if (unit instanceof Troop) {
             this.troop = (Troop) unit;
         } else {
             this.unit = unit;
         }
     }
 
-    public void takeUnit(Unit unit){
-        if(unit instanceof Troop){
+    public void takeUnit(Unit unit) {
+        if (unit instanceof Troop) {
             this.troop = null;
         } else {
             this.unit = null;
@@ -275,19 +273,18 @@ public class Tile {
     }
 
     public int getMP(Tile incomingTile) {
-        // TODO: 4/24/2022 roads to be handled
         int mp = 0;
         mp += terrain.getMP();
         int direction = incomingTile.getDirectionTo(this);
-        if(direction == -1) return 9999;
+        if (direction == -1) return 9999;
         mp += incomingTile.getIsRiver().get(direction);
-        if(this.getRoadType() == RoadType.ROAD && incomingTile.getRoadType() == RoadType.ROAD){
-            if(this.getRoad().getRemainingTurns() <= 0){
+        if (this.getRoadType() == RoadType.ROAD && incomingTile.getRoadType() == RoadType.ROAD) {
+            if (this.getRoad().getRemainingTurns() <= 0) {
                 mp -= 1;
             }
         }
-        if(this.getRoadType() == RoadType.RAILROAD && incomingTile.getRoadType() == RoadType.RAILROAD){
-            if(this.getRoad().getRemainingTurns() <= 0){
+        if (this.getRoadType() == RoadType.RAILROAD && incomingTile.getRoadType() == RoadType.RAILROAD) {
+            if (this.getRoad().getRemainingTurns() <= 0) {
                 mp -= 2;
             }
         }
@@ -295,7 +292,7 @@ public class Tile {
     }
 
     public int getFood() {
-        // TODO: 4/17/2022 checks food income based on Terrain object and the improvements and resource and building
+        // checks food income based on Terrain object and the improvements and resource and building
         if (!hasCitizen) return 0;
         return terrain.getFood() +
                 (isResourceGettable() ? getResourceType().food : 0) +
@@ -314,7 +311,7 @@ public class Tile {
     }
 
     public int getProduction() {
-        // TODO: 4/17/2022 checks production income based on Terrain object and the improvements and resource
+        // checks production income based on Terrain object and the improvements and resource
         if (!hasCitizen) return 0;
         return terrain.getProduction() +
                 (isResourceGettable() ? getResourceType().production : 0) +
@@ -339,7 +336,7 @@ public class Tile {
     }
 
     private boolean isImprovementGettable() {
-        if(getImprovement() == null) return false;
+        if (getImprovement() == null) return false;
         return getResourceType().getNeededImprovementType().equals(getImprovement().getImprovementType()) &&
                 getImprovement().getRemainingTurns() == 0;
     }

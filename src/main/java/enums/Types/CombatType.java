@@ -1,4 +1,4 @@
-package enums;
+package enums.Types;
 
 public enum CombatType {
     RANGED("Ranged"),
@@ -9,7 +9,6 @@ public enum CombatType {
     SIEGE("Siege"),
     GUNPOWDER("Gunpowder"),
     ARMORED("Armored");
-    // TODO: 4/18/2022 more types?
 
     private final String name;
 

@@ -2,9 +2,9 @@ package Model;
 
 import Model.Units.Troop;
 import Model.Units.Unit;
-import enums.BuildingType;
+import enums.Types.BuildingType;
 import enums.Color;
-import enums.TechnologyType;
+import enums.Types.TechnologyType;
 
 import java.util.ArrayList;
 

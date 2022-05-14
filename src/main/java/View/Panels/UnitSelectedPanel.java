@@ -5,10 +5,8 @@ import Controller.UnitController;
 import Model.Units.Unit;
 import View.CLI;
 import View.GameMenu;
-import View.Menu;
-import enums.ImprovementType;
-import enums.Responses.InGameResponses;
-import enums.RoadType;
+import enums.Types.ImprovementType;
+import enums.Types.RoadType;
 
 import java.util.ArrayList;
 

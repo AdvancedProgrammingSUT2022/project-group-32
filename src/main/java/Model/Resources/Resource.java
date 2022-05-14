@@ -1,17 +1,16 @@
 package Model.Resources;
 
 import Model.Tile;
-import enums.ImprovementType;
-import enums.ResourceType;
+import enums.Types.ImprovementType;
+import enums.Types.ResourceType;
 
 public class Resource {
-    private final ResourceType resourceType; // TODO: 4/16/2022 handle resource type and resource group type with enumSet???
+    private final ResourceType resourceType;
     private String name;
     private int food, production, gold;
     private ImprovementType neededImprovement;
     private final Tile tile;
 
-    // TODO: 4/17/2022 visibility & collectablity must be handled in Controller
     public Resource(ResourceType resourceType, Tile tile) {
         this.resourceType = resourceType;
         this.tile = tile;

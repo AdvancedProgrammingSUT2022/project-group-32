@@ -3,9 +3,9 @@ package Controller;
 import Model.*;
 import Model.Units.Troop;
 import Model.Units.Unit;
-import enums.*;
 import enums.Responses.InGameResponses;
 import enums.Responses.Response;
+import enums.Types.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,8 +81,8 @@ public class PlayerController {
     }
 
     public static void startTurn() {
-        // TODO: 4/23/2022 does the necessary stuff at the start of the turn
-        // TODO: 4/27/2022 decrease ramaining turns in in progress units, techs, buildings, improvements
+        // does the necessary stuff at the start of the turn
+        // decrease remaining turns in inProgress units, techs, buildings, improvements
         Player player = GameController.getGame().getCurrentPlayer();
         for (Unit unit : player.getUnits()) {
             UnitController.updateUnit(unit);
@@ -91,7 +91,6 @@ public class PlayerController {
             CityController.updateCity(city);
         }
         updateTechnology();
-        updateFood();
         updateScience();
         updateGold(); // gold must be updated after science
         updateHappiness();
@@ -120,35 +119,8 @@ public class PlayerController {
         GameController.getCurrentPlayer().setHappiness(happiness);
     }
 
-    private static void updateFood() { // citizen eat, death, settler no production
-        Player player = GameController.getCurrentPlayer();
-        // TODO: 5/10/2022 the content of while must be transferred to a method in CITY
-        for (City city : player.getCities()) {
-            int foodIncome = 0;
-            foodIncome += city.getTilesFoodIncome();
-            ArrayList<BuildingType> buildingTypes = city.getBuildings().stream().map(Building::getBuildingType).collect(Collectors.toCollection(ArrayList::new));
-            if (buildingTypes.contains(BuildingType.GRANARY)) foodIncome += 2;
-            if (buildingTypes.contains(BuildingType.WATER_MILL) && city.hasRiver()) {
-                foodIncome += 2;
-            }
-            int foodConsumption = city.getPopulation() * 2;
-            if (foodConsumption > foodIncome) {
-                city.setPopulation(foodIncome / 2);
-                city.setFoodIncome(0);
-                return;
-            }
-            if (city.getUnitInProgress() != null && city.getUnitInProgress().getUnitType().equals(UnitType.SETTLER)) {
-                city.setFoodIncome(0);
-                return;
-            }
-
-            city.setFoodIncome(foodIncome - foodConsumption);
-            city.updateNewCitizenStoredFood();
-        }
-    }
-
     public static void endTurn() {
-        // TODO: 4/23/2022 does the necessary stuff at the end of the turn
+        // does the necessary stuff at the end of the turn
         GameController.setSelectedCity(null);
         GameController.setSelectedUnit(null);
     }

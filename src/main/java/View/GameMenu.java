@@ -2,15 +2,12 @@ package View;
 
 import Controller.GameController;
 import Controller.PlayerController;
-import Model.Game;
-import Model.Technology;
 import Model.Tile;
 import View.Panels.*;
-import enums.ImprovementType;
+import enums.Types.ImprovementType;
 import enums.Responses.Response;
-import enums.TechnologyType;
-import enums.TerrainFeature;
-import enums.UnitType;
+import enums.Types.TechnologyType;
+import enums.Types.UnitType;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -281,12 +278,12 @@ public class GameMenu extends Menu {
 
     private static void researchTech(String command) {
         ArrayList<String> parameters = CLI.getParameters(command, "t");
-        if(parameters == null) {
+        if (parameters == null) {
             invalidCommand();
             return;
         }
         TechnologyType technologyType = TechnologyType.getTypeByName(parameters.get(0));
-        if(technologyType == null) {
+        if (technologyType == null) {
             System.out.println("invalid techType you sneaky weasel");
             return;
         }

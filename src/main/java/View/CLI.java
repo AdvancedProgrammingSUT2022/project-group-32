@@ -31,8 +31,6 @@ public class CLI {
         Option option2 = new Option("d", "direction", true, ""); // urdl <n>
         option2.setArgs(2);
         options.addOption(option2);
-
-        // TODO: 4/21/2022   All parameters must be added here
     }
 
     /**
@@ -70,8 +68,7 @@ public class CLI {
                     } catch (NumberFormatException e) {
                         return null;
                     }
-                }
-                else values.add(cmd.getOptionValue(parameterKey));
+                } else values.add(cmd.getOptionValue(parameterKey));
             }
             return values;
         } catch (ParseException e) {

@@ -1,17 +1,17 @@
 package Model;
 
-import enums.RoadType;
+import enums.Types.RoadType;
 
 public class Road {
     private RoadType type;
     private int remainingTurns;
 
-    public Road(RoadType roadType){
+    public Road(RoadType roadType) {
         this.type = roadType;
         this.remainingTurns = 3;
     }
 
-    public Road(Road road){
+    public Road(Road road) {
         this.type = road.type;
         this.remainingTurns = road.remainingTurns;
     }

@@ -1,10 +1,8 @@
 package Model;
 
 import Controller.GameController;
-import Controller.MapController;
 import Model.Units.Unit;
-import View.GameMenu;
-import enums.TerrainType;
+import enums.Types.TerrainType;
 
 import java.util.ArrayList;
 
@@ -20,8 +18,7 @@ public class Map {
     public Map(int height, int width) {
         this.width = width;
         this.height = height;
-        this.tiles = new Tile[width][height]; // TODO: 4/21/2022 how are these tiles initialized??
-        // TODO: 4/17/2022 initialized tiles , ....
+        this.tiles = new Tile[width][height];
     }
 
     // gets a map and deep copies it, a copy with different reference is created
@@ -140,7 +137,7 @@ public class Map {
             ArrayList<Tile> neighbours = this.getNeighbouringTiles(tile1.getRow(), tile1.getColumn()); // won't cause RT error
             for (Tile tile2 : neighbours) {
                 if (minDistance + tile2.getMP(tile1) < distance[tile2.getRow()][tile2.getColumn()]) {
-                    distance[tile2.getRow()][tile2.getColumn()] = minDistance + 1; // TODO: stoppages to be handled
+                    distance[tile2.getRow()][tile2.getColumn()] = minDistance + 1;
                 }
             }
             marked[tile1.getRow()][tile1.getColumn()] = true;
@@ -173,7 +170,7 @@ public class Map {
             ArrayList<Tile> neighbours = this.getNeighbouringTiles(tile1.getRow(), tile1.getColumn()); // won't cause RT error
             for (Tile tile2 : neighbours) {
                 if (minDistance + tile2.getMP(tile1) < distance[tile2.getRow()][tile2.getColumn()]) {
-                    distance[tile2.getRow()][tile2.getColumn()] = minDistance + tile2.getMP(tile1); // TODO: stoppages to be handled
+                    distance[tile2.getRow()][tile2.getColumn()] = minDistance + tile2.getMP(tile1);
                 }
             }
             marked[tile1.getRow()][tile1.getColumn()] = true;
@@ -210,7 +207,7 @@ public class Map {
             ArrayList<Tile> neighbours = this.getNeighbouringTiles(tile1.getRow(), tile1.getColumn()); // won't cause RT error
             for (Tile tile2 : neighbours) {
                 if (minDistance + tile2.getMP(tile1) < distance[tile2.getRow()][tile2.getColumn()]) {
-                    distance[tile2.getRow()][tile2.getColumn()] = minDistance + tile2.getMP(tile1); // TODO: stoppages to be handled
+                    distance[tile2.getRow()][tile2.getColumn()] = minDistance + tile2.getMP(tile1);
                     parent[tile2.getRow()][tile2.getColumn()] = tile1;
                 }
             }
@@ -218,7 +215,7 @@ public class Map {
         }
         Tile currentTile = finish;
         while (true) {
-            if(parent[currentTile.getRow()][currentTile.getColumn()] == null){
+            if (parent[currentTile.getRow()][currentTile.getColumn()] == null) {
                 return currentTile;
             }
             if (parent[currentTile.getRow()][currentTile.getColumn()].equals(start)) {
@@ -249,14 +246,14 @@ public class Map {
         while (range-- > 0) {
             ArrayList<Tile> looked = new ArrayList<>();
             for (Tile tile1 : inSight) {
-                if(tile1 == null) continue;
+                if (tile1 == null) continue;
                 if (tile1.getTerrainType().equals(TerrainType.MOUNTAIN)
                         && !tile.getTerrainType().equals(TerrainType.HILL)) {
                     continue;
                 }
                 ArrayList<Tile> neighbours = tile1.getNeighbouringTiles(map);
                 for (Tile neighbour : neighbours) {
-                    if(!inSight.contains(neighbour) && !looked.contains(neighbour)){
+                    if (!inSight.contains(neighbour) && !looked.contains(neighbour)) {
                         looked.add(neighbour);
                     }
                 }

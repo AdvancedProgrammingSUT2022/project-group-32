@@ -3,8 +3,8 @@ package Controller;
 import Model.*;
 import Model.Units.Troop;
 import Model.Units.Unit;
-import enums.*;
 import enums.Responses.Response;
+import enums.Types.*;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -21,7 +21,6 @@ public class GameController {
         }
         game = new Game(randomMap, players);
         MapController.randomizeRivers();
-        // TODO: 4/24/2022 initializing players map and camera
     }
 
     public static Player getCurrentPlayer() {
@@ -67,13 +66,12 @@ public class GameController {
     public static Response.GameMenu newGame(ArrayList<User> users) {
         Map mainMap = new Map(3, 3);
 
-        // TODO: 4/22/2022 this can use PlayerController.getPlayersByUsers
         ArrayList<Player> players = users.stream().map(user -> new Player(user, 1, 1)).collect(Collectors.toCollection(ArrayList::new));
 
         // TODO: initial gold, food, production, happiness, city population, .. must be set
         gameGenerator(players, users.size() * 5 + 5, users.size() * 5 + 5); // width and height chosen randomly
 
-        PlayerController.initializePlayers(players); // TODO: 4/26/2022 should be improved 
+        PlayerController.initializePlayers(players);
 
         // starts a new game between users and responds accordingly
         return Response.GameMenu.GAME_CREATED;

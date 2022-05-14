@@ -1,14 +1,10 @@
 package View;
 
-import enums.ImprovementType;
-import enums.TerrainFeature;
-
 import java.util.Scanner;
 
 public class Menu {
     public static MenuType currentMenu;
 
-    // TODO: 4/21/2022 Invalid command structure must be detected: register aslgfkhs;dfl -u user -p pP123123$ -n niki must be invalid
     public enum MenuType {
         MAIN_MENU("mainMenu"),
         LOGIN_MENU("loginMenu"),
@@ -33,19 +29,19 @@ public class Menu {
 
     public static void run(Scanner scanner) {
         currentMenu = MenuType.LOGIN_MENU;
-        while(currentMenu != MenuType.EXIT){
+        while (currentMenu != MenuType.EXIT) {
             switch (currentMenu) {
                 case LOGIN_MENU -> LoginMenu.run(scanner);
-                case MAIN_MENU ->  MainMenu.run(scanner);
-                case GAME_MENU ->  GameMenu.run(scanner);
+                case MAIN_MENU -> MainMenu.run(scanner);
+                case GAME_MENU -> GameMenu.run(scanner);
                 case PROFILE_MENU -> ProfileMenu.run(scanner);
             }
         }
     }
 
-    public static MenuType getType(String name){ // returns menuType based on name
-        for(MenuType type : MenuType.values()){
-            if(type.name.equals(name)){
+    public static MenuType getType(String name) { // returns menuType based on name
+        for (MenuType type : MenuType.values()) {
+            if (type.name.equals(name)) {
                 return type;
             }
         }

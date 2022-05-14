@@ -5,10 +5,10 @@ import Model.Map;
 import Model.Terrain;
 import Model.Tile;
 import Model.Units.Unit;
-import enums.FogState;
-import enums.ResourceType;
-import enums.TerrainFeature;
-import enums.TerrainType;
+import enums.Types.FogState;
+import enums.Types.ResourceType;
+import enums.Types.TerrainFeature;
+import enums.Types.TerrainType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -80,7 +80,7 @@ public class MapController {
         }
     }
 
-    private static ArrayList<TerrainType> getPossibleTerrains(ArrayList<Tile> neighbours){
+    private static ArrayList<TerrainType> getPossibleTerrains(ArrayList<Tile> neighbours) {
         ArrayList<TerrainType> possibleTerrains = new ArrayList<>(Arrays.asList(TerrainType.values()));
         for (Tile tile : neighbours) {
             if (tile == null) continue;
@@ -93,14 +93,14 @@ public class MapController {
         for (Tile tile : neighbours) {
             if (tile == null) continue;
             // making the terrain logical
-            if(tile.getTerrainType().equals(TerrainType.DESERT)){
+            if (tile.getTerrainType().equals(TerrainType.DESERT)) {
                 possibleTerrains.removeIf(TerrainType.SNOW::equals);
                 possibleTerrains.removeIf(TerrainType.TUNDRA::equals);
             }
-            if(tile.getTerrainType().equals(TerrainType.SNOW)){
+            if (tile.getTerrainType().equals(TerrainType.SNOW)) {
                 possibleTerrains.removeIf(TerrainType.DESERT::equals);
             }
-            if(tile.getTerrainType().equals(TerrainType.TUNDRA)){
+            if (tile.getTerrainType().equals(TerrainType.TUNDRA)) {
                 possibleTerrains.removeIf(TerrainType.DESERT::equals);
             }
         }
@@ -137,7 +137,7 @@ public class MapController {
                         resourceType = possibleResources.get(random.nextInt(possibleResources.size()));
                     }
                 }
-                if(resourceType == null) resourceType = ResourceType.NULL;
+                if (resourceType == null) resourceType = ResourceType.NULL;
 
                 Terrain terrain = new Terrain(terrainType, terrainFeature, resourceType);
                 tiles[row][column] = new Tile(row, column, terrain, FogState.UNKNOWN, null); // note: the main map is foggy

@@ -21,7 +21,8 @@ public class UserController {
     static {
         try {
             String json = new String(Files.readAllBytes(Paths.get("src/main/resources/users.json")));
-            users = new Gson().fromJson(json, new TypeToken<List<User>>(){}.getType());
+            users = new Gson().fromJson(json, new TypeToken<List<User>>() {
+            }.getType());
         } catch (IOException e) {
             System.err.println("Error while loading users");
             e.printStackTrace();

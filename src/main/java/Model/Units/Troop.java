@@ -2,9 +2,10 @@ package Model.Units;
 
 import Model.Player;
 import Model.Tile;
-import enums.*;
-
-import java.util.Arrays;
+import enums.Types.ResourceType;
+import enums.Types.TechnologyType;
+import enums.Types.TerrainFeature;
+import enums.Types.UnitType;
 
 public class Troop extends Unit {
     private int meleeStrength;
@@ -35,7 +36,7 @@ public class Troop extends Unit {
 
     public double getRangedStrength() {
         double strength = rangedStrength;
-        if(this.getUnitType() == UnitType.CHARIOT_ARCHER && TerrainFeature.getRoughTerrain().contains(this.getTile().getTerrainFeature())){
+        if (this.getUnitType() == UnitType.CHARIOT_ARCHER && TerrainFeature.getRoughTerrain().contains(this.getTile().getTerrainFeature())) {
             strength *= 1.1;
         }
         return strength;

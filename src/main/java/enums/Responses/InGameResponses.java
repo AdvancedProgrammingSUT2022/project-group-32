@@ -115,7 +115,8 @@ public class InGameResponses {
             return messageText.replaceFirst("\\$", dynamicSubstring[0]);
         }
     }
-    public enum City{
+
+    public enum City {
         // general
         CITY_NOT_IN_POSSESS("selected city is not yours"),
         NO_CITY_SELECTED("you haven't selected any city yet"),
@@ -148,6 +149,7 @@ public class InGameResponses {
         City(String message) {
             this.message = message;
         }
+
         // can get a string and adds it to corresponding location in the response message
         public String getString(String... dynamicSubstring) {
             String messageText = this.message;
@@ -155,7 +157,8 @@ public class InGameResponses {
             return messageText.replaceFirst("\\$", dynamicSubstring[0]);
         }
     }
-    public enum Map{
+
+    public enum Map {
         //SHOW
         INVALID_POSITION("invalid position"),
         INVALID_CITY_NAME("invalid city name"),
@@ -177,7 +180,8 @@ public class InGameResponses {
             return messageText.replaceFirst("\\$", dynamicSubstring[0]);
         }
     }
-    public enum Select{
+
+    public enum Select {
         //UNIT
         INVALID_POSITION("invalid position"),
         MILITARY_UNIT_ALREADY_PRESENT("military unit is already present in the position"),
@@ -203,7 +207,8 @@ public class InGameResponses {
             return messageText.replaceFirst("\\$", dynamicSubstring[0]);
         }
     }
-    public enum Technology{
+
+    public enum Technology {
         TECH_ALREADY_DONE("you have already researched this technology"),
         TECH_NOT_YET_READY("you don't have the prerequisites for this technology"),
         TECH_RESEARCHED("technology is being researched"),
@@ -222,6 +227,7 @@ public class InGameResponses {
             return messageText.replaceFirst("\\$", dynamicSubstring[0]);
         }
     }
+
     public enum Info {
         //GENERAL(FOR ALL)  needed??
         INVALID_ID("the id given is out of bounds"),
@@ -241,5 +247,3 @@ public class InGameResponses {
         }
     }
 }
-
-// TODO: 4/21/2022 dynamic?

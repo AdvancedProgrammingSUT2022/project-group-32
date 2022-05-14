@@ -29,29 +29,27 @@ public class LoginMenu extends Menu {
     }
 
     public static void login(String command) {
-        ArrayList<String> parameters = CLI.getParameters(command , "u" , "p");
-        if(parameters == null){
+        ArrayList<String> parameters = CLI.getParameters(command, "u", "p");
+        if (parameters == null) {
             invalidCommand();
             return;
         }
-        Response.LoginMenu response = UserController.login(parameters.get(0) , parameters.get(1));
+        Response.LoginMenu response = UserController.login(parameters.get(0), parameters.get(1));
         System.out.println(response.getString());
     }
 
     public static void register(String command) {
-        ArrayList<String> parameters = CLI.getParameters(command, "u" , "p" , "n" );
-        if(parameters == null){
+        ArrayList<String> parameters = CLI.getParameters(command, "u", "p", "n");
+        if (parameters == null) {
             invalidCommand();
             return;
         }
         Response.LoginMenu response = UserController.register(parameters.get(0), parameters.get(1), parameters.get(2));
-        if(response.equals(Response.LoginMenu.USERNAME_EXISTS)){
+        if (response.equals(Response.LoginMenu.USERNAME_EXISTS)) {
             System.out.println(response.getString(parameters.get(0)));
-        }
-        else if (response.equals(Response.LoginMenu.NICKNAME_EXISTS)){
+        } else if (response.equals(Response.LoginMenu.NICKNAME_EXISTS)) {
             System.out.println(response.getString(parameters.get(2)));
-        }
-        else{
+        } else {
             System.out.println(response.getString());
         }
     }

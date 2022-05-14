@@ -1,8 +1,8 @@
 package Model;
 
-import enums.ResourceType;
-import enums.TerrainFeature;
-import enums.TerrainType;
+import enums.Types.ResourceType;
+import enums.Types.TerrainFeature;
+import enums.Types.TerrainType;
 
 public class Terrain {
     private final int INF = 9999;
@@ -17,15 +17,15 @@ public class Terrain {
         this.terrainType = terrainType;
         this.terrainFeature = terrainFeature;
         this.resourceType = resourceType;
-        if(terrainType != null) this.baseFeature = terrainType.baseFeature;
+        if (terrainType != null) this.baseFeature = terrainType.baseFeature;
         else this.baseFeature = null;
-        if(terrainFeature == TerrainFeature.FOREST) featureHP = 4;
-        else if(terrainFeature == TerrainFeature.JUNGLE) featureHP = 7;
-        else if(terrainFeature == TerrainFeature.MARSH) featureHP = 6;
+        if (terrainFeature == TerrainFeature.FOREST) featureHP = 4;
+        else if (terrainFeature == TerrainFeature.JUNGLE) featureHP = 7;
+        else if (terrainFeature == TerrainFeature.MARSH) featureHP = 6;
         else featureHP = INF;
     }
 
-    public Terrain(Terrain terrain){
+    public Terrain(Terrain terrain) {
         this.terrainType = terrain.terrainType;
         this.terrainFeature = terrain.terrainFeature;
         this.baseFeature = terrain.baseFeature;
@@ -53,7 +53,7 @@ public class Terrain {
     }
 
     public int getMP() {
-        if(terrainType == null) return INF;
+        if (terrainType == null) return INF;
         return terrainType.movement + terrainFeature.movement;
     }
 
@@ -77,7 +77,7 @@ public class Terrain {
         this.featureHP = featureHP;
     }
 
-    public double getCombat(){
+    public double getCombat() {
         return terrainType.combat + terrainFeature.combat;
     }
 }

@@ -6,7 +6,7 @@ import Model.Player;
 import Model.Technology;
 import View.CLI;
 import View.GameMenu;
-import enums.TechnologyType;
+import enums.Types.TechnologyType;
 
 import java.util.ArrayList;
 
@@ -54,7 +54,7 @@ public class ResearchPanel extends GameMenu {
         System.out.println("unlocks: " + technology.getUnlocks());
     }
 
-    private static void showPanel(){
+    private static void showPanel() {
         System.out.println("researched technologies:");
         Player player = GameController.getCurrentPlayer();
         for (Technology technology : player.getTechnologies()) {

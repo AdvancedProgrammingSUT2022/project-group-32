@@ -1,9 +1,9 @@
 package Model;
 
-import enums.ImprovementType;
-import enums.ResourceType;
-import enums.TechnologyType;
-import enums.TerrainFeature;
+import enums.Types.ImprovementType;
+import enums.Types.ResourceType;
+import enums.Types.TechnologyType;
+import enums.Types.TerrainFeature;
 
 import java.util.ArrayList;
 
@@ -25,14 +25,14 @@ public class Improvement {
         this.addedFood = improvementType.food;
         this.addedGold = improvementType.gold;
         this.addedProduction = improvementType.production;
-        this.requiredTurns = 6; // TODO: 5/2/2022 the number of turns should be determined
+        this.requiredTurns = 6;
         this.remainingTurns = this.requiredTurns;
     }
 
-    public Improvement(Improvement improvement){
+    public Improvement(Improvement improvement) {
         this.name = improvement.name;
         this.improvementType = improvement.improvementType;
-        this.tile = improvement.tile; // fixme
+        this.tile = improvement.tile;
         this.addedFood = improvement.addedFood;
         this.addedGold = improvement.addedGold;
         this.addedProduction = improvement.addedProduction;

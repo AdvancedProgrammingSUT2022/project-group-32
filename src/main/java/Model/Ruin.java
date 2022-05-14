@@ -1,8 +1,8 @@
 package Model;
 
-import enums.RuinType;
-import enums.TechnologyType;
-import enums.UnitType;
+import enums.Types.RuinType;
+import enums.Types.TechnologyType;
+import enums.Types.UnitType;
 
 import java.util.ArrayList;
 
@@ -18,11 +18,6 @@ public class Ruin {
     public Ruin(RuinType ruinType) {
         this.ruinType = ruinType;
         this.isUsed = false;
-        setFieldsFromDatabase(ruinType);
-    }
-
-    private void setFieldsFromDatabase(RuinType ruinType) {
-        // TODO: 4/16/2022 set health, cost, movement, HP, XP, ranges, needed techs , ...
     }
 
     public RuinType getRuinType() {

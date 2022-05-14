@@ -1,4 +1,4 @@
-package enums;
+package enums.Types;
 
 public enum OrderType {
     ASLEEP,

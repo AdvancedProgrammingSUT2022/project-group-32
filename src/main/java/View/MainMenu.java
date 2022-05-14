@@ -33,13 +33,13 @@ public class MainMenu extends Menu {
     }
 
     public static void enterMenu(String command) {
-        ArrayList<String> parameters = CLI.getParameters(command , "m");
-        if(parameters == null){
+        ArrayList<String> parameters = CLI.getParameters(command, "m");
+        if (parameters == null) {
             invalidCommand();
             return;
         }
         MenuType newMenu = Menu.getType(parameters.get(0));
-        if(newMenu == null){
+        if (newMenu == null) {
             invalidCommand();
             return;
         }

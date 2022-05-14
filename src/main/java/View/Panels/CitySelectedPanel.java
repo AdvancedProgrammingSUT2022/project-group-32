@@ -2,13 +2,12 @@ package View.Panels;
 
 import Controller.CityController;
 import Controller.GameController;
-import Controller.UnitController;
 import Model.City;
 import Model.Tile;
 import View.CLI;
 import View.GameMenu;
 import enums.Color;
-import enums.UnitType;
+import enums.Types.UnitType;
 
 import java.util.ArrayList;
 

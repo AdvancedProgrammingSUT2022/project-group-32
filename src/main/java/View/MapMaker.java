@@ -5,7 +5,7 @@ import Model.City;
 import Model.Player;
 import Model.Tile;
 import enums.Color;
-import enums.FogState;
+import enums.Types.FogState;
 
 import java.util.HashMap;
 
@@ -133,7 +133,7 @@ public class MapMaker {
                 fillPartOfRow(map, centerRow, centerColumn - 6, centerColumn - 6, getRiverColor(1));
         }
 
-        if(tile.getFogState() == FogState.VISIBLE){
+        if (tile.getFogState() == FogState.VISIBLE) {
             // UNIT
             if (tile.getUnit() != null) {
                 map[centerRow][centerColumn - 3] = sC(tile.getUnit().getUnitType().name().substring(0, 1), (tile.getUnit().getOwner().getColor()).code);
@@ -148,29 +148,29 @@ public class MapMaker {
                 map[centerRow][centerColumn + 3] = sC(tile.getTroop().getUnitType().name().substring(2, 3), (tile.getTroop().getOwner().getColor()).code);
             }
         }
-        
-        
-        if(tile.getFogState() != FogState.UNKNOWN){
+
+
+        if (tile.getFogState() != FogState.UNKNOWN) {
             // Terrain
             map[centerRow + 1][centerColumn - 2] = sC(tile.getTerrain().getTerrainType().name.substring(0, 1), Color.BLUE_BOLD_BRIGHT.code);
             map[centerRow + 1][centerColumn - 1] = sC(",", color);
-            if(tile.getTerrainFeature() != null){
+            if (tile.getTerrainFeature() != null) {
                 map[centerRow + 1][centerColumn] = sC(tile.getTerrain().getTerrainFeature().name.substring(0, 1), Color.GREEN_BOLD_BRIGHT.code);
             }
             map[centerRow + 1][centerColumn + 1] = sC(",", color);
-            if(tile.getResourceType() != null){
+            if (tile.getResourceType() != null) {
                 map[centerRow + 1][centerColumn + 2] = sC(tile.getTerrain().getResourceType().name.substring(0, 1), Color.YELLOW_BOLD_BRIGHT.code);
             }
 
             // Improvements
-            if(tile.getImprovement() != null){
+            if (tile.getImprovement() != null) {
                 map[centerRow + 2][centerColumn - 1] = sC(tile.getImprovement().getName().substring(0, 1), Color.RED_UNDERLINED.code);
             }
-            if(tile.getRoad() != null){
+            if (tile.getRoad() != null) {
                 map[centerRow + 2][centerColumn + 1] = sC(tile.getRoad().getType().name().substring(0, 1), Color.RED_UNDERLINED.code);
             }
         }
-        
+
     }
 
     private static void fillPartOfRow(String[][] map, int row, int startingColumn, int endingColumn, String color) {

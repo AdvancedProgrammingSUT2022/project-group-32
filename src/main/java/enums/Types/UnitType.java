@@ -1,14 +1,6 @@
-package enums;
+package enums.Types;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Objects;
 
 public enum UnitType {
     ARCHER("Archer", 70, CombatType.RANGED, 4, 6, 2, 2, null, TechnologyType.ARCHERY),
@@ -66,11 +58,11 @@ public enum UnitType {
         return null;
     }
 
-    public static ArrayList<UnitType> getUnitsByCombatType(CombatType... combatType){
+    public static ArrayList<UnitType> getUnitsByCombatType(CombatType... combatType) {
         ArrayList<UnitType> units = new ArrayList<UnitType>();
         for (UnitType unitType : UnitType.values()) {
             for (CombatType type : combatType) {
-                if(unitType.combatType.equals(type)){
+                if (unitType.combatType.equals(type)) {
                     units.add(unitType);
                 }
             }

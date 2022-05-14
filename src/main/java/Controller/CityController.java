@@ -3,19 +3,45 @@ package Controller;
 import Model.*;
 import Model.Units.Troop;
 import Model.Units.Unit;
-import enums.BuildingType;
-import enums.CombatType;
+import enums.Types.BuildingType;
+import enums.Types.CombatType;
 import enums.Responses.InGameResponses;
-import enums.UnitType;
+import enums.Types.UnitType;
+
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class CityController {
 
     // updates all there is about a city accordingly
     public static void updateCity(City city) {
-        // todo: updates resources, population, ... after a turn has passed.
         // gold updates is PlayerController.updateGold
         city.setHP(Math.min(city.getHP() + 1, 20));
+        updateFood(city);
         updateInProgressBuildsTurns(city);
+    }
+
+    private static void updateFood(City city) {
+        int foodIncome = 0;
+        foodIncome += city.getTilesFoodIncome();
+        ArrayList<BuildingType> buildingTypes = city.getBuildings().stream().map(Building::getBuildingType).collect(Collectors.toCollection(ArrayList::new));
+        if (buildingTypes.contains(BuildingType.GRANARY)) foodIncome += 2;
+        if (buildingTypes.contains(BuildingType.WATER_MILL) && city.hasRiver()) {
+            foodIncome += 2;
+        }
+        int foodConsumption = city.getPopulation() * 2;
+        if (foodConsumption > foodIncome) {
+            city.setPopulation(foodIncome / 2);
+            city.setFoodIncome(0);
+            return;
+        }
+        if (city.getUnitInProgress() != null && city.getUnitInProgress().getUnitType().equals(UnitType.SETTLER)) {
+            city.setFoodIncome(0);
+            return;
+        }
+
+        city.setFoodIncome(foodIncome - foodConsumption);
+        city.updateNewCitizenStoredFood();
     }
 
     private static void updateInProgressBuildsTurns(City city) {
@@ -60,13 +86,16 @@ public class CityController {
         City city = GameController.getSelectedCity();
         if (city == null) return InGameResponses.Unit.CITY_NOT_SELECTED;
         Player player = city.getOwner();
-        if (city.getOwner() != GameController.getCurrentPlayer()) {
+        if (player != GameController.getCurrentPlayer()) {
             return InGameResponses.Unit.CITY_NOT_IN_POSSESS;
         }
         if (unitType.neededTech != null && player.getTechnologyByType(unitType.neededTech) == null) {
             return InGameResponses.Unit.DO_NOT_HAVE_TECH;
         }
-        // TODO: 5/9/2022 check resources 
+        if (unitType.neededResource != null &&
+                player.getCities().stream().noneMatch(t -> t.getWorkingResources().contains(unitType.neededResource))) {
+            return InGameResponses.Unit.DO_NOT_HAVE_RESOURCE;
+        }
         // adding the previous one to the unfinished list
         if (city.getUnitInProgress() != null) {
             if (city.getUnitInProgress().getUnitType() == unitType) {

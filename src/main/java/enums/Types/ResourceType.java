@@ -1,4 +1,4 @@
-package enums;
+package enums.Types;
 
 import java.util.ArrayList;
 

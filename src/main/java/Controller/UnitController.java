@@ -3,8 +3,8 @@ package Controller;
 import Model.*;
 import Model.Units.Troop;
 import Model.Units.Unit;
-import enums.*;
 import enums.Responses.InGameResponses;
+import enums.Types.*;
 
 import java.util.Arrays;
 
@@ -73,7 +73,7 @@ public class UnitController {
             unit.setDestination(unit.getTile());
         }
         if (unit.getDestination() == null || unit.getDestination() == unit.getTile()) {
-            if(unit.getOrderType() == OrderType.MOVING) unit.setOrderType(OrderType.AWAKE);
+            if (unit.getOrderType() == OrderType.MOVING) unit.setOrderType(OrderType.AWAKE);
             return;
         }
         if (unit instanceof Troop) ((Troop) unit).setFortifyBonus(0); // setting fortify bonus to 0 when moving

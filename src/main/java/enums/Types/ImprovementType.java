@@ -1,4 +1,4 @@
-package enums;
+package enums.Types;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,9 +32,9 @@ public enum ImprovementType {
         this.canBeOn = canBeOn;
     }
 
-    public static ImprovementType getTypeByName(String name){
+    public static ImprovementType getTypeByName(String name) {
         for (ImprovementType value : ImprovementType.values()) {
-            if(value.name.equals(name)){
+            if (value.name.equals(name)) {
                 return value;
             }
         }

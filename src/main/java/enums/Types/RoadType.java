@@ -1,4 +1,4 @@
-package enums;
+package enums.Types;
 
 public enum RoadType {
     // costs are DELLY
@@ -7,21 +7,21 @@ public enum RoadType {
 
     private final String name;
     private final int maintenanceCost;
-      
-    RoadType(String name, int maintenanceCost){
+
+    RoadType(String name, int maintenanceCost) {
         this.name = name;
         this.maintenanceCost = maintenanceCost;
     }
 
-    public static RoadType getTypeByName(String name){
+    public static RoadType getTypeByName(String name) {
         for (RoadType type : RoadType.values()) {
-            if(type.name.equals(name)){
+            if (type.name.equals(name)) {
                 return type;
             }
         }
         return null;
     }
-  
+
     public int getMaintenanceCost() {
         return maintenanceCost;
     }

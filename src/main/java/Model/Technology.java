@@ -1,6 +1,6 @@
 package Model;
 
-import enums.TechnologyType;
+import enums.Types.TechnologyType;
 
 import java.util.ArrayList;
 

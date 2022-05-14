@@ -2,7 +2,7 @@ package Model;
 
 import Model.Units.Troop;
 import Model.Units.Unit;
-import enums.*;
+import enums.Types.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +22,7 @@ public class City {
     private int foodIncome, population, health, baseStrength;
     private int sightRange;
     private Troop garrisonedTroop;
-    private int neededFoodForNewCitizen = 20, storedFoodForNewCitizen = 0;
+    private int neededFoodForNewCitizen = 10, storedFoodForNewCitizen = 0;
     private double HP;
     private boolean hasAttacked;
 
@@ -40,7 +40,6 @@ public class City {
         this.baseStrength = 20;
         this.hasAttacked = false;
         this.sightRange = 2;
-        // TODO: 4/17/2022 sets buildings, citizens, gold, food, .... to default value.
     }
 
     public String getName() {
@@ -369,9 +368,5 @@ public class City {
         if (buildingTypes.contains(BuildingType.PUBLIC_SCHOOL)) cityScience *= 1.5;
         return (int) cityScience;
     }
-
-
-    // TODO: 4/17/2022 getCitizenByID, removeCitizen, addTile, RemoveTile,( expand in Controller), getTile, getNeighbors, get
-
 
 }

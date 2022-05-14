@@ -1,4 +1,4 @@
-package enums;
+package enums.Types;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,6 +70,7 @@ public enum TechnologyType {
 
     /**
      * gets a techName and returns corresponding enum
+     *
      * @return TechnologyType or null
      */
     public static TechnologyType getTypeByName(String name) {
