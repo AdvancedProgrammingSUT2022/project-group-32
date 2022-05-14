@@ -4,7 +4,8 @@ import Controller.GameController;
 import Model.City;
 import Model.Player;
 import Model.Tile;
-import enums.*;
+import enums.Color;
+import enums.FogState;
 
 import java.util.HashMap;
 
@@ -30,19 +31,6 @@ public class MapMaker {
         String[][] strMap = new String[map.length * 6 + VERTICAL_BORDER * 2 + 1][map[0].length * 10 + HORIZONTAL_BORDER * 2];
         initMap(strMap);
         fillMap(map, strMap);
-        for (ImprovementType value : ImprovementType.values()) {
-            System.err.println(value + ":" + value.name);
-            for (TerrainFeature possibleFeature : value.canBeOn) {
-                System.err.println(possibleFeature);
-            }
-        }
-        for (TerrainFeature value : TerrainFeature.values()) {
-            System.err.println(value + "::::::");
-            for (ResourceType possibleResource : value.possibleResources) {
-                System.err.println(possibleResource);
-            }
-        }
-
 
         return strMap;
     }
