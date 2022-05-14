@@ -20,6 +20,7 @@ public class Improvement {
 
     public Improvement(ImprovementType improvementType, Tile tile) {
         this.improvementType = improvementType;
+        this.name = improvementType.name;
         this.tile = tile;
         this.addedFood = improvementType.food;
         this.addedGold = improvementType.gold;

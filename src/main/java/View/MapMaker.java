@@ -4,8 +4,7 @@ import Controller.GameController;
 import Model.City;
 import Model.Player;
 import Model.Tile;
-import enums.Color;
-import enums.FogState;
+import enums.*;
 
 import java.util.HashMap;
 
@@ -31,6 +30,20 @@ public class MapMaker {
         String[][] strMap = new String[map.length * 6 + VERTICAL_BORDER * 2 + 1][map[0].length * 10 + HORIZONTAL_BORDER * 2];
         initMap(strMap);
         fillMap(map, strMap);
+        for (ImprovementType value : ImprovementType.values()) {
+            System.err.println(value + ":" + value.name);
+            for (TerrainFeature possibleFeature : value.canBeOn) {
+                System.err.println(possibleFeature);
+            }
+        }
+        for (TerrainFeature value : TerrainFeature.values()) {
+            System.err.println(value + "::::::");
+            for (ResourceType possibleResource : value.possibleResources) {
+                System.err.println(possibleResource);
+            }
+        }
+
+
         return strMap;
     }
 
@@ -147,12 +160,23 @@ public class MapMaker {
         
         if(tile.getFogState() != FogState.UNKNOWN){
             // Terrain
-            // TODO: 4/26/2022 showing resources 
             map[centerRow + 1][centerColumn - 2] = sC(tile.getTerrain().getTerrainType().name.substring(0, 1), Color.BLUE_BOLD_BRIGHT.code);
             map[centerRow + 1][centerColumn - 1] = sC(",", color);
-            map[centerRow + 1][centerColumn] = sC(tile.getTerrain().getTerrainFeature().name.substring(0, 1), Color.GREEN_BOLD_BRIGHT.code);
+            if(tile.getTerrainFeature() != null){
+                map[centerRow + 1][centerColumn] = sC(tile.getTerrain().getTerrainFeature().name.substring(0, 1), Color.GREEN_BOLD_BRIGHT.code);
+            }
             map[centerRow + 1][centerColumn + 1] = sC(",", color);
-            map[centerRow + 1][centerColumn + 2] = sC(tile.getTerrain().getResourceType().name.substring(0, 1), Color.YELLOW_BOLD_BRIGHT.code);
+            if(tile.getResourceType() != null){
+                map[centerRow + 1][centerColumn + 2] = sC(tile.getTerrain().getResourceType().name.substring(0, 1), Color.YELLOW_BOLD_BRIGHT.code);
+            }
+
+            // Improvements
+            if(tile.getImprovement() != null){
+                map[centerRow + 2][centerColumn - 1] = sC(tile.getImprovement().getName().substring(0, 1), Color.RED_UNDERLINED.code);
+            }
+            if(tile.getRoad() != null){
+                map[centerRow + 2][centerColumn + 1] = sC(tile.getRoad().getType().name().substring(0, 1), Color.RED_UNDERLINED.code);
+            }
         }
         
     }

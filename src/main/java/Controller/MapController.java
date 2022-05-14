@@ -137,6 +137,7 @@ public class MapController {
                         resourceType = possibleResources.get(random.nextInt(possibleResources.size()));
                     }
                 }
+                if(resourceType == null) resourceType = ResourceType.NULL;
 
                 Terrain terrain = new Terrain(terrainType, terrainFeature, resourceType);
                 tiles[row][column] = new Tile(row, column, terrain, FogState.UNKNOWN, null); // note: the main map is foggy

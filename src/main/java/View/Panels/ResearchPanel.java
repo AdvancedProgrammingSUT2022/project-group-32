@@ -12,10 +12,12 @@ import java.util.ArrayList;
 
 public class ResearchPanel extends GameMenu {
     public static void run(String command) {
-        if(command.startsWith("research")){
+        if (command.startsWith("research")) {
             researchTech(command);
-        } else if(command.equals("show current research")){
+        } else if (command.equals("show current research")) {
             showCurrent();
+        } else if (command.equals("show panel")) {
+            showPanel();
         } else {
             invalidCommand();
         }
@@ -25,9 +27,9 @@ public class ResearchPanel extends GameMenu {
 
     }
 
-    private static void researchTech(String command){
+    private static void researchTech(String command) {
         ArrayList<String> parameters = CLI.getParameters(command, "t");
-        if(parameters == null){
+        if (parameters == null) {
             invalidCommand();
             return;
         }
@@ -35,21 +37,29 @@ public class ResearchPanel extends GameMenu {
         System.out.println(PlayerController.researchTech(techType).getString());
     }
 
-    private static void showCurrent(){
+    private static void showCurrent() {
         Player player = GameController.getCurrentPlayer();
         Technology technology = player.getTechnologyInProgress();
-        if(technology == null){
+        if (technology == null) {
             System.out.println("no tech being researched");
             return;
         }
         System.out.println(technology.getName());
-        if(player.getScienceIncome() == 0){
+        if (player.getScienceIncome() == 0) {
             System.out.println("will be finished when pigs fly");
-        }
-        else{
+        } else {
             int turnsLeft = (technology.getRemainingCost() + player.getScienceIncome() - 1) / player.getScienceIncome();
             System.out.println(turnsLeft + " turns left to be completely researched");
         }
         System.out.println("unlocks: " + technology.getUnlocks());
+    }
+
+    private static void showPanel(){
+        System.out.println("researched technologies:");
+        Player player = GameController.getCurrentPlayer();
+        for (Technology technology : player.getTechnologies()) {
+            System.out.println(technology.getName());
+        }
+        System.out.println("current research: " + player.getTechnologyInProgress().getName());
     }
 }

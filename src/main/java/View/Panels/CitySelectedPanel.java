@@ -4,6 +4,7 @@ import Controller.CityController;
 import Controller.GameController;
 import Controller.UnitController;
 import Model.City;
+import Model.Tile;
 import View.CLI;
 import View.GameMenu;
 import enums.Color;
@@ -111,6 +112,10 @@ public class CitySelectedPanel extends GameMenu {
         System.out.println("food: " + city.getFoodIncome());
         System.out.println("gold: " + city.getGoldIncome());
         System.out.println("unemployed citizen cnt: " + city.getFreeCitizens());
+        System.out.println("tiles being worked on: ");
+        for (Tile tile : city.getTerritory()) {
+            if(tile.isHasCitizen()) System.out.println(tile.getRow() + "," + tile.getColumn());
+        }
         if (city.getUnitInProgress() != null) {
             System.out.println("currently building a " + city.getUnitInProgress().getUnitType().name);
             int remainingTurns = (city.getUnitInProgress().getRemainingCost() + city.getProductionIncome() - 1) / city.getProductionIncome();

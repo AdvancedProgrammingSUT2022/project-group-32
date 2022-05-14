@@ -1,5 +1,8 @@
 package View;
 
+import enums.ImprovementType;
+import enums.TerrainFeature;
+
 import java.util.Scanner;
 
 public class Menu {

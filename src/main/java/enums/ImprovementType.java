@@ -14,22 +14,21 @@ public enum ImprovementType {
     TRADING_POST("Trading Post", 2, 0, 0, new ArrayList<>(Arrays.asList()), TechnologyType.TRAPPING, new ArrayList<>(Arrays.asList(TerrainFeature.GRASSLAND, TerrainFeature.PLAINS, TerrainFeature.DESERT, TerrainFeature.TUNDRA))),
     MANUFACTORY("Manufactory", 0, 3, 0, new ArrayList<>(Arrays.asList()), TechnologyType.ENGINEERING, new ArrayList<>(Arrays.asList(TerrainFeature.GRASSLAND, TerrainFeature.PLAINS, TerrainFeature.DESERT, TerrainFeature.TUNDRA, TerrainFeature.SNOW)));
 
-
     public final String name;
     public final int gold;
     public final int production;
     public final int food;
     public final ArrayList<ResourceType> improvingResources;
-    public final TechnologyType neededTechs;
+    public final TechnologyType neededTech;
     public final ArrayList<TerrainFeature> canBeOn;
 
-    ImprovementType(String name, int gold, int production, int food, ArrayList<ResourceType> improvingResources, TechnologyType neededTechs, ArrayList<TerrainFeature> canBeOn) {
+    ImprovementType(String name, int gold, int production, int food, ArrayList<ResourceType> improvingResources, TechnologyType neededTech, ArrayList<TerrainFeature> canBeOn) {
         this.name = name;
         this.gold = gold;
         this.production = production;
         this.food = food;
         this.improvingResources = improvingResources;
-        this.neededTechs = neededTechs;
+        this.neededTech = neededTech;
         this.canBeOn = canBeOn;
     }
 

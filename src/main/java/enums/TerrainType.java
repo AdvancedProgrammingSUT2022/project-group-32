@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public enum TerrainType {
-    TUNDRA("Tundra", 1, 0, 1, 0.0, 1, new ArrayList<>(Arrays.asList(TerrainFeature.FOREST)), TerrainFeature.COAST),
+    TUNDRA("Tundra", 1, 0, 1, 0.0, 1, new ArrayList<>(Arrays.asList(TerrainFeature.FOREST)), TerrainFeature.TUNDRA),
     DESERT("Desert", 0, 0, 0, -0.33, 1, new ArrayList<>(Arrays.asList(TerrainFeature.OASIS, TerrainFeature.FLOOD_PLAINS)), TerrainFeature.DESERT),
     GRASSLAND("Grassland", 2, 0, 0, -0.33, 1, new ArrayList<>(Arrays.asList(TerrainFeature.FOREST, TerrainFeature.MARSH)), TerrainFeature.GRASSLAND),
     HILL("Hill", 0, 2, 0, 0.25, 2, new ArrayList<>(Arrays.asList(TerrainFeature.FOREST, TerrainFeature.JUNGLE)), TerrainFeature.HILL),

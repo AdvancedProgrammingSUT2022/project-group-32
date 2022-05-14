@@ -368,14 +368,25 @@ public class UnitController {
         }
         Tile tile = unit.getTile();
         if (!improvementType.canBeOn.contains(tile.getBaseFeature()) && !improvementType.canBeOn.contains(tile.getTerrainFeature())) {
+            System.out.println(improvementType.name);
+            for (TerrainFeature terrainFeature : improvementType.canBeOn) {
+                System.out.println(terrainFeature);
+            }
+            System.out.println("###");
+            for (ResourceType improvingResource : improvementType.improvingResources) {
+                System.out.println(improvingResource);
+            }
             return InGameResponses.Unit.BUILDING_NOT_POSSIBLE;
+        }
+        if (unit.getOwner().getTechnologyByType(improvementType.neededTech) == null) {
+            return InGameResponses.Unit.DO_NOT_HAVE_TECH;
         }
         if (improvementType == ImprovementType.FARM || improvementType == ImprovementType.MINE) {
             if (Arrays.asList(TerrainFeature.MARSH, TerrainFeature.JUNGLE, TerrainFeature.FOREST).contains(tile.getTerrainFeature())) {
                 return InGameResponses.Unit.BLOCKED_BY_FEATURE;
             }
         }
-        if (tile.getImprovement().getImprovementType() == improvementType) {
+        if (tile.getImprovement() != null && tile.getImprovement().getImprovementType() == improvementType) {
             if (tile.getImprovement().getRemainingTurns() <= 0) return InGameResponses.Unit.IMPROVEMENT_ALREADY_EXISTS;
             else {
                 unit.setOrderType(OrderType.BUILDING);

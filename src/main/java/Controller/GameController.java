@@ -3,11 +3,8 @@ package Controller;
 import Model.*;
 import Model.Units.Troop;
 import Model.Units.Unit;
-import enums.BuildingType;
-import enums.CombatType;
-import enums.FogState;
+import enums.*;
 import enums.Responses.Response;
-import enums.UnitType;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -47,7 +44,7 @@ public class GameController {
         GameController.game = game;
     }
 
-    public static int getTurn(){
+    public static int getTurn() {
         return game.getTurnCount();
     }
 
@@ -74,7 +71,7 @@ public class GameController {
         ArrayList<Player> players = users.stream().map(user -> new Player(user, 1, 1)).collect(Collectors.toCollection(ArrayList::new));
 
         // TODO: initial gold, food, production, happiness, city population, .. must be set
-        gameGenerator(players, 15, 15); // width and height chosen randomly
+        gameGenerator(players, users.size() * 5 + 5, users.size() * 5 + 5); // width and height chosen randomly
 
         PlayerController.initializePlayers(players); // TODO: 4/26/2022 should be improved 
 
@@ -165,7 +162,7 @@ public class GameController {
         Player player = getCurrentPlayer();
         Tile tile = getMap().getTile(row, column);
         Unit unit;
-        if(unitType.combatType == CombatType.CIVILIAN){
+        if (unitType.combatType == CombatType.CIVILIAN) {
             unit = new Unit(tile, player, unitType);
         } else {
             unit = new Troop(tile, player, unitType);
@@ -192,9 +189,17 @@ public class GameController {
         // builds a city in the selected tile with the given name
     }
 
+    public static Response.GameMenu cheatResearchTech(TechnologyType technologyType) {
+        Player player = getCurrentPlayer();
+        Technology technology = new Technology(technologyType);
+        technology.setRemainingCost(0);
+        player.addTechnology(technology);
+        return Response.GameMenu.CHEAT_SUCCESSFUL;
+    }
+
     public static Response.GameMenu cheatInstantHeal(int health) {
         Unit unit = getSelectedUnit();
-        if(unit == null) return Response.GameMenu.NO_UNIT_SELECTED;
+        if (unit == null) return Response.GameMenu.NO_UNIT_SELECTED;
         unit.setHP(health);
         return Response.GameMenu.CHEAT_SUCCESSFUL;
         // sets the HP of the selected unit to health

@@ -8,24 +8,27 @@ import enums.Responses.InGameResponses;
 import enums.Responses.Response;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class PlayerController {
 
-    public static void initializePlayers(ArrayList<Player> players){
+    public static void initializePlayers(ArrayList<Player> players) {
         Game game = GameController.getGame();
         //setting camera to an initial tile
         for (Player player : players) {
-            // fixme: initialTile conflict is possible
-            int randomRow = ThreadLocalRandom.current().nextInt(0, game.getMap().getWidth());
-            int randomColumn = ThreadLocalRandom.current().nextInt(0, game.getMap().getHeight());
-            Tile initialTile = game.getMap().getTile(randomRow, randomColumn);
-            while(initialTile.getTerrainType() == TerrainType.OCEAN || initialTile.getTerrainType() == TerrainType.MOUNTAIN){
-                randomRow = ThreadLocalRandom.current().nextInt(0, game.getMap().getWidth());
-                randomColumn = ThreadLocalRandom.current().nextInt(0, game.getMap().getHeight());
-                initialTile = game.getMap().getTile(randomRow, randomColumn);
-            }
+            int randomRow;
+            int randomColumn;
+            Tile initialTile;
+            // checking if two cities are too close
+            do {
+                do {
+                    randomRow = ThreadLocalRandom.current().nextInt(0, game.getMap().getWidth());
+                    randomColumn = ThreadLocalRandom.current().nextInt(0, game.getMap().getHeight());
+                    initialTile = game.getMap().getTile(randomRow, randomColumn);
+                } while (Arrays.asList(TerrainType.OCEAN, TerrainType.MOUNTAIN).contains(initialTile.getTerrainType()));
+            } while (!game.getMap().lookAroundInRange(initialTile, 3).stream().allMatch(t -> t.getTroop() == null));
             player.setCamera(initialTile); // setting camera to capital
             Unit unit = new Unit(initialTile, player, UnitType.SETTLER);
             Troop troop = new Troop(initialTile, player, UnitType.WARRIOR);
@@ -33,7 +36,7 @@ public class PlayerController {
             player.addUnit(troop);
             player.setMap(new Map(game.getMap())); // deep copying map
         }
-        for(Player player : players){
+        for (Player player : players) {
             updateFieldOfView(player);
         }
     }
@@ -51,25 +54,25 @@ public class PlayerController {
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
     }
 
-    public static InGameResponses.Technology researchTech(TechnologyType technologyType){
+    public static InGameResponses.Technology researchTech(TechnologyType technologyType) {
         Player player = GameController.getCurrentPlayer();
-        if(technologyType == null){
+        if (technologyType == null) {
             return InGameResponses.Technology.TECH_INVALID;
         }
-        if(player.getTechnologyByType(technologyType) != null){
+        if (player.getTechnologyByType(technologyType) != null) {
             return InGameResponses.Technology.TECH_RESEARCHED;
         }
         for (TechnologyType neededTech : technologyType.neededTechs) {
-            if(player.getTechnologyByType(neededTech) == null){
+            if (player.getTechnologyByType(neededTech) == null) {
                 return InGameResponses.Technology.TECH_NOT_YET_READY; // can be dynamic
             }
         }
-        if(player.getTechnologyInProgress() != null){
+        if (player.getTechnologyInProgress() != null) {
             player.addIncompleteTechnology(player.getTechnologyInProgress());
         }
         player.setTechnologyInProgress(null);
         Technology technology = new Technology(technologyType);
-        if (player.getIncompleteTechnologyByType(technologyType) != null){
+        if (player.getIncompleteTechnologyByType(technologyType) != null) {
             technology = player.getIncompleteTechnologyByType(technologyType);
             player.removeIncompleteTechnology(technology);
         }
@@ -157,17 +160,16 @@ public class PlayerController {
     }
 
     // basically makes the visible tiles visited
-    private static void clearView(Map map){
+    private static void clearView(Map map) {
         for (int row = 0; row < map.getHeight(); row++) {
-            for (int column =  0; column < map.getWidth(); column++){
+            for (int column = 0; column < map.getWidth(); column++) {
                 Tile tile = map.getTile(row, column);
-                if(tile.getFogState() != FogState.UNKNOWN){
+                if (tile.getFogState() != FogState.UNKNOWN) {
                     tile.setTroop(null);
                     tile.setUnit(null);
                     tile.setImprovement(null);
                     tile.setFogState(FogState.VISITED);
-                }
-                else {
+                } else {
                     tile.setTroop(null);
                     tile.setUnit(null);
                     tile.setImprovement(null);
@@ -194,7 +196,7 @@ public class PlayerController {
             }
         }
         for (Tile tile : inSight) {
-            if(tile == null) continue;
+            if (tile == null) continue;
             map.setTile(tile.getRow(), tile.getColumn(), new Tile(tile));
             map.getTile(tile.getRow(), tile.getColumn()).setFogState(FogState.VISIBLE);
         }

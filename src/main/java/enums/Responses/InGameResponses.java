@@ -68,14 +68,6 @@ public class InGameResponses {
         IMPROVEMENT_ALREADY_EXISTS("this improvement already exists in the current position"),
         BUILDING_NOT_POSSIBLE("building not possible in the current position"),
         CONTINUING_BUILDING("worker is continuing the building"),
-        MINE_ALREADY_EXISTS("mine already exists in the current position"),
-        TRADING_POST_ALREADY_EXISTS("trading post already exists in the current position"),
-        LUMBER_MILL_ALREADY_EXISTS("lumber-mill already exists in the current position"),
-        JUNGLE_NOT_AVAILABLE("jungle is not available in the current position"),
-        PASTURE_ALREADY_EXISTS("pasture already exists in the current position"),
-        CAMP_ALREADY_EXISTS("camp already exists in the current position"),
-        PLANTATION_ALREADY_EXISTS("plantation already exists in the current position"),
-        QUARRY_ALREADY_EXISTS("quarry already exists in the current position"),
         //REMOVE
         ROUTE_NOT_AVAILABLE("selected unit is not on a tile with a route"),
         //REPAIR
@@ -84,7 +76,7 @@ public class InGameResponses {
         UNIT_BUILDING_PAUSED("unit building successfully paused"),
         UNIT_BUILDING_SUCCESSFUL("unit is being built successfully"),
         UNIT_ALREADY_IN_MAKING("a unit of this type is already being built"),
-        DO_NOT_HAVE_TECH("you don't have the required technology to build this unit"),
+        DO_NOT_HAVE_TECH("you don't have the required technology to build this"),
         DO_NOT_HAVE_RESOURCE("you don't have the resources to build this unit"),
 
         //SUCCESS
