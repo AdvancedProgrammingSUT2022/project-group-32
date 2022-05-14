@@ -2,6 +2,7 @@ package View;
 
 import Controller.GameController;
 import Controller.PlayerController;
+import Model.Improvement;
 import Model.Tile;
 import View.Panels.*;
 import enums.Types.ImprovementType;
@@ -45,9 +46,6 @@ public class GameMenu extends Menu {
 
     public static void run(Scanner scanner) {
         String command;
-        for (ImprovementType value : ImprovementType.values()) {
-
-        }
         while (true) {
             clearScreen();
             command = scanner.nextLine();
@@ -229,6 +227,12 @@ public class GameMenu extends Menu {
             increaseGold(command);
         } else if (command.startsWith("cheat put unit")) {
             putUnit(command);
+        } else if (command.startsWith("cheat rain worker")) {
+            rainWorker();
+        } else if (command.startsWith("cheat build improvement")) {
+            buildImprovement(command);
+        } else if (command.startsWith("cheat clear land")) {
+            clearLand(command);
         } else if (command.startsWith("cheat build city")) {
             buildCity(command);
         } else if (command.startsWith("cheat research tech")) {
@@ -237,6 +241,8 @@ public class GameMenu extends Menu {
             instantHeal(command);
         } else if (command.startsWith("cheat eye of sauron")) {
             eyeOfSauron();
+        } else if (command.startsWith("cheat eye of agamotto")) {
+            eyeOfAgamotto(command);
         } else {
             invalidCommand();
         }
@@ -266,6 +272,10 @@ public class GameMenu extends Menu {
         System.out.println(GameController.cheatPutUnit(unitType, row, column).getString());
     }
 
+    private static void rainWorker() {
+        System.out.println(GameController.cheatRainWorker().getString());
+    }
+
     private static void buildCity(String command) {
         ArrayList<String> parameters = CLI.getParameters(command, "l", "cn");
         if (parameters == null) {
@@ -274,6 +284,31 @@ public class GameMenu extends Menu {
         }
         int row = Integer.parseInt(parameters.get(0)), column = Integer.parseInt(parameters.get(1));
         System.out.println(GameController.cheatBuildCity(parameters.get(2), row, column).getString());
+    }
+
+    private static void buildImprovement(String command) {
+        ArrayList<String> parameters = CLI.getParameters(command, "l", "t");
+        if (parameters == null) {
+            invalidCommand();
+            return;
+        }
+        int row = Integer.parseInt(parameters.get(0)), column = Integer.parseInt(parameters.get(1));
+        ImprovementType improvementType = ImprovementType.getTypeByName(parameters.get(2));
+        if (improvementType == null) {
+            System.out.println("invalid improvementType you sneaky weasel!");
+            return;
+        }
+        System.out.println(GameController.cheatBuildImprovement(improvementType, row, column).getString());
+    }
+
+    private static void clearLand(String command) {
+        ArrayList<String> parameters = CLI.getParameters(command, "l");
+        if (parameters == null) {
+            invalidCommand();
+            return;
+        }
+        int row = Integer.parseInt(parameters.get(0)), column = Integer.parseInt(parameters.get(1));
+        System.out.println(GameController.cheatClearLand(row, column));
     }
 
     private static void researchTech(String command) {
@@ -301,5 +336,14 @@ public class GameMenu extends Menu {
 
     private static void eyeOfSauron() {
         System.out.println(GameController.eyeOfSauron().getString());
+    }
+
+    private static void eyeOfAgamotto(String command) {
+        ArrayList<String> parameters = CLI.getParameters(command, "a");
+        if (parameters == null || !parameters.get(0).matches("-?\\d+")) {
+            invalidCommand();
+            return;
+        }
+        System.out.println(GameController.cheatEyeOfAgamotto(Integer.parseInt(parameters.get(0))).getString());
     }
 }

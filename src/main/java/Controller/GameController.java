@@ -7,6 +7,7 @@ import enums.Responses.Response;
 import enums.Types.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class GameController {
@@ -145,8 +146,11 @@ public class GameController {
     }
     ///         CHEAT CODES
 
-    public static void cheatIncreaseTurn(int amount) {
-
+    public static Response.GameMenu cheatEyeOfAgamotto(int amount) {
+        while (amount-- > 0) {
+            PlayerController.nextTurn();
+        }
+        return Response.GameMenu.CHEAT_SUCCESSFUL;
     }
 
     public static Response.GameMenu cheatIncreaseGold(int amount) {
@@ -182,9 +186,28 @@ public class GameController {
         MapController.BuildCity(tile.getUnit(), name);
         getCurrentPlayer().addCity(tile.getCity());
         tile.getUnit().destroy();
-        PlayerController.updateFieldOfView(GameController.getCurrentPlayer());
+        PlayerController.updateFieldOfView();
         return Response.GameMenu.CHEAT_SUCCESSFUL;
         // builds a city in the selected tile with the given name
+    }
+
+    public static Response.GameMenu cheatBuildImprovement(ImprovementType improvementType, int row, int column) {
+        Tile tile = GameController.getMap().getTile(row, column);
+        Improvement improvement = new Improvement(improvementType, tile);
+        improvement.setRemainingTurns(0);
+        tile.setImprovement(improvement);
+        PlayerController.updateFieldOfView();
+        return Response.GameMenu.CHEAT_SUCCESSFUL;
+        // builds a finished improvement instantly on the selected tile
+    }
+
+    public static Response.GameMenu cheatClearLand(int row, int column) {
+        Tile tile = GameController.getMap().getTile(row, column);
+        if (Arrays.asList(TerrainFeature.FOREST, TerrainFeature.JUNGLE, TerrainFeature.MARSH).contains(tile.getTerrainFeature())) {
+            tile.getTerrain().setTerrainFeature(TerrainFeature.NULL);
+        }
+        return Response.GameMenu.CHEAT_SUCCESSFUL;
+        // removes annoying terrain features instantly
     }
 
     public static Response.GameMenu cheatResearchTech(TechnologyType technologyType) {
@@ -201,6 +224,21 @@ public class GameController {
         unit.setHP(health);
         return Response.GameMenu.CHEAT_SUCCESSFUL;
         // sets the HP of the selected unit to health
+    }
+
+    public static Response.GameMenu cheatRainWorker() {
+        Map map = GameController.getMap();
+        for (int row = 0; row < map.getHeight(); row++) {
+            for (int column = 0; column < map.getWidth(); column++) {
+                Tile tile = map.getTile(row, column);
+                if (tile.getTerrainType() == TerrainType.OCEAN || tile.getTerrainType() == TerrainType.MOUNTAIN)
+                    continue;
+                if (tile.getUnit() == null) {
+                    cheatPutUnit(UnitType.WORKER, row, column);
+                }
+            }
+        }
+        return Response.GameMenu.CHEAT_SUCCESSFUL;
     }
 
     public static Response.GameMenu eyeOfSauron() {

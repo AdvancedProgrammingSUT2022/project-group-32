@@ -34,6 +34,8 @@ public class CombatController {
             attacker.placeIn(defender.getCapitalTile(), GameController.getMap());
             captureCity(attacker.getOwner(), defender);
         }
+        PlayerController.updateFieldOfView(attacker.getOwner());
+        PlayerController.updateFieldOfView(defender.getOwner());
     }
 
     public static void rangedAttack(Troop attacker, Unit defender) {
@@ -53,6 +55,8 @@ public class CombatController {
         if (defPower >= 0) defender.setHP(defender.getHP() - defender.getHealth() * (attPower / (defPower * 2)));
         else defender.setHP(0);
         defender.setHP(Math.max(defender.getHP(), 1));
+        PlayerController.updateFieldOfView(attacker.getOwner());
+        PlayerController.updateFieldOfView(defender.getOwner());
     }
 
     public static void rangedAttack(City attacker, Troop defender) {
@@ -70,6 +74,8 @@ public class CombatController {
             defender.destroy();
             defender.getOwner().addNotification(GameController.getTurn() + ": a unit of yours has died!");
         }
+        PlayerController.updateFieldOfView(attacker.getOwner());
+        PlayerController.updateFieldOfView(defender.getOwner());
     }
 
     public static void captureCity(Player player, City city) {
