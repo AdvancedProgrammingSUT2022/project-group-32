@@ -61,6 +61,10 @@ public class UnitSelectedPanel extends GameMenu {
             invalidCommand();
             return;
         }
+        if (parameters.get(0).length() < 3) {
+            System.out.println("City name is too small");
+            return;
+        }
         System.out.println(UnitController.foundCity(parameters.get(0)).getString());
     }
 

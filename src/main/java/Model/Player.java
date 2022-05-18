@@ -2,8 +2,8 @@ package Model;
 
 import Model.Units.Troop;
 import Model.Units.Unit;
-import enums.Types.BuildingType;
 import enums.Color;
+import enums.Types.BuildingType;
 import enums.Types.TechnologyType;
 
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class Player {
         this.id = count;
         this.backgroundColor = Color.values()[this.id];
         this.color = Color.values()[this.id + 8];
-        this.happiness = 20;
+        this.happiness = 100;
         count++;
     }
 

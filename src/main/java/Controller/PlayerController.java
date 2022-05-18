@@ -99,7 +99,7 @@ public class PlayerController {
     }
 
     private static void updateHappiness() {
-        int happiness = 0;
+        int happiness = 100;
         happiness -= GameController.getCurrentPlayer().getCities().size() * 3;
 
         ArrayList<ResourceType> playerResources = getPlayerWorkingResourceTypes(GameController.getCurrentPlayer());

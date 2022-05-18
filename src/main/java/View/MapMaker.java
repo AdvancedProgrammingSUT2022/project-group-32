@@ -65,14 +65,6 @@ public class MapMaker {
 
         // fill if unknown
         if (tile.getFogState() == FogState.UNKNOWN) {
-//            String UnknownColor  = Color.WHITE_BACKGROUND.code;
-//            fillPartOfRow(map, centerRow, centerColumn - 6, centerColumn + 6, UnknownColor);
-//            fillPartOfRow(map, centerRow - 1, centerColumn - 6, centerColumn + 6, UnknownColor);
-//            fillPartOfRow(map, centerRow + 1, centerColumn - 6, centerColumn + 6, UnknownColor);
-//            fillPartOfRow(map, centerRow - 2, centerColumn - 5, centerColumn + 5, UnknownColor);
-//            fillPartOfRow(map, centerRow + 2, centerColumn - 5, centerColumn + 5, UnknownColor);
-//            fillPartOfRow(map, centerRow + 3, centerColumn - 4, centerColumn + 4, UnknownColor);
-//            fillPartOfRow(map, centerRow - 2, centerColumn - 4, centerColumn + 4, UnknownColor);
             return;
         }
         // TILE BACKGROUND
