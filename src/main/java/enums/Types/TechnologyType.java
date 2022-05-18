@@ -15,7 +15,7 @@ public enum TechnologyType {
     POTTERY("Pottery", 35, new ArrayList<>(List.of(TechnologyType.AGRICULTURE)), "granary"),
     CALENDAR("Calendar", 70, new ArrayList<>(List.of(TechnologyType.POTTERY)), "plantation"),
     MASONRY("Masonry", 55, new ArrayList<>(List.of(TechnologyType.MINING)), "walls, quarry, demarsh"),
-    THE_WHEEL("The Wheel", 55, new ArrayList<>(List.of(TechnologyType.ANIMAL_HUSBANDRY)), "chariot archer, water mill, road"),
+    THE_WHEEL("The-Wheel", 55, new ArrayList<>(List.of(TechnologyType.ANIMAL_HUSBANDRY)), "chariot archer, water mill, road"),
     TRAPPING("Trapping", 55, new ArrayList<>(List.of(TechnologyType.ANIMAL_HUSBANDRY)), "trading post, camp"),
     WRITING("Writing", 55, new ArrayList<>(List.of(TechnologyType.POTTERY)), "library"),
     CONSTRUCTION("Construction", 100, new ArrayList<>(List.of(TechnologyType.MASONRY)), "colosseum, bridge"),

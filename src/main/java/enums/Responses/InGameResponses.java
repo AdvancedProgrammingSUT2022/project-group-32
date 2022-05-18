@@ -142,8 +142,9 @@ public class InGameResponses {
         TILE_OUT_OF_RANGE("the given tile is too far to be attacked by the city"),
         TILE_EMPTY("no troop exists in the selected tile"),
         OWN_TARGET("selected target is not an enemy"),
-        ATTACK_SUCCESSFUL("city attacked successfully");
-
+        ATTACK_SUCCESSFUL("city attacked successfully"),
+        // delete
+        DELETE_SUCCESSFUL("city deleted successfully");
         private final String message;
 
         City(String message) {

@@ -303,4 +303,21 @@ public class CityController {
         CombatController.rangedAttack(city, tile.getTroop());
         return InGameResponses.City.ATTACK_SUCCESSFUL;
     }
+
+    public static InGameResponses.City delete() {
+        City city = GameController.getSelectedCity();
+        if (city == null) return InGameResponses.City.NO_CITY_SELECTED;
+        if (city.getOwner() != GameController.getCurrentPlayer()) {
+            return InGameResponses.City.CITY_NOT_IN_POSSESS;
+        }
+        Player player = city.getOwner();
+        int addedGold = city.getGoldIncome() * 5;
+        addedGold += city.getPopulation();
+        addedGold += city.getTerritory().size() * 5;
+        addedGold += city.getBuildings().size() * 3;
+        player.setGold(player.getGold() + addedGold);
+        city.destroy();
+        PlayerController.updateFieldOfView(player);
+        return InGameResponses.City.DELETE_SUCCESSFUL;
+    }
 }

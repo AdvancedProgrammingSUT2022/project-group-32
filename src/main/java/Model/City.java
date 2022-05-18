@@ -369,4 +369,11 @@ public class City {
         return (int) cityScience;
     }
 
+    public void destroy(){
+        this.getOwner().removeCity(this);
+        for (Tile tile : this.getTerritory()) {
+            tile.setCity(null);
+        }
+    }
+
 }
