@@ -1,7 +1,7 @@
 package Controller;
 
 import Model.User;
-import View.Menu;
+import View.PastViews.Menu;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import enums.Responses.Response;

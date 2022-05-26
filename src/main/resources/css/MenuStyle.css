@@ -1,0 +1,37 @@
+.root {
+    -fx-background-size: contain, contain, contain, contain, contain, contain;
+    -fx-background-position: bottom, bottom, bottom, bottom, bottom, bottom;
+    -fx-background-image: url("../images/Background_A.png");
+}
+
+.civ-logo {
+    -fx-translate-x: 300;
+}
+
+Button {
+    -fx-pref-width: 200;
+    -fx-pref-height: 35;
+    -fx-background-color: none;
+    -fx-font-size: 18;
+    -fx-background-size: 200, 35;
+    -fx-background-position: bottom, bottom, bottom, bottom, bottom, bottom;
+    -fx-background-image: url("../images/Button_Normal.png");
+    -fx-background-repeat: false;
+}
+
+Button:hover {
+    -fx-background-size: contain, contain, contain, contain, contain, contain;
+    -fx-background-position: bottom, bottom, bottom, bottom, bottom, bottom;
+    -fx-background-image: url("../images/Button_Selected.png");
+
+
+}
+
+Button:pressed {
+    -fx-background-size: contain, contain, contain, contain, contain, contain;
+    -fx-background-position: bottom, bottom, bottom, bottom, bottom, bottom;
+    -fx-background-image: url("../images/Button_Down.png");
+
+
+}
+

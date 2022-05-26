@@ -2,8 +2,8 @@ package View.Panels;
 
 import Controller.GameController;
 import Model.City;
-import View.CLI;
-import View.GameMenu;
+import View.PastViews.CLI;
+import View.PastViews.GameMenu;
 import enums.Color;
 import enums.Responses.InGameResponses;
 

@@ -4,8 +4,8 @@ import Controller.CityController;
 import Controller.GameController;
 import Model.City;
 import Model.Tile;
-import View.CLI;
-import View.GameMenu;
+import View.PastViews.CLI;
+import View.PastViews.GameMenu;
 import enums.Color;
 import enums.Types.UnitType;
 

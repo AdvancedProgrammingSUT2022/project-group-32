@@ -2,7 +2,7 @@ package View.Panels;
 
 import Controller.GameController;
 import Model.Units.Troop;
-import View.GameMenu;
+import View.PastViews.GameMenu;
 
 import java.util.ArrayList;
 

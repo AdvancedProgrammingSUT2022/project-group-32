@@ -3,8 +3,8 @@ package View.Panels;
 import Controller.GameController;
 import Controller.UnitController;
 import Model.Units.Unit;
-import View.CLI;
-import View.GameMenu;
+import View.PastViews.CLI;
+import View.PastViews.GameMenu;
 import enums.Types.ImprovementType;
 import enums.Types.RoadType;
 

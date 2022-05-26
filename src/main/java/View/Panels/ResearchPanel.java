@@ -4,8 +4,8 @@ import Controller.GameController;
 import Controller.PlayerController;
 import Model.Player;
 import Model.Technology;
-import View.CLI;
-import View.GameMenu;
+import View.PastViews.CLI;
+import View.PastViews.GameMenu;
 import enums.Types.TechnologyType;
 
 import java.util.ArrayList;
