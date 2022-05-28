@@ -26,7 +26,13 @@ public class Response {
         // MOVE MAP
         AMOUNT_IS_NOT_POSITIVE("map movement amount must be positive"),
         SUCCESSFUL_MOVE("map moved successfully"),
-        MOVEMENT_OUT_OF_RANGE("can't move outside of map");
+        MOVEMENT_OUT_OF_RANGE("can't move outside of map"),
+
+        // CHEAT CODES
+        NO_UNIT_SELECTED("you haven't selected a unit"),
+        NO_CITY_SELECTED("you haven't selected a city"),
+        INVALID_POSITION("invalid coordinates"),
+        CHEAT_SUCCESSFUL("your cheat code was activated successfully (you sneaky bastard!)");
 
         private final String message;
 
@@ -99,7 +105,7 @@ public class Response {
         // no response
 
         // CURRENT MENU
-        CURRENT_MENU("Profile menu");
+        CURRENT_MENU("Profile menu"), SAME_PASSWORD("new password is identical to the old one");
 
         private final String message;
 

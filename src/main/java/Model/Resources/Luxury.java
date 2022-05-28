@@ -1,7 +1,7 @@
 package Model.Resources;
 
 import Model.Tile;
-import enums.ResourceType;
+import enums.Types.ResourceType;
 
 public class Luxury extends Resource {
     private int happiness;

@@ -1,8 +1,8 @@
 package Model.Resources;
 
 import Model.Tile;
-import enums.ResourceType;
-import enums.TechnologyType;
+import enums.Types.ResourceType;
+import enums.Types.TechnologyType;
 
 public class Strategic extends Resource {
     private TechnologyType neededTech;

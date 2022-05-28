@@ -5,11 +5,10 @@ import Model.Map;
 import Model.Terrain;
 import Model.Tile;
 import Model.Units.Unit;
-import enums.FogState;
-import enums.ResourceType;
-import enums.Responses.Response;
-import enums.TerrainFeature;
-import enums.TerrainType;
+import enums.Types.FogState;
+import enums.Types.ResourceType;
+import enums.Types.TerrainFeature;
+import enums.Types.TerrainType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,13 +17,13 @@ import java.util.Random;
 public class MapController {
     private static final int INF = 9999;
 
-    private static Tile nearestOcean(Tile tile1) {
+    private static Tile nearestTileByFeature(Tile tile1, TerrainFeature feature) {
         Map map = GameController.getMap();
         int height = map.getHeight(), width = map.getWidth();
         Tile tile2 = map.getTile(0, 0);
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                if (map.getTile(i, j).getTerrain().getTerrainType().equals(TerrainType.OCEAN)) {
+                if (map.getTile(i, j).getTerrainFeature() == feature || map.getTile(i, j).getBaseFeature() == feature) {
                     if (map.getDistanceTo(tile1, map.getTile(i, j)) <= map.getDistanceTo(tile1, tile2)) {
                         tile2 = map.getTile(i, j);
                     }
@@ -61,7 +60,7 @@ public class MapController {
             for (int column = 0; column < width; column++) {
                 Tile tile1 = tiles[row][column];
                 if (tile1.getTerrain().getTerrainType().equals(TerrainType.MOUNTAIN)) {
-                    Tile tile2 = nearestOcean(tile1);
+                    Tile tile2 = nearestTileByFeature(tile1, TerrainFeature.OCEAN);
                     drawRiverFromTo(tile1, tile2);
                 }
             }
@@ -76,12 +75,12 @@ public class MapController {
             tiles[i][width - 1] = new Tile(i, width - 1, new Terrain(TerrainType.OCEAN, TerrainFeature.NULL, ResourceType.NULL), FogState.UNKNOWN, null);
         }
         for (int i = 0; i < width; i++) {
-            tiles[0][i] = new Tile(0, i, new Terrain(TerrainType.OCEAN, TerrainFeature.NULL, ResourceType.NULL), FogState.UNKNOWN, null);
-            tiles[height - 1][i] = new Tile(height - 1, i, new Terrain(TerrainType.OCEAN, TerrainFeature.NULL, ResourceType.NULL), FogState.UNKNOWN, null);
+            tiles[0][i] = new Tile(0, i, new Terrain(TerrainType.OCEAN, TerrainFeature.ICE, ResourceType.NULL), FogState.UNKNOWN, null);
+            tiles[height - 1][i] = new Tile(height - 1, i, new Terrain(TerrainType.OCEAN, TerrainFeature.ICE, ResourceType.NULL), FogState.UNKNOWN, null);
         }
     }
 
-    private static ArrayList<TerrainType> getPossibleTerrains(ArrayList<Tile> neighbours){
+    private static ArrayList<TerrainType> getPossibleTerrains(ArrayList<Tile> neighbours) {
         ArrayList<TerrainType> possibleTerrains = new ArrayList<>(Arrays.asList(TerrainType.values()));
         for (Tile tile : neighbours) {
             if (tile == null) continue;
@@ -94,14 +93,14 @@ public class MapController {
         for (Tile tile : neighbours) {
             if (tile == null) continue;
             // making the terrain logical
-            if(tile.getTerrainType().equals(TerrainType.DESERT)){
+            if (tile.getTerrainType().equals(TerrainType.DESERT)) {
                 possibleTerrains.removeIf(TerrainType.SNOW::equals);
                 possibleTerrains.removeIf(TerrainType.TUNDRA::equals);
             }
-            if(tile.getTerrainType().equals(TerrainType.SNOW)){
+            if (tile.getTerrainType().equals(TerrainType.SNOW)) {
                 possibleTerrains.removeIf(TerrainType.DESERT::equals);
             }
-            if(tile.getTerrainType().equals(TerrainType.TUNDRA)){
+            if (tile.getTerrainType().equals(TerrainType.TUNDRA)) {
                 possibleTerrains.removeIf(TerrainType.DESERT::equals);
             }
         }
@@ -131,16 +130,17 @@ public class MapController {
                 }
 
                 ResourceType resourceType = ResourceType.NULL;
-                if (random.nextInt(4) == 0) {
+                if (random.nextInt(6) == 0) {
                     ArrayList<ResourceType> possibleResources = terrainType.baseFeature.possibleResources;
                     if (terrainFeature != null) possibleResources.addAll(terrainFeature.possibleResources);
                     if (!possibleResources.isEmpty()) {
                         resourceType = possibleResources.get(random.nextInt(possibleResources.size()));
                     }
                 }
+                if (resourceType == null) resourceType = ResourceType.NULL;
 
                 Terrain terrain = new Terrain(terrainType, terrainFeature, resourceType);
-                tiles[row][column] = new Tile(row, column, terrain, FogState.UNKNOWN, null); // TODO: 4/22/2022 do we have ruins?
+                tiles[row][column] = new Tile(row, column, terrain, FogState.UNKNOWN, null); // note: the main map is foggy
             }
         }
 
@@ -153,9 +153,14 @@ public class MapController {
         ArrayList<Tile> territory = tile.getNeighbouringTiles(map);
         territory.add(tile);
         City city = new City(name, unit.getOwner(), tile, territory);
+        for (Tile tile1 : territory) {
+            tile1.setCity(city);
+        }
         unit.getOwner().addCity(city);
         unit.getOwner().addTile(tile);
+        unit.getOwner().addNotification(GameController.getTurn() + ": the city of " + name + " has been constructed");
         tile.setCity(city);
+        PlayerController.updateFieldOfView(city.getOwner());
     }
 
 }

@@ -1,38 +1,43 @@
 package Model.Units;
 
+import Model.Map;
 import Model.Player;
 import Model.Tile;
-import enums.UnitType;
+import enums.Types.CombatType;
+import enums.Types.OrderType;
+import enums.Types.UnitType;
 
 public class Unit {
     private Tile tile;
     private Player owner;
-    private int health;
+    private final int health; // this is for reference
     private int cost;
     private int movement;
     private int MP; // needs to be refilled at the end of each turn
-    private int HP;
-    private int XP;
+    private double HP; // this is what changes in attacks
     private int sightRange;
     private UnitType unitType;
     private Tile destination;
-    private int remainingTurn;
-    // TODO: 4/17/2022 : Unit order handling (orders should be passed on between turns)
+    private int remainingCost;
+    private OrderType orderType;
+    private CombatType combatType;
 
     public Unit(Tile tile, Player owner, UnitType unitType) {
         this.tile = tile;
         this.owner = owner;
         this.unitType = unitType;
-        this.XP = 0;
         this.destination = this.tile;
         this.health = 10;
         this.cost = unitType.cost;
         this.movement = unitType.movement;
-        this.sightRange = 2;
         this.HP = this.health;
         this.MP = this.movement;
-        this.remainingTurn = this.cost;
-        this.tile.putUnit(this);
+        this.remainingCost = this.cost;
+        this.combatType = unitType.combatType;
+        this.sightRange = 2;
+        if (this.combatType.equals(CombatType.SIEGE) || unitType == UnitType.PANZER) this.sightRange = 1;
+        this.orderType = OrderType.AWAKE;
+        if (tile != null) tile.putUnit(this);
     }
 
     public Tile getTile() {
@@ -53,10 +58,6 @@ public class Unit {
 
     public int getHealth() {
         return health;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
     }
 
     public int getCost() {
@@ -83,20 +84,12 @@ public class Unit {
         this.MP = MP;
     }
 
-    public int getHP() {
+    public double getHP() {
         return HP;
     }
 
-    public void setHP(int HP) {
+    public void setHP(double HP) {
         this.HP = HP;
-    }
-
-    public int getXP() {
-        return XP;
-    }
-
-    public void setXP(int XP) {
-        this.XP = XP;
     }
 
     public int getSightRange() {
@@ -115,6 +108,14 @@ public class Unit {
         this.unitType = unitType;
     }
 
+    public CombatType getCombatType() {
+        return combatType;
+    }
+
+    public void setCombatType(CombatType combatType) {
+        this.combatType = combatType;
+    }
+
     public Tile getDestination() {
         return destination;
     }
@@ -123,33 +124,47 @@ public class Unit {
         this.destination = destination;
     }
 
-    public int getRemainingTurn() {
-        return remainingTurn;
+    public int getRemainingCost() {
+        return remainingCost;
     }
 
-    public void setRemainingTurn(int remainingTurn) {
-        this.remainingTurn = remainingTurn;
+    public void setRemainingCost(int remainingTurn) {
+        this.remainingCost = remainingTurn;
     }
 
-    public int getRow(){
+    public OrderType getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(OrderType orderType) {
+        this.orderType = orderType;
+    }
+
+    public int getRow() {
         return tile.getRow();
     }
 
-    public int getColumn(){
+    public int getColumn() {
         return tile.getColumn();
     }
 
-    public void placeIn(Tile tile){
-        this.MP -= tile.getMP(this.tile);
-        if(tile.getCity() != null && !tile.getCity().getOwner().equals(this.owner)){
+    public void placeIn(Tile tile, Map map) {
+        if (unitType == UnitType.SCOUT) this.MP--;
+        else this.MP -= tile.getMP(this.tile);
+        if (tile.getCity() != null && !tile.getCity().getOwner().equals(this.owner)) {
             this.MP = 0;
+        }
+        for (Tile neighbouringTile : tile.getNeighbouringTiles(map)) {
+            if (neighbouringTile.getTroop() != null && neighbouringTile.getTroop().getOwner() != this.owner) {
+                this.MP = 0;
+            }
         }
         this.tile.takeUnit(this);
         tile.putUnit(this);
         this.tile = tile;
     }
 
-    public void destroy(){
+    public void destroy() {
         this.tile.takeUnit(this);
         this.owner.removeUnit(this);
     }

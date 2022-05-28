@@ -1,7 +1,7 @@
 package Model;
 
-import enums.BuildingType;
-import enums.TechnologyType;
+import enums.Types.BuildingType;
+import enums.Types.TechnologyType;
 
 import java.util.ArrayList;
 
@@ -11,16 +11,10 @@ public class Building {
     private final BuildingType buildingType;
     private int maintenanceCost;
     private final ArrayList<TechnologyType> neededTechs = new ArrayList<>();
-    private int remainingTurns;
-    private int requiredTurns; // TODO: 4/16/2022 Specialist handling
+    private int remainingCost;
 
     public Building(BuildingType buildingType) {
         this.buildingType = buildingType;
-        setFieldsFromDatabase(this.buildingType);
-    }
-
-    private void setFieldsFromDatabase(BuildingType buildingType) {
-        // TODO: 4/16/2022 sets cost, name, maintenance, ...
     }
 
     public String getName() {
@@ -43,15 +37,11 @@ public class Building {
         return neededTechs;
     }
 
-    public int getRemainingTurns() {
-        return remainingTurns;
+    public int getRemainingCost() {
+        return remainingCost;
     }
 
-    public int getRequiredTurns() {
-        return requiredTurns;
-    }
-
-    public void setRemainingTurns(int remainingTurns) {
-        this.remainingTurns = remainingTurns;
+    public void setRemainingCost(int remainingTurns) {
+        this.remainingCost = remainingTurns;
     }
 }

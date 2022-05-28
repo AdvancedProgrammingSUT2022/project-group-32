@@ -1,13 +1,12 @@
 package Model;
 
-import Model.Citizens.Citizen;
 import Model.Units.Troop;
 import Model.Units.Unit;
-import enums.BuildingType;
-import enums.UnitType;
+import enums.Types.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class City {
     private String name;
@@ -19,17 +18,28 @@ public class City {
     private ArrayList<Building> incompleteBuildings;
     private Unit unitInProgress;
     private ArrayList<Unit> incompleteUnits;
-    private ArrayList<Citizen> citizens = new ArrayList<>();
-    private int food, production, population, health, baseStrength;
+    private int freeCitizens;
+    private int foodIncome, population, health, baseStrength;
     private int sightRange;
     private Troop garrisonedTroop;
+    private int neededFoodForNewCitizen = 10, storedFoodForNewCitizen = 0;
+    private double HP;
+    private boolean hasAttacked;
 
     public City(String name, Player owner, Tile capitalTile, ArrayList<Tile> territory) {
         this.name = name;
         this.owner = owner;
         this.capitalTile = capitalTile;
         this.territory = territory;
-        // TODO: 4/17/2022 sets buildings, citizens, gold, food, .... to default value. and empty arraylists
+        this.freeCitizens = 2;
+        this.buildings = new ArrayList<>();
+        this.incompleteBuildings = new ArrayList<>();
+        this.incompleteUnits = new ArrayList<>();
+        this.health = 20;
+        this.HP = 20;
+        this.baseStrength = 20;
+        this.hasAttacked = false;
+        this.sightRange = 2;
     }
 
     public String getName() {
@@ -72,28 +82,19 @@ public class City {
         this.buildings = buildings;
     }
 
-    public ArrayList<Citizen> getCitizens() {
-        return citizens;
+    public int getFoodIncome() {
+        return foodIncome;
     }
 
-    public void setCitizens(ArrayList<Citizen> citizens) {
-        this.citizens = citizens;
+    public void setFoodIncome(int foodIncome) {
+        this.foodIncome = foodIncome;
     }
 
-    public int getFood() {
-        return food;
-    }
-
-    public void setFood(int food) {
-        this.food = food;
-    }
-
-    public int getProduction() {
+    public int getProductionIncome() { // TODO: 5/10/2022 building effects must applied later
+        int production = 0;
+        production += territory.stream().mapToInt(Tile::getProduction).sum();
+        production += freeCitizens;
         return production;
-    }
-
-    public void setProduction(int production) {
-        this.production = production;
     }
 
     public int getPopulation() {
@@ -102,6 +103,26 @@ public class City {
 
     public void setPopulation(int population) {
         this.population = population;
+    }
+
+    public void setNeededFoodForNewCitizen(int neededFoodForNewCitizen) {
+        this.neededFoodForNewCitizen = neededFoodForNewCitizen;
+    }
+
+    public int getStoredFoodForNewCitizen() {
+        return storedFoodForNewCitizen;
+    }
+
+    public void setStoredFoodForNewCitizen(int storedFoodForNewCitizen) {
+        this.storedFoodForNewCitizen = storedFoodForNewCitizen;
+    }
+
+    public int getFreeCitizens() {
+        return freeCitizens;
+    }
+
+    public void setFreeCitizens(int freeCitizens) {
+        this.freeCitizens = freeCitizens;
     }
 
     public int getHealth() {
@@ -118,6 +139,27 @@ public class City {
 
     public void setBaseStrength(int baseStrength) {
         this.baseStrength = baseStrength;
+    }
+
+    public double getStrength(){
+        double strength = baseStrength + population;
+        if(garrisonedTroop != null) strength += garrisonedTroop.getMeleeStrength();
+        if(capitalTile.getTerrainType().equals(TerrainType.HILL)){
+            strength *= 1.2;
+        }
+        return strength;
+    }
+
+    public boolean HasAttacked() {
+        return hasAttacked;
+    }
+
+    public void setHasAttacked(boolean hasAttacked) {
+        this.hasAttacked = hasAttacked;
+    }
+
+    public int getNeededFoodForNewCitizen() {
+        return neededFoodForNewCitizen;
     }
 
     public int getSightRange() {
@@ -168,6 +210,14 @@ public class City {
         this.garrisonedTroop = garrisonedTroop;
     }
 
+    public double getHP() {
+        return HP;
+    }
+
+    public void setHP(double HP) {
+        this.HP = HP;
+    }
+
     public void addTile(Tile tile) {
         this.territory.add(tile);
     }
@@ -179,15 +229,6 @@ public class City {
     public Tile getTileByXY(int x, int y) {
         for (Tile tile : territory) {
             if (tile.getRow() == x && tile.getColumn() == y) {
-                return tile;
-            }
-        }
-        return null;
-    }
-
-    public Tile getTileByID(int id) {
-        for (Tile tile : territory) {
-            if (tile.getId() == id) {
                 return tile;
             }
         }
@@ -267,23 +308,6 @@ public class City {
         return null;
     }
 
-    public void addCitizen(Citizen citizen) {
-        this.citizens.add(citizen);
-    }
-
-    public void removeCitizen(Citizen citizen) {
-        this.citizens.remove(citizen);
-    }
-
-    public Citizen getCitizenByName(String name) {
-        for (Citizen citizen : citizens) {
-            if (citizen.getName().equals(name)) {
-                return citizen;
-            }
-        }
-        return null;
-    }
-
     private ArrayList<Unit> getUnits() {
         // returns unit in territory (but why??)
         ArrayList<Unit> units = new ArrayList<>();
@@ -293,12 +317,63 @@ public class City {
         return units;
     }
 
-    private int getStrength() {
-        // TODO: 4/17/2022  by units and baseStrength
-        return 0;
+    public int getTilesFoodIncome() {
+        int tilesFood = 0;
+        for (Tile tile : territory) {
+            tilesFood += tile.getFood();
+        }
+        return tilesFood;
     }
 
-    // TODO: 4/17/2022 getCitizenByID, removeCitizen, addTile, RemoveTile,( expand in Controller), getTile, getNeighbors, get
+    public boolean hasRiver() {
+        for (Tile tile : territory) {
+            if (tile.getIsRiver().containsValue(1)) return true;
+        }
+        return false;
+    }
 
+    // adds to stored food for new citizen, if is possible adds new citizen;
+    public void updateNewCitizenStoredFood() {
+        storedFoodForNewCitizen += foodIncome;
+        if (storedFoodForNewCitizen > neededFoodForNewCitizen) {
+            storedFoodForNewCitizen -= neededFoodForNewCitizen;
+            population++;
+            freeCitizens++;
+            neededFoodForNewCitizen *= 1.4;
+        }
+    }
+
+    public ArrayList<ResourceType> getWorkingResources() {
+        ArrayList<ResourceType> resourceTypes = new ArrayList<>();
+        for (Tile tile : territory) {
+            if (tile.isHasCitizen()) resourceTypes.add(tile.getResourceType());
+        }
+        return resourceTypes;
+    }
+
+    public int getGoldIncome() {
+        return territory.stream().mapToInt(Tile::getGold).sum();
+    }
+
+    public int getScienceIncome() {
+        ArrayList<BuildingType> buildingTypes = this.getBuildings().stream().map(Building::getBuildingType).collect(Collectors.toCollection(ArrayList::new));
+        double cityScience = this.getPopulation();
+        if (buildingTypes.contains(BuildingType.LIBRARY)) cityScience += this.getPopulation() / 2;
+        if (buildingTypes.contains(BuildingType.UNIVERSITY)) {
+            for (Tile tile : this.getTerritory()) {
+                if (tile.getTerrain().getTerrainFeature().equals(TerrainFeature.JUNGLE)) cityScience += 2;
+            }
+            cityScience *= 1.5;
+        }
+        if (buildingTypes.contains(BuildingType.PUBLIC_SCHOOL)) cityScience *= 1.5;
+        return (int) cityScience;
+    }
+
+    public void destroy(){
+        this.getOwner().removeCity(this);
+        for (Tile tile : this.getTerritory()) {
+            tile.setCity(null);
+        }
+    }
 
 }

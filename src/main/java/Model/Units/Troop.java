@@ -2,20 +2,16 @@ package Model.Units;
 
 import Model.Player;
 import Model.Tile;
-import enums.CombatType;
-import enums.ResourceType;
-import enums.TechnologyType;
-import enums.UnitType;
-
-import java.util.ArrayList;
+import enums.Types.ResourceType;
+import enums.Types.TechnologyType;
+import enums.Types.TerrainFeature;
+import enums.Types.UnitType;
 
 public class Troop extends Unit {
     private int meleeStrength;
     private int rangedStrength;
     private int range;
-    private int beenFortified;
-    private boolean isFortified;
-    private CombatType combatType;
+    private int fortifyBonus;
     private final ResourceType neededResource;
     private final TechnologyType neededTechnology;
 
@@ -24,23 +20,26 @@ public class Troop extends Unit {
         this.meleeStrength = unitType.strength;
         this.rangedStrength = unitType.rangedStrength;
         this.range = unitType.range;
-        this.beenFortified = 0;
-        this.isFortified = false;
-        this.combatType = unitType.combatType;
+        this.fortifyBonus = 0;
         this.neededResource = unitType.neededResource;
         this.neededTechnology = unitType.neededTech;
     }
 
-    public int getMeleeStrength() {
-        return meleeStrength;
+    public double getMeleeStrength() {
+        double strength = meleeStrength;
+        return strength;
     }
 
     public void setMeleeStrength(int meleeStrength) {
         this.meleeStrength = meleeStrength;
     }
 
-    public int getRangedStrength() {
-        return rangedStrength;
+    public double getRangedStrength() {
+        double strength = rangedStrength;
+        if (this.getUnitType() == UnitType.CHARIOT_ARCHER && TerrainFeature.getRoughTerrain().contains(this.getTile().getTerrainFeature())) {
+            strength *= 1.1;
+        }
+        return strength;
     }
 
     public void setRangedStrength(int rangedStrength) {
@@ -55,28 +54,12 @@ public class Troop extends Unit {
         this.range = range;
     }
 
-    public CombatType getCombatType() {
-        return combatType;
+    public int getFortifyBonus() {
+        return fortifyBonus;
     }
 
-    public void setCombatType(CombatType combatType) {
-        this.combatType = combatType;
-    }
-
-    public int getBeenFortified() {
-        return beenFortified;
-    }
-
-    public void setBeenFortified(int beenFortified) {
-        this.beenFortified = beenFortified;
-    }
-
-    public boolean isFortified() {
-        return isFortified;
-    }
-
-    public void setFortified(boolean fortified) {
-        isFortified = fortified;
+    public void setFortifyBonus(int fortifyBonus) {
+        this.fortifyBonus = fortifyBonus;
     }
 
     public ResourceType getNeededResource() {
@@ -86,4 +69,5 @@ public class Troop extends Unit {
     public TechnologyType getNeededTechnology() {
         return neededTechnology;
     }
+
 }

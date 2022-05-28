@@ -1,21 +1,16 @@
 package Model.Resources;
 
 import Model.Tile;
-import enums.ImprovementType;
-import enums.ResourceType;
-import enums.TerrainFeature;
-
-import java.util.ArrayList;
+import enums.Types.ImprovementType;
+import enums.Types.ResourceType;
 
 public class Resource {
-    private final ResourceType resourceType; // TODO: 4/16/2022 handle resource type and resource group type with enumSet???
+    private final ResourceType resourceType;
     private String name;
     private int food, production, gold;
-    private final ArrayList<TerrainFeature> canBeFoundOns;
     private ImprovementType neededImprovement;
     private final Tile tile;
 
-    // TODO: 4/17/2022 visibility & collectablity must be handled in Controller
     public Resource(ResourceType resourceType, Tile tile) {
         this.resourceType = resourceType;
         this.tile = tile;
@@ -23,8 +18,7 @@ public class Resource {
         this.gold = resourceType.gold;
         this.production = resourceType.production;
         this.name = resourceType.name;
-        this.neededImprovement = resourceType.neededImprovement;
-        this.canBeFoundOns = new ArrayList<>(resourceType.possibleFeatures);
+        this.neededImprovement = resourceType.getNeededImprovementType();
     }
 
     public ResourceType getResourceType() {
@@ -63,10 +57,6 @@ public class Resource {
         this.gold = gold;
     }
 
-    public ArrayList<TerrainFeature> getCanBeFoundOns() {
-        return canBeFoundOns;
-    }
-
     public ImprovementType getNeededImprovement() {
         return neededImprovement;
     }
@@ -79,12 +69,4 @@ public class Resource {
         return tile;
     }
 
-    public boolean canBeFoundOn(TerrainFeature terrainFeature) {
-        for (TerrainFeature canBeFoundOn : canBeFoundOns) {
-            if (canBeFoundOn.equals(terrainFeature)) {
-                return true;
-            }
-        }
-        return false;
-    }
 }

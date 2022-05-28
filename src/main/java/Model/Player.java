@@ -1,9 +1,10 @@
 package Model;
 
+import Model.Units.Troop;
 import Model.Units.Unit;
-import enums.BuildingType;
 import enums.Color;
-import enums.TechnologyType;
+import enums.Types.BuildingType;
+import enums.Types.TechnologyType;
 
 import java.util.ArrayList;
 
@@ -13,14 +14,21 @@ public class Player {
     private final User user;
     private final String name;
     private Map map;
-    private final ArrayList<Unit> units;
+    private final ArrayList<Unit> units; // Only complete units are here
     private final ArrayList<Building> buildings;
     private final ArrayList<Technology> technologies;
     private Technology technologyInProgress;
     private final ArrayList<Technology> incompleteTechnologies;
     private final ArrayList<City> cities;
     private final ArrayList<Tile> tiles;
-    private int gold, science, food, XP, happiness, population;
+    private int gold;
+
+
+    private int scienceIncome;
+    private int goldIncome;
+    private int XP;
+    private int happiness;
+    private int population;
     private final ArrayList<Player> inWarPlayers;
     private final ArrayList<String> notifications;
     private int cameraRow;
@@ -29,7 +37,6 @@ public class Player {
     private final Color color;
 
     public Player(User user, int cameraRow, int cameraColumn) {
-        // TODO: 4/21/2022 players map must be set after all players are created
         this.user = user;
         this.name = user.getNickname();
         this.cameraRow = cameraRow;
@@ -45,14 +52,28 @@ public class Player {
         this.id = count;
         this.backgroundColor = Color.values()[this.id];
         this.color = Color.values()[this.id + 8];
-
+        this.happiness = 100;
         count++;
     }
 
-    public String showMap() {
-        // shows players view of the map - currently in string form to be later replaces with graphics
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-        // TODO: 4/18/2022
+    public int getScienceIncome() {
+        return scienceIncome;
+    }
+
+    public void setScienceIncome(int scienceIncome) {
+        this.scienceIncome = scienceIncome;
+    }
+
+    public int getGoldIncome() {
+        return goldIncome;
+    }
+
+    public void setGoldIncome(int goldIncome) {
+        this.goldIncome = goldIncome;
+    }
+
+    public int getXP() {
+        return XP;
     }
 
     public User getUser() {
@@ -111,22 +132,6 @@ public class Player {
         this.gold = gold;
     }
 
-    public int getScience() {
-        return science;
-    }
-
-    public void setScience(int science) {
-        this.science = science;
-    }
-
-    public int getFood() {
-        return food;
-    }
-
-    public void setFood(int food) {
-        this.food = food;
-    }
-
     public int getRowP() {
         return XP;
     }
@@ -143,7 +148,12 @@ public class Player {
         this.happiness = happiness;
     }
 
+    //updates when ever gotten
     public int getPopulation() {
+        population = 0;
+        for (City city : cities) {
+            population += city.getPopulation();
+        }
         return population;
     }
 
@@ -185,6 +195,7 @@ public class Player {
     }
 
     public void addUnit(Unit unit) {
+        unit.setRemainingCost(0);
         this.units.add(unit);
     }
 
@@ -207,6 +218,7 @@ public class Player {
             }
         }
         return null;
+
     }
 
     public Building getBuildingByType(BuildingType buildingType) {
@@ -313,15 +325,6 @@ public class Player {
         return null;
     }
 
-    public Tile getTileByID(int id) {
-        for (Tile tile : tiles) {
-            if (tile.getId() == id) {
-                return tile;
-            }
-        }
-        return null;
-    }
-
     public void addInWarPlayer(Player player) {
         this.inWarPlayers.add(player);
     }
@@ -354,5 +357,27 @@ public class Player {
 
     public Color getColor() {
         return this.color;
+    }
+
+    public void updateGoldByIncome() {
+        gold += goldIncome;
+        // only happens if income in negative
+        if (gold < 0) {
+            scienceIncome += goldIncome;
+            if (scienceIncome < 0) setScienceIncome(0);
+            setGold(0);
+        }
+    }
+
+    public int getProduction() {
+        return this.getCities().stream().mapToInt(City::getProductionIncome).sum();
+    }
+
+    public int getTerritoryCount() {
+        return cities.stream().mapToInt(c -> c.getTerritory().size()).sum();
+    }
+
+    public int getTroopCount() {
+        return (int) units.stream().filter(u -> (u instanceof Troop)).count();
     }
 }

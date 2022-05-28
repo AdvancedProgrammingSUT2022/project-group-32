@@ -1,9 +1,9 @@
 package Model;
 
-import enums.ImprovementType;
-import enums.ResourceType;
-import enums.TechnologyType;
-import enums.TerrainFeature;
+import enums.Types.ImprovementType;
+import enums.Types.ResourceType;
+import enums.Types.TechnologyType;
+import enums.Types.TerrainFeature;
 
 import java.util.ArrayList;
 
@@ -11,21 +11,33 @@ public class Improvement {
     private final ImprovementType improvementType;
     private String name;
     private final Tile tile;
-    private int addedFood, addedGold, addedProduction;
+    private final int addedFood, addedGold, addedProduction;
     private final ArrayList<TechnologyType> neededTechs = new ArrayList<>();
     private final ArrayList<ResourceType> unlockingResources = new ArrayList<>();
     private final ArrayList<TerrainFeature> possibleTerrainFeatures = new ArrayList<>();
     private int remainingTurns;
-    private int requiredTurns;
+    private final int requiredTurns;
 
     public Improvement(ImprovementType improvementType, Tile tile) {
         this.improvementType = improvementType;
+        this.name = improvementType.name;
         this.tile = tile;
-        setFieldsFromDataBase();
+        this.addedFood = improvementType.food;
+        this.addedGold = improvementType.gold;
+        this.addedProduction = improvementType.production;
+        this.requiredTurns = 6;
+        this.remainingTurns = this.requiredTurns;
     }
 
-    private void setFieldsFromDataBase() {
-        // TODO: 4/17/2022 `
+    public Improvement(Improvement improvement) {
+        this.name = improvement.name;
+        this.improvementType = improvement.improvementType;
+        this.tile = improvement.tile;
+        this.addedFood = improvement.addedFood;
+        this.addedGold = improvement.addedGold;
+        this.addedProduction = improvement.addedProduction;
+        this.requiredTurns = 6;
+        this.remainingTurns = this.requiredTurns;
     }
 
     public String getName() {

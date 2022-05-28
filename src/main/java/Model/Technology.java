@@ -1,43 +1,28 @@
 package Model;
 
-import enums.TechnologyType;
+import enums.Types.TechnologyType;
 
 import java.util.ArrayList;
 
 public class Technology {
-    private int cost;
-    private final ArrayList<TechnologyType> neededTechs = new ArrayList<>();
-    private final ArrayList<TechnologyType> unlockingTechs = new ArrayList<>();
+    private final ArrayList<TechnologyType> neededTechs;
     private final String name;
     private final TechnologyType technologyType;
-    private int remainingTurns;
-    private int requiredTurns;
+    private int requiredCost;
+    private int remainingCost;
+    private String unlocks;
 
     public Technology(TechnologyType technologyType) {
         this.technologyType = technologyType;
         this.name = this.technologyType.name;
-        setFieldsFromDataBase(this.technologyType);
-    }
-
-    private void setFieldsFromDataBase(TechnologyType technologyType) {
-        // TODO: 4/16/2022 set cost, neededTechs, ...
-        this.remainingTurns = this.requiredTurns;
-    }
-
-    public void setRequiredTurns(int requiredTurns) {
-        this.requiredTurns = requiredTurns;
-    }
-
-    public int getCost() {
-        return cost;
+        this.neededTechs = technologyType.neededTechs;
+        this.requiredCost = technologyType.cost;
+        this.remainingCost = this.requiredCost;
+        this.unlocks = technologyType.unlocks;
     }
 
     public ArrayList<TechnologyType> getNeededTechs() {
         return neededTechs;
-    }
-
-    public ArrayList<TechnologyType> getUnlockingTechs() {
-        return unlockingTechs;
     }
 
     public String getName() {
@@ -48,15 +33,27 @@ public class Technology {
         return technologyType;
     }
 
-    public int getRemainingTurns() {
-        return remainingTurns;
+    public int getRequiredCost() {
+        return requiredCost;
     }
 
-    public int getRequiredTurns() {
-        return requiredTurns;
+    public void setRequiredCost(int requiredCost) {
+        this.requiredCost = requiredCost;
     }
 
-    public void setRemainingTurns(int remainingTurns) {
-        this.remainingTurns = remainingTurns;
+    public int getRemainingCost() {
+        return remainingCost;
+    }
+
+    public void setRemainingCost(int remainingCost) {
+        this.remainingCost = remainingCost;
+    }
+
+    public String getUnlocks() {
+        return unlocks;
+    }
+
+    public void setUnlocks(String unlocks) {
+        this.unlocks = unlocks;
     }
 }
