@@ -1,14 +1,9 @@
 package Controller;
 
-import Model.City;
-import Model.Map;
-import Model.Terrain;
-import Model.Tile;
+import Model.*;
+import Model.Units.Troop;
 import Model.Units.Unit;
-import enums.Types.FogState;
-import enums.Types.ResourceType;
-import enums.Types.TerrainFeature;
-import enums.Types.TerrainType;
+import enums.Types.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -139,8 +134,13 @@ public class MapController {
                 }
                 if (resourceType == null) resourceType = ResourceType.NULL;
 
+                Ruin ruin = null;
+                if(resourceType == ResourceType.NULL && random.nextInt(6) == 0){
+                    ruin = Ruin.getRandomRuin();
+                }
+
                 Terrain terrain = new Terrain(terrainType, terrainFeature, resourceType);
-                tiles[row][column] = new Tile(row, column, terrain, FogState.UNKNOWN, null); // note: the main map is foggy
+                tiles[row][column] = new Tile(row, column, terrain, FogState.UNKNOWN, ruin); // note: the main map is foggy
             }
         }
 
@@ -161,6 +161,27 @@ public class MapController {
         unit.getOwner().addNotification(GameController.getTurn() + ": the city of " + name + " has been constructed");
         tile.setCity(city);
         PlayerController.updateFieldOfView(city.getOwner());
+    }
+
+    public static void collectRuin(Unit unit) {
+        Player player = unit.getOwner();
+        Tile tile = unit.getTile();
+        Ruin ruin = tile.getRuin();
+        player.getCapital().addPopulation(ruin.getPopulation());
+        player.setGold(player.getGold() + ruin.getGold());
+        if(ruin.getTechnology() != null){
+            Technology technology = new Technology(ruin.getTechnology());
+            technology.setRemainingCost(0);
+            player.addTechnology(technology);
+        }
+        if(ruin.getUnit() != null){
+            if(unit.getCombatType() == CombatType.CIVILIAN){
+                player.setGold(player.getGold() + 30);
+            } else {
+                GameController.cheatPutUnit(ruin.getUnit(), tile.getRow(), tile.getColumn());
+            }
+        }
+        tile.setRuin(null);
     }
 
 }

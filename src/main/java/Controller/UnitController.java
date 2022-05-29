@@ -94,6 +94,7 @@ public class UnitController {
                 break;
             }
             unit.placeIn(nextTile, map);
+            if(nextTile.getRuin() != null) MapController.collectRuin(unit);
             PlayerController.updateFieldOfView();
         }
         if (unit.getDestination() == unit.getTile()) {

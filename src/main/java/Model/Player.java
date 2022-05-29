@@ -21,6 +21,7 @@ public class Player {
     private final ArrayList<Technology> incompleteTechnologies;
     private final ArrayList<City> cities;
     private final ArrayList<Tile> tiles;
+    private City capital;
     private int gold;
 
 
@@ -283,6 +284,9 @@ public class Player {
     }
 
     public void addCity(City city) {
+        if(this.cities.isEmpty()){
+            this.capital = city;
+        }
         this.cities.add(city);
     }
 
@@ -306,6 +310,10 @@ public class Player {
             }
         }
         return null;
+    }
+
+    public City getCapital() {
+        return capital;
     }
 
     public void addTile(Tile tile) {

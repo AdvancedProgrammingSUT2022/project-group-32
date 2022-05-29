@@ -32,6 +32,7 @@ public class City {
         this.capitalTile = capitalTile;
         this.territory = territory;
         this.freeCitizens = 2;
+        this.population = 2;
         this.buildings = new ArrayList<>();
         this.incompleteBuildings = new ArrayList<>();
         this.incompleteUnits = new ArrayList<>();
@@ -103,6 +104,11 @@ public class City {
 
     public void setPopulation(int population) {
         this.population = population;
+    }
+
+    public void addPopulation(int population){
+        this.population += population;
+        this.freeCitizens += population;
     }
 
     public void setNeededFoodForNewCitizen(int neededFoodForNewCitizen) {

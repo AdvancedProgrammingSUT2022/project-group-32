@@ -1,31 +1,51 @@
 package Model;
 
-import enums.Types.RuinType;
 import enums.Types.TechnologyType;
 import enums.Types.UnitType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 
 public class Ruin {
-    private RuinType ruinType;
     private int gold;
     private int population;
-    private ArrayList<UnitType> units;
-    private ArrayList<Tile> vision;
-    private ArrayList<TechnologyType> technologies;
-    private boolean isUsed;
+    private UnitType unit;
+    private TechnologyType technology;
 
-    public Ruin(RuinType ruinType) {
-        this.ruinType = ruinType;
-        this.isUsed = false;
+    public Ruin(){
+        this.gold = 0;
+        this.population = 0;
+        this.unit = null;
+        this.technology = null;
     }
 
-    public RuinType getRuinType() {
-        return ruinType;
+    public Ruin(int gold, int population, UnitType units, TechnologyType technologies) {
+        this.gold = gold;
+        this.population = population;
+        this.unit = units;
+        this.technology = technologies;
     }
 
-    public void setRuinType(RuinType ruinType) {
-        this.ruinType = ruinType;
+    public static Ruin getRandomRuin() {
+        Random random = new Random(System.currentTimeMillis());
+        Ruin ruin = new Ruin();
+        switch (random.nextInt(4)){
+            case 0:
+                ruin.setGold(random.nextInt(10) + 20);
+                break;
+            case 1:
+                ruin.setPopulation(random.nextInt(3));
+                break;
+            case 2:
+                if(random.nextBoolean()) ruin.setUnit(UnitType.WORKER);
+                else ruin.setUnit(UnitType.SETTLER);
+                break;
+            case 3:
+                ruin.setTechnology(TechnologyType.values()[random.nextInt(TechnologyType.values().length)]);
+                break;
+        }
+        return ruin;
     }
 
     public int getGold() {
@@ -44,35 +64,19 @@ public class Ruin {
         this.population = population;
     }
 
-    public ArrayList<UnitType> getUnits() {
-        return units;
+    public UnitType getUnit() {
+        return unit;
     }
 
-    public void setUnits(ArrayList<UnitType> units) {
-        this.units = units;
+    public void setUnit(UnitType unit) {
+        this.unit = unit;
     }
 
-    public ArrayList<Tile> getVision() {
-        return vision;
+    public TechnologyType getTechnology() {
+        return technology;
     }
 
-    public void setVision(ArrayList<Tile> vision) {
-        this.vision = vision;
-    }
-
-    public ArrayList<TechnologyType> getTechnologies() {
-        return technologies;
-    }
-
-    public void setTechnologies(ArrayList<TechnologyType> technologies) {
-        this.technologies = technologies;
-    }
-
-    public boolean isUsed() {
-        return isUsed;
-    }
-
-    public void setUsed(boolean used) {
-        isUsed = used;
+    public void setTechnology(TechnologyType technology) {
+        this.technology = technology;
     }
 }
