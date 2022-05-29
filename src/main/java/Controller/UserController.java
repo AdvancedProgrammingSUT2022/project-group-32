@@ -71,7 +71,7 @@ public class UserController {
     }
 
     private static boolean IsNameValid(String name) {
-        return name.matches("\\w+");
+        return name.matches("\\w{3,}");
     }
 
     private static boolean IsPasswordValid(String password) {

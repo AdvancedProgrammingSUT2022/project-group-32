@@ -16,3 +16,13 @@
     -fx-border-color: #ffffff;
     -fx-background-color: rgba(15, 38, 100, 0.6);
 }
+
+.dialog-pane {
+    -fx-background-color: linear-gradient(to right, rgba(15, 38, 100, 0.5), rgba(193, 196, 213, 0.1));
+}
+
+.dialog-pane .header-panel {
+    -fx-background-color: linear-gradient(to right, rgba(15, 38, 100, 0.5), rgba(193, 196, 213, 0.1));
+
+}
+

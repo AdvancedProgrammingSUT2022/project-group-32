@@ -1,7 +1,9 @@
 package View;
 
+import Controller.UserController;
 import View.GraphicModels.Civ6MenuItem;
 import View.GraphicModels.Civ6Title;
+import enums.Responses.Response;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Node;
@@ -21,16 +23,13 @@ import javafx.util.Pair;
 import java.util.Arrays;
 import java.util.List;
 
-import static View.MenuController.HEIGHT;
-import static View.MenuController.MenuType.MAIN_MENU;
-import static View.MenuController.WIDTH;
+import static View.MenuController.*;
+import static View.MenuController.MenuType.*;
 
 public class MainMenuController {
 
 
     private static final List<Pair<String, Runnable>> menuData = Arrays.asList(
-            new Pair<String, Runnable>("L o g i n", () -> {
-            }),
             new Pair<String, Runnable>("N e w   G a m e", () -> {
             }),
             new Pair<String, Runnable>("P r o f i l e", () -> {
@@ -41,9 +40,18 @@ public class MainMenuController {
             }),
             new Pair<String, Runnable>("C r e a t e   M a p", () -> {
             }),
+            new Pair<String, Runnable>("L o g o u t", () -> {
+                logout();
+            }),
             new Pair<String, Runnable>("E x i t", () -> {
+                MenuController.changeMenu(EXIT);
             })
     );
+
+    private static void logout() {
+        Response.MainMenu response = UserController.logout();
+        changeMenu(LOGIN_MENU);
+    }
 
     private static final Pane root = new Pane();
     private static final VBox menuBox = new VBox(-5);
@@ -112,7 +120,7 @@ public class MainMenuController {
         menuData.forEach(data -> {
             Civ6MenuItem item = new Civ6MenuItem(data.getKey());
             item.setTranslateX(-300);
-
+            item.setOnAction(data.getValue());
             Rectangle clip = new Rectangle(300, 30);
             clip.translateXProperty().bind(item.translateXProperty().negate());
 

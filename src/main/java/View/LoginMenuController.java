@@ -1,14 +1,14 @@
 package View;
 
+import Controller.UserController;
 import View.GraphicModels.Civ6MenuItem;
+import enums.Responses.Response;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -25,14 +25,20 @@ import javafx.util.Pair;
 import java.util.Arrays;
 import java.util.List;
 
-import static View.MenuController.HEIGHT;
+import static View.MenuController.*;
 import static View.MenuController.MenuType.*;
-import static View.MenuController.WIDTH;
 
 public class LoginMenuController {
-
+    private static Pane root;
+    private static VBox menuBox;
+    private static Line line;
+    private static Alert alert;
+    private static DialogPane dialogPane;
+    private static TextField usernameField;
+    private static PasswordField passwordField;
     private static final List<Pair<String, Runnable>> menuData = Arrays.asList(
             new Pair<String, Runnable>("L o g i n", () -> {
+                login();
             }),
             new Pair<String, Runnable>("G O   T O   R E G I S T E R", () -> {
                 MenuController.changeMenu(REGISTER_MENU);
@@ -42,10 +48,15 @@ public class LoginMenuController {
             })
     );
 
+    private static void login() {
+        Response.LoginMenu response = UserController.login(usernameField.getText(), passwordField.getText());
+        if (response.equals(Response.LoginMenu.USERNAME_PASSWORD_DONT_MATCH)) {
+            showAlert(response.getString());
+        } else {
+            changeMenu(MAIN_MENU);
+        }
+    }
 
-    private static Pane root;
-    private static VBox menuBox;
-    private static Line line;
 
     private static Parent createContent() {
         addBackground();
@@ -67,8 +78,8 @@ public class LoginMenuController {
         password.setTextFill(Color.WHITE);
         username.setFont(Font.font(14));
         password.setFont(Font.font(14));
-        TextField usernameField = new TextField();
-        PasswordField passwordField = new PasswordField();
+        usernameField = new TextField();
+        passwordField = new PasswordField();
         vBox.getChildren().addAll(username, usernameField, password, passwordField, new Text());
         menuBox.getChildren().addAll(vBox);
 
@@ -125,8 +136,20 @@ public class LoginMenuController {
         root.getChildren().add(imageView);
     }
 
+    private static void initAlert() {
+        alert = new Alert(Alert.AlertType.ERROR, "Invalid input", ButtonType.OK);
+        dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().add(RegisterMenuController.class.getClassLoader().getResource("css/MenuStyle.css").toExternalForm());
+    }
+
+    private static void showAlert(String message) {
+        alert.setHeaderText(message);
+        alert.show();
+    }
+
     public static MenuController.MenuType start(Stage stage) throws Exception {
         root = new Pane();
+        initAlert();
         menuBox = new VBox(-5);
         createContent();
         Pane pane = root;
