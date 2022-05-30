@@ -1,4 +1,4 @@
-package View.GraphicModels;
+package View.Components;
 
 import javafx.beans.binding.Bindings;
 import javafx.scene.effect.BoxBlur;

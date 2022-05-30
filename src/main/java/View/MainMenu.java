@@ -1,7 +1,7 @@
 package View;
 
 import Controller.UserController;
-import View.GraphicModels.Civ6Title;
+import View.Components.Civ6Title;
 import enums.Responses.Response;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,11 +16,10 @@ import javafx.util.Pair;
 import java.util.Arrays;
 import java.util.List;
 
-import static View.MenuController.*;
-import static View.MenuController.MenuType.EXIT;
-import static View.MenuController.MenuType.LOGIN_MENU;
+import static View.Menu.MenuType.EXIT;
+import static View.Menu.MenuType.LOGIN_MENU;
 
-public class MainMenuController {
+public class MainMenu extends Menu {
 
 
     private static final List<Pair<String, Runnable>> menuData = Arrays.asList(
@@ -38,7 +37,7 @@ public class MainMenuController {
                 logout();
             }),
             new Pair<String, Runnable>("E x i t", () -> {
-                MenuController.changeMenu(EXIT);
+                Menu.changeMenu(EXIT);
             })
     );
 
@@ -83,7 +82,7 @@ public class MainMenuController {
         root.getChildren().add(title);
     }
 
-    public static void start(Stage stage) throws Exception {
+    public static void show(Stage stage) throws Exception {
         createContent();
         Pane pane = root;
         stage.setScene(new Scene(pane, WIDTH, HEIGHT));

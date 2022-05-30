@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <BorderPane prefHeight="720" prefWidth="1280" stylesheets="@../css/MenuStyle.css"
             xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="View.MainMenuController">
+            fx:controller="View.MainMenu">
     <top>
         <ImageView id="civ-logo" fitHeight="131.0" fitWidth="542.0" preserveRatio="true" translateY="86.0"
                    BorderPane.alignment="BOTTOM_CENTER">

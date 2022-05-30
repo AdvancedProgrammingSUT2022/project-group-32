@@ -1,6 +1,6 @@
 package View;
 
-import View.GraphicModels.Civ6MenuItem;
+import View.Components.Civ6MenuItem;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
@@ -19,7 +19,7 @@ import javafx.util.Pair;
 
 import java.util.List;
 
-public class MenuController extends Application {
+public class Menu extends Application {
     public static final int WIDTH = 1440;
     public static final int HEIGHT = 720;
     private static Stage stage;
@@ -46,18 +46,18 @@ public class MenuController extends Application {
         stage.setResizable(false);
         MenuType currentMenu = MenuType.REGISTER_MENU;
         switch (currentMenu) {
-            case MAIN_MENU -> MainMenuController.start(stage);
-            case LOGIN_MENU -> LoginMenuController.show(stage);
-            case REGISTER_MENU -> RegisterMenuController.start(stage);
+            case MAIN_MENU -> MainMenu.show(stage);
+            case LOGIN_MENU -> LoginMenu.show(stage);
+            case REGISTER_MENU -> RegisterMenu.show(stage);
         }
     }
 
     public static void changeMenu(MenuType menuType) {
         try {
             switch (menuType) {
-                case MAIN_MENU -> MainMenuController.start(stage);
-                case LOGIN_MENU -> LoginMenuController.show(stage);
-                case REGISTER_MENU -> RegisterMenuController.start(stage);
+                case MAIN_MENU -> MainMenu.show(stage);
+                case LOGIN_MENU -> LoginMenu.show(stage);
+                case REGISTER_MENU -> RegisterMenu.show(stage);
                 case EXIT -> System.exit(0);
 
             }
@@ -67,7 +67,7 @@ public class MenuController extends Application {
     }
 
     protected static void addBackground(Pane root) {
-        ImageView imageView = new ImageView(MainMenuController.class.getClassLoader().getResource("images/Background_B.png").toExternalForm());
+        ImageView imageView = new ImageView(MainMenu.class.getClassLoader().getResource("images/Background_B.png").toExternalForm());
         imageView.setFitWidth(WIDTH);
         imageView.setFitHeight(HEIGHT);
 
@@ -106,10 +106,11 @@ public class MenuController extends Application {
         root.getChildren().addAll(menuBox);
     }
 
-    protected static void initAlert(Alert alert, DialogPane dialogPane) {
-        alert = new Alert(Alert.AlertType.ERROR, "Invalid input", ButtonType.OK);
-        dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add(RegisterMenuController.class.getClassLoader().getResource("css/MenuStyle.css").toExternalForm());
+    protected static Alert initAlert() {
+        Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid input", ButtonType.OK);
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().add(RegisterMenu.class.getClassLoader().getResource("css/MenuStyle.css").toExternalForm());
+        return alert;
     }
 
     protected static void showAlert(Alert alert, String message) {

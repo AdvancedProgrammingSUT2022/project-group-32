@@ -18,32 +18,38 @@ import javafx.util.Pair;
 import java.util.Arrays;
 import java.util.List;
 
-import static View.MenuController.MenuType.*;
+import static View.Menu.MenuType.*;
 
-public class LoginMenuController extends MenuController {
+public class RegisterMenu extends Menu{
     private static Pane root;
     private static VBox menuBox;
     private static Line line;
     private static Alert alert;
     private static DialogPane dialogPane;
+    private static Stage stage;
     private static TextField usernameField;
+    private static TextField nicknameField;
     private static PasswordField passwordField;
     private static final List<Pair<String, Runnable>> menuData = Arrays.asList(
-            new Pair<String, Runnable>("L o g i n", () -> {
-                login();
+            new Pair<String, Runnable>("R E G I S T E R", () -> {
+                register();
             }),
-            new Pair<String, Runnable>("G O   T O   R E G I S T E R", () -> {
-                MenuController.changeMenu(REGISTER_MENU);
+            new Pair<String, Runnable>("G O   T O   L O G I N", () -> {
+                Menu.changeMenu(LOGIN_MENU);
             }),
             new Pair<String, Runnable>("E x i t", () -> {
-                MenuController.changeMenu(EXIT);
+                Menu.changeMenu(EXIT);
             })
     );
 
-    private static void login() {
-        Response.LoginMenu response = UserController.login(usernameField.getText(), passwordField.getText());
-        if (response.equals(Response.LoginMenu.USERNAME_PASSWORD_DONT_MATCH)) {
-            showAlert(alert, response.getString());
+    private static void register() {
+        Response.LoginMenu response = UserController.register(usernameField.getText(), passwordField.getText(), nicknameField.getText());
+        if (response.equals(Response.LoginMenu.USERNAME_EXISTS)) {
+            showAlert(alert, response.getString(usernameField.getText()));
+        } else if (response.equals(Response.LoginMenu.NICKNAME_EXISTS)) {
+            showAlert(alert, response.getString(nicknameField.getText()));
+        } else if (!response.equals(Response.LoginMenu.REGISTER_SUCCESSFUL)) {
+            showAlert(alert, "Invalid input format");
         } else {
             changeMenu(MAIN_MENU);
         }
@@ -53,16 +59,17 @@ public class LoginMenuController extends MenuController {
     private static Parent createContent() {
         addBackground(root);
         double lineX = WIDTH / 2 - 100;
-        double lineY = HEIGHT / 3 + 50;
+        double lineY = HEIGHT / 3;
         addLine(lineX, lineY);
         addLoginItems();
         addMenu(lineX + 5, lineY + 5, menuBox, menuData, root);
+
         startAnimation(line, menuBox);
         return root;
     }
 
     private static void addLine(double x, double y) {
-        line = new Line(x, y, x, y + 300);
+        line = new Line(x, y, x, y + 350);
         line.setStrokeWidth(3);
         line.setStroke(Color.color(1, 1, 1, 0.75));
         line.setEffect(new DropShadow(5, Color.BLACK));
@@ -74,25 +81,32 @@ public class LoginMenuController extends MenuController {
         VBox vBox = new VBox(10);
         Label username = new Label("username:");
         Label password = new Label("password:");
+        Label nickname = new Label("nickname:");
+        usernameField = new TextField();
+        nicknameField = new TextField();
+        passwordField = new PasswordField();
         username.setTextFill(Color.WHITE);
         password.setTextFill(Color.WHITE);
+        nickname.setTextFill(Color.WHITE);
         username.setFont(Font.font(14));
         password.setFont(Font.font(14));
-        usernameField = new TextField();
-        passwordField = new PasswordField();
-        vBox.getChildren().addAll(username, usernameField, password, passwordField, new Text());
+        nickname.setFont(Font.font(14));
+        vBox.getChildren().addAll(username, usernameField, nickname, nicknameField, password, passwordField, new Text());
         menuBox.getChildren().addAll(vBox);
+
     }
 
-
-    public static void show(Stage stage) throws Exception {
+    public static void show(Stage primaryStage) throws Exception {
+        stage = primaryStage;
         root = new Pane();
-        initAlert(alert, dialogPane);
+        alert = initAlert();
         menuBox = new VBox(-5);
         createContent();
-        Scene scene = new Scene(root, WIDTH, HEIGHT);
-        scene.getStylesheets().add(LoginMenuController.class.getClassLoader().getResource("css/MenuStyle.css").toExternalForm());
+        Pane pane = root;
+        Scene scene = new Scene(pane, WIDTH, HEIGHT);
+        scene.getStylesheets().add(LoginMenu.class.getClassLoader().getResource("css/MenuStyle.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
     }
+
 }

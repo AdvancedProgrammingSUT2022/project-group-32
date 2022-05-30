@@ -1,4 +1,4 @@
-package View.GraphicModels;
+package View.Components;
 
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
