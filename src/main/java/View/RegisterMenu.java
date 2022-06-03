@@ -42,39 +42,17 @@ public class RegisterMenu extends Menu{
             })
     );
 
-    private static void register() {
-        Response.LoginMenu response = UserController.register(usernameField.getText(), passwordField.getText(), nicknameField.getText());
-        if (response.equals(Response.LoginMenu.USERNAME_EXISTS)) {
-            showAlert(alert, response.getString(usernameField.getText()));
-        } else if (response.equals(Response.LoginMenu.NICKNAME_EXISTS)) {
-            showAlert(alert, response.getString(nicknameField.getText()));
-        } else if (!response.equals(Response.LoginMenu.REGISTER_SUCCESSFUL)) {
-            showAlert(alert, "Invalid input format");
-        } else {
-            changeMenu(MAIN_MENU);
-        }
-    }
-
 
     private static Parent createContent() {
-        addBackground(root);
+        addBackground(root, "Background_B");
         double lineX = WIDTH / 2 - 100;
         double lineY = HEIGHT / 3;
-        addLine(lineX, lineY);
+        line = addLine(lineX, lineY, 350, root);
         addLoginItems();
         addMenu(lineX + 5, lineY + 5, menuBox, menuData, root);
 
         startAnimation(line, menuBox);
         return root;
-    }
-
-    private static void addLine(double x, double y) {
-        line = new Line(x, y, x, y + 350);
-        line.setStrokeWidth(3);
-        line.setStroke(Color.color(1, 1, 1, 0.75));
-        line.setEffect(new DropShadow(5, Color.BLACK));
-        line.setScaleY(0);
-        root.getChildren().add(line);
     }
 
     private static void addLoginItems() {
@@ -107,6 +85,21 @@ public class RegisterMenu extends Menu{
         scene.getStylesheets().add(LoginMenu.class.getClassLoader().getResource("css/MenuStyle.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
+    }
+
+    //////////////
+
+    private static void register() {
+        Response.LoginMenu response = UserController.register(usernameField.getText(), passwordField.getText(), nicknameField.getText());
+        if (response.equals(Response.LoginMenu.USERNAME_EXISTS)) {
+            showAlert(alert, response.getString(usernameField.getText()));
+        } else if (response.equals(Response.LoginMenu.NICKNAME_EXISTS)) {
+            showAlert(alert, response.getString(nicknameField.getText()));
+        } else if (!response.equals(Response.LoginMenu.REGISTER_SUCCESSFUL)) {
+            showAlert(alert, "Invalid input format");
+        } else {
+            changeMenu(MAIN_MENU);
+        }
     }
 
 }

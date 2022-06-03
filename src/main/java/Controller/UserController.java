@@ -141,10 +141,7 @@ public class UserController {
         return Response.ProfileMenu.SUCCESSFUL_NICKNAME_CHANGE;
     }
 
-    public static Response.ProfileMenu removeUser(String password) {
-        if (!currentUser.getPassword().equals(password)) {
-            return Response.ProfileMenu.WRONG_PASSWORD;
-        }
+    public static Response.ProfileMenu removeUser() {
         users.remove(currentUser);
         currentUser = null;
         Menu.setCurrentMenu(Menu.MenuType.LOGIN_MENU);

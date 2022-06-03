@@ -5,7 +5,6 @@ import enums.Responses.Response;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -20,47 +19,35 @@ import java.util.List;
 
 import static View.Menu.MenuType.*;
 
-public class LoginMenu extends Menu {
+public class NickChangeMenu extends Menu {
     private static Pane root;
     private static VBox menuBox;
     private static Line line;
     private static Alert alert;
-    private static DialogPane dialogPane;
-    private static TextField usernameField;
-    private static PasswordField passwordField;
+    private static TextField nicknameField;
     private static final List<Pair<String, Runnable>> menuData = Arrays.asList(
-            new Pair<String, Runnable>("L o g i n", () -> {
-                login();
-            }),
-            new Pair<String, Runnable>("G O   T O   R E G I S T E R", () -> {
-                Menu.changeMenu(REGISTER_MENU);
-            }),
-            new Pair<String, Runnable>("E x i t", () -> {
-                Menu.changeMenu(EXIT);
-            })
+            new Pair<String, Runnable>("C h a n g e   N i c k n a m e ", NickChangeMenu::changeNickName),
+            new Pair<String, Runnable>("B a c k", () -> changeMenu(PROFILE_MENU))
     );
     private static Parent createContent() {
-        addBackground(root, "Background_B");
+        addBackground(root, "Background_A");
         double lineX = WIDTH / 2 - 100;
         double lineY = HEIGHT / 3 + 50;
-        line = addLine(lineX, lineY, 350, root);
-        addLoginItems();
+        line = addLine(lineX, lineY, 160, root);
+        addFields();
         addMenu(lineX + 5, lineY + 5, menuBox, menuData, root);
         startAnimation(line, menuBox);
         return root;
     }
 
-    private static void addLoginItems() {
+    private static void addFields() {
         VBox vBox = new VBox(10);
-        Label username = new Label("username:");
-        Label password = new Label("password:");
+        Label username = new Label("new nickname");
         username.setTextFill(Color.WHITE);
-        password.setTextFill(Color.WHITE);
         username.setFont(Font.font(14));
-        password.setFont(Font.font(14));
-        usernameField = new TextField();
-        passwordField = new PasswordField();
-        vBox.getChildren().addAll(username, usernameField, password, passwordField, new Text());
+        nicknameField = new TextField();
+        nicknameField.setPromptText("Enter a new nickname");
+        vBox.getChildren().addAll(username, nicknameField, new Text());
         menuBox.getChildren().addAll(vBox);
     }
 
@@ -78,11 +65,13 @@ public class LoginMenu extends Menu {
 
     //////////////////////////////////
 
-    private static void login() {
-        Response.LoginMenu response = UserController.login(usernameField.getText(), passwordField.getText());
-        if (response.equals(Response.LoginMenu.USERNAME_PASSWORD_DONT_MATCH)) {
+    private static void changeNickName() {
+        Response.ProfileMenu response = UserController.changeNickname(nicknameField.getText());
+        if(!response.equals(Response.ProfileMenu.SUCCESSFUL_NICKNAME_CHANGE)){
             showAlert(alert, response.getString());
-        } else {
+        }
+        else {
+            // TODO: 6/3/2022 some sort of confirmation
             changeMenu(MAIN_MENU);
         }
     }

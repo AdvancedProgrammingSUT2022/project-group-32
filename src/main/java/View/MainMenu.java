@@ -16,8 +16,7 @@ import javafx.util.Pair;
 import java.util.Arrays;
 import java.util.List;
 
-import static View.Menu.MenuType.EXIT;
-import static View.Menu.MenuType.LOGIN_MENU;
+import static View.Menu.MenuType.*;
 
 public class MainMenu extends Menu {
 
@@ -26,6 +25,7 @@ public class MainMenu extends Menu {
             new Pair<String, Runnable>("N e w   G a m e", () -> {
             }),
             new Pair<String, Runnable>("P r o f i l e", () -> {
+                Menu.changeMenu(PROFILE_MENU);
             }),
             new Pair<String, Runnable>("S c o r e b o a r d", () -> {
             }),
@@ -46,32 +46,25 @@ public class MainMenu extends Menu {
         changeMenu(LOGIN_MENU);
     }
 
-    private static final Pane root = new Pane();
+    private static Pane root = new Pane();
     private static final VBox menuBox = new VBox(-5);
     private static Line line;
 
     private static Parent createContent() {
-        addBackground(root);
+        root = new Pane();
+        menuBox.getChildren().clear();
+        addBackground(root, "Background_A");
         addTitle();
 
         double lineX = WIDTH / 2 - 100;
         double lineY = HEIGHT / 3 + 50;
 
-        addLine(lineX, lineY);
+        line = addLine(lineX, lineY, 300, root);
         addMenu(lineX + 5, lineY + 5, menuBox, menuData, root);
 
         startAnimation(line, menuBox);
 
         return root;
-    }
-
-    private static void addLine(double x, double y) {
-        line = new Line(x, y, x, y + 300);
-        line.setStrokeWidth(3);
-        line.setStroke(Color.color(1, 1, 1, 0.75));
-        line.setEffect(new DropShadow(5, Color.BLACK));
-        line.setScaleY(0);
-        root.getChildren().add(line);
     }
 
     private static void addTitle() {

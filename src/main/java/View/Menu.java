@@ -8,9 +8,11 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -20,8 +22,8 @@ import javafx.util.Pair;
 import java.util.List;
 
 public class Menu extends Application {
-    public static final int WIDTH = 1440;
-    public static final int HEIGHT = 720;
+    public static final float WIDTH = 1440;
+    public static final float HEIGHT = 720;
     private static Stage stage;
 
     public enum MenuType {
@@ -30,6 +32,8 @@ public class Menu extends Application {
         REGISTER_MENU("registerMenu"),
         GAME_MENU("gameMenu"),
         PROFILE_MENU("profileMenu"),
+        PASS_CHANGE_MENU("passChangeMenu"),
+        NICK_CHANGE_MENU("nickChangeMenu"),
         EXIT("exit");
 
         String name;
@@ -44,11 +48,12 @@ public class Menu extends Application {
         stage = primaryStage;
         stage.setTitle("Civilization VI");
         stage.setResizable(false);
-        MenuType currentMenu = MenuType.REGISTER_MENU;
+        MenuType currentMenu = MenuType.MAIN_MENU;
         switch (currentMenu) {
             case MAIN_MENU -> MainMenu.show(stage);
             case LOGIN_MENU -> LoginMenu.show(stage);
             case REGISTER_MENU -> RegisterMenu.show(stage);
+            case PROFILE_MENU -> ProfileMenu.show(stage);
         }
     }
 
@@ -57,6 +62,9 @@ public class Menu extends Application {
             switch (menuType) {
                 case MAIN_MENU -> MainMenu.show(stage);
                 case LOGIN_MENU -> LoginMenu.show(stage);
+                case PROFILE_MENU -> ProfileMenu.show(stage);
+                case NICK_CHANGE_MENU -> NickChangeMenu.show(stage);
+                case PASS_CHANGE_MENU -> PassChangeMenu.show(stage);
                 case REGISTER_MENU -> RegisterMenu.show(stage);
                 case EXIT -> System.exit(0);
 
@@ -66,14 +74,23 @@ public class Menu extends Application {
         }
     }
 
-    protected static void addBackground(Pane root) {
-        ImageView imageView = new ImageView(MainMenu.class.getClassLoader().getResource("images/Background_B.png").toExternalForm());
+    protected static void addBackground(Pane root, String background) {
+        ImageView imageView = new ImageView(MainMenu.class.getClassLoader().getResource("images/" + background + ".png").toExternalForm());
         imageView.setFitWidth(WIDTH);
         imageView.setFitHeight(HEIGHT);
 
         root.getChildren().add(imageView);
     }
 
+    protected static Line addLine(double x, double y, double length, Pane root) {
+        Line line = new Line(x, y, x, y + length);
+        line.setStrokeWidth(3);
+        line.setStroke(Color.color(1, 1, 1, 0.75));
+        line.setEffect(new DropShadow(5, Color.BLACK));
+        line.setScaleY(0);
+        root.getChildren().add(line);
+        return line;
+    }
 
     protected static void startAnimation(Line line, VBox menuBox) {
         ScaleTransition st = new ScaleTransition(Duration.seconds(1), line);
