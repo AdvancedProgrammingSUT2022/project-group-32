@@ -97,6 +97,10 @@ public class Response {
         NICKNAME_EXISTS("Nickname \"$\" already exists"),
         SUCCESSFUL_NICKNAME_CHANGE("Nickname changed successfully"),
 
+        // CHANGE PICTURE
+        INVALID_FILE_FORMAT("Invalid file format"),
+        SUCCESSFUL_PICTURE_CHANGE("Profile Picture changed successfully"),
+
         // DELETE ACCOUNT
         WRONG_PASSWORD("Password is wrong"),
         ACCOUNT_DELETED_SUCCESSFULLY("Account deleted successfully"),

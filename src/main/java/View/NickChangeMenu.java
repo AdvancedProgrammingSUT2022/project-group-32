@@ -72,7 +72,7 @@ public class NickChangeMenu extends Menu {
         }
         else {
             // TODO: 6/3/2022 some sort of confirmation
-            changeMenu(MAIN_MENU);
+            changeMenu(PROFILE_MENU);
         }
     }
 }

@@ -48,7 +48,7 @@ public class Menu extends Application {
         stage = primaryStage;
         stage.setTitle("Civilization VI");
         stage.setResizable(false);
-        MenuType currentMenu = MenuType.MAIN_MENU;
+        MenuType currentMenu = MenuType.LOGIN_MENU;
         switch (currentMenu) {
             case MAIN_MENU -> MainMenu.show(stage);
             case LOGIN_MENU -> LoginMenu.show(stage);
@@ -67,7 +67,6 @@ public class Menu extends Application {
                 case PASS_CHANGE_MENU -> PassChangeMenu.show(stage);
                 case REGISTER_MENU -> RegisterMenu.show(stage);
                 case EXIT -> System.exit(0);
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -137,5 +136,9 @@ public class Menu extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public static Stage getStage() {
+        return stage;
     }
 }

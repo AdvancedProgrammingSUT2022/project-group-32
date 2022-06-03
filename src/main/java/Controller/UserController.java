@@ -6,6 +6,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import enums.Responses.Response;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -100,6 +104,7 @@ public class UserController {
         User user = new User(username, password, nickname);
         users.add(user);
         saveUsers();
+        currentUser = user;
         return Response.LoginMenu.REGISTER_SUCCESSFUL;
     }
 
@@ -127,6 +132,7 @@ public class UserController {
             return Response.ProfileMenu.SAME_PASSWORD;
         }
         currentUser.setPassword(newPW);
+        saveUsers();
         return Response.ProfileMenu.SUCCESSFUL_PASSWORD_CHANGE;
     }
 
@@ -138,12 +144,20 @@ public class UserController {
             return Response.ProfileMenu.NICKNAME_EXISTS;
         }
         currentUser.setNickname(nickname);
+        saveUsers();
         return Response.ProfileMenu.SUCCESSFUL_NICKNAME_CHANGE;
+    }
+
+    public static Response.ProfileMenu changePicture(File file){
+        currentUser.setPhotoAddress(file.getAbsolutePath());
+        saveUsers();
+        return Response.ProfileMenu.SUCCESSFUL_PICTURE_CHANGE;
     }
 
     public static Response.ProfileMenu removeUser() {
         users.remove(currentUser);
         currentUser = null;
+        saveUsers();
         Menu.setCurrentMenu(Menu.MenuType.LOGIN_MENU);
         return Response.ProfileMenu.ACCOUNT_DELETED_SUCCESSFULLY;
     }

@@ -1,19 +1,20 @@
 package View;
 
 import Controller.UserController;
-import Model.User;
+import View.Components.Civ6Profile;
 import View.Components.Civ6Title;
 import enums.Responses.Response;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.effect.DropShadow;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import static View.Menu.MenuType.*;
 
 public class ProfileMenu extends Menu{
     private static final List<Pair<String, Runnable>> menuData = Arrays.asList(
+            new Pair<String, Runnable>("C h a n g e   P i c t u r e", ProfileMenu::changePicture),
             new Pair<String, Runnable>("C h a n g e   N i c k n a m e", () -> changeMenu(NICK_CHANGE_MENU)),
             new Pair<String, Runnable>("C h a n g e   P a s s w o r d", () -> changeMenu(PASS_CHANGE_MENU)),
             new Pair<String, Runnable>("D e l e t e   A c c o u n t", ProfileMenu::deleteAccount),
@@ -30,6 +32,9 @@ public class ProfileMenu extends Menu{
     private static Pane root = new Pane();
     private static final VBox menuBox = new VBox(-5);
     private static Line line;
+    private static Alert alert;
+    private static FileChooser fileChooser;
+    private static File file;
 
     private static Parent createContent() {
         root = new Pane();
@@ -37,10 +42,15 @@ public class ProfileMenu extends Menu{
         addBackground(root, "Background_A");
         addTitle();
 
-        double lineX = WIDTH / 2 - 100;
-        double lineY = HEIGHT / 3 + 50;
+        Civ6Profile civ6Profile = new Civ6Profile(UserController.getCurrentUser());
+        civ6Profile.setTranslateX((WIDTH - civ6Profile.getWidth()) / 2);
+        civ6Profile.setTranslateY(HEIGHT / 2 - civ6Profile.getHeight() + 50);
+        root.getChildren().add(civ6Profile);
 
-        line = addLine(lineX, lineY, 160, root);
+        double lineX = WIDTH / 2 - 100;
+        double lineY = HEIGHT / 2 + 100;
+
+        line = addLine(lineX, lineY, 200, root);
         addMenu(lineX + 5, lineY + 5, menuBox, menuData, root);
 
         startAnimation(line, menuBox);
@@ -58,6 +68,7 @@ public class ProfileMenu extends Menu{
 
     public static void show(Stage stage) throws Exception {
         createContent();
+        alert = initAlert();
         Pane pane = root;
         stage.setScene(new Scene(pane, WIDTH, HEIGHT));
         stage.show();
@@ -68,5 +79,17 @@ public class ProfileMenu extends Menu{
     private static void deleteAccount(){
         UserController.removeUser();
         changeMenu(REGISTER_MENU);
+    }
+
+    private static void changePicture(){
+        fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Image");
+        file = fileChooser.showOpenDialog(Menu.getStage().getScene().getWindow());
+        Response.ProfileMenu response = UserController.changePicture(file);
+        if(!response.equals(Response.ProfileMenu.SUCCESSFUL_PICTURE_CHANGE)){
+            showAlert(alert, response.getString());
+        } else {
+            changeMenu(PROFILE_MENU);
+        }
     }
 }
