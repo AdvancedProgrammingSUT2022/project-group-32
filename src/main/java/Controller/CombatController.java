@@ -7,10 +7,46 @@ import Model.Units.Unit;
 import enums.Types.CombatType;
 import enums.Types.UnitType;
 
+import java.util.Arrays;
+
 public class CombatController {
 
-    public static void meleeAttack(Troop attacker, Unit defender) {
+    private static double getBonus(Troop t1, Troop t2) {
+        if ((t1.getUnitType() == UnitType.PIKEMAN || t1.getUnitType() == UnitType.SPEARMAN) && t2.getCombatType() == CombatType.MOUNTED) {
+            return 2; // vs mounted bonus
+        }
+        if (t1.getUnitType() == UnitType.ANTI_TANK_GUN && t2.getUnitType() == UnitType.TANK) {
+            return 1.1; // anti tank bonus
+        }
+        return 1;
+    }
 
+    public static void meleeAttack(Troop attacker, Troop defender) {
+        double attPower = attacker.getMeleeStrength() * (attacker.getHP() / attacker.getHealth());
+        attPower *= 1 + attacker.getTile().getTerrain().getCombat();
+        attPower *= getBonus(attacker, defender);
+        double defPower = defender.getMeleeStrength() * (defender.getHP() / defender.getHealth());
+        defPower *= 1 + defender.getTile().getTerrain().getCombat();
+        defPower *= getBonus(defender, attacker);
+        if (attacker.getUnitType().combatType == CombatType.MOUNTED) attacker.setMP(attacker.getMP() - 1);
+        else attacker.setMP(0);
+        attacker.setFortifyBonus(0);
+
+        defender.setHP(defender.getHP() - defender.getHealth() * (attPower / (defPower * 2)));
+        attacker.setHP(attacker.getHP() - attacker.getHealth() * (defPower / (attPower * 2)));
+
+        if (attacker.getHP() <= 0) {
+            attacker.getOwner().getUnits().remove(attacker);
+            attacker.getOwner().addNotification(GameController.getTurn() + ": a unit of yours has died!");
+            attacker.destroy();
+        }
+        if (defender.getHP() <= 0) {
+            defender.getOwner().getUnits().remove(defender);
+            defender.getOwner().addNotification(GameController.getTurn() + ": a unit of yours has died!");
+            defender.destroy();
+        }
+        PlayerController.updateFieldOfView(attacker.getOwner());
+        PlayerController.updateFieldOfView(defender.getOwner());
     }
 
     public static void meleeAttack(Troop attacker, City defender) {
@@ -38,8 +74,24 @@ public class CombatController {
         PlayerController.updateFieldOfView(defender.getOwner());
     }
 
-    public static void rangedAttack(Troop attacker, Unit defender) {
+    public static void rangedAttack(Troop attacker, Troop defender) {
+        double attPower = attacker.getRangedStrength() * (attacker.getHP() / attacker.getHealth());
+        attPower *= 1 + attacker.getTile().getTerrain().getCombat();
+        if (attacker.getCombatType().equals(CombatType.SIEGE)) attPower *= 1.1;
+        double defPower = defender.getMeleeStrength() * (defender.getHP() / defender.getHealth());
 
+        attacker.setMP(0);
+        attacker.setFortifyBonus(0);
+
+        defender.setHP(defender.getHP() - defender.getHealth() * (attPower / (defPower * 2)));
+
+        if (defender.getHP() <= 0) {
+            defender.getOwner().getUnits().remove(defender);
+            defender.getOwner().addNotification(GameController.getTurn() + ": a unit of yours has died!");
+            defender.destroy();
+        }
+        PlayerController.updateFieldOfView(attacker.getOwner());
+        PlayerController.updateFieldOfView(defender.getOwner());
     }
 
     public static void rangedAttack(Troop attacker, City defender) {
@@ -48,8 +100,7 @@ public class CombatController {
         if (attacker.getCombatType().equals(CombatType.SIEGE)) attPower *= 1.1;
         double defPower = defender.getStrength();
 
-        if (attacker.getUnitType().combatType == CombatType.MOUNTED) attacker.setMP(attacker.getMP() - 1);
-        else attacker.setMP(0);
+        attacker.setMP(0);
         attacker.setFortifyBonus(0);
 
         if (defPower >= 0) defender.setHP(defender.getHP() - defender.getHealth() * (attPower / (defPower * 2)));
@@ -87,7 +138,10 @@ public class CombatController {
         player.addNotification(turn + ": you have have captured the city of" + city.getName());
     }
 
-    public static void captureUnit(Unit enemyUnit) {
-
+    public static void captureUnit(Troop attacker, Unit defender) {
+        defender.getOwner().removeUnit(defender);
+        defender.getOwner().addNotification(GameController.getTurn() + ": a unit of yours has been captured!");
+        defender.setOwner(attacker.getOwner());
+        attacker.getOwner().addUnit(defender);
     }
 }

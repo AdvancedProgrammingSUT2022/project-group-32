@@ -1,4 +1,5 @@
 package View;
 
-public class ChatMenu {
+public class ChatMenu extends Menu{
+
 }

@@ -255,29 +255,33 @@ public class UnitController {
         if (!map.lookAroundInRange(tile1, Math.max(1, ((Troop) unit).getRange())).contains(tile2)) {
             return InGameResponses.Unit.UNIT_OUT_OF_RANGE;
         }
-        if (tile2.getTroop() == null && tile2.getCity().getCapitalTile() != tile2) {
+        if (tile2.getTroop() == null && tile2.getUnit() == null && tile2.getCity().getCapitalTile() != tile2) {
             return InGameResponses.Unit.TARGET_EMPTY;
         }
         if (((Troop) unit).getRange() == 0) {
             if (tile2.getCity().getCapitalTile() == tile2) {
                 if (tile2.getCity().getOwner() == unit.getOwner()) return InGameResponses.Unit.OWN_TARGET;
                 CombatController.meleeAttack(((Troop) unit), tile2.getCity());
-            } else {
+            } else if(tile2.getTroop() != null){
                 if (tile2.getTroop().getOwner() == unit.getOwner()) return InGameResponses.Unit.OWN_TARGET;
                 CombatController.meleeAttack(((Troop) unit), tile2.getTroop());
+            } else {
+                if (tile2.getUnit().getOwner() == unit.getOwner()) return InGameResponses.Unit.OWN_TARGET;
+                CombatController.captureUnit((Troop) unit, tile2.getUnit());
             }
         } else {
             if (tile2.getCity().getCapitalTile() == tile2) {
                 if (tile2.getCity().getOwner() == unit.getOwner()) return InGameResponses.Unit.OWN_TARGET;
                 CombatController.rangedAttack(((Troop) unit), tile2.getCity());
-            } else {
+            } else if(tile2.getTroop() != null){
                 if (tile2.getTroop().getOwner() == unit.getOwner()) return InGameResponses.Unit.OWN_TARGET;
                 CombatController.rangedAttack(((Troop) unit), tile2.getTroop());
+            } else {
+                if (tile2.getUnit().getOwner() == unit.getOwner()) return InGameResponses.Unit.OWN_TARGET;
+                CombatController.captureUnit((Troop) unit, tile2.getUnit());
             }
         }
         return InGameResponses.Unit.ATTACK_SUCCESSFUL;
-        // uses combat controller if needed
-        // remember to make fortify bonus equal to 0
     }
 
     public static InGameResponses.Unit foundCity(String name) {
