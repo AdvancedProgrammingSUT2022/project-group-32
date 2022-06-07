@@ -3,9 +3,11 @@ package Controller;
 import Model.*;
 import Model.Units.Troop;
 import Model.Units.Unit;
+import View.Menu;
 import enums.Responses.Response;
 import enums.Types.*;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -22,6 +24,11 @@ public class GameController {
         }
         game = new Game(randomMap, players);
         MapController.randomizeRivers();
+    }
+
+    // returns current time in format
+    public static String getCurrentTime(){
+        return java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
 
     public static Player getCurrentPlayer() {
@@ -144,6 +151,30 @@ public class GameController {
     public static void moveCameraToCity(City city) {
         GameController.getCurrentPlayer().setCamera(city.getCapitalTile().getRow(), city.getCapitalTile().getColumn());
     }
+
+    public static boolean isDead(Player player){
+        return player.getCities().isEmpty();
+    }
+
+    public static boolean isEnded(){
+        int aliveCount = 0;
+        for (Player player : game.getPlayers()) {
+            if(!isDead(player)) aliveCount ++;
+        }
+        return (aliveCount == 1);
+    }
+
+    public static void endGame(){
+        for (Player player : game.getPlayers()) {
+            User user = player.getUser();
+            user.setLastUpdate(getCurrentTime());
+            user.setScore(player.getScore());
+        }
+        UserController.saveUsers();
+        // TODO: 6/7/2022 show a game ended popup or something
+        Menu.changeMenu(Menu.MenuType.MAIN_MENU);
+    }
+
     ///         CHEAT CODES
 
     public static Response.GameMenu cheatEyeOfAgamotto(int amount) {

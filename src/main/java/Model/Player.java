@@ -23,8 +23,7 @@ public class Player {
     private final ArrayList<Tile> tiles;
     private City capital;
     private int gold;
-
-
+    private int score;
     private int scienceIncome;
     private int goldIncome;
     private int XP;
@@ -55,6 +54,7 @@ public class Player {
         this.color = Color.values()[this.id + 8];
         this.happiness = 100;
         count++;
+        this.score = 0;
     }
 
     public int getScienceIncome() {
@@ -198,6 +198,7 @@ public class Player {
     public void addUnit(Unit unit) {
         unit.setRemainingCost(0);
         this.units.add(unit);
+        this.score += 1;
     }
 
     public void removeUnit(Unit unit) {
@@ -206,6 +207,7 @@ public class Player {
 
     public void addBuilding(Building building) {
         this.buildings.add(building);
+        this.score += 2;
     }
 
     public void removeBuilding(Building building) {
@@ -233,6 +235,7 @@ public class Player {
 
     public void addTechnology(Technology technology) {
         this.technologies.add(technology);
+        this.score += 3;
     }
 
     public void removeTechnology(Technology technology) {
@@ -288,6 +291,7 @@ public class Player {
             this.capital = city;
         }
         this.cities.add(city);
+        this.score += 10;
     }
 
     public void removeCity(City city) {
@@ -318,6 +322,7 @@ public class Player {
 
     public void addTile(Tile tile) {
         this.tiles.add(tile);
+        this.score += 2;
     }
 
     public void removeTile(Tile tile) {
@@ -355,8 +360,7 @@ public class Player {
     }
 
     public int getScore() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
-        // TODO: 4/18/2022
+        return score;
     }
 
     public Color getBackgroundColor() {

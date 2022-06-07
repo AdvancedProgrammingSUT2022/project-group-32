@@ -136,6 +136,9 @@ public class CombatController {
         city.setOwner(player);
         player.addCity(city);
         player.addNotification(turn + ": you have have captured the city of" + city.getName());
+        if(GameController.isEnded()){
+            GameController.endGame();
+        }
     }
 
     public static void captureUnit(Troop attacker, Unit defender) {

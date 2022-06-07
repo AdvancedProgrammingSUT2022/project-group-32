@@ -1,5 +1,7 @@
 package Model;
 
+import Controller.GameController;
+
 import java.util.ArrayList;
 
 public class Game {
@@ -44,11 +46,13 @@ public class Game {
     }
 
     public void nextTurn() {
-        currentPlayerID = currentPlayerID + 1;
-        if(currentPlayerID == players.size()){
-            currentPlayerID = 0;
-            turnCount ++;
-        }
+        do {
+            currentPlayerID = currentPlayerID + 1;
+            if(currentPlayerID == players.size()){
+                currentPlayerID = 0;
+                turnCount ++;
+            }
+        } while(GameController.isDead(players.get(currentPlayerID)));
     }
 
 }

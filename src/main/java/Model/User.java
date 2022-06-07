@@ -3,8 +3,8 @@ package Model;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.awt.*;
 import java.io.File;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 
 public class User {
@@ -12,6 +12,7 @@ public class User {
     private String password;
     private String nickname;
     private String photoAddress;
+    private String lastUpdate;
     private int score;
 
     public User(String username, String password, String nickname) {
@@ -19,6 +20,7 @@ public class User {
         this.password = password;
         this.nickname = nickname;
         this.photoAddress = null;
+        this.lastUpdate = java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         this.score = 0;
     }
 
@@ -70,10 +72,19 @@ public class User {
         }
     }
 
+    public String getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(String lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
     public static class compareByScore implements Comparator<User> {
         @Override
         public int compare(User o1, User o2) {
-            return o1.getScore() - o2.getScore();
+            if(o1.getScore() != o2.getScore()) return o1.getScore() - o2.getScore();
+            return o1.getLastUpdate().compareTo(o2.getLastUpdate());
         }
     }
 }
