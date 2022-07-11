@@ -5,10 +5,8 @@ import View.Components.Civ6Title;
 import enums.Responses.Response;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -23,6 +21,7 @@ public class MainMenu extends Menu {
 
     private static final List<Pair<String, Runnable>> menuData = Arrays.asList(
             new Pair<String, Runnable>("N e w   G a m e", () -> {
+                Menu.changeMenu(NEW_GAME_MENU);
             }),
             new Pair<String, Runnable>("P r o f i l e", () -> {
                 Menu.changeMenu(PROFILE_MENU);

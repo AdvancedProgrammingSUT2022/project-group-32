@@ -1,1 +1,15 @@
-[{"username":"qwer","password":"qwQW12!@","nickname":"qwer","score":0}]
+[
+  {
+    "username": "qwer",
+    "password": "qwQW12!@",
+    "nickname": "qwer",
+    "score": 0
+  },
+  {
+    "username": "parsa11",
+    "password": "Pp123123!@#",
+    "nickname": "parsa11",
+    "lastUpdate": "2022-07-11 20:28",
+    "score": 0
+  }
+]
