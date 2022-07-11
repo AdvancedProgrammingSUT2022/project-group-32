@@ -5,10 +5,7 @@ import Model.User;
 import enums.Responses.Response;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.DialogPane;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -33,9 +30,10 @@ public class NewGameMenu extends Menu {
     private static DialogPane dialogPane;
     private static Stage stage;
     private static final Label invitationStatus = new Label("");
-
     private static TextField playerCountField;
     private static TextField playerUsernamesField;
+    private static TextField mapSize;
+
     private static final List<Pair<String, Runnable>> menuData = Arrays.asList(
             new Pair<String, Runnable>("S E N D   I N V I T A T I O N S", () -> {
                 try {
@@ -56,10 +54,19 @@ public class NewGameMenu extends Menu {
     );
 
     private static void sendInvitations(int playersCount, ArrayList<String> invitationsUsernames) {
+        int mapSizeInteger;
+        try {
+            mapSizeInteger = Integer.parseInt(mapSize.getText().trim());
+        } catch (Exception e) {
+            showAlert(alert, "invalid mapSize");
+            return;
+        }
+
         if (playersCount - 1 != invitationsUsernames.size()) {
             showAlert(alert, "usernames count is not valid");
             return;
         }
+
         if (newGame(invitationsUsernames)) {
             invitationStatus.setText("invitations sent, not accepted!");
             // TODO: 7/11/2022 seding initations and waiting for acceptence and then initing the game
@@ -86,18 +93,26 @@ public class NewGameMenu extends Menu {
         VBox vBox = new VBox(10);
         Label playerCount = new Label("number of players:");
         Label playerUsernames = new Label("other players username(','):");
+        Label mapSizeLabel = new Label("Map Size: (1-5): ");
         playerCountField = new TextField();
+        playerCountField.setTooltip(new Tooltip("enter the number of all players playing"));
         playerUsernamesField = new TextField();
+        playerUsernamesField.setTooltip(new Tooltip("enter other players usernames seperated bt ',' "));
+        mapSize = new TextField();
+        mapSize.setTooltip(new Tooltip("enter the map size in 1-5"));
         // TODO: 7/11/2022 sending and checking invitations, if initaions are send or accepted, invitationStatus changes;
         playerCount.setTextFill(Color.WHITE);
         playerUsernames.setTextFill(Color.WHITE);
         invitationStatus.setTextFill(Color.WHITE);
-        playerCount.setFont(Font.font(14));
-        invitationStatus.setFont(Font.font(14));
-        playerUsernames.setFont(Font.font(14));
-        vBox.getChildren().addAll(playerCount, playerCountField, playerUsernames, playerUsernamesField, invitationStatus, new Text());
-        menuBox.getChildren().addAll(vBox);
+        mapSizeLabel.setTextFill(Color.WHITE);
 
+        playerCount.setFont(Font.font(14));
+        mapSizeLabel.setFont(Font.font(14));
+        invitationStatus.setFont(Font.font(14));
+        invitationStatus.setTooltip(new Tooltip("states: sent but not accepted/ accepted.\n start the game when is accepted"));
+        playerUsernames.setFont(Font.font(14));
+        vBox.getChildren().addAll(playerCount, playerCountField, playerUsernames, playerUsernamesField, mapSizeLabel, mapSize, invitationStatus, new Text());
+        menuBox.getChildren().addAll(vBox);
     }
 
     public static void show(Stage primaryStage) throws Exception {
