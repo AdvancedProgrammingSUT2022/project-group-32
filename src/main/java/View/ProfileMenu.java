@@ -65,7 +65,7 @@ public class ProfileMenu extends Menu {
             invalidCommand();
             return;
         }
-        Response.ProfileMenu response = UserController.removeUser(parameters.get(0));
+        Response.ProfileMenu response = UserController.removeUser();
         System.out.println(response.getString());
     }
 

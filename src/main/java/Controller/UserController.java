@@ -71,7 +71,7 @@ public class UserController {
     }
 
     private static boolean IsNameValid(String name) {
-        return name.matches("\\w+");
+        return name.matches("\\w{3,}");
     }
 
     private static boolean IsPasswordValid(String password) {
@@ -100,6 +100,7 @@ public class UserController {
         User user = new User(username, password, nickname);
         users.add(user);
         saveUsers();
+        currentUser = user;
         return Response.LoginMenu.REGISTER_SUCCESSFUL;
     }
 
@@ -127,6 +128,7 @@ public class UserController {
             return Response.ProfileMenu.SAME_PASSWORD;
         }
         currentUser.setPassword(newPW);
+        saveUsers();
         return Response.ProfileMenu.SUCCESSFUL_PASSWORD_CHANGE;
     }
 
@@ -138,15 +140,14 @@ public class UserController {
             return Response.ProfileMenu.NICKNAME_EXISTS;
         }
         currentUser.setNickname(nickname);
+        saveUsers();
         return Response.ProfileMenu.SUCCESSFUL_NICKNAME_CHANGE;
     }
 
-    public static Response.ProfileMenu removeUser(String password) {
-        if (!currentUser.getPassword().equals(password)) {
-            return Response.ProfileMenu.WRONG_PASSWORD;
-        }
+    public static Response.ProfileMenu removeUser() {
         users.remove(currentUser);
         currentUser = null;
+        saveUsers();
         Menu.setCurrentMenu(Menu.MenuType.LOGIN_MENU);
         return Response.ProfileMenu.ACCOUNT_DELETED_SUCCESSFULLY;
     }
