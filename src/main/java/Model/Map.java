@@ -13,7 +13,6 @@ public class Map {
     private final int height;
     private Tile[][] tiles;
     private final ArrayList<City> cities = new ArrayList<>();
-    private final ArrayList<Unit> units = new ArrayList<>();
 
     public Map(int height, int width) {
         this.width = width;
@@ -51,10 +50,6 @@ public class Map {
 
     public ArrayList<City> getCities() {
         return cities;
-    }
-
-    public ArrayList<Unit> getUnits() {
-        return units;
     }
 
     public City getCityByName(String name) {

@@ -9,11 +9,9 @@ public class Resource {
     private String name;
     private int food, production, gold;
     private ImprovementType neededImprovement;
-    private final Tile tile;
 
-    public Resource(ResourceType resourceType, Tile tile) {
+    public Resource(ResourceType resourceType) {
         this.resourceType = resourceType;
-        this.tile = tile;
         this.food = resourceType.food;
         this.gold = resourceType.gold;
         this.production = resourceType.production;
@@ -65,8 +63,8 @@ public class Resource {
         this.neededImprovement = neededImprovement;
     }
 
-    public Tile getTile() {
+   /* public Tile getTile() {
         return tile;
-    }
+    }*/
 
 }

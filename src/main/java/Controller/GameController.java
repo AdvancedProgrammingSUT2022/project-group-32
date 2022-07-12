@@ -3,11 +3,18 @@ package Controller;
 import Model.*;
 import Model.Units.Troop;
 import Model.Units.Unit;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import enums.Responses.Response;
 import enums.Types.*;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class GameController {
@@ -42,6 +49,29 @@ public class GameController {
 
     public static void setGame(Game game) {
         GameController.game = game;
+    }
+
+    public static void saveGame() {
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter("src/main/resources/lastGame.json");
+            fileWriter.write(new Gson().toJson(game));
+            fileWriter.close();
+        } catch (IOException e) {
+            System.err.println("Saving game failed!!!");
+            e.printStackTrace();
+        }
+    }
+
+    public static void loadGame(){
+        try {
+            String json = new String(Files.readAllBytes(Paths.get("src/main/resources/lastGame.json")));
+            game = new Gson().fromJson(json, new TypeToken<Game>(){}.getType());
+            game.refillData();
+        } catch (IOException e) {
+            System.err.println("Error while loading game");
+            e.printStackTrace();
+        }
     }
 
     public static int getTurn() {
