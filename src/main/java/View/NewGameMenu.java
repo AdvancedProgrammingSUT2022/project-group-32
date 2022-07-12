@@ -1,5 +1,6 @@
 package View;
 
+import Controller.GameController;
 import Controller.UserController;
 import Model.User;
 import enums.Responses.Response;
@@ -20,7 +21,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static View.Menu.MenuType.EXIT;
-import static View.Menu.MenuType.LOGIN_MENU;
+import static View.Menu.MenuType.GAME_VIEW;
+import static View.PastViews.Menu.setCurrentMenu;
 
 public class NewGameMenu extends Menu {
     private static Pane root;
@@ -46,12 +48,22 @@ public class NewGameMenu extends Menu {
                 }
             }),
             new Pair<String, Runnable>(" S T A R T   G A M E", () -> {
-                Menu.changeMenu(LOGIN_MENU);
+                startGame();
             }),
             new Pair<String, Runnable>("E x i t", () -> {
                 Menu.changeMenu(EXIT);
             })
     );
+
+    private static void startGame() {
+        // TODO: 7/12/2022
+        if (newGame(new ArrayList<String>(Arrays.stream(playerUsernamesField.getText().split(",")).toList()))) {
+
+        } else {
+            showAlert(alert, "game start failed");
+        }
+        Menu.changeMenu(GAME_VIEW);
+    }
 
     private static void sendInvitations(int playersCount, ArrayList<String> invitationsUsernames) {
         int mapSizeInteger;
@@ -158,7 +170,9 @@ public class NewGameMenu extends Menu {
         }
 
         // TODO: 7/11/2022 this parts needs to fit for graphical start
-//        GameController.newGame(playingUsers);
+
+        GameController.newGame(playingUsers);
+        setCurrentMenu(View.PastViews.Menu.MenuType.GAME_MENU);
 //        setCurrentMenu(View.PastViews.Menu.MenuType.GAME_MENU);
         System.out.println(Response.MainMenu.NEW_GAME_STARTED.getString());
         return true;

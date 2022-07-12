@@ -34,6 +34,7 @@ public class Menu extends Application {
         PROFILE_MENU("profileMenu"),
         PASS_CHANGE_MENU("passChangeMenu"),
         NICK_CHANGE_MENU("nickChangeMenu"),
+        GAME_VIEW("gameView"),
         EXIT("exit");
 
         String name;
@@ -54,6 +55,7 @@ public class Menu extends Application {
             case LOGIN_MENU -> LoginMenu.show(stage);
             case REGISTER_MENU -> RegisterMenu.show(stage);
             case PROFILE_MENU -> ProfileMenu.show(stage);
+            case GAME_VIEW -> GameView.show(stage);
         }
     }
 
@@ -67,6 +69,7 @@ public class Menu extends Application {
                 case PASS_CHANGE_MENU -> PassChangeMenu.show(stage);
                 case REGISTER_MENU -> RegisterMenu.show(stage);
                 case NEW_GAME_MENU -> NewGameMenu.show(stage);
+                case GAME_VIEW -> GameView.show(stage);
                 case EXIT -> System.exit(0);
             }
         } catch (Exception e) {

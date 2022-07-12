@@ -20,6 +20,7 @@ public class UnitsPanel extends GameMenu {
         }
     }
 
+
     private static void showPanel() {
         int i = 0;
         printRow("id", "Type", "Location");

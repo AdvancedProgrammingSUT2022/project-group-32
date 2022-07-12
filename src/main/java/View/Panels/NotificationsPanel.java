@@ -17,17 +17,20 @@ public class NotificationsPanel extends GameMenu {
         }
     }
 
-    private static void showPanel() {
+    public static String showPanel() {
+        StringBuilder panelContent = new StringBuilder();
         Player player = GameController.getCurrentPlayer();
         for (String notification : player.getNotifications()) {
-            System.out.println(notification);
+            panelContent.append(notification).append("\n");
         }
         if (player.getNotifications().size() == 0) {
-            System.out.println("no notifications!");
+            panelContent.append("no notifications!");
         }
+        return panelContent.toString();
     }
 
-    private static void showRecent() {
+    public static String showRecent() {
+        StringBuilder result = new StringBuilder();
         ArrayList<String> notifications = new ArrayList<>();
         Player player = GameController.getCurrentPlayer();
         int turn = GameController.getGame().getTurnCount();
@@ -38,9 +41,13 @@ public class NotificationsPanel extends GameMenu {
         }
         for (String notification : notifications) {
             System.out.println(notification);
+            result.append(notification + "\n");
         }
         if (notifications.isEmpty()) {
-            System.out.println("no recent notifications!");
+            result.append("no recent notifications!");
         }
+        return result.toString();
     }
+    /////////////////////////////////////////////////////////
+
 }
