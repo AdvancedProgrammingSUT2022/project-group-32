@@ -1,7 +1,5 @@
 package Model;
 
-import Model.Resources.Resource;
-
 public class Trade {
     private Player player1, player2;
     private int goldGiven, goldTaken;

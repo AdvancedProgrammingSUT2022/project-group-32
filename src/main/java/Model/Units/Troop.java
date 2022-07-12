@@ -2,10 +2,7 @@ package Model.Units;
 
 import Model.Player;
 import Model.Tile;
-import enums.Types.ResourceType;
-import enums.Types.TechnologyType;
-import enums.Types.TerrainFeature;
-import enums.Types.UnitType;
+import enums.Types.*;
 
 public class Troop extends Unit {
     private int meleeStrength;
@@ -23,6 +20,12 @@ public class Troop extends Unit {
         this.fortifyBonus = 0;
         this.neededResource = unitType.neededResource;
         this.neededTechnology = unitType.neededTech;
+    }
+
+    public static Troop troopify(Unit unit){
+        if(unit.getCombatType().equals(CombatType.CIVILIAN)) return null;
+        Troop troop = new Troop(unit.getTile(), unit.getOwner(), unit.getUnitType());
+        return troop;
     }
 
     public double getMeleeStrength() {

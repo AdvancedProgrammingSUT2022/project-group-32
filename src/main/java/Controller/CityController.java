@@ -276,7 +276,6 @@ public class CityController {
         }
         tile.setCity(city);
         city.addTile(tile);
-        city.getOwner().addTile(tile);
         return InGameResponses.City.TILE_BUY_SUCCESSFUL;
     }
 

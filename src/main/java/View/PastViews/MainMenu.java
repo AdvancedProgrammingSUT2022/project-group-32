@@ -26,6 +26,10 @@ public class MainMenu extends Menu {
                     setCurrentMenu(MenuType.GAME_MENU);
                     return;
                 }
+            } else if (command.startsWith("continue game")) {
+                GameController.loadGame();
+                setCurrentMenu(MenuType.GAME_MENU);
+                return;
             } else {
                 invalidCommand();
             }
