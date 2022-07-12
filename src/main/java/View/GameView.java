@@ -4,6 +4,7 @@ import Controller.GameController;
 import Model.Tile;
 import View.Panels.MilitaryPanel;
 import View.Panels.NotificationsPanel;
+import enums.Types.FogState;
 import enums.Types.TerrainType;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -78,6 +79,7 @@ public class GameView extends Menu {
                     x = column * 115;
                 }
                 Tile tile = GameController.getCurrentPlayerMap().getTile(row, column);
+                if(tile.getFogState() == FogState.UNKNOWN) continue;
                 if(tile.getRiverInDirection(0) == 1){
                     putRiver(x, y - 10, 140, 20);
                 }
@@ -112,7 +114,7 @@ public class GameView extends Menu {
                     x = column * 115;
                 }
                 System.err.println(x + "," + y);
-                Pane image = GameController.getMap().getTile(row, column).getTileImage(); // TODO: 7/12/2022 change to getCurrentPlayerMap
+                Pane image = GameController.getCurrentPlayerMap().getTile(row, column).getTileImage();
                 image.setTranslateX(x);
                 image.setTranslateY(y);
                 map.getChildren().add(image);

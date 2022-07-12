@@ -345,11 +345,13 @@ public class Tile {
 
     public Pane getTileImage(){
         Pane imagePane = new Pane();
-       /* if(fogState == FogState.UNKNOWN){
-            ImageView imageView = new ImageView(GameView.class.getClassLoader().getResource("images/Terrains/desert.png").toExternalForm());
+        if(fogState == FogState.UNKNOWN){
+            ImageView imageView = new ImageView(GameView.class.getClassLoader().getResource("images/Clouds.png").toExternalForm());
+            imageView.setFitWidth(140);
+            imageView.setFitHeight(120);
             imagePane.getChildren().add(imageView);
             return imagePane;
-        }*/
+        }
         imagePane.getChildren().add(terrain.getTerrainImage());
         ImageView featureImage = terrain.getFeatureImage();
         featureImage.setTranslateX(45);
