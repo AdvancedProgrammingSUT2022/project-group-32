@@ -4,7 +4,9 @@ import View.Components.Civ6MenuItem;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
@@ -19,6 +21,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.Pair;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 public class Menu extends Application {
@@ -72,6 +76,16 @@ public class Menu extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static Parent loadFXML(String name) {
+        try {
+            URL address = new URL(Menu.class.getResource("/fxml/" + name + ".fxml").toString());
+            return FXMLLoader.load(address);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     protected static void addBackground(Pane root, String background) {

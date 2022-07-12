@@ -243,6 +243,7 @@ public class City {
 
     public void addBuilding(Building building) {
         this.buildings.add(building);
+        this.owner.addBuilding(building);
     }
 
     public void removeBuilding(Building building) {
