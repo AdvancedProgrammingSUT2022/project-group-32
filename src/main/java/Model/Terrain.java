@@ -1,8 +1,10 @@
 package Model;
 
+import View.GameView;
 import enums.Types.ResourceType;
 import enums.Types.TerrainFeature;
 import enums.Types.TerrainType;
+import javafx.scene.image.ImageView;
 
 public class Terrain {
     private final int INF = 9999;
@@ -12,6 +14,8 @@ public class Terrain {
     private final TerrainFeature baseFeature; // terrainType and baseFeature are same baseTerrain but in different enums
     private final ResourceType resourceType;
     private int featureHP;
+    private final ImageView terrainImage;
+    private final ImageView featureImage;
 
     public Terrain(TerrainType terrainType, TerrainFeature terrainFeature, ResourceType resourceType) {
         this.terrainType = terrainType;
@@ -23,13 +27,17 @@ public class Terrain {
         else if (terrainFeature == TerrainFeature.JUNGLE) featureHP = 7;
         else if (terrainFeature == TerrainFeature.MARSH) featureHP = 6;
         else featureHP = INF;
-    }
 
-    public Terrain(Terrain terrain) {
-        this.terrainType = terrain.terrainType;
-        this.terrainFeature = terrain.terrainFeature;
-        this.baseFeature = terrain.baseFeature;
-        this.resourceType = terrain.resourceType;
+        if (terrainType != null) {
+            terrainImage = new ImageView(GameView.class.getClassLoader().getResource("images/Terrains/" + terrainType.imageAddress).toExternalForm());
+        } else {
+            terrainImage = null;
+        }
+        if(terrainFeature != null) {
+            featureImage = new ImageView(GameView.class.getClassLoader().getResource("images/Features/" + terrainFeature.imageAddress).toExternalForm());
+        } else {
+            featureImage = null;
+        }
     }
 
     public TerrainType getTerrainType() {
@@ -79,5 +87,13 @@ public class Terrain {
 
     public double getCombat() {
         return terrainType.combat + terrainFeature.combat;
+    }
+
+    public ImageView getTerrainImage() {
+        return terrainImage;
+    }
+
+    public ImageView getFeatureImage() {
+        return featureImage;
     }
 }

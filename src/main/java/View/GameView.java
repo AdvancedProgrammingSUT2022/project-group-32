@@ -1,7 +1,11 @@
 package View;
 
+import Controller.GameController;
+import Model.Tile;
 import View.Panels.MilitaryPanel;
 import View.Panels.NotificationsPanel;
+import enums.Types.TerrainType;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -9,14 +13,20 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.io.FileInputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,75 +36,111 @@ import static View.Menu.MenuType.LOGIN_MENU;
 
 public class GameView extends Menu {
     private static Pane root;
+    private static Pane map;
     private static HBox topPane;
     private static VBox notificationPane;
     private static VBox militaryPane;
-    private static VBox menuBox;
     private static Alert alert;
     private static DialogPane dialogPane;
     private static Stage stage;
-    private static final List<Pair<String, Runnable>> menuData = Arrays.asList(
-            new Pair<String, Runnable>("R E G I S T E R", () -> {
 
-            }),
-            new Pair<String, Runnable>("G O   T O   L O G I N", () -> {
-                Menu.changeMenu(LOGIN_MENU);
-            }),
-            new Pair<String, Runnable>("E x i t", () -> {
-                Menu.changeMenu(EXIT);
-            })
-    );
-
-
-    private static Parent createContent() {
-        addBackground(root, "Background_B");
-        addItems();
-        return root;
+    private static void putRiver(int x, int y, int w, int h){
+        ImageView river = new ImageView(GameView.class.getClassLoader().getResource("images/river.png").toExternalForm());
+        river.setTranslateX(x);
+        river.setTranslateY(y);
+        river.setFitWidth(w);
+        river.setFitHeight(h);
+        map.getChildren().add(river);
     }
 
-    private static void addItems() {
+    public static void makeMap(){
+        map = new Pane();
+        root.getChildren().add(map);
+        ImageView imageView1 = new ImageView(GameView.class.getClassLoader().getResource("images/Terrains/hill.png").toExternalForm());
+        ImageView imageView2 = new ImageView(GameView.class.getClassLoader().getResource("images/Terrains/hill.png").toExternalForm());
+        imageView2.setTranslateY(130);
+        ImageView imageView3 = new ImageView(GameView.class.getClassLoader().getResource("images/Terrains/hill.png").toExternalForm());
+        imageView3.setTranslateY(65);
+        imageView3.setTranslateX(115);
+        map.getChildren().add(imageView1);
+        map.getChildren().add(imageView2);
+        map.getChildren().add(imageView3);
+
+        // putting rivers in
+        for(int row=0;row<GameController.getMap().getHeight();row++){
+            for(int column=0;column<GameController.getMap().getWidth();column++){
+                int x, y;
+                if(column % 2 == 0){
+                    y = row * 130;
+                    x = column * 115;
+                } else {
+                    y = row * 130 + 65;
+                    x = column * 115;
+                }
+                Tile tile = GameController.getCurrentPlayerMap().getTile(row, column);
+                if(tile.getRiverInDirection(0) == 1){
+                    putRiver(x, y - 10, 140, 20);
+                }
+                if(tile.getRiverInDirection(2) == 1){
+                    putRiver(x + 110, y - 5, 40, 70);
+                }
+                if(tile.getRiverInDirection(4) == 1){
+                    putRiver(x + 110, y + 60, 40, 70);
+                }
+                if(tile.getRiverInDirection(6) == 1){
+                    putRiver(x, y + 110, 140, 20);
+                }
+                if(tile.getRiverInDirection(8) == 1){
+                    putRiver(x - 10, y + 60, 40, 70);
+                }
+                if(tile.getRiverInDirection(10) == 1){
+                    putRiver(x - 10, y - 10, 40, 70);
+
+                }
+            }
+        }
+
+        // putting tiles in place
+        for(int row=0;row<GameController.getMap().getHeight();row++){
+            for(int column=0;column<GameController.getMap().getWidth();column++){
+                int x, y;
+                if(column % 2 == 0){
+                    y = row * 130;
+                    x = column * 115;
+                } else {
+                    y = row * 130 + 65;
+                    x = column * 115;
+                }
+                System.err.println(x + "," + y);
+                Pane image = GameController.getMap().getTile(row, column).getTileImage(); // TODO: 7/12/2022 change to getCurrentPlayerMap
+                image.setTranslateX(x);
+                image.setTranslateY(y);
+                map.getChildren().add(image);
+            }
+        }
+        map.setOnKeyPressed(e -> moveMap(e));
     }
-
-//    private static void addLoginItems() {
-//        VBox vBox = new VBox(10);
-//        Label username = new Label("username:");
-//        Label password = new Label("password:");
-//        Label nickname = new Label("nickname:");
-//        usernameField = new TextField();
-//        nicknameField = new TextField();
-//        passwordField = new PasswordField();
-//        username.setTextFill(Color.WHITE);
-//        password.setTextFill(Color.WHITE);
-//        nickname.setTextFill(Color.WHITE);
-//        username.setFont(Font.font(14));
-//        password.setFont(Font.font(14));
-//        nickname.setFont(Font.font(14));
-//        vBox.getChildren().addAll(username, usernameField, nickname, nicknameField, password, passwordField, new Text());
-//        menuBox.getChildren().addAll(vBox);
-
-//    }
 
     public static void show(Stage primaryStage) throws Exception {
         stage = primaryStage;
         root = new Pane();
         alert = initAlert();
-        menuBox = new VBox(-5);
-        createContent();
         Pane pane = root;
-
+        makeMap();
         // initing panes
-        initTopPane();
+       /* initTopPane();
         initNotificationPane();
-        initMilitaryPane();
-        militaryPane.setVisible(true);
-        pane.getChildren().addAll(topPane, notificationPane, militaryPane);
+        initMilitaryPane();*/
+        //militaryPane.setVisible(true);
+        //pane.getChildren().addAll(topPane, notificationPane, militaryPane);
 //        pane.getChildren().addAll(topPane, notificationPane);
+        Platform.runLater(() -> map.requestFocus());
         Scene scene = new Scene(pane, WIDTH, HEIGHT);
         scene.getStylesheets().add(LoginMenu.class.getClassLoader().getResource("css/MenuStyle.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
     }
-
+/*
     private static void initTopPane() {
         topPane = new HBox();
         topPane.setLayoutX(0);
@@ -143,5 +189,27 @@ public class GameView extends Menu {
         content.setFont(Font.font(14));
         content.setTextFill(Color.WHITE);
         militaryPane.getChildren().addAll(header, content);
+    }
+ */
+
+    /////////////////////
+
+    public static void moveMap(KeyEvent keyEvent) {
+        String keyName = keyEvent.getCode().getName();
+        System.err.println("an arrow key was pressed!");
+        switch (keyName) {
+            case "Down":
+                map.setTranslateY(map.getTranslateY() - 15);
+                break;
+            case "Up":
+                map.setTranslateY(map.getTranslateY() + 15);
+                break;
+            case "Right":
+                map.setTranslateX(map.getTranslateX() - 15);
+                break;
+            case "Left":
+                map.setTranslateX(map.getTranslateX() + 15);
+                break;
+        }
     }
 }

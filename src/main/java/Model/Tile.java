@@ -2,7 +2,10 @@ package Model;
 
 import Model.Units.Troop;
 import Model.Units.Unit;
+import View.GameView;
 import enums.Types.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -338,6 +341,23 @@ public class Tile {
         if (getImprovement() == null) return false;
         return getResourceType().getNeededImprovementType().equals(getImprovement().getImprovementType()) &&
                 getImprovement().getRemainingTurns() == 0;
+    }
+
+    public Pane getTileImage(){
+        Pane imagePane = new Pane();
+       /* if(fogState == FogState.UNKNOWN){
+            ImageView imageView = new ImageView(GameView.class.getClassLoader().getResource("images/Terrains/desert.png").toExternalForm());
+            imagePane.getChildren().add(imageView);
+            return imagePane;
+        }*/
+        imagePane.getChildren().add(terrain.getTerrainImage());
+        ImageView featureImage = terrain.getFeatureImage();
+        featureImage.setTranslateX(45);
+        featureImage.setTranslateY(35);
+        featureImage.setFitWidth(50);
+        featureImage.setFitHeight(50);
+        imagePane.getChildren().add(featureImage);
+        return imagePane;
     }
 
 }
