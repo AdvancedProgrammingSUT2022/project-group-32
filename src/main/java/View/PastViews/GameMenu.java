@@ -84,6 +84,11 @@ public class GameMenu extends Menu {
                 currentPanel = PanelType.MILITARY_PANEL;
             } else if (command.startsWith("research panel")) {
                 currentPanel = PanelType.RESEARCH_PANEL;
+            } else if (command.startsWith("save game")) {
+                GameController.saveGame();
+            } else if (command.startsWith("exit")) {
+                setCurrentMenu(MenuType.MAIN_MENU);
+                return;
             } else {
                 runPanel(command);
             }

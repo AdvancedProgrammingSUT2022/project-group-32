@@ -9,7 +9,7 @@ import enums.Types.UnitType;
 
 public class Unit {
     private Tile tile;
-    private Player owner;
+    private transient Player owner;
     private final int health; // this is for reference
     private int cost;
     private int movement;

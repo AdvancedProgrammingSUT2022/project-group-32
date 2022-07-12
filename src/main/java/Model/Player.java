@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.UserController;
 import Model.Units.Troop;
 import Model.Units.Unit;
 import enums.Color;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 public class Player {
     private final int id;
     private static int count = 0;
-    private final User user;
+    private final String username;
     private final String name;
     private Map map;
     private final ArrayList<Unit> units; // Only complete units are here
@@ -20,7 +21,6 @@ public class Player {
     private Technology technologyInProgress;
     private final ArrayList<Technology> incompleteTechnologies;
     private final ArrayList<City> cities;
-    private final ArrayList<Tile> tiles;
     private City capital;
     private int gold;
     private int score;
@@ -37,7 +37,7 @@ public class Player {
     private final Color color;
 
     public Player(User user, int cameraRow, int cameraColumn) {
-        this.user = user;
+        this.username = user.getUsername();
         this.name = user.getNickname();
         this.cameraRow = cameraRow;
         this.cameraColumn = cameraColumn;
@@ -45,7 +45,6 @@ public class Player {
         this.buildings = new ArrayList<>(); // may need to change this
         this.technologies = new ArrayList<>();
         this.cities = new ArrayList<>(); // and this
-        this.tiles = new ArrayList<>();
         this.inWarPlayers = new ArrayList<>();
         this.notifications = new ArrayList<>();
         this.incompleteTechnologies = new ArrayList<>();
@@ -78,7 +77,11 @@ public class Player {
     }
 
     public User getUser() {
-        return user;
+        return UserController.getUserByUsername(username);
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public String getName() {
@@ -119,10 +122,6 @@ public class Player {
 
     public ArrayList<City> getCities() {
         return cities;
-    }
-
-    public ArrayList<Tile> getTiles() {
-        return tiles;
     }
 
     public int getGold() {
@@ -318,24 +317,6 @@ public class Player {
 
     public City getCapital() {
         return capital;
-    }
-
-    public void addTile(Tile tile) {
-        this.tiles.add(tile);
-        this.score += 2;
-    }
-
-    public void removeTile(Tile tile) {
-        this.tiles.remove(tile);
-    }
-
-    public Tile getTileByXY(int x, int y) {
-        for (Tile tile : tiles) {
-            if (tile.getRow() == x && tile.getColumn() == y) {
-                return tile;
-            }
-        }
-        return null;
     }
 
     public void addInWarPlayer(Player player) {

@@ -1,6 +1,9 @@
 package Model;
 
 import Controller.GameController;
+import Controller.PlayerController;
+import Model.Units.Troop;
+import Model.Units.Unit;
 
 import java.util.ArrayList;
 
@@ -53,6 +56,32 @@ public class Game {
                 turnCount ++;
             }
         } while(GameController.isDead(players.get(currentPlayerID)));
+    }
+
+    public void refillData(){
+        for (Player player : players) {
+            System.err.println(player.getUsername() + ":");
+            for (Unit unit : player.getUnits()) {
+                unit.setTile(map.getTile(unit.getRow(), unit.getColumn()));
+                unit.setOwner(player);
+                if(Troop.troopify(unit) != null) unit = Troop.troopify(unit);
+                unit.getTile().putUnit(unit);
+                System.err.println(unit.getTile().getRow() + " " + unit.getColumn());
+            }
+            for (City city : player.getCities()) {
+                System.err.println(city.getName());
+                city.setOwner(player);
+                city.setCapitalTile(map.getTile(city.getCapitalTile().getRow(), city.getCapitalTile().getColumn()));
+                city.setGarrisonedTroop(city.getCapitalTile().getTroop());
+                for (Tile tile : city.getTerritory()) {
+                    tile = map.getTile(tile.getRow(), tile.getColumn());
+                    tile.setCity(city);
+                }
+            }
+        }
+        for (Player player : players) {
+            PlayerController.updateFieldOfView(player);
+        }
     }
 
 }

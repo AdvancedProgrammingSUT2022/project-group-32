@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class City {
     private String name;
-    private Player owner;
+    private transient Player owner;
     private Tile capitalTile; // TODO: 4/17/2022 Palace must be handled
     private ArrayList<Tile> territory;
     private ArrayList<Building> buildings;
@@ -21,7 +21,7 @@ public class City {
     private int freeCitizens;
     private int foodIncome, population, health, baseStrength;
     private int sightRange;
-    private Troop garrisonedTroop;
+    private transient Troop garrisonedTroop;
     private int neededFoodForNewCitizen = 10, storedFoodForNewCitizen = 0;
     private double HP;
     private boolean hasAttacked;

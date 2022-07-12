@@ -1,6 +1,5 @@
 package Model;
 
-import Model.Resources.Resource;
 import Model.Units.Troop;
 import Model.Units.Unit;
 import enums.Types.*;
@@ -14,10 +13,10 @@ public class Tile {
     private Terrain terrain;
     private Resource resource;
     private Ruin ruin;
-    private City city;  //can be null
+    private transient City city;  //can be null
     private Improvement improvement;
-    private Unit unit;
-    private Troop troop;
+    private transient Unit unit;
+    private transient Troop troop;
     private FogState fogState;
     private Road road; // can be null
     private HashMap<Integer, Integer> isRiver; // Clock-based directions: 0 - 2 - 4 - 6 - 8 - 10
@@ -28,7 +27,7 @@ public class Tile {
         this.column = column;
         this.terrain = terrain;
         this.fogState = fogState;
-        if (terrain.getResourceType() != null) this.resource = new Resource(terrain.getResourceType(), this);
+        if (terrain.getResourceType() != null) this.resource = new Resource(terrain.getResourceType());
         this.ruin = ruin;
         this.city = null;
         this.improvement = null;
