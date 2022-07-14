@@ -10,10 +10,7 @@ import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.DialogPane;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -27,14 +24,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
-import java.io.FileInputStream;
-import java.util.Arrays;
-import java.util.List;
-
-import static View.Menu.MenuType.EXIT;
-import static View.Menu.MenuType.LOGIN_MENU;
-
-
 public class GameView extends Menu {
     private static Pane root;
     private static Pane map;
@@ -44,6 +33,7 @@ public class GameView extends Menu {
     private static Alert alert;
     private static DialogPane dialogPane;
     private static Stage stage;
+    private static int selectedRow = -1, selectedColumn = -1;
 
     private static void putRiver(int x, int y, int w, int h){
         ImageView river = new ImageView(GameView.class.getClassLoader().getResource("images/river.png").toExternalForm());
@@ -118,6 +108,22 @@ public class GameView extends Menu {
                 image.setTranslateX(x);
                 image.setTranslateY(y);
                 map.getChildren().add(image);
+
+                Button button = new Button();
+                button.setStyle("-fx-border-color: transparent;-fx-background-color: transparent;-fx-text-fill: transparent;");
+                button.setPrefWidth(100);
+                button.setPrefHeight(100);
+                button.setTranslateX(x + 20);
+                button.setTranslateY(y + 10);
+                int thisRow = row, thisColumn = column;
+                button.setOnMouseClicked(e -> {
+                    selectedRow = thisRow;
+                    selectedColumn = thisColumn;
+                    System.out.println(selectedRow + " " + selectedColumn);
+                    map.requestFocus();
+                });
+                button.setFocusTraversable(false);
+                map.getChildren().add(button);
             }
         }
         map.setOnKeyPressed(e -> moveMap(e));

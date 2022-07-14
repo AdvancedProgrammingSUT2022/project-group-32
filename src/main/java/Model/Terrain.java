@@ -16,6 +16,7 @@ public class Terrain {
     private int featureHP;
     private final ImageView terrainImage;
     private final ImageView featureImage;
+    private final ImageView resourceImage;
 
     public Terrain(TerrainType terrainType, TerrainFeature terrainFeature, ResourceType resourceType) {
         this.terrainType = terrainType;
@@ -27,7 +28,6 @@ public class Terrain {
         else if (terrainFeature == TerrainFeature.JUNGLE) featureHP = 7;
         else if (terrainFeature == TerrainFeature.MARSH) featureHP = 6;
         else featureHP = INF;
-
         if (terrainType != null) {
             terrainImage = new ImageView(GameView.class.getClassLoader().getResource("images/Terrains/" + terrainType.imageAddress).toExternalForm());
         } else {
@@ -37,6 +37,11 @@ public class Terrain {
             featureImage = new ImageView(GameView.class.getClassLoader().getResource("images/Features/" + terrainFeature.imageAddress).toExternalForm());
         } else {
             featureImage = null;
+        }
+        if(resourceType != null) {
+            resourceImage = new ImageView(GameView.class.getClassLoader().getResource("images/Resources/" + resourceType.name + ".png").toExternalForm());
+        } else {
+            resourceImage = null;
         }
     }
 
@@ -95,5 +100,9 @@ public class Terrain {
 
     public ImageView getFeatureImage() {
         return featureImage;
+    }
+
+    public ImageView getResourceImage() {
+        return resourceImage;
     }
 }

@@ -354,11 +354,17 @@ public class Tile {
         }
         imagePane.getChildren().add(terrain.getTerrainImage());
         ImageView featureImage = terrain.getFeatureImage();
-        featureImage.setTranslateX(45);
-        featureImage.setTranslateY(35);
-        featureImage.setFitWidth(50);
-        featureImage.setFitHeight(50);
+        featureImage.setTranslateX(35);
+        featureImage.setTranslateY(25);
+        featureImage.setFitWidth(70);
+        featureImage.setFitHeight(70);
         imagePane.getChildren().add(featureImage);
+        ImageView resourceImage = terrain.getResourceImage();
+        resourceImage.setTranslateX(55);
+        resourceImage.setTranslateY(80);
+        resourceImage.setFitWidth(30);
+        resourceImage.setFitHeight(30);
+        imagePane.getChildren().add(resourceImage);
         return imagePane;
     }
 

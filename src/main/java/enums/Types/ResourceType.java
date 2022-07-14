@@ -3,7 +3,7 @@ package enums.Types;
 import java.util.ArrayList;
 
 public enum ResourceType {
-    NULL(" Null", 0, 0, 0),
+    NULL("Null", 0, 0, 0),
     BANANAS("Bananas", 1, 0, 0),
     CATTLE("Cattle", 1, 0, 0),
     DEER("Deer", 1, 0, 0),
