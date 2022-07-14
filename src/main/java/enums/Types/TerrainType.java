@@ -1,8 +1,5 @@
 package enums.Types;
 
-import View.GameView;
-import javafx.scene.image.ImageView;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -13,7 +10,7 @@ public enum TerrainType {
     HILL("Hill", 0, 2, 0, 0.25, 2, new ArrayList<>(Arrays.asList(TerrainFeature.FOREST, TerrainFeature.JUNGLE)), TerrainFeature.HILL, "hill.png"),
     MOUNTAIN("Mountain", 0, 0, 0, 0.25, 9999, new ArrayList<>(Arrays.asList()), TerrainFeature.MOUNTAIN, "mountain.png"),
     OCEAN("Ocean", 1, 0, 1, 0.0, 9999, new ArrayList<>(Arrays.asList(TerrainFeature.ICE)), TerrainFeature.OCEAN, "ocean.png"),
-    PLAINS("Plains", 1, 1, 0, -0.33, 1, new ArrayList<>(Arrays.asList(TerrainFeature.FOREST, TerrainFeature.JUNGLE)), TerrainFeature.PLAINS, "plains.png"),
+    PLAINS("Plains", 1, 1, 0, -0.33, 1, new ArrayList<>(Arrays.asList(TerrainFeature.FOREST, TerrainFeature.JUNGLE)), TerrainFeature.PLAINS, "plain.png"),
     SNOW("Snow", 0, 0, 0, -0.33, 1, new ArrayList<>(Arrays.asList()), TerrainFeature.SNOW, "snow.png");
 
     public final String name;
@@ -36,5 +33,3 @@ public enum TerrainType {
         this.imageAddress = imageAddress;
     }
 }
-
-

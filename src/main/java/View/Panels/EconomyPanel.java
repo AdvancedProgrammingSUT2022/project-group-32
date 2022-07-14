@@ -16,12 +16,13 @@ public class EconomyPanel extends GameMenu {
         }
     }
 
-    private static void printPanel() {
+    public static String printPanel() {
+        StringBuilder result = new StringBuilder();
         int i = 0;
-        printRow("#", "Name", "Population", "Food", "Gold", "Science", "Production", "Building");
+        result.append(printRow("#", "Name", "Population", "Food", "Gold", "Science", "Production", "Building"));
         for (City city : cities) {
             i++;
-            printRow(i + "",
+            result.append(printRow(i + "",
                     city.getName(),
                     city.getPopulation() + "",
                     city.getFoodIncome() + "",
@@ -29,15 +30,17 @@ public class EconomyPanel extends GameMenu {
                     city.getScienceIncome() + "",
                     city.getProductionIncome() + "",
                     (((city.getBuildingInProgress() == null) ? "-" : city.getBuildingInProgress().getName()))
-            );
+            ));
 
         }
+        return result.toString();
     }
 
-    private static void printRow(String s1, String s2, String s3, String s4, String s5, String s6, String s7, String s8) {
+    private static String printRow(String s1, String s2, String s3, String s4, String s5, String s6, String s7, String s8) {
+        String result = "";
         String format = "|%1$-4s|%2$-15s|%3$-12s|%4$-12s|%5$-12s|%6$-12s|%6$-12s|%6$-12s|";
-        System.out.format(format, s1, s2, s3, s4, s5, s6, s7, s8);
-        System.out.println();
+        result += String.format(format, s1, s2, s3, s4, s5, s6, s7, s8) + "\n";
+        return result;
     }
 
 }
