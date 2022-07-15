@@ -10,6 +10,7 @@ import enums.Types.TechnologyType;
 import java.util.ArrayList;
 
 public class Player {
+    private boolean isStarted;
     private final int id;
     private static int count = 0;
     private final String username;
@@ -37,6 +38,7 @@ public class Player {
     private final Color color;
 
     public Player(User user, int cameraRow, int cameraColumn) {
+        this.isStarted = false;
         this.username = user.getUsername();
         this.name = user.getNickname();
         this.cameraRow = cameraRow;
@@ -54,6 +56,10 @@ public class Player {
         this.happiness = 100;
         count++;
         this.score = 0;
+    }
+
+    public boolean isStarted() {
+        return isStarted;
     }
 
     public int getScienceIncome() {
@@ -291,6 +297,7 @@ public class Player {
         }
         this.cities.add(city);
         this.score += 10;
+        isStarted = true;
     }
 
     public void removeCity(City city) {

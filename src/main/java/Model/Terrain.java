@@ -29,8 +29,6 @@ public class Terrain {
         else if (terrainFeature == TerrainFeature.MARSH) featureHP = 6;
         else featureHP = INF;
         if (terrainType != null) {
-            System.out.println(GameView.class.getClassLoader().getResource("images/Terrains/" + terrainType.imageAddress));
-            System.out.println("images/Terrains/" + terrainType.imageAddress);
             terrainImage = new ImageView(GameView.class.getClassLoader().getResource("images/Terrains/" + terrainType.imageAddress).toExternalForm());
         } else {
             terrainImage = null;

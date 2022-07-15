@@ -176,6 +176,8 @@ public class NewGameMenu extends Menu {
 //        setCurrentMenu(View.PastViews.Menu.MenuType.GAME_MENU);
         System.out.println(Response.MainMenu.NEW_GAME_STARTED.getString());
         return true;
+
+
     }
     //////////////
 

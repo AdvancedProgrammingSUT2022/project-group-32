@@ -53,6 +53,7 @@ public class Menu extends Application {
         stage = primaryStage;
         stage.setTitle("Civilization VI");
         stage.setResizable(false);
+
         MenuType currentMenu = MenuType.LOGIN_MENU;
         switch (currentMenu) {
             case MAIN_MENU -> MainMenu.show(stage);

@@ -27,6 +27,16 @@ public class MapMaker {
         return top;
     }
 
+    public static String getColorlessTopBar() {
+        String top = "";
+        Player player = GameController.getCurrentPlayer();
+        top = ("Player : '" + player.getName() + "'");
+        top += "\t GOLD: " + player.getGold() + "(" + ((player.getGoldIncome() >= 0) ? "+" : "") + player.getGoldIncome() + ")";
+        top += "\t Happiness: " + player.getHappiness();
+        top += "\t Science: " + ((player.getScienceIncome() >= 0) ? "+" : "") + player.getScienceIncome();
+        return top;
+    }
+
     public static String[][] getMap(Tile[][] map) {
         String[][] strMap = new String[map.length * 6 + VERTICAL_BORDER * 2 + 1][map[0].length * 10 + HORIZONTAL_BORDER * 2];
         initMap(strMap);
