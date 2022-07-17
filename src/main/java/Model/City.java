@@ -95,6 +95,12 @@ public class City {
         int production = 0;
         production += territory.stream().mapToInt(Tile::getProduction).sum();
         production += freeCitizens;
+        if(hasBuildingByType(BuildingType.WINDMILL) && getCapitalTile().getTerrainType() != TerrainType.HILL){
+            production = production * 115 / 100;
+        }
+        if(hasBuildingByType(BuildingType.FACTORY)){
+            production = production * 3 / 2;
+        }
         return production;
     }
 
@@ -374,6 +380,15 @@ public class City {
         }
         if (buildingTypes.contains(BuildingType.PUBLIC_SCHOOL)) cityScience *= 1.5;
         return (int) cityScience;
+    }
+
+    public boolean hasBuildingByType(BuildingType buildingType){
+        for (Building building : buildings) {
+            if(building.getBuildingType().equals(buildingType)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void destroy(){

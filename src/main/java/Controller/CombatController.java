@@ -4,6 +4,7 @@ import Model.City;
 import Model.Player;
 import Model.Units.Troop;
 import Model.Units.Unit;
+import enums.Types.BuildingType;
 import enums.Types.CombatType;
 import enums.Types.UnitType;
 
@@ -19,6 +20,14 @@ public class CombatController {
             return 1.1; // anti tank bonus
         }
         return 1;
+    }
+
+    private static double getCityBonus(City c){
+        double bonus = 1.0;
+        if(c.hasBuildingByType(BuildingType.WALLS)) bonus *= 1.05;
+        if(c.hasBuildingByType(BuildingType.CASTLE)) bonus *= 1.075;
+        if(c.hasBuildingByType(BuildingType.MILITARY_BASE)) bonus *= 1.12;
+        return bonus;
     }
 
     public static void meleeAttack(Troop attacker, Troop defender) {

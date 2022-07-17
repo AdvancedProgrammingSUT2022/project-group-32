@@ -39,7 +39,6 @@ public class CityController {
             city.setFoodIncome(0);
             return;
         }
-
         city.setFoodIncome(foodIncome - foodConsumption);
         city.updateNewCitizenStoredFood();
     }
@@ -115,6 +114,15 @@ public class CityController {
             } else {
                 unit = new Troop(null, GameController.getCurrentPlayer(), unitType);
             }
+            if(city.hasBuildingByType(BuildingType.STABLE) && unit.getCombatType().equals(CombatType.MOUNTED)){
+                unit.setRemainingCost((int) (unit.getCost() * 0.75));
+            }
+            if(city.hasBuildingByType(BuildingType.FORGE)){
+                unit.setRemainingCost((int) (unit.getCost() * 0.75));
+            }
+            if(city.hasBuildingByType(BuildingType.ARSENAL)){
+                unit.setRemainingCost((int) (unit.getCost() * 0.80));
+            }
         }
 
         city.setUnitInProgress(unit);
@@ -165,6 +173,9 @@ public class CityController {
         }
 
         city.setBuildingInProgress(new Building(buildingType));
+        if(city.hasBuildingByType(BuildingType.WORKSHOP)){
+            city.getBuildingInProgress().setRemainingCost((int) (city.getBuildingInProgress().getCost() * 0.80));
+        }
         return InGameResponses.Building.IN_PROGRESS_BUILDING_CHANGED;
     }
 

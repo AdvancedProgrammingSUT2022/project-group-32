@@ -186,6 +186,9 @@ public class GameController {
     }
 
     public static boolean isEnded(){
+        if(getTurn() >= 2050){
+            return true;
+        }
         int aliveCount = 0;
         for (Player player : game.getPlayers()) {
             if(!isDead(player)) aliveCount ++;
