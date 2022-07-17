@@ -182,7 +182,8 @@ public class GameController {
     }
 
     public static boolean isDead(Player player){
-        return player.getCities().isEmpty();
+//        System.out.println("player score" + player.getScore());
+        return player.getCities().isEmpty() && player.isStarted();
     }
 
     public static boolean isEnded(){

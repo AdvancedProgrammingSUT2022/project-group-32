@@ -1,39 +1,37 @@
 package View;
 
 import Controller.GameController;
+import Controller.PlayerController;
 import Model.Tile;
-import View.Panels.MilitaryPanel;
-import View.Panels.NotificationsPanel;
+import View.PastViews.MapMaker;
 import enums.Types.FogState;
-import enums.Types.TerrainType;
 import javafx.application.Platform;
-import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.image.Image;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.DialogPane;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
 public class GameView extends Menu {
     private static Pane root;
     private static Pane map;
     private static HBox topPane;
+    private static Label topPaneLabel;
     private static VBox notificationPane;
     private static VBox militaryPane;
     private static Alert alert;
     private static DialogPane dialogPane;
     private static Stage stage;
     private static int selectedRow = -1, selectedColumn = -1;
+    private static Button nextTurnButton;
 
     private static void putRiver(int x, int y, int w, int h){
         ImageView river = new ImageView(GameView.class.getClassLoader().getResource("images/river.png").toExternalForm());
@@ -143,12 +141,36 @@ public class GameView extends Menu {
         //pane.getChildren().addAll(topPane, notificationPane, militaryPane);
 //        pane.getChildren().addAll(topPane, notificationPane);
         Platform.runLater(() -> map.requestFocus());
+        initElements();
+        pane.getChildren().add(topPane);
+        pane.getChildren().add(nextTurnButton);
         Scene scene = new Scene(pane, WIDTH, HEIGHT);
         scene.getStylesheets().add(LoginMenu.class.getClassLoader().getResource("css/MenuStyle.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
     }
-/*
+
+    private static void initElements() {
+        initTopPane();
+        nextTurnButton = new Button("pass turn");
+        nextTurnButton.setOnMouseClicked((e -> passTurn()));
+        nextTurnButton.setLayoutX(100);
+        nextTurnButton.setFocusTraversable(false);
+        nextTurnButton.setLayoutY(100);
+    }
+
+    private static void passTurn() {
+        // TODO: 7/15/2022 in web it must bo into a waiting state?
+        PlayerController.nextTurn();
+//        makeMap();
+        updateElements();
+    }
+
+
+    private static void updateElements() {
+        topPaneLabel.setText(MapMaker.getColorlessTopBar());
+    }
+
     private static void initTopPane() {
         topPane = new HBox();
         topPane.setLayoutX(0);
@@ -156,12 +178,12 @@ public class GameView extends Menu {
         topPane.setMinWidth(stage.getWidth());
         topPane.setStyle("-fx-background-color: #C0C0C0");
 
-        Label test = new Label("This is topPane!!!!!!!!!!!!!!!");
-        test.setFont(Font.font(14));
-        test.setTextFill(Color.WHITE);
-        topPane.getChildren().addAll(new TextField("hello"), test);
+        topPaneLabel = new Label(MapMaker.getColorlessTopBar());
+        topPaneLabel.setFont(Font.font(14));
+        topPaneLabel.setTextFill(Color.WHITE);
+        topPane.getChildren().addAll(topPaneLabel);
     }
-
+/*
     private static void initNotificationPane() {
         notificationPane = new VBox();
         notificationPane.setVisible(false);

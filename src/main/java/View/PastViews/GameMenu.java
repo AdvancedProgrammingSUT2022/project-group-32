@@ -184,7 +184,7 @@ public class GameMenu extends Menu {
         System.out.println(GameController.getGame().getCurrentPlayer().getName());
     }
 
-    private static void passTurn(String command) {
+    public static void passTurn(String command) {
         System.out.println(PlayerController.nextTurn().getString());
         currentPanel = null;
     }

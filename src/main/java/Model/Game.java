@@ -56,6 +56,7 @@ public class Game {
                 turnCount ++;
             }
         } while(GameController.isDead(players.get(currentPlayerID)));
+
     }
 
     public void refillData(){

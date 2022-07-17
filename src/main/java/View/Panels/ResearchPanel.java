@@ -27,7 +27,7 @@ public class ResearchPanel extends GameMenu {
 
     }
 
-    private static void researchTech(String command) {
+    public static void researchTech(String command) {
         ArrayList<String> parameters = CLI.getParameters(command, "t");
         if (parameters == null) {
             invalidCommand();
