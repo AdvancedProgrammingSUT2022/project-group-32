@@ -7,10 +7,7 @@ import View.PastViews.MapMaker;
 import enums.Types.FogState;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.DialogPane;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -19,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class GameView extends Menu {
     private static Pane root;
@@ -40,6 +38,23 @@ public class GameView extends Menu {
         river.setFitWidth(w);
         river.setFitHeight(h);
         map.getChildren().add(river);
+    }
+
+    private static Tooltip getToolTip(Tile tile){
+        if(tile.getFogState() == FogState.UNKNOWN){
+            return new Tooltip(tile.getRow() + "," + tile.getColumn());
+        }
+        StringBuilder text = new StringBuilder(tile.getRow() + "," + tile.getColumn() + "\n"
+                + tile.getTerrainType().name + "," + tile.getTerrainFeature().name + "," + tile.getResourceType().name + "\n");
+        if(tile.getRuin() != null) text.append("Ruin!\n");
+        if(tile.getCity() != null) text.append(tile.getCity().getName() + "\n");
+        if(tile.getUnit() != null) text.append(tile.getUnit().getUnitType().name);
+        text.append(" - ");
+        if(tile.getTroop() != null) text.append(tile.getTroop().getUnitType().name);
+        Tooltip tooltip = new Tooltip(text.toString());
+        tooltip.setWrapText(true);
+        tooltip.setShowDelay(Duration.seconds(0));
+        return tooltip;
     }
 
     public static void makeMap(){
@@ -101,7 +116,6 @@ public class GameView extends Menu {
                     y = row * 130 + 65;
                     x = column * 115;
                 }
-                System.err.println(x + "," + y);
                 Pane image = GameController.getCurrentPlayerMap().getTile(row, column).getTileImage();
                 image.setTranslateX(x);
                 image.setTranslateY(y);
@@ -121,6 +135,7 @@ public class GameView extends Menu {
                     map.requestFocus();
                 });
                 button.setFocusTraversable(false);
+                button.setTooltip(getToolTip(GameController.getCurrentPlayerMap().getTile(row, column)));
                 map.getChildren().add(button);
             }
         }
