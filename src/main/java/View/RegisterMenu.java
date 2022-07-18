@@ -1,11 +1,11 @@
 package View;
 
-import Controller.UserController;
+import enums.ParameterKeys;
+import enums.RequestActions;
 import enums.Responses.Response;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import static View.Menu.MenuType.*;
@@ -90,7 +91,12 @@ public class RegisterMenu extends Menu{
     //////////////
 
     private static void register() {
-        Response.LoginMenu response = UserController.register(usernameField.getText(), passwordField.getText(), nicknameField.getText());
+        HashMap<String, String> params = new HashMap<>();
+        params.put(ParameterKeys.USERNAME.code, usernameField.getText());
+        params.put(ParameterKeys.PASSWORD.code, passwordField.getText());
+        params.put(ParameterKeys.NICKNAME.code, nicknameField.getText());
+        Response.LoginMenu response = Response.LoginMenu.values()[Network.getResponseEnumIntOf(RequestActions.REGISTER.code, params)];
+//        Response.LoginMenu response = UserController.register(usernameField.getText(), passwordField.getText(), nicknameField.getText());
         if (response.equals(Response.LoginMenu.USERNAME_EXISTS)) {
             showAlert(alert, response.getString(usernameField.getText()));
         } else if (response.equals(Response.LoginMenu.NICKNAME_EXISTS)) {

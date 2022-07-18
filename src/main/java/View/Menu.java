@@ -21,7 +21,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.Pair;
 
-import java.io.IOException;
+import java.io.*;
+import java.net.Socket;
 import java.net.URL;
 import java.util.List;
 
@@ -29,6 +30,13 @@ public class Menu extends Application {
     public static final float WIDTH = 1440;
     public static final float HEIGHT = 720;
     private static Stage stage;
+
+    private static final int SERVER_PORT = 7777;
+    private static OutputStream outputStream;
+    private static ObjectOutputStream objectOutputStream;
+    private static InputStream inputStream;
+    private static ObjectInputStream objectInputStream;
+    private static Socket socket;
 
     public enum MenuType {
         MAIN_MENU("mainMenu"),
@@ -50,6 +58,7 @@ public class Menu extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        Network.connectToServer();
         stage = primaryStage;
         stage.setTitle("Civilization VI");
         stage.setResizable(false);
