@@ -75,6 +75,7 @@ public class Menu extends Application {
 
     public static void changeMenu(MenuType menuType) {
         try {
+            System.out.println("Going to: " + menuType.name);
             switch (menuType) {
                 case MAIN_MENU -> MainMenu.show(stage);
                 case LOGIN_MENU -> LoginMenu.show(stage);

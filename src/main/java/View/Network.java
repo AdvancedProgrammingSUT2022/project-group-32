@@ -1,7 +1,6 @@
 package View;
 
 import Model.Request;
-import enums.ParameterKeys;
 
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -48,8 +47,8 @@ public class Network {
         return null;
     }
 
-    public static void sendRequest(String reqMessage, HashMap<String, String> params) {
-        sendRequest(new Request(reqMessage, params));
+    public static Request sendRequest(String reqMessage, HashMap<String, String> params) {
+        return sendRequest(new Request(reqMessage, params));
     }
 
     public static String getActionOfReq(String reqMessage, HashMap<String, String> params) {
@@ -60,11 +59,20 @@ public class Network {
         return sendRequest(new Request(reqMessage, params)).params.get(paramKey);
     }
 
-    public static int getResponseEnumIntOf(String reqMessage, HashMap<String, String> params) {
-        return Integer.parseInt(sendRequest(new Request(reqMessage, params)).params.get(ParameterKeys.ENUM.code));
+    //
+//    public static int getResponseEnumIntOf(String reqMessage, HashMap<String, String> params) {
+//        return Integer.parseInt(sendRequest(new Request(reqMessage, params)).params.get(ParameterKeys.ENUM.code));
+//    }
+//
+//    public static int getResponseEnumIntOf(Request request) {
+//        return Integer.parseInt(sendRequest(request).params.get(ParameterKeys.ENUM.code));
+//    }
+//
+    public static Object getResponseObjOf(Request request) {
+        return sendRequest(request).getObj();
     }
 
-    public static int getResponseEnumIntOf(Request request) {
-        return Integer.parseInt(sendRequest(request).params.get(ParameterKeys.ENUM.code));
+    public static Object getResponseObjOf(String regMessage, HashMap<String, String> params) {
+        return sendRequest(regMessage, params).getObj();
     }
 }

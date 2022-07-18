@@ -2,6 +2,7 @@ package Server;
 
 import Controller.UserController;
 import Model.Request;
+import Model.User;
 import enums.ParameterKeys;
 
 import java.io.*;
@@ -14,7 +15,7 @@ import static enums.RequestActions.*;
 
 public class ServerMain {
     private static final int SERVER_PORT = 7777;
-
+    private static final HashMap<Long, User> threadIDUser = new HashMap<>();
     public static void main(String[] args) {
         ServerSocket ss;
         try {
@@ -25,7 +26,6 @@ public class ServerMain {
                 System.out.println("Connected: " + socket);
                 new Thread(() -> {
                     ThreadLocal loggedInUser = new ThreadLocal();
-                    ThreadLocal enteredClass = new ThreadLocal();
                     try {
                         InputStream inputStream = socket.getInputStream();
                         ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
@@ -37,15 +37,23 @@ public class ServerMain {
                             String action = request.action;
                             HashMap<String, String> params = request.params;
                             System.out.println(request);
+//                            System.out.println("users: " + threadIDUser);
                             if (action.equals(LOGIN.code)) {
                                 sendEnumRequest(UserController.login(params.get(ParameterKeys.USERNAME.code), params.get(ParameterKeys.PASSWORD.code)), objectOutputStream);
                             } else if (action.equals(REGISTER.code)) {
-                                sendEnumRequest(UserController.register(params.get(ParameterKeys.USERNAME.code), params.get(ParameterKeys.PASSWORD.code), params.get(ParameterKeys.NICKNAME.code)), objectOutputStream);
+                                sendEnumRequest(UserController.register(params.get(ParameterKeys.USERNAME.code),
+                                        params.get(ParameterKeys.PASSWORD.code),
+                                        params.get(ParameterKeys.NICKNAME.code), loggedInUser), objectOutputStream);
                             } else if (action.equals(REMOVE_USER.code)) {
                                 sendEnumRequest(UserController.removeUser(), objectOutputStream);
                             } else if (action.equals(CHANGE_PROFILE_PICTURE.code)) {
-                                sendEnumRequest(UserController.changePicture(request.getFile()), objectOutputStream);
+                                sendEnumRequest(UserController.changePicture((File) request.getObj()), objectOutputStream);
+                            } else if (action.equals(GET_THIS_USER.code)) {
+                                sendRequest(new Request("sent this User", null, UserController.getCurrentUser()), objectOutputStream);
+                            } else {
+                                System.err.println("INVALID COMMAND!!!");
                             }
+
                         }
 
                     } catch (SocketException e) {
@@ -63,19 +71,30 @@ public class ServerMain {
     }
 
     private static void sendEnumRequest(Enum thisEnum, ObjectOutputStream objectOutputStream) {
-        HashMap<String, String> params = new HashMap<>();
-        params.put(ParameterKeys.ENUM.code, String.valueOf(thisEnum.ordinal()));
-        sendRequest(new Request(thisEnum.toString(), params), objectOutputStream);
+        sendRequest(new Request(thisEnum.toString(), null, thisEnum), objectOutputStream);
     }
 
     private static synchronized void sendRequest(Request request, ObjectOutputStream objectOutputStream) {
         try {
-            System.out.println("Response: " + request.action + request.params);
+            System.out.println("Response:  action:" + request.action + " params: " + request.params);
             objectOutputStream.writeObject(request);
             objectOutputStream.flush();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static synchronized void addThreadUser(User user) {
+        threadIDUser.put(Thread.currentThread().getId(), user);
+        System.out.println("user add to: " + threadIDUser);
+    }
+
+    public static synchronized User getThisThreadUser() {
+        return threadIDUser.get(Thread.currentThread().getId());
+    }
+
+    public static synchronized void removeThisThreadUser() {
+        threadIDUser.remove(Thread.currentThread().getId());
     }
 
 }

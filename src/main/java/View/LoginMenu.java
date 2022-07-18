@@ -86,7 +86,8 @@ public class LoginMenu extends Menu {
         params.put(ParameterKeys.USERNAME.code, usernameField.getText());
         params.put(ParameterKeys.PASSWORD.code, passwordField.getText());
 
-        Response.LoginMenu response = Response.LoginMenu.values()[Network.getResponseEnumIntOf(RequestActions.LOGIN.code, params)];
+//        Response.LoginMenu response = Response.LoginMenu.values()[Network.getResponseEnumIntOf(RequestActions.LOGIN.code, params)];
+        Response.LoginMenu response = (Response.LoginMenu) Network.getResponseObjOf(RequestActions.LOGIN.code, params);
         if (response.equals(Response.LoginMenu.USERNAME_PASSWORD_DONT_MATCH)) {
             showAlert(alert, response.getString());
         } else {

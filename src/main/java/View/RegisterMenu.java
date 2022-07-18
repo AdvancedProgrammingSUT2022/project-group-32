@@ -95,7 +95,9 @@ public class RegisterMenu extends Menu{
         params.put(ParameterKeys.USERNAME.code, usernameField.getText());
         params.put(ParameterKeys.PASSWORD.code, passwordField.getText());
         params.put(ParameterKeys.NICKNAME.code, nicknameField.getText());
-        Response.LoginMenu response = Response.LoginMenu.values()[Network.getResponseEnumIntOf(RequestActions.REGISTER.code, params)];
+
+//        Response.LoginMenu response = Response.LoginMenu.values()[Network.getResponseEnumIntOf(RequestActions.REGISTER.code, params)];
+        Response.LoginMenu response = (Response.LoginMenu) Network.getResponseObjOf(RequestActions.REGISTER.code, params);
 //        Response.LoginMenu response = UserController.register(usernameField.getText(), passwordField.getText(), nicknameField.getText());
         if (response.equals(Response.LoginMenu.USERNAME_EXISTS)) {
             showAlert(alert, response.getString(usernameField.getText()));

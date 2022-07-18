@@ -1,14 +1,12 @@
 package Controller;
 
 import Model.User;
+import Server.ServerMain;
 import View.PastViews.Menu;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import enums.Responses.Response;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,7 +18,6 @@ import java.util.List;
 
 public class UserController {
     private static ArrayList<User> users;
-    private static User currentUser;
 
     static {
         try {
@@ -40,12 +37,13 @@ public class UserController {
         UserController.users = users;
     }
 
-    public static User getCurrentUser() {
-        return currentUser;
+    public static synchronized User getCurrentUser() {
+        System.out.println("user of threatID #" + Thread.currentThread().getId() + " is " + ServerMain.getThisThreadUser());
+        return ServerMain.getThisThreadUser();
     }
 
     public static void setCurrentUser(User user) {
-        UserController.currentUser = user;
+        // dont remove me :)
     }
 
     public static User getUserByUsername(String username) {
@@ -82,7 +80,7 @@ public class UserController {
         return password.matches("\\S+");
     }
 
-    public static Response.LoginMenu register(String username, String password, String nickname) { // login menu
+    public static Response.LoginMenu register(String username, String password, String nickname, ThreadLocal loggedInUser) { // login menu
         if (!IsNameValid(username)) {
             return Response.LoginMenu.INVALID_USERNAME_FORMAT;
         }
@@ -104,7 +102,7 @@ public class UserController {
         User user = new User(username, password, nickname);
         users.add(user);
         saveUsers();
-        currentUser = user;
+        ServerMain.addThreadUser(user);
         return Response.LoginMenu.REGISTER_SUCCESSFUL;
     }
 
@@ -113,12 +111,14 @@ public class UserController {
         if ((user = getUserByUsername(username)) == null || !user.getPassword().equals(password)) {
             return Response.LoginMenu.USERNAME_PASSWORD_DONT_MATCH;
         }
-        setCurrentUser(user);
+
+        ServerMain.addThreadUser(user);
         Menu.setCurrentMenu(Menu.MenuType.MAIN_MENU);
         return Response.LoginMenu.LOGIN_SUCCESSFUL;
     }
 
     public static Response.ProfileMenu changePassword(String oldPW, String newPW) { // profile menu
+        User currentUser = getCurrentUser();
         if (!currentUser.getPassword().equals(oldPW)) {
             return Response.ProfileMenu.WRONG_OLD_PASSWORD;
         }
@@ -137,6 +137,7 @@ public class UserController {
     }
 
     public static Response.ProfileMenu changeNickname(String nickname) {
+        User currentUser = getCurrentUser();
         if (!IsNameValid(nickname)) {
             return Response.ProfileMenu.INVALID_NICKNAME_FORMAT;
         }
@@ -149,14 +150,16 @@ public class UserController {
     }
 
     public static Response.ProfileMenu changePicture(File file){
+        User currentUser = getCurrentUser();
         currentUser.setPhotoAddress(file.getAbsolutePath());
         saveUsers();
         return Response.ProfileMenu.SUCCESSFUL_PICTURE_CHANGE;
     }
 
     public static Response.ProfileMenu removeUser() {
+        User currentUser = getCurrentUser();
         users.remove(currentUser);
-        currentUser = null;
+        ServerMain.removeThisThreadUser();
         saveUsers();
         Menu.setCurrentMenu(Menu.MenuType.LOGIN_MENU);
         return Response.ProfileMenu.ACCOUNT_DELETED_SUCCESSFULLY;
@@ -169,7 +172,7 @@ public class UserController {
     }
 
     public static Response.MainMenu logout() { // main menu
-        currentUser = null;
+        ServerMain.removeThisThreadUser();
         Menu.setCurrentMenu(Menu.MenuType.LOGIN_MENU);
         return Response.MainMenu.SUCCESSFUL_LOGOUT;
     }
