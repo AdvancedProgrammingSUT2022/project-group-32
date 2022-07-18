@@ -50,6 +50,10 @@ public class ServerMain {
                                 sendEnumRequest(UserController.changePicture((File) request.getObj()), objectOutputStream);
                             } else if (action.equals(GET_THIS_USER.code)) {
                                 sendRequest(new Request("sent this User", null, UserController.getCurrentUser()), objectOutputStream);
+                            } else if (action.equals(CHANGE_PASSWORD.code)) {
+                                sendEnumRequest(UserController.changePassword(params.get(ParameterKeys.OLD_PASSWORD.code), params.get(ParameterKeys.NEW_PASSWORD.code)), objectOutputStream);
+                            } else if (action.equals(CHANGE_NICKNAME.code)) {
+                                sendEnumRequest(UserController.changeNickname(params.get(ParameterKeys.NICKNAME.code)), objectOutputStream);
                             } else {
                                 System.err.println("INVALID COMMAND!!!");
                             }

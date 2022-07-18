@@ -4,7 +4,7 @@ public enum ParameterKeys {
     USERNAME("username"),
     PASSWORD("password"),
     NICKNAME("nickname"),
-    ENUM("enum");
+    ENUM("enum"), OLD_PASSWORD("oldPassword"), NEW_PASSWORD("newPassword");
 
     public final String code;
 

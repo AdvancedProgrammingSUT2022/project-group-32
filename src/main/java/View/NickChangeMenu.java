@@ -1,10 +1,13 @@
 package View;
 
-import Controller.UserController;
+import enums.ParameterKeys;
+import enums.RequestActions;
 import enums.Responses.Response;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -15,9 +18,10 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
-import static View.Menu.MenuType.*;
+import static View.Menu.MenuType.PROFILE_MENU;
 
 public class NickChangeMenu extends Menu {
     private static Pane root;
@@ -66,11 +70,13 @@ public class NickChangeMenu extends Menu {
     //////////////////////////////////
 
     private static void changeNickName() {
-        Response.ProfileMenu response = UserController.changeNickname(nicknameField.getText());
-        if(!response.equals(Response.ProfileMenu.SUCCESSFUL_NICKNAME_CHANGE)){
+//        Response.ProfileMenu response = UserController.changeNickname(nicknameField.getText());
+        HashMap<String, String> params = new HashMap<>();
+        params.put(ParameterKeys.NICKNAME.code, nicknameField.getText());
+        Response.ProfileMenu response = (Response.ProfileMenu) Network.getResponseObjOf(RequestActions.CHANGE_NICKNAME.code, params);
+        if (!response.equals(Response.ProfileMenu.SUCCESSFUL_NICKNAME_CHANGE)) {
             showAlert(alert, response.getString());
-        }
-        else {
+        } else {
             // TODO: 6/3/2022 some sort of confirmation
             changeMenu(PROFILE_MENU);
         }

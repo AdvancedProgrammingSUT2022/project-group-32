@@ -1,13 +1,13 @@
 package View;
 
-import Controller.UserController;
+import enums.ParameterKeys;
+import enums.RequestActions;
 import enums.Responses.Response;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -18,9 +18,9 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
-import static View.Menu.MenuType.EXIT;
 import static View.Menu.MenuType.PROFILE_MENU;
 
 public class PassChangeMenu extends Menu{
@@ -73,9 +73,13 @@ public class PassChangeMenu extends Menu{
 
     //////////////
 
-    private static void changePassword(){
-        Response.ProfileMenu response = UserController.changePassword(oldPasswordField.getText(), newPasswordField.getText());
-        if(!response.equals(Response.ProfileMenu.SUCCESSFUL_PASSWORD_CHANGE)){
+    private static void changePassword() {
+        HashMap<String, String> params = new HashMap<>();
+        params.put(ParameterKeys.OLD_PASSWORD.code, oldPasswordField.getText());
+        params.put(ParameterKeys.NEW_PASSWORD.code, newPasswordField.getText());
+        Response.ProfileMenu response = (Response.ProfileMenu) Network.getResponseObjOf(RequestActions.CHANGE_PASSWORD.code, params);
+//        Response.ProfileMenu response = UserController.changePassword(oldPasswordField.getText(), newPasswordField.getText());
+        if (!response.equals(Response.ProfileMenu.SUCCESSFUL_PASSWORD_CHANGE)) {
             showAlert(alert, response.getString());
         } else {
             changeMenu(PROFILE_MENU);
