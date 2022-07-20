@@ -1,5 +1,6 @@
 package Server;
 
+import Controller.GameController;
 import Controller.UserController;
 import Model.Request;
 import Model.User;
@@ -9,6 +10,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static enums.RequestActions.*;
@@ -16,6 +18,7 @@ import static enums.RequestActions.*;
 public class ServerMain {
     private static final int SERVER_PORT = 7777;
     private static final HashMap<Long, User> threadIDUser = new HashMap<>();
+    private static final HashMap<Long, ObjectOutputStream> outputStreamsByThreadID = new HashMap<>();
     public static void main(String[] args) {
         ServerSocket ss;
         try {
@@ -31,13 +34,13 @@ public class ServerMain {
                         ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
                         OutputStream outputStream = socket.getOutputStream();
                         ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+                        outputStreamsByThreadID.put(Thread.currentThread().getId(), objectOutputStream);
 
                         while (true) {
                             Request request = (Request) objectInputStream.readObject();
                             String action = request.action;
                             HashMap<String, String> params = request.params;
                             System.out.println(request);
-//                            System.out.println("users: " + threadIDUser);
                             if (action.equals(LOGIN.code)) {
                                 sendEnumRequest(UserController.login(params.get(ParameterKeys.USERNAME.code), params.get(ParameterKeys.PASSWORD.code)), objectOutputStream);
                             } else if (action.equals(REGISTER.code)) {
@@ -54,6 +57,19 @@ public class ServerMain {
                                 sendEnumRequest(UserController.changePassword(params.get(ParameterKeys.OLD_PASSWORD.code), params.get(ParameterKeys.NEW_PASSWORD.code)), objectOutputStream);
                             } else if (action.equals(CHANGE_NICKNAME.code)) {
                                 sendEnumRequest(UserController.changeNickname(params.get(ParameterKeys.NICKNAME.code)), objectOutputStream);
+                            } else if (action.equals(GET_GAME_MAP.code)) {
+                                sendRequest(new Request("Game Map Sent", null, GameController.getMap()), objectOutputStream);
+                            } else if (action.equals(GET_INVITATIONS.code)) {
+                                sendRequest(new Request("invitations", null, GameController.getInvitationsOf(getThisThreadUser())), objectOutputStream);
+                            } else if (action.equals(SEND_INVITATIONS.code)) {
+                                GameController.sendInvitaions((ArrayList<String>) request.getObj());
+                                sendRequest(new Request("OK", null), objectOutputStream);
+                            } else if (action.equals(ACCEPT_INVITAION.code)) {
+                                GameController.acceptInvitaion(getThisThreadUser());
+                                sendRequest(new Request("OK", null), objectOutputStream);
+                            } else if (action.equals(ARE_INVITATIONS_ACCEPTED.code)) {
+                                Request response = new Request("invitation accp? result", null, GameController.areInvitationAccepted());
+                                sendRequest(response, objectOutputStream);
                             } else {
                                 System.err.println("INVALID COMMAND!!!");
                             }
@@ -71,6 +87,8 @@ public class ServerMain {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            outputStreamsByThreadID.remove(Thread.currentThread().getId());
         }
     }
 
@@ -91,6 +109,15 @@ public class ServerMain {
     public static synchronized void addThreadUser(User user) {
         threadIDUser.put(Thread.currentThread().getId(), user);
         System.out.println("user add to: " + threadIDUser);
+    }
+
+    public static synchronized ObjectOutputStream getUsersObjOutStream(User user) {
+        for (Long aLong : threadIDUser.keySet()) {
+            if (threadIDUser.get(aLong).equals(user)) {
+                return outputStreamsByThreadID.get(aLong);
+            }
+        }
+        return null;
     }
 
     public static synchronized User getThisThreadUser() {

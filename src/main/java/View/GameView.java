@@ -1,5 +1,5 @@
 package View;
-
+// THIS IS FOR ONLINE PLAYING ...
 import Controller.GameController;
 import Controller.PlayerController;
 import Model.Tile;
@@ -56,10 +56,12 @@ public class GameView extends Menu {
         map.getChildren().add(imageView3);
 
         // putting rivers in
-        for(int row=0;row<GameController.getMap().getHeight();row++){
-            for(int column=0;column<GameController.getMap().getWidth();column++){
+//        Map gameMap = (Map) Network.getResponseObjOf(RequestActions.GET_GAME_MAP.code, null);
+
+        for (int row = 0; row < GameController.getMap().getHeight(); row++) {
+            for (int column = 0; column < GameController.getMap().getWidth(); column++) {
                 int x, y;
-                if(column % 2 == 0){
+                if (column % 2 == 0) {
                     y = row * 130;
                     x = column * 115;
                 } else {
@@ -183,6 +185,7 @@ public class GameView extends Menu {
         topPaneLabel.setTextFill(Color.WHITE);
         topPane.getChildren().addAll(topPaneLabel);
     }
+
 /*
     private static void initNotificationPane() {
         notificationPane = new VBox();
