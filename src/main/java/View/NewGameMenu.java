@@ -85,8 +85,7 @@ public class NewGameMenu extends Menu {
 
     private static void startGame() {
         // TODO: 7/12/2022
-        if (newGame(new ArrayList<String>(Arrays.stream(playerUsernamesField.getText().split(",")).toList()), 3)) {
-
+        if (newGame(new ArrayList<String>(Arrays.stream(playerUsernamesField.getText().split(",")).toList()), Integer.parseInt(mapSize.getText()))) {
         } else {
             showAlert(alert, "game start failed");
         }
@@ -274,9 +273,7 @@ public class NewGameMenu extends Menu {
         }
 
         // TODO: 7/11/2022 this parts needs to fit for graphical start
-        GameController.newGame(playingUsers, 3);
-//        setCurrentMenu(View.PastViews.Menu.MenuType.GAME_MENU);
-//        setCurrentMenu(View.PastViews.Menu.MenuType.GAME_MENU);
+        GameController.newGame(playingUsers, mapSize);
         Menu.changeMenu(GAME_VIEW);
         System.out.println(Response.MainMenu.NEW_GAME_STARTED.getString());
         return true;

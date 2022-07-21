@@ -360,11 +360,27 @@ public class Tile {
         featureImage.setFitHeight(70);
         imagePane.getChildren().add(featureImage);
         ImageView resourceImage = terrain.getResourceImage();
-        resourceImage.setTranslateX(55);
-        resourceImage.setTranslateY(80);
-        resourceImage.setFitWidth(30);
-        resourceImage.setFitHeight(30);
+        resourceImage.setTranslateX(50);
+        resourceImage.setTranslateY(75);
+        resourceImage.setFitWidth(40);
+        resourceImage.setFitHeight(40);
         imagePane.getChildren().add(resourceImage);
+        if(fogState == FogState.VISIBLE &&  unit != null) {
+            ImageView unitImage = unit.getUnitImage();
+            unitImage.setTranslateX(20);
+            unitImage.setTranslateY(40);
+            resourceImage.setFitWidth(50);
+            resourceImage.setFitHeight(50);
+            imagePane.getChildren().add(unitImage);
+        }
+        if(fogState == FogState.VISIBLE && troop != null) {
+            ImageView unitImage = troop.getUnitImage();
+            unitImage.setTranslateX(70);
+            unitImage.setTranslateY(40);
+            resourceImage.setFitWidth(50);
+            resourceImage.setFitHeight(50);
+            imagePane.getChildren().add(unitImage);
+        }
         return imagePane;
     }
 

@@ -3,9 +3,11 @@ package Model.Units;
 import Model.Map;
 import Model.Player;
 import Model.Tile;
+import View.GameView;
 import enums.Types.CombatType;
 import enums.Types.OrderType;
 import enums.Types.UnitType;
+import javafx.scene.image.ImageView;
 
 public class Unit {
     private Tile tile;
@@ -21,6 +23,7 @@ public class Unit {
     private int remainingCost;
     private OrderType orderType;
     private CombatType combatType;
+    private transient ImageView unitImage;
 
     public Unit(Tile tile, Player owner, UnitType unitType) {
         this.tile = tile;
@@ -38,6 +41,7 @@ public class Unit {
         if (this.combatType.equals(CombatType.SIEGE) || unitType == UnitType.PANZER) this.sightRange = 1;
         this.orderType = OrderType.AWAKE;
         if (tile != null) tile.putUnit(this);
+        unitImage = new ImageView(GameView.class.getClassLoader().getResource("images/Units/" + unitType.name + ".png").toExternalForm());
     }
 
     public Tile getTile() {
@@ -167,6 +171,13 @@ public class Unit {
     public void destroy() {
         this.tile.takeUnit(this);
         this.owner.removeUnit(this);
+    }
+
+    public ImageView getUnitImage() {
+        if(unitImage == null) {
+            unitImage = new ImageView(GameView.class.getClassLoader().getResource("images/Units/" + unitType.name + ".png").toExternalForm());
+        }
+        return unitImage;
     }
 }
 
