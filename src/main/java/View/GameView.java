@@ -1,9 +1,11 @@
 package View;
 // THIS IS FOR ONLINE PLAYING ...
 
+import Controller.GameController;
 import Model.Map;
 import Model.Tile;
 import View.Panels.DemographicsPanel;
+import View.Panels.EconomyPanel;
 import View.Panels.MilitaryPanel;
 import View.Panels.NotificationsPanel;
 import View.PastViews.MapMaker;
@@ -33,6 +35,7 @@ public class GameView extends Menu {
     private static VBox notificationPane;
     private static VBox militaryPane;
     private static VBox demographicsPane;
+    private static VBox economyPane;
     private static Alert infoAlert;
     private static Alert invalidAlert;
     private static DialogPane dialogPane;
@@ -172,22 +175,20 @@ public class GameView extends Menu {
         Pane pane = root;
         initTopPane();
         makeMap();
+        //map.setTranslateX(GameController.getCurrentPlayer().getCameraColumn() * -130 + WIDTH / 2);
+        //map.setTranslateY(GameController.getCurrentPlayer().getCameraRow() * -115 + HEIGHT / 2);
+        pane.getChildren().add(map);
         // initing panes
+        initElements();
 
-//        initNotificationPane();
-//        initMilitaryPane();
-//        initDemographicsPane();
         //militaryPane.setVisible(true);
         //notificationPane.setVisible(true);
-//        demographicsPane.setVisible(true);
-//        pane.getChildren().addAll(topPane, notificationPane, militaryPane, demographicsPane);
-        pane.getChildren().add(map);
+        //demographicsPane.setVisible(true);
+        //economyPane.setVisible(true);
+        pane.getChildren().addAll(topPane, notificationPane, militaryPane, demographicsPane, economyPane);
         waitiingLable.setVisible(false);
         pane.getChildren().add(waitiingLable);
-        pane.getChildren().addAll(topPane);
         Platform.runLater(() -> map.requestFocus());
-        initElements();
-        pane.getChildren().add(topPane);
         pane.getChildren().add(nextTurnButton);
         Scene scene = new Scene(pane, WIDTH, HEIGHT);
         scene.getStylesheets().add(LoginMenu.class.getClassLoader().getResource("css/MenuStyle.css").toExternalForm());
@@ -197,6 +198,10 @@ public class GameView extends Menu {
 
     private static void initElements() {
         initTopPane();
+        initNotificationPane();
+        initMilitaryPane();
+        initDemographicsPane();
+        initEconomyPane();
         nextTurnButton = new Button("pass turn");
         nextTurnButton.setOnMouseClicked((e -> passTurn()));
         nextTurnButton.setLayoutX(100);
@@ -286,6 +291,24 @@ public class GameView extends Menu {
         content.setFont(Font.font(14));
         content.setTextFill(Color.WHITE);
         demographicsPane.getChildren().addAll(header, content);
+    }
+
+    private static void initEconomyPane() {
+        economyPane = new VBox();
+        economyPane.setVisible(false);
+        economyPane.setAlignment(Pos.CENTER);
+        economyPane.setLayoutX(WIDTH - RIGHT_WIDTH);
+        economyPane.setMinWidth(RIGHT_WIDTH);
+        economyPane.setMinHeight(HEIGHT);
+        economyPane.setStyle("-fx-background-color: #C0C0C0; -fx-background-size: 100, 100;");
+        Label header = new Label("ECONOMY PANEL");
+        header.setTextFill(Color.WHITE);
+        header.setFont(Font.font(18));
+        header.setAlignment(Pos.CENTER);
+        Label content = new Label(EconomyPanel.printPanel());
+        content.setFont(Font.font(14));
+        content.setTextFill(Color.WHITE);
+        economyPane.getChildren().addAll(header, content);
     }
 
     /////////////////////

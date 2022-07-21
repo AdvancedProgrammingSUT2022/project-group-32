@@ -2,7 +2,10 @@ package View.Panels;
 
 import Controller.GameController;
 import Model.Player;
+import Model.Request;
+import View.Network;
 import View.PastViews.GameMenu;
+import enums.RequestActions;
 
 import java.util.ArrayList;
 
@@ -19,7 +22,7 @@ public class NotificationsPanel extends GameMenu {
 
     public static String showPanel() {
         StringBuilder panelContent = new StringBuilder();
-        Player player = GameController.getCurrentPlayer();
+        Player player = (Player) Network.getResponseObjOf(RequestActions.GET_THIS_PLAYER.code, null);
         for (String notification : player.getNotifications()) {
             panelContent.append(notification).append("\n");
         }
