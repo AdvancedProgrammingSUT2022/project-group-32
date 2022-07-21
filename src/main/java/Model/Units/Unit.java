@@ -6,6 +6,7 @@ import Model.Tile;
 import enums.Types.CombatType;
 import enums.Types.OrderType;
 import enums.Types.UnitType;
+import javafx.scene.image.ImageView;
 
 public class Unit {
     private Tile tile;
@@ -167,6 +168,11 @@ public class Unit {
     public void destroy() {
         this.tile.takeUnit(this);
         this.owner.removeUnit(this);
+    }
+
+    public ImageView getUnitImage() {
+        if(unitType == null) return null;
+        return unitType.getImage();
     }
 }
 

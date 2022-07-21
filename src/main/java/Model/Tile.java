@@ -365,6 +365,23 @@ public class Tile {
         resourceImage.setFitWidth(30);
         resourceImage.setFitHeight(30);
         imagePane.getChildren().add(resourceImage);
+        if(fogState == FogState.VISIBLE && unit != null) {
+            ImageView unitImage = unit.getUnitImage();
+            unitImage.setTranslateX(20);
+            unitImage.setTranslateY(40);
+            resourceImage.setFitWidth(50);
+            resourceImage.setFitHeight(50);
+            imagePane.getChildren().add(unitImage);
+        }
+        if(fogState == FogState.VISIBLE && troop != null) {
+            ImageView unitImage = troop.getUnitImage();
+            unitImage.setTranslateX(70);
+            unitImage.setTranslateX(80);
+            unitImage.setTranslateY(40);
+            resourceImage.setFitWidth(50);
+            resourceImage.setFitHeight(50);
+            imagePane.getChildren().add(unitImage);
+        }
         return imagePane;
     }
 
