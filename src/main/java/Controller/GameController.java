@@ -363,6 +363,10 @@ public class GameController {
         return Boolean.TRUE;
     }
 
+    public static Boolean isThisUsersTurn(User thisThreadUser) {
+        return game.getCurrentPlayer().getUser().getUsername().equals(thisThreadUser.getUsername());
+    }
+
     // TODO: 4/17/2022 there is a lot of cheat codes to be added
 
 }

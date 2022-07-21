@@ -20,6 +20,7 @@ import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import static View.Menu.MenuType.EXIT;
@@ -110,27 +111,32 @@ public class NewGameMenu extends Menu {
             invitationStatus.setText("invitations sent, not accepted yet!");
             Request req = new Request(RequestActions.SEND_INVITATIONS.code, null, invitationsUsernames);
             Network.sendRequest(req);
-            new Thread(() -> {
-                while (true) {
-                    Boolean ok = (Boolean) Network.getResponseObjOf(RequestActions.ARE_INVITATIONS_ACCEPTED.code, null);
-                    if (ok) {
-                        Platform.runLater(() -> {
-                            newGame(invitationsUsernames, mapSizeInteger);
-                        });
-                        break;
-                    }
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
+            areInvitationsAccptedThreadHost(invitationsUsernames, mapSizeInteger);
+
             // TODO: 7/11/2022 seding initations and waiting for acceptence and then initing the game
         } else {
             showAlert(alert, "invalid usernames");
         }
 
+    }
+
+    private static void areInvitationsAccptedThreadHost(ArrayList<String> invitationsUsernames, int mapSizeInteger) {
+        new Thread(() -> {
+            while (true) {
+                Boolean ok = (Boolean) Network.getResponseObjOf(RequestActions.ARE_INVITATIONS_ACCEPTED.code, null);
+                if (ok) {
+                    Platform.runLater(() -> {
+                        newGame(invitationsUsernames, mapSizeInteger);
+                    });
+                    break;
+                }
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     private static boolean areUsernamesValid(ArrayList<String> usernames) {
@@ -273,6 +279,9 @@ public class NewGameMenu extends Menu {
         }
 
         // TODO: 7/11/2022 this parts needs to fit for graphical start
+        HashMap<String, String> params = new HashMap<>();
+        params.put("mapSize", String.valueOf(mapSize));
+        Network.sendRequest(new Request(RequestActions.NEW_GAME.code, null, playingUsers));
         GameController.newGame(playingUsers, mapSize);
         Menu.changeMenu(GAME_VIEW);
         System.out.println(Response.MainMenu.NEW_GAME_STARTED.getString());

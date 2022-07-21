@@ -59,7 +59,7 @@ public class ServerMain {
                             } else if (action.equals(CHANGE_NICKNAME.code)) {
                                 sendEnumRequest(UserController.changeNickname(params.get(ParameterKeys.NICKNAME.code)), objectOutputStream);
                             } else if (action.equals(GET_GAME_MAP.code)) {
-                                sendRequest(new Request("Game Map Sent", null, GameController.getMap()), objectOutputStream);
+                                sendRequest(new Request("Game Map Sent", null, GameController.getCurrentPlayerMap()), objectOutputStream);
                             } else if (action.equals(GET_INVITATIONS.code)) {
                                 sendRequest(new Request("invitations", null, GameController.getInvitationsOf(getThisThreadUser())), objectOutputStream);
                             } else if (action.equals(SEND_INVITATIONS.code)) {
@@ -73,6 +73,11 @@ public class ServerMain {
                                 sendRequest(response, objectOutputStream);
                             } else if (action.equals(GET_USER_BY_USERNAME.code)) {
                                 sendRequest(new Request("Sending user by username", null, UserController.getUserByUsername((String) request.getObj())), objectOutputStream);
+                            } else if (action.equals(IS_MY_TURN.code)) {
+                                sendRequest(new Request("is my turn response", null, GameController.isThisUsersTurn(getThisThreadUser())), objectOutputStream);
+                            } else if (action.equals(NEW_GAME.code)) {
+
+                                sendRequest(new Request("game started", null), objectOutputStream);
                             } else if (action.equals(PANEL_COMMAND.code)) {
                                 InGameCommandHandler.handleCommand(action);
                                 sendRequest(new Request("response to panel action", null), objectOutputStream);

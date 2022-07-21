@@ -14,7 +14,7 @@ public enum RequestActions {
     ARE_INVITATIONS_ACCEPTED("are_reqs_accepted"),
     ACCEPT_INVITAION("Accept_request"),
     GET_USER_BY_USERNAME("get_user_by_username"),
-    PANEL_COMMAND("panel_command");
+    PANEL_COMMAND("panel_command"), IS_MY_TURN("is_my_turn?"), NEW_GAME("new_game");
 
     public final String code;
 
