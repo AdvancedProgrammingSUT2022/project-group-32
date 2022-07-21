@@ -3,7 +3,10 @@ package View.Panels;
 import Controller.GameController;
 import Model.City;
 import Model.Player;
+import Model.Request;
+import View.Network;
 import View.PastViews.GameMenu;
+import enums.RequestActions;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +28,7 @@ public class DemographicsPanel extends GameMenu {
                 "Avg.",
                 "Worst",
                 "Rank"));
-        Player player = GameController.getCurrentPlayer();
+        Player player = ((Player) Network.getResponseObjOf(RequestActions.GET_THIS_PLAYER.code, null));
         ArrayList<City> cities = player.getCities();
         ArrayList<Player> players = GameController.getGame().getPlayers();
 

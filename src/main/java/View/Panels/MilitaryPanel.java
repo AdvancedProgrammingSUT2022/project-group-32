@@ -1,8 +1,10 @@
 package View.Panels;
 
-import Controller.GameController;
+import Model.Player;
 import Model.Units.Troop;
+import View.Network;
 import View.PastViews.GameMenu;
+import enums.RequestActions;
 
 import java.util.ArrayList;
 
@@ -15,7 +17,7 @@ public class MilitaryPanel extends GameMenu {
 
     public static String printPanel() {
         StringBuilder result = new StringBuilder();
-        ArrayList<Troop> troops = new ArrayList<>(GameController.getCurrentPlayer().getUnits().stream().
+        ArrayList<Troop> troops = new ArrayList<>(((Player) Network.getResponseObjOf(RequestActions.GET_THIS_PLAYER.code, null)).getUnits().stream().
                 filter(u -> u instanceof Troop).filter(u -> u.getRemainingCost() == 0).map(u -> (Troop) u).toList());
         result.append(printRow("Name", "Status", "HP", "Melee Strength", "Ranged Strength", "Destination"));
         for (Troop troop : troops) {

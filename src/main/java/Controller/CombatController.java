@@ -62,7 +62,7 @@ public class CombatController {
         double attPower = attacker.getMeleeStrength() * (attacker.getHP() / attacker.getHealth());
         attPower *= 1 + attacker.getTile().getTerrain().getCombat();
         if (attacker.getUnitType().equals(UnitType.TANK)) attPower *= 0.9;
-        double defPower = defender.getStrength();
+        double defPower = defender.getStrength() * getCityBonus(defender);
 
         if (attacker.getUnitType().combatType == CombatType.MOUNTED) attacker.setMP(attacker.getMP() - 1);
         else attacker.setMP(0);
@@ -107,7 +107,7 @@ public class CombatController {
         double attPower = attacker.getRangedStrength() * (attacker.getHP() / attacker.getHealth());
         attPower *= 1 + attacker.getTile().getTerrain().getCombat();
         if (attacker.getCombatType().equals(CombatType.SIEGE)) attPower *= 1.1;
-        double defPower = defender.getStrength();
+        double defPower = defender.getStrength() * getCityBonus(defender);
 
         attacker.setMP(0);
         attacker.setFortifyBonus(0);
@@ -121,7 +121,7 @@ public class CombatController {
 
     public static void rangedAttack(City attacker, Troop defender) {
         double attPower = attacker.getStrength();
-        double defPower = defender.getMeleeStrength();
+        double defPower = defender.getMeleeStrength() * getCityBonus(attacker);
         defPower *= 1 + defender.getTile().getTerrain().getCombat();
         defPower *= 1 + 0.25 * defender.getFortifyBonus();
         if (defender.getCombatType().equals(CombatType.SIEGE)) defPower *= 1.1;

@@ -2,7 +2,10 @@ package View.Panels;
 
 import Controller.GameController;
 import Model.City;
+import Model.Player;
+import View.Network;
 import View.PastViews.GameMenu;
+import enums.RequestActions;
 
 import java.util.ArrayList;
 
@@ -10,7 +13,7 @@ public class EconomyPanel extends GameMenu {
     private static final ArrayList<City> cities = new ArrayList<>();
 
     public static void run(String command) {
-        cities.addAll(GameController.getCurrentPlayer().getCities()); // this is what used every where, for same indexing ...
+        cities.addAll(((Player) Network.getResponseObjOf(RequestActions.GET_THIS_PLAYER.code, null)).getCities()); // this is what used every where, for same indexing ...
         if (command.startsWith("show panel")) {
             printPanel();
         }

@@ -3,6 +3,7 @@ package Model;
 public class Trade {
     private Player player1, player2;
     private int goldGiven, goldTaken;
+    private int scienceGiven, scienceTaken;
     private Resource resourceGiven, resourceTaken;
 
     public Trade(Player player1, Player player2, int goldGiven, int goldTaken, Resource resourceGiven, Resource resourceTaken) {
@@ -60,5 +61,21 @@ public class Trade {
 
     public void setResourceTaken(Resource resourceTaken) {
         this.resourceTaken = resourceTaken;
+    }
+
+    public int getScienceGiven() {
+        return scienceGiven;
+    }
+
+    public void setScienceGiven(int scienceGiven) {
+        this.scienceGiven = scienceGiven;
+    }
+
+    public int getScienceTaken() {
+        return scienceTaken;
+    }
+
+    public void setScienceTaken(int scienceTaken) {
+        this.scienceTaken = scienceTaken;
     }
 }
