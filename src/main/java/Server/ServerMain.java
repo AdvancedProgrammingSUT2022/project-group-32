@@ -4,6 +4,7 @@ import Controller.GameController;
 import Controller.UserController;
 import Model.Request;
 import Model.User;
+import View.Panels.InGameCommandHandler;
 import enums.ParameterKeys;
 
 import java.io.*;
@@ -72,6 +73,9 @@ public class ServerMain {
                                 sendRequest(response, objectOutputStream);
                             } else if (action.equals(GET_USER_BY_USERNAME.code)) {
                                 sendRequest(new Request("Sending user by username", null, UserController.getUserByUsername((String) request.getObj())), objectOutputStream);
+                            } else if (action.equals(PANEL_COMMAND.code)) {
+                                InGameCommandHandler.handleCommand(action);
+                                sendRequest(new Request("response to panel action", null), objectOutputStream);
                             } else {
                                 System.err.println("INVALID COMMAND!!!");
                             }
