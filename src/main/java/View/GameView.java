@@ -57,6 +57,7 @@ public class GameView extends Menu {
         return tooltip;
     }
 
+    // should be called after every change to the map :)
     public static void makeMap(){
         map = new Pane();
         root.getChildren().add(map);
