@@ -69,15 +69,17 @@ public class GameController {
         }
     }
 
-    public static void loadGame(){
+    public static boolean loadGame(){
         try {
             String json = new String(Files.readAllBytes(Paths.get("src/main/resources/lastGame.json")));
             game = new Gson().fromJson(json, new TypeToken<Game>(){}.getType());
             game.refillData();
+            return true;
         } catch (IOException e) {
             System.err.println("Error while loading game");
             e.printStackTrace();
         }
+        return false;
     }
 
     public static int getTurn() {
@@ -101,8 +103,6 @@ public class GameController {
     }
 
     public static Response.GameMenu newGame(ArrayList<User> users) {
-        Map mainMap = new Map(3, 3);
-
         ArrayList<Player> players = users.stream().map(user -> new Player(user, 1, 1)).collect(Collectors.toCollection(ArrayList::new));
 
         // TODO: initial gold, food, production, happiness, city population, .. must be set

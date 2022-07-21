@@ -1,5 +1,8 @@
 package enums.Types;
 
+import View.GameView;
+import javafx.scene.image.ImageView;
+
 import java.util.ArrayList;
 
 public enum ResourceType {
@@ -71,4 +74,7 @@ public enum ResourceType {
         return null;
     }
 
+    public ImageView getImage(){
+        return new ImageView(ResourceType.class.getClassLoader().getResource("images/Resources/" + name + ".png").toExternalForm());
+    }
 }

@@ -30,6 +30,7 @@ public class GameView extends Menu {
     private static Stage stage;
     private static int selectedRow = -1, selectedColumn = -1;
     private static Button nextTurnButton;
+    private static Button quitButton;
 
     private static void putRiver(int x, int y, int w, int h){
         ImageView river = new ImageView(GameView.class.getClassLoader().getResource("images/river.png").toExternalForm());
@@ -58,8 +59,7 @@ public class GameView extends Menu {
     }
 
     public static void makeMap(){
-        map = new Pane();
-        root.getChildren().add(map);
+        map.getChildren().clear();
         ImageView imageView1 = new ImageView(GameView.class.getClassLoader().getResource("images/Terrains/hill.png").toExternalForm());
         ImageView imageView2 = new ImageView(GameView.class.getClassLoader().getResource("images/Terrains/hill.png").toExternalForm());
         imageView2.setTranslateY(130);
@@ -147,6 +147,8 @@ public class GameView extends Menu {
         root = new Pane();
         alert = initAlert();
         Pane pane = root;
+        map = new Pane();
+        root.getChildren().add(map);
         makeMap();
         // initing panes
        /* initTopPane();
@@ -158,7 +160,8 @@ public class GameView extends Menu {
         Platform.runLater(() -> map.requestFocus());
         initElements();
         pane.getChildren().add(topPane);
-        pane.getChildren().add(nextTurnButton);
+        // adding buttons
+        pane.getChildren().addAll(nextTurnButton, quitButton);
         Scene scene = new Scene(pane, WIDTH, HEIGHT);
         scene.getStylesheets().add(LoginMenu.class.getClassLoader().getResource("css/MenuStyle.css").toExternalForm());
         stage.setScene(scene);
@@ -167,23 +170,34 @@ public class GameView extends Menu {
 
     private static void initElements() {
         initTopPane();
+        // pass turn
         nextTurnButton = new Button("pass turn");
-        nextTurnButton.setOnMouseClicked((e -> passTurn()));
-        nextTurnButton.setLayoutX(100);
+        nextTurnButton.setOnMouseClicked(e -> passTurn());
         nextTurnButton.setFocusTraversable(false);
-        nextTurnButton.setLayoutY(100);
+        nextTurnButton.setLayoutX(0);
+        nextTurnButton.setLayoutY(HEIGHT - 100);
+        nextTurnButton.setMinWidth(100);
+        nextTurnButton.setMinHeight(100);
+        // quit
+        quitButton = new Button("pause and exit");
+        quitButton.setOnMouseClicked(e -> quit());
+        quitButton.setFocusTraversable(false);
+        quitButton.setLayoutX(WIDTH - 100);
+        quitButton.setLayoutY(0);
+        quitButton.setMinWidth(100);
+        quitButton.setMinHeight(100);
     }
 
     private static void passTurn() {
         // TODO: 7/15/2022 in web it must bo into a waiting state?
         PlayerController.nextTurn();
-//        makeMap();
-        updateElements();
+        makeMap();
+        initElements();
     }
 
-
-    private static void updateElements() {
-        topPaneLabel.setText(MapMaker.getColorlessTopBar());
+    private static void quit() {
+        GameController.saveGame();
+        Menu.changeMenu(MenuType.MAIN_MENU);
     }
 
     private static void initTopPane() {
@@ -196,6 +210,7 @@ public class GameView extends Menu {
         topPaneLabel = new Label(MapMaker.getColorlessTopBar());
         topPaneLabel.setFont(Font.font(14));
         topPaneLabel.setTextFill(Color.WHITE);
+        topPaneLabel.setText(MapMaker.getColorlessTopBar());
         topPane.getChildren().addAll(topPaneLabel);
     }
 /*

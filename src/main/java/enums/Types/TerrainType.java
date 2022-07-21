@@ -1,5 +1,7 @@
 package enums.Types;
 
+import javafx.scene.image.ImageView;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -31,5 +33,9 @@ public enum TerrainType {
         this.possibleTerrainFeatures = possibleTerrainFeatures;
         this.baseFeature = baseFeature;
         this.imageAddress = imageAddress;
+    }
+
+    public ImageView getImage(){
+        return new ImageView(TerrainType.class.getClassLoader().getResource("images/Terrains/" + imageAddress).toExternalForm());
     }
 }

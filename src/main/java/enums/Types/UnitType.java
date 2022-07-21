@@ -1,5 +1,7 @@
 package enums.Types;
 
+import javafx.scene.image.ImageView;
+
 import java.util.ArrayList;
 
 public enum UnitType {
@@ -59,7 +61,7 @@ public enum UnitType {
     }
 
     public static ArrayList<UnitType> getUnitsByCombatType(CombatType... combatType) {
-        ArrayList<UnitType> units = new ArrayList<UnitType>();
+        ArrayList<UnitType> units = new ArrayList();
         for (UnitType unitType : UnitType.values()) {
             for (CombatType type : combatType) {
                 if (unitType.combatType.equals(type)) {
@@ -68,6 +70,10 @@ public enum UnitType {
             }
         }
         return units;
+    }
+
+    public ImageView getImage(){
+        return new ImageView(UnitType.class.getClassLoader().getResource("images/Units/" + name + ".png").toExternalForm());
     }
 
 }

@@ -1,5 +1,6 @@
 package View;
 
+import Controller.GameController;
 import Controller.UserController;
 import View.Components.Civ6Title;
 import enums.Responses.Response;
@@ -30,8 +31,7 @@ public class MainMenu extends Menu {
             }),
             new Pair<String, Runnable>("C h a t   R o o m", () -> {
             }),
-            new Pair<String, Runnable>("C r e a t e   M a p", () -> {
-            }),
+            new Pair<String, Runnable>("C o n t i n u e   L a s t g a m e", MainMenu::continueLastGame),
             new Pair<String, Runnable>("L o g o u t", () -> {
                 logout();
             }),
@@ -79,5 +79,14 @@ public class MainMenu extends Menu {
         Pane pane = root;
         stage.setScene(new Scene(pane, WIDTH, HEIGHT));
         stage.show();
+    }
+
+
+    ////////////////
+
+    private static void continueLastGame() {
+        if(GameController.loadGame()){
+            changeMenu(GAME_VIEW);
+        }
     }
 }
