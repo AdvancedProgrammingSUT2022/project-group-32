@@ -1,6 +1,6 @@
 package View;
 
-import Controller.GameController;
+
 import Model.Request;
 import Model.User;
 import enums.RequestActions;
@@ -69,6 +69,8 @@ public class NewGameMenu extends Menu {
             Network.sendRequest(RequestActions.ACCEPT_INVITAION.code, null);
             invitationPopUp.setVisible(false);
             isAcceptedInvs = true;
+            areInvitationsAccptedThreadJoinee();
+            System.out.println("after here");
         });
         Button rjctBtn = new Button("Reject");
         rjctBtn.setOnMouseClicked(e -> {
@@ -127,6 +129,31 @@ public class NewGameMenu extends Menu {
                 if (ok) {
                     Platform.runLater(() -> {
                         newGame(invitationsUsernames, mapSizeInteger);
+                    });
+                    break;
+                }
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    private static void areInvitationsAccptedThreadJoinee() {
+        new Thread(() -> {
+            while (true) {
+                Boolean ok = (Boolean) Network.getResponseObjOf(RequestActions.ARE_INVITATIONS_ACCEPTED.code, null);
+                if (ok) {
+                    Platform.runLater(() -> {
+                        try {
+                            Thread.sleep(4000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        Menu.changeMenu(GAME_VIEW);
+                        System.out.println(Response.MainMenu.NEW_GAME_STARTED.getString());
                     });
                     break;
                 }
@@ -281,8 +308,8 @@ public class NewGameMenu extends Menu {
         // TODO: 7/11/2022 this parts needs to fit for graphical start
         HashMap<String, String> params = new HashMap<>();
         params.put("mapSize", String.valueOf(mapSize));
-        Network.sendRequest(new Request(RequestActions.NEW_GAME.code, null, playingUsers));
-        GameController.newGame(playingUsers, mapSize);
+        Network.sendRequest(new Request(RequestActions.NEW_GAME.code, params, playingUsers));
+//        GameController.newGame(playingUsers, mapSize);
         Menu.changeMenu(GAME_VIEW);
         System.out.println(Response.MainMenu.NEW_GAME_STARTED.getString());
         return true;

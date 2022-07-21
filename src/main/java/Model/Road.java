@@ -2,7 +2,10 @@ package Model;
 
 import enums.Types.RoadType;
 
-public class Road {
+import java.io.Serializable;
+
+public class Road implements Serializable {
+    public static final long serialVersionUID = 74L;
     private RoadType type;
     private int remainingTurns;
 

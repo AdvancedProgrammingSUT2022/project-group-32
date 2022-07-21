@@ -27,6 +27,7 @@ public class MainMenu extends Menu {
                 Menu.changeMenu(PROFILE_MENU);
             }),
             new Pair<String, Runnable>("S c o r e b o a r d", () -> {
+                Menu.changeMenu(SCOREBOARD);
             }),
             new Pair<String, Runnable>("C h a t   R o o m", () -> {
             }),

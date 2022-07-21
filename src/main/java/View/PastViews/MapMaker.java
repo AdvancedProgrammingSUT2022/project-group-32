@@ -4,7 +4,9 @@ import Controller.GameController;
 import Model.City;
 import Model.Player;
 import Model.Tile;
+import View.Network;
 import enums.Color;
+import enums.RequestActions;
 import enums.Types.FogState;
 
 import java.util.HashMap;
@@ -29,7 +31,7 @@ public class MapMaker {
 
     public static String getColorlessTopBar() {
         String top = "";
-        Player player = GameController.getCurrentPlayer();
+        Player player = (Player) Network.getResponseObjOf(RequestActions.GET_THIS_PLAYER.code, null);
         top = ("Player : '" + player.getName() + "'");
         top += "\t GOLD: " + player.getGold() + "(" + ((player.getGoldIncome() >= 0) ? "+" : "") + player.getGoldIncome() + ")";
         top += "\t Happiness: " + player.getHappiness();

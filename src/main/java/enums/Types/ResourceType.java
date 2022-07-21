@@ -77,5 +77,4 @@ public enum ResourceType {
     public ImageView getImage(){
         return new ImageView(GameView.class.getClassLoader().getResource("images/Resources/" + name + ".png").toExternalForm());
     }
-
 }

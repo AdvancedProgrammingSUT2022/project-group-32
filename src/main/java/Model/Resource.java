@@ -1,10 +1,12 @@
 package Model;
 
-import Model.Tile;
 import enums.Types.ImprovementType;
 import enums.Types.ResourceType;
 
-public class Resource {
+import java.io.Serializable;
+
+public class Resource implements Serializable {
+    public static final long serialVersionUID = 73L;
     private final ResourceType resourceType;
     private String name;
     private int food, production, gold;

@@ -1,14 +1,14 @@
 package Model;
 
 import Controller.GameController;
-import Model.Units.Unit;
 import enums.Types.TerrainType;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Map {
+public class Map implements Serializable {
     private static final int INF = 9999;
-
+    public static final long serialVersionUID = 65L;
     private final int width;
     private final int height;
     private Tile[][] tiles;

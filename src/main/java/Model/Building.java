@@ -3,9 +3,11 @@ package Model;
 import enums.Types.BuildingType;
 import enums.Types.TechnologyType;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Building {
+public class Building implements Serializable {
+    public static final long serialVersionUID = 67L;
     private String name;
     private int cost;
     private final BuildingType buildingType;

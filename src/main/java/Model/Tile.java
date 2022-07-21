@@ -7,11 +7,13 @@ import enums.Types.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Tile {
+public class Tile implements Serializable {
+    public static final long serialVersionUID = 66L;
     private int row, column;
     private Terrain terrain;
     private Resource resource;

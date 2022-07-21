@@ -5,9 +5,11 @@ import enums.Types.ResourceType;
 import enums.Types.TechnologyType;
 import enums.Types.TerrainFeature;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Improvement {
+public class Improvement implements Serializable {
+    public static final long serialVersionUID = 70L;
     private final ImprovementType improvementType;
     private String name;
     private final Tile tile;

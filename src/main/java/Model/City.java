@@ -2,14 +2,15 @@ package Model;
 
 import Model.Units.Troop;
 import Model.Units.Unit;
-import enums.Responses.InGameResponses;
 import enums.Types.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class City {
+public class City implements Serializable {
+    public static final long serialVersionUID = 68L;
     private String name;
     private transient Player owner;
     private Tile capitalTile; // TODO: 4/17/2022 Palace must be handled

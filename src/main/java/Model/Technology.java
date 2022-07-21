@@ -2,9 +2,12 @@ package Model;
 
 import enums.Types.TechnologyType;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Technology {
+public class Technology implements Serializable {
+    public static final long serialVersionUID = 76L;
+
     private final ArrayList<TechnologyType> neededTechs;
     private final String name;
     private final TechnologyType technologyType;

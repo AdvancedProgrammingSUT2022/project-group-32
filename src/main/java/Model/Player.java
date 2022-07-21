@@ -7,9 +7,11 @@ import enums.Color;
 import enums.Types.BuildingType;
 import enums.Types.TechnologyType;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Player {
+public class Player implements Serializable {
+    public static final long serialVersionUID = 70L;
     private boolean isStarted;
     private final int id;
     private static int count = 0;

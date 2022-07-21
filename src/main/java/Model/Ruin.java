@@ -3,17 +3,17 @@ package Model;
 import enums.Types.TechnologyType;
 import enums.Types.UnitType;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.io.Serializable;
 import java.util.Random;
 
-public class Ruin {
+public class Ruin implements Serializable {
+    public static final long serialVersionUID = 75L;
     private int gold;
     private int population;
     private UnitType unit;
     private TechnologyType technology;
 
-    public Ruin(){
+    public Ruin() {
         this.gold = 0;
         this.population = 0;
         this.unit = null;

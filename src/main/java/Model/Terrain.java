@@ -1,12 +1,15 @@
 package Model;
 
-import View.GameView;
 import enums.Types.ResourceType;
 import enums.Types.TerrainFeature;
 import enums.Types.TerrainType;
 import javafx.scene.image.ImageView;
 
-public class Terrain {
+import java.io.Serializable;
+
+public class Terrain implements Serializable {
+    public static final long serialVersionUID = 77L;
+
     private final int INF = 9999;
 
     private final TerrainType terrainType;

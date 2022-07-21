@@ -1,6 +1,7 @@
 package Server;
 
 import Controller.GameController;
+import Controller.PlayerController;
 import Controller.UserController;
 import Model.Request;
 import Model.User;
@@ -76,11 +77,16 @@ public class ServerMain {
                             } else if (action.equals(IS_MY_TURN.code)) {
                                 sendRequest(new Request("is my turn response", null, GameController.isThisUsersTurn(getThisThreadUser())), objectOutputStream);
                             } else if (action.equals(NEW_GAME.code)) {
-
+                                GameController.newGame((ArrayList<User>) request.getObj(), Integer.parseInt(params.get("mapSize")));
                                 sendRequest(new Request("game started", null), objectOutputStream);
                             } else if (action.equals(PANEL_COMMAND.code)) {
                                 InGameCommandHandler.handleCommand(action);
                                 sendRequest(new Request("response to panel action", null), objectOutputStream);
+                            } else if (action.equals(PASS_TURN.code)) {
+                                PlayerController.nextTurn();
+                                sendRequest(new Request("", null), objectOutputStream);
+                            } else if (action.equals(GET_THIS_PLAYER.code)) {
+                                sendRequest(new Request("get player response", null, GameController.getPlayerOfUser(getThisThreadUser())), objectOutputStream);
                             } else {
                                 System.err.println("INVALID COMMAND!!!");
                             }

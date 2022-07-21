@@ -4,7 +4,10 @@ import Model.Player;
 import Model.Tile;
 import enums.Types.*;
 
-public class Troop extends Unit {
+import java.io.Serializable;
+
+public class Troop extends Unit implements Serializable {
+    public static final long serialVersionUID = 78L;
     private int meleeStrength;
     private int rangedStrength;
     private int range;

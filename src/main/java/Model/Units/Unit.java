@@ -3,13 +3,16 @@ package Model.Units;
 import Model.Map;
 import Model.Player;
 import Model.Tile;
-import View.GameView;
 import enums.Types.CombatType;
 import enums.Types.OrderType;
 import enums.Types.UnitType;
 import javafx.scene.image.ImageView;
 
-public class Unit {
+import java.io.Serializable;
+
+public class Unit implements Serializable {
+    public static final long serialVersionUID = 80L;
+
     private Tile tile;
     private transient Player owner;
     private final int health; // this is for reference

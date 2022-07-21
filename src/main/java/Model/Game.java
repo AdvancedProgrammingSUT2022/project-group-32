@@ -5,9 +5,11 @@ import Controller.PlayerController;
 import Model.Units.Troop;
 import Model.Units.Unit;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Game {
+public class Game implements Serializable {
+    public static final long serialVersionUID = 69L;
     private Map map;
     private ArrayList<Player> players;
     private int currentPlayerID;

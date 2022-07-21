@@ -24,12 +24,14 @@ public class GameController {
     private static Unit selectedUnit;
     private static City selectedCity;
     private static HashMap<User, Boolean> invitationStatus = new HashMap<>();
+
     private static void gameGenerator(ArrayList<Player> players, int mapH, int mapW) {
         Map randomMap = MapController.randomMap(mapH, mapW);
         while (!randomMap.isConnected()) {
             randomMap = MapController.randomMap(mapH, mapW);
         }
         game = new Game(randomMap, players);
+        System.out.println("game is now set to " + game);
         MapController.randomizeRivers();
     }
 
@@ -366,6 +368,14 @@ public class GameController {
     public static Boolean isThisUsersTurn(User thisThreadUser) {
         return game.getCurrentPlayer().getUser().getUsername().equals(thisThreadUser.getUsername());
     }
+
+    public static Player getPlayerOfUser(User thisThreadUser) {
+        for (Player player : game.getPlayers()) {
+            if (player.getUser().getUsername().equals(thisThreadUser.getUsername())) return player;
+        }
+        return null;
+    }
+
 
     // TODO: 4/17/2022 there is a lot of cheat codes to be added
 

@@ -1,13 +1,13 @@
 package View;
 // THIS IS FOR ONLINE PLAYING ...
-import Controller.GameController;
-import Controller.PlayerController;
+
+import Model.Map;
 import Model.Tile;
 import View.Panels.DemographicsPanel;
 import View.Panels.MilitaryPanel;
 import View.Panels.NotificationsPanel;
 import View.PastViews.MapMaker;
-import enums.Types.BuildingType;
+import enums.RequestActions;
 import enums.Types.FogState;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -27,7 +27,7 @@ public class GameView extends Menu {
     private final static int RIGHT_WIDTH = 350;
 
     private static Pane root;
-    private static Pane map;
+    private static Pane map = new Pane();
     private static HBox topPane;
     private static Label topPaneLabel;
     private static VBox notificationPane;
@@ -36,6 +36,7 @@ public class GameView extends Menu {
     private static Alert infoAlert;
     private static Alert invalidAlert;
     private static DialogPane dialogPane;
+    private static final Label waitiingLable = new Label("NOT your turn. wait ...");
     private static Stage stage;
     private static int selectedRow = -1, selectedColumn = -1;
     private static Button nextTurnButton;
@@ -67,9 +68,17 @@ public class GameView extends Menu {
     }
 
     // should be called after every change to the map :)
-    public static void makeMap(){
+    public static void makeMap() {
+        if (!(Boolean) Network.getResponseObjOf(RequestActions.IS_MY_TURN.code, null)) {
+            map.setVisible(false);
+            waitiingLable.setVisible(true);
+            waitiingLable.setLayoutX(WIDTH / 2);
+            return;
+        }
+        map.setVisible(true);
+        waitiingLable.setVisible(false);
         map = new Pane();
-        root.getChildren().add(map);
+
         ImageView imageView1 = new ImageView(GameView.class.getClassLoader().getResource("images/Terrains/hill.png").toExternalForm());
         ImageView imageView2 = new ImageView(GameView.class.getClassLoader().getResource("images/Terrains/hill.png").toExternalForm());
         imageView2.setTranslateY(130);
@@ -81,10 +90,10 @@ public class GameView extends Menu {
         map.getChildren().add(imageView3);
 
         // putting rivers in
-//        Map gameMap = (Map) Network.getResponseObjOf(RequestActions.GET_GAME_MAP.code, null);
+        Map gameMap = (Map) Network.getResponseObjOf(RequestActions.GET_GAME_MAP.code, null);
 
-        for (int row = 0; row < GameController.getMap().getHeight(); row++) {
-            for (int column = 0; column < GameController.getMap().getWidth(); column++) {
+        for (int row = 0; row < gameMap.getHeight(); row++) {
+            for (int column = 0; column < gameMap.getWidth(); column++) {
                 int x, y;
                 if (column % 2 == 0) {
                     y = row * 130;
@@ -93,8 +102,8 @@ public class GameView extends Menu {
                     y = row * 130 + 65;
                     x = column * 115;
                 }
-                Tile tile = GameController.getCurrentPlayerMap().getTile(row, column);
-                if(tile.getFogState() == FogState.UNKNOWN) continue;
+                Tile tile = gameMap.getTile(row, column);
+                if (tile.getFogState() == FogState.UNKNOWN) continue;
                 if(tile.getRiverInDirection(0) == 1){
                     putRiver(x, y - 10, 140, 20);
                 }
@@ -110,7 +119,7 @@ public class GameView extends Menu {
                 if(tile.getRiverInDirection(8) == 1){
                     putRiver(x - 10, y + 60, 40, 70);
                 }
-                if(tile.getRiverInDirection(10) == 1){
+                if (tile.getRiverInDirection(10) == 1) {
                     putRiver(x - 10, y - 10, 40, 70);
 
                 }
@@ -118,17 +127,17 @@ public class GameView extends Menu {
         }
 
         // putting tiles in place
-        for(int row=0;row<GameController.getMap().getHeight();row++){
-            for(int column=0;column<GameController.getMap().getWidth();column++){
+        for (int row = 0; row < gameMap.getHeight(); row++) {
+            for (int column = 0; column < gameMap.getWidth(); column++) {
                 int x, y;
-                if(column % 2 == 0){
+                if (column % 2 == 0) {
                     y = row * 130;
                     x = column * 115;
                 } else {
                     y = row * 130 + 65;
                     x = column * 115;
                 }
-                Pane image = GameController.getCurrentPlayerMap().getTile(row, column).getTileImage();
+                Pane image = gameMap.getTile(row, column).getTileImage();
                 image.setTranslateX(x);
                 image.setTranslateY(y);
                 map.getChildren().add(image);
@@ -147,7 +156,7 @@ public class GameView extends Menu {
                     map.requestFocus();
                 });
                 button.setFocusTraversable(false);
-                button.setTooltip(getToolTip(GameController.getCurrentPlayerMap().getTile(row, column)));
+                button.setTooltip(getToolTip(gameMap.getTile(row, column)));
                 map.getChildren().add(button);
                 System.err.println(row + "," + column);
             }
@@ -161,16 +170,21 @@ public class GameView extends Menu {
         infoAlert = new Alert(Alert.AlertType.INFORMATION, "Hey!!!", ButtonType.OK);
         invalidAlert = new Alert(Alert.AlertType.ERROR, "invalid!", ButtonType.OK);
         Pane pane = root;
+        initTopPane();
         makeMap();
         // initing panes
-        initTopPane();
-        initNotificationPane();
-        initMilitaryPane();
-        initDemographicsPane();
+
+//        initNotificationPane();
+//        initMilitaryPane();
+//        initDemographicsPane();
         //militaryPane.setVisible(true);
         //notificationPane.setVisible(true);
-        demographicsPane.setVisible(true);
-        pane.getChildren().addAll(topPane, notificationPane, militaryPane, demographicsPane);
+//        demographicsPane.setVisible(true);
+//        pane.getChildren().addAll(topPane, notificationPane, militaryPane, demographicsPane);
+        pane.getChildren().add(map);
+        waitiingLable.setVisible(false);
+        pane.getChildren().add(waitiingLable);
+        pane.getChildren().addAll(topPane);
         Platform.runLater(() -> map.requestFocus());
         initElements();
         pane.getChildren().add(topPane);
@@ -192,8 +206,12 @@ public class GameView extends Menu {
 
     private static void passTurn() {
         // TODO: 7/15/2022 in web it must bo into a waiting state?
-        PlayerController.nextTurn();
+        System.out.println("passing turn!!");
+        Network.sendRequest(RequestActions.PASS_TURN.code, null);
+        System.out.println("passing turn!!");
+
         makeMap();
+        System.out.println("passing turn!!");
         updateElements();
     }
 
