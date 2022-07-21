@@ -2,6 +2,7 @@ package Model;
 
 import Model.Units.Troop;
 import Model.Units.Unit;
+import enums.Responses.InGameResponses;
 import enums.Types.*;
 
 import java.util.ArrayList;
@@ -398,4 +399,33 @@ public class City {
         }
     }
 
+    public ArrayList<UnitType> getPossibleUnits() {
+        ArrayList<UnitType> unitTypes = new ArrayList<>();
+        for (UnitType unitType : UnitType.values()) {
+            if (unitType.neededTech != null && owner.getTechnologyByType(unitType.neededTech) == null) {
+                continue;
+            }
+            if (unitType.neededResource != null &&
+                    owner.getCities().stream().noneMatch(t -> t.getWorkingResources().contains(unitType.neededResource))) {
+                continue;
+            }
+            unitTypes.add(unitType);
+        }
+        return unitTypes;
+    }
+
+    public ArrayList<BuildingType> getPossibleBuildings() {
+        ArrayList<BuildingType> buildingTypes = new ArrayList<>();
+        for (BuildingType buildingType : BuildingType.values()) {
+            boolean possible = true;
+            for (Building building : getBuildings()) {
+                if (building.getBuildingType() == buildingType)
+                    possible = false;
+            }
+            //for (buildingType.)
+            // TODO: 7/21/2022
+            buildingTypes.add(buildingType);
+        }
+        return buildingTypes;
+    }
 }

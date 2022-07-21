@@ -3,9 +3,13 @@ package View;
 import Controller.GameController;
 import Controller.PlayerController;
 import Model.Tile;
+import View.Panels.DemographicsPanel;
+import View.Panels.MilitaryPanel;
+import View.Panels.NotificationsPanel;
 import View.PastViews.MapMaker;
 import enums.Types.FogState;
 import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -19,12 +23,15 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class GameView extends Menu {
+    private final static int RIGHT_WIDTH = 350;
+
     private static Pane root;
     private static Pane map;
     private static HBox topPane;
     private static Label topPaneLabel;
     private static VBox notificationPane;
     private static VBox militaryPane;
+    private static VBox demographicsPane;
     private static Alert alert;
     private static DialogPane dialogPane;
     private static Stage stage;
@@ -152,12 +159,14 @@ public class GameView extends Menu {
         Pane pane = root;
         makeMap();
         // initing panes
-       /* initTopPane();
+        initTopPane();
         initNotificationPane();
-        initMilitaryPane();*/
+        initMilitaryPane();
+        initDemographicsPane();
         //militaryPane.setVisible(true);
-        //pane.getChildren().addAll(topPane, notificationPane, militaryPane);
-//        pane.getChildren().addAll(topPane, notificationPane);
+        //notificationPane.setVisible(true);
+        demographicsPane.setVisible(true);
+        pane.getChildren().addAll(topPane, notificationPane, militaryPane, demographicsPane);
         Platform.runLater(() -> map.requestFocus());
         initElements();
         pane.getChildren().add(topPane);
@@ -180,7 +189,7 @@ public class GameView extends Menu {
     private static void passTurn() {
         // TODO: 7/15/2022 in web it must bo into a waiting state?
         PlayerController.nextTurn();
-//        makeMap();
+        makeMap();
         updateElements();
     }
 
@@ -202,14 +211,14 @@ public class GameView extends Menu {
         topPane.getChildren().addAll(topPaneLabel);
     }
 
-/*
+
     private static void initNotificationPane() {
         notificationPane = new VBox();
         notificationPane.setVisible(false);
         notificationPane.setAlignment(Pos.CENTER);
-        notificationPane.setLayoutX(1000);
-        notificationPane.setMinWidth(400);
-        notificationPane.setMinHeight(500);
+        notificationPane.setLayoutX(WIDTH - RIGHT_WIDTH);
+        notificationPane.setMinWidth(WIDTH);
+        notificationPane.setMinHeight(HEIGHT);
         notificationPane.setStyle("-fx-background-color: #C0C0C0; -fx-background-size: 100, 100;");
         Label header = new Label("NOTIFICATION PANEL");
         header.setTextFill(Color.WHITE);
@@ -226,9 +235,9 @@ public class GameView extends Menu {
         militaryPane = new VBox();
         militaryPane.setVisible(false);
         militaryPane.setAlignment(Pos.CENTER);
-        militaryPane.setLayoutX(1000);
-        militaryPane.setMinWidth(400);
-        militaryPane.setMinHeight(500);
+        militaryPane.setLayoutX(WIDTH - RIGHT_WIDTH);
+        militaryPane.setMinWidth(RIGHT_WIDTH);
+        militaryPane.setMinHeight(HEIGHT);
         militaryPane.setStyle("-fx-background-color: #C0C0C0; -fx-background-size: 100, 100;");
         Label header = new Label("MILITARY PANEL");
         header.setTextFill(Color.WHITE);
@@ -239,7 +248,24 @@ public class GameView extends Menu {
         content.setTextFill(Color.WHITE);
         militaryPane.getChildren().addAll(header, content);
     }
- */
+
+    private static void initDemographicsPane() {
+        demographicsPane = new VBox();
+        demographicsPane.setVisible(false);
+        demographicsPane.setAlignment(Pos.CENTER);
+        demographicsPane.setLayoutX(WIDTH - RIGHT_WIDTH);
+        demographicsPane.setMinWidth(RIGHT_WIDTH);
+        demographicsPane.setMinHeight(HEIGHT);
+        demographicsPane.setStyle("-fx-background-color: #C0C0C0; -fx-background-size: 100, 100;");
+        Label header = new Label("DEMOGRAPHICS PANEL");
+        header.setTextFill(Color.WHITE);
+        header.setFont(Font.font(18));
+        header.setAlignment(Pos.CENTER);
+        Label content = new Label(DemographicsPanel.printPanel());
+        content.setFont(Font.font(14));
+        content.setTextFill(Color.WHITE);
+        demographicsPane.getChildren().addAll(header, content);
+    }
 
     /////////////////////
 

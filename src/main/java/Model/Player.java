@@ -380,4 +380,26 @@ public class Player {
     public int getTroopCount() {
         return (int) units.stream().filter(u -> (u instanceof Troop)).count();
     }
+
+    public ArrayList<TechnologyType> getPossibleTechs() {
+        ArrayList<TechnologyType> techs = new ArrayList<>();
+        for (TechnologyType tech : TechnologyType.values()) {
+            boolean possible = true;
+            for (TechnologyType neededTech : tech.neededTechs) {
+                boolean has = false;
+                for (Technology technology : technologies) {
+                    if(technology.getRemainingCost() <= 0 && technology.getTechnologyType() == neededTech){
+                        has = true;
+                    }
+                }
+                if(!has){
+                    possible = false;
+                }
+            }
+            if(possible){
+                techs.add(tech);
+            }
+        }
+        return techs;
+    }
 }
