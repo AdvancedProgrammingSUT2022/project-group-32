@@ -1,5 +1,8 @@
 package enums.Types;
 
+import View.GameView;
+import javafx.scene.image.ImageView;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -40,5 +43,9 @@ public enum TerrainFeature {
 
     public static ArrayList<TerrainFeature> getRoughTerrain() {
         return new ArrayList<>(Arrays.asList(TerrainFeature.FOREST, TerrainFeature.JUNGLE, TerrainFeature.MARSH, TerrainFeature.HILL));
+    }
+
+    public ImageView getImage(){
+        return new ImageView(GameView.class.getClassLoader().getResource("images/Features/" + imageAddress).toExternalForm());
     }
 }

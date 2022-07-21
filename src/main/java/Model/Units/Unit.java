@@ -23,7 +23,6 @@ public class Unit {
     private int remainingCost;
     private OrderType orderType;
     private CombatType combatType;
-    private transient ImageView unitImage;
 
     public Unit(Tile tile, Player owner, UnitType unitType) {
         this.tile = tile;
@@ -41,7 +40,6 @@ public class Unit {
         if (this.combatType.equals(CombatType.SIEGE) || unitType == UnitType.PANZER) this.sightRange = 1;
         this.orderType = OrderType.AWAKE;
         if (tile != null) tile.putUnit(this);
-        unitImage = new ImageView(GameView.class.getClassLoader().getResource("images/Units/" + unitType.name + ".png").toExternalForm());
     }
 
     public Tile getTile() {
@@ -174,10 +172,8 @@ public class Unit {
     }
 
     public ImageView getUnitImage() {
-        if(unitImage == null) {
-            unitImage = new ImageView(GameView.class.getClassLoader().getResource("images/Units/" + unitType.name + ".png").toExternalForm());
-        }
-        return unitImage;
+        if(unitType == null) return null;
+        return unitType.getImage();
     }
 }
 

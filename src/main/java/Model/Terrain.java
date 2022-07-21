@@ -14,9 +14,6 @@ public class Terrain {
     private final TerrainFeature baseFeature; // terrainType and baseFeature are same baseTerrain but in different enums
     private final ResourceType resourceType;
     private int featureHP;
-    private transient ImageView terrainImage;
-    private transient ImageView featureImage;
-    private transient ImageView resourceImage;
 
     public Terrain(TerrainType terrainType, TerrainFeature terrainFeature, ResourceType resourceType) {
         this.terrainType = terrainType;
@@ -28,21 +25,6 @@ public class Terrain {
         else if (terrainFeature == TerrainFeature.JUNGLE) featureHP = 7;
         else if (terrainFeature == TerrainFeature.MARSH) featureHP = 6;
         else featureHP = INF;
-        if (terrainType != null) {
-            terrainImage = new ImageView(GameView.class.getClassLoader().getResource("images/Terrains/" + terrainType.imageAddress).toExternalForm());
-        } else {
-            terrainImage = null;
-        }
-        if(terrainFeature != null) {
-            featureImage = new ImageView(GameView.class.getClassLoader().getResource("images/Features/" + terrainFeature.imageAddress).toExternalForm());
-        } else {
-            featureImage = null;
-        }
-        if(resourceType != null) {
-            resourceImage = new ImageView(GameView.class.getClassLoader().getResource("images/Resources/" + resourceType.name + ".png").toExternalForm());
-        } else {
-            resourceImage = null;
-        }
     }
 
     public TerrainType getTerrainType() {
@@ -95,23 +77,17 @@ public class Terrain {
     }
 
     public ImageView getTerrainImage() {
-        if (terrainImage == null && terrainType != null) {
-            terrainImage = new ImageView(GameView.class.getClassLoader().getResource("images/Terrains/" + terrainType.imageAddress).toExternalForm());
-        }
-        return terrainImage;
+        if(terrainType == null) return null;
+        return terrainType.getImage();
     }
 
     public ImageView getFeatureImage() {
-        if(featureImage == null && terrainFeature != null) {
-            featureImage = new ImageView(GameView.class.getClassLoader().getResource("images/Features/" + terrainFeature.imageAddress).toExternalForm());
-        }
-        return featureImage;
+        if(terrainFeature == null) return null;
+        return terrainFeature.getImage();
     }
 
     public ImageView getResourceImage() {
-        if(resourceImage == null && resourceType != null) {
-            resourceImage = new ImageView(GameView.class.getClassLoader().getResource("images/Resources/" + resourceType.name + ".png").toExternalForm());
-        }
-        return resourceImage;
+        if(resourceType == null) return null;
+        return resourceType.getImage();
     }
 }

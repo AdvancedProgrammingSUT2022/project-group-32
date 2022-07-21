@@ -375,7 +375,7 @@ public class Tile {
         }
         if(fogState == FogState.VISIBLE && troop != null) {
             ImageView unitImage = troop.getUnitImage();
-            unitImage.setTranslateX(70);
+            unitImage.setTranslateX(80);
             unitImage.setTranslateY(40);
             resourceImage.setFitWidth(50);
             resourceImage.setFitHeight(50);

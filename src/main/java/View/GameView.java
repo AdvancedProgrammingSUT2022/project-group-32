@@ -149,6 +149,7 @@ public class GameView extends Menu {
                 button.setFocusTraversable(false);
                 button.setTooltip(getToolTip(GameController.getCurrentPlayerMap().getTile(row, column)));
                 map.getChildren().add(button);
+                System.err.println(row + "," + column);
             }
         }
         map.setOnKeyPressed(e -> moveMap(e));
