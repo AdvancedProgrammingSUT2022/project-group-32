@@ -16,13 +16,14 @@ import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 public class GameController {
     private static Game game;
     private static Unit selectedUnit;
     private static City selectedCity;
-
+    private static HashMap<User, Boolean> invitationStatus = new HashMap<>();
     private static void gameGenerator(ArrayList<Player> players, int mapH, int mapW) {
         Map randomMap = MapController.randomMap(mapH, mapW);
         while (!randomMap.isConnected()) {
@@ -100,13 +101,11 @@ public class GameController {
         GameController.selectedCity = selectedCity;
     }
 
-    public static Response.GameMenu newGame(ArrayList<User> users) {
-        Map mainMap = new Map(3, 3);
-
+    public static Response.GameMenu newGame(ArrayList<User> users, int mapSize) {
         ArrayList<Player> players = users.stream().map(user -> new Player(user, 1, 1)).collect(Collectors.toCollection(ArrayList::new));
 
         // TODO: initial gold, food, production, happiness, city population, .. must be set
-        gameGenerator(players, users.size() * 5 + 5, users.size() * 5 + 5); // width and height chosen randomly
+        gameGenerator(players, mapSize * 5 + 5, mapSize * 5 + 5); // width and height chosen randomly
 
         PlayerController.initializePlayers(players);
 
@@ -330,6 +329,38 @@ public class GameController {
 
     public static void cheatLose() {
 
+    }
+
+    public static void sendInvitaions(ArrayList<String> usernames) {
+        invitationStatus = new HashMap<>();
+        for (String username : usernames) {
+            if (!username.equals(UserController.getCurrentUser().getUsername())) {
+                User user = UserController.getUserByUsername(username);
+                invitationStatus.put(user, Boolean.FALSE);
+            }
+        }
+    }
+
+    public static Object getInvitationsOf(User thisThreadUser) {
+        if (invitationStatus.get(thisThreadUser) != null) {
+            return new ArrayList<>(invitationStatus.keySet());
+        }
+        return null;
+    }
+
+    public static void acceptInvitaion(User thisThreadUser) {
+        if (invitationStatus.containsKey(thisThreadUser)) {
+            invitationStatus.put(thisThreadUser, Boolean.TRUE);
+        }
+    }
+
+    public static Object areInvitationAccepted() {
+        for (Boolean value : invitationStatus.values()) {
+            if (value.equals(Boolean.FALSE)) {
+                return Boolean.FALSE;
+            }
+        }
+        return Boolean.TRUE;
     }
 
     // TODO: 4/17/2022 there is a lot of cheat codes to be added

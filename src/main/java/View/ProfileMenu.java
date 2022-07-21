@@ -1,8 +1,10 @@
 package View;
 
-import Controller.UserController;
+import Model.Request;
+import Model.User;
 import View.Components.Civ6Profile;
 import View.Components.Civ6Title;
+import enums.RequestActions;
 import enums.Responses.Response;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -42,7 +44,7 @@ public class ProfileMenu extends Menu{
         addBackground(root, "Background_A");
         addTitle();
 
-        Civ6Profile civ6Profile = new Civ6Profile(UserController.getCurrentUser());
+        Civ6Profile civ6Profile = new Civ6Profile((User) Network.getResponseObjOf(RequestActions.GET_THIS_USER.code, null));
         civ6Profile.setTranslateX((WIDTH - civ6Profile.getWidth()) / 2);
         civ6Profile.setTranslateY(HEIGHT / 2 - civ6Profile.getHeight() + 50);
         root.getChildren().add(civ6Profile);
@@ -76,17 +78,23 @@ public class ProfileMenu extends Menu{
 
     ///////////////
 
-    private static void deleteAccount(){
-        UserController.removeUser();
+    private static void deleteAccount() {
+        Network.sendRequest(RequestActions.REMOVE_USER.code, null);
+//        UserController.removeUser();
+
         changeMenu(REGISTER_MENU);
     }
 
-    private static void changePicture(){
+    private static void changePicture() {
         fileChooser = new FileChooser();
         fileChooser.setTitle("Select Image");
         file = fileChooser.showOpenDialog(Menu.getStage().getScene().getWindow());
-        Response.ProfileMenu response = UserController.changePicture(file);
-        if(!response.equals(Response.ProfileMenu.SUCCESSFUL_PICTURE_CHANGE)){
+        Request request = new Request(RequestActions.CHANGE_PROFILE_PICTURE.code, null);
+        request.setObj(file);
+//        Response.ProfileMenu response = Response.ProfileMenu.values()[Network.getResponseEnumIntOf(request)];
+        Response.ProfileMenu response = (Response.ProfileMenu) Network.getResponseObjOf(request);
+//        Response.ProfileMenu response = UserController.changePicture(file);
+        if (!response.equals(Response.ProfileMenu.SUCCESSFUL_PICTURE_CHANGE)) {
             showAlert(alert, response.getString());
         } else {
             changeMenu(PROFILE_MENU);

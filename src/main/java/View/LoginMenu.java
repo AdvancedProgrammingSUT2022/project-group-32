@@ -1,6 +1,7 @@
 package View;
 
-import Controller.UserController;
+import enums.ParameterKeys;
+import enums.RequestActions;
 import enums.Responses.Response;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,6 +16,7 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import static View.Menu.MenuType.*;
@@ -31,9 +33,11 @@ public class LoginMenu extends Menu {
             new Pair<String, Runnable>("L o g i n", () -> {
                 login();
             }),
+
             new Pair<String, Runnable>("G O   T O   R E G I S T E R", () -> {
                 Menu.changeMenu(REGISTER_MENU);
             }),
+
             new Pair<String, Runnable>("E x i t", () -> {
                 Menu.changeMenu(EXIT);
             })
@@ -78,7 +82,12 @@ public class LoginMenu extends Menu {
     //////////////////////////////////
 
     private static void login() {
-        Response.LoginMenu response = UserController.login(usernameField.getText(), passwordField.getText());
+        HashMap<String, String> params = new HashMap<>();
+        params.put(ParameterKeys.USERNAME.code, usernameField.getText());
+        params.put(ParameterKeys.PASSWORD.code, passwordField.getText());
+
+//        Response.LoginMenu response = Response.LoginMenu.values()[Network.getResponseEnumIntOf(RequestActions.LOGIN.code, params)];
+        Response.LoginMenu response = (Response.LoginMenu) Network.getResponseObjOf(RequestActions.LOGIN.code, params);
         if (response.equals(Response.LoginMenu.USERNAME_PASSWORD_DONT_MATCH)) {
             showAlert(alert, response.getString());
         } else {

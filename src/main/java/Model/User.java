@@ -4,10 +4,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.File;
+import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 
-public class User {
+public class User implements Serializable {
+    public static final long serialVersionUID = 3L;
+
     private String username;
     private String password;
     private String nickname;

@@ -47,10 +47,10 @@ public class UserControllerTest {
     @Test
     public void registerTest() {
         UserController.addUser("ali", "ali", "ali");
-        Assert.assertEquals(UserController.register("", "", ""), Response.LoginMenu.INVALID_USERNAME_FORMAT);
-        Assert.assertEquals(UserController.register("skljafd", "asdfasd", ""), Response.LoginMenu.INVALID_NICKNAME_FORMAT);
-        Assert.assertEquals(UserController.register("skljafd", "", "asdfasdf"), Response.LoginMenu.INVALID_PASSWORD_FORMAT);
-        Assert.assertEquals(UserController.register("ali", "asdf", "asdfasdf"), Response.LoginMenu.USERNAME_EXISTS);
+        Assert.assertEquals(UserController.register("", "", "", null), Response.LoginMenu.INVALID_USERNAME_FORMAT);
+        Assert.assertEquals(UserController.register("skljafd", "asdfasd", "", null), Response.LoginMenu.INVALID_NICKNAME_FORMAT);
+        Assert.assertEquals(UserController.register("skljafd", "", "asdfasdf", null), Response.LoginMenu.INVALID_PASSWORD_FORMAT);
+        Assert.assertEquals(UserController.register("ali", "asdf", "asdfasdf", null), Response.LoginMenu.USERNAME_EXISTS);
     }
 
     @Test

@@ -44,7 +44,7 @@ public class LoginMenu extends Menu {
             invalidCommand();
             return;
         }
-        Response.LoginMenu response = UserController.register(parameters.get(0), parameters.get(1), parameters.get(2));
+        Response.LoginMenu response = UserController.register(parameters.get(0), parameters.get(1), parameters.get(2), null);
         if (response.equals(Response.LoginMenu.USERNAME_EXISTS)) {
             System.out.println(response.getString(parameters.get(0)));
         } else if (response.equals(Response.LoginMenu.NICKNAME_EXISTS)) {
