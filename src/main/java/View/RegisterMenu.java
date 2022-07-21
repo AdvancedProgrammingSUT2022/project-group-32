@@ -78,7 +78,7 @@ public class RegisterMenu extends Menu{
     public static void show(Stage primaryStage) throws Exception {
         stage = primaryStage;
         root = new Pane();
-        alert = initAlert();
+        alert = initAlert("invalid input");
         menuBox = new VBox(-5);
         createContent();
         Pane pane = root;

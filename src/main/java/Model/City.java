@@ -418,13 +418,15 @@ public class City {
         ArrayList<BuildingType> buildingTypes = new ArrayList<>();
         for (BuildingType buildingType : BuildingType.values()) {
             boolean possible = true;
+
             for (Building building : getBuildings()) {
                 if (building.getBuildingType() == buildingType)
                     possible = false;
             }
-            //for (buildingType.)
-            // TODO: 7/21/2022
-            buildingTypes.add(buildingType);
+            if(owner.getTechnologyByType(buildingType.technologyType) == null) possible  = false;
+            if(possible){
+                buildingTypes.add(buildingType);
+            }
         }
         return buildingTypes;
     }

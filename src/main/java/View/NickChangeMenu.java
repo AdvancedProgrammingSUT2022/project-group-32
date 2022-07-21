@@ -58,7 +58,7 @@ public class NickChangeMenu extends Menu {
 
     public static void show(Stage stage) throws Exception {
         root = new Pane();
-        alert = initAlert();
+        alert = initAlert("invalid input");
         menuBox = new VBox(-5);
         createContent();
         Scene scene = new Scene(root, WIDTH, HEIGHT);

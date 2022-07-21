@@ -1,15 +1,13 @@
 package View;
 // THIS IS FOR ONLINE PLAYING ...
-
 import Controller.GameController;
 import Controller.PlayerController;
-import Model.Map;
 import Model.Tile;
 import View.Panels.DemographicsPanel;
 import View.Panels.MilitaryPanel;
 import View.Panels.NotificationsPanel;
 import View.PastViews.MapMaker;
-import enums.RequestActions;
+import enums.Types.BuildingType;
 import enums.Types.FogState;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -35,7 +33,8 @@ public class GameView extends Menu {
     private static VBox notificationPane;
     private static VBox militaryPane;
     private static VBox demographicsPane;
-    private static Alert alert;
+    private static Alert infoAlert;
+    private static Alert invalidAlert;
     private static DialogPane dialogPane;
     private static Stage stage;
     private static int selectedRow = -1, selectedColumn = -1;
@@ -68,13 +67,7 @@ public class GameView extends Menu {
     }
 
     // should be called after every change to the map :)
-    public static void makeMap() {
-        Boolean isMyTurn = (Boolean) Network.getResponseObjOf(RequestActions.IS_MY_TURN.code, null);
-        if (!isMyTurn) {
-            addWaitingPage();
-            return;
-        }
-
+    public static void makeMap(){
         map = new Pane();
         root.getChildren().add(map);
         ImageView imageView1 = new ImageView(GameView.class.getClassLoader().getResource("images/Terrains/hill.png").toExternalForm());
@@ -88,7 +81,7 @@ public class GameView extends Menu {
         map.getChildren().add(imageView3);
 
         // putting rivers in
-        Map myGameMap = (Map) Network.getResponseObjOf(RequestActions.GET_GAME_MAP.code, null);
+//        Map gameMap = (Map) Network.getResponseObjOf(RequestActions.GET_GAME_MAP.code, null);
 
         for (int row = 0; row < GameController.getMap().getHeight(); row++) {
             for (int column = 0; column < GameController.getMap().getWidth(); column++) {
@@ -161,18 +154,11 @@ public class GameView extends Menu {
         map.setOnKeyPressed(e -> moveMap(e));
     }
 
-    private static void addWaitingPage() {
-        Label wating = new Label("WAIT...\n other players turn....\n");
-        wating.setFont(Font.font(16));
-        wating.setLayoutX(WIDTH / 2 - 100);
-        wating.setLayoutY(HEIGHT / 2);
-        root.getChildren().add(wating);
-    }
-
     public static void show(Stage primaryStage) throws Exception {
         stage = primaryStage;
         root = new Pane();
-        alert = initAlert();
+        infoAlert = new Alert(Alert.AlertType.INFORMATION, "Hey!!!", ButtonType.OK);
+        invalidAlert = new Alert(Alert.AlertType.ERROR, "invalid!", ButtonType.OK);
         Pane pane = root;
         makeMap();
         // initing panes
@@ -246,7 +232,6 @@ public class GameView extends Menu {
         content.setTextFill(Color.WHITE);
         notificationPane.getChildren().addAll(header, content);
     }
-
 
     private static void initMilitaryPane() {
         militaryPane = new VBox();

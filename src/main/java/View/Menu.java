@@ -151,8 +151,8 @@ public class Menu extends Application {
         root.getChildren().addAll(menuBox);
     }
 
-    protected static Alert initAlert() {
-        Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid input", ButtonType.OK);
+    protected static Alert initAlert(String text) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, text, ButtonType.OK);
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.getStylesheets().add(RegisterMenu.class.getClassLoader().getResource("css/MenuStyle.css").toExternalForm());
         return alert;

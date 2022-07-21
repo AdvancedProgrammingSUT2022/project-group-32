@@ -238,7 +238,7 @@ public class NewGameMenu extends Menu {
 
         stage = primaryStage;
         root = new Pane();
-        alert = initAlert();
+        alert = initAlert("invalid input");
         menuBox = new VBox(-5);
         createContent();
         Pane pane = root;

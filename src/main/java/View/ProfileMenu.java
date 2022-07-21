@@ -70,7 +70,7 @@ public class ProfileMenu extends Menu{
 
     public static void show(Stage stage) throws Exception {
         createContent();
-        alert = initAlert();
+        alert = initAlert("invalid input");
         Pane pane = root;
         stage.setScene(new Scene(pane, WIDTH, HEIGHT));
         stage.show();
