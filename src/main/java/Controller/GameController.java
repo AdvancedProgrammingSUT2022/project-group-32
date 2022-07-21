@@ -101,13 +101,11 @@ public class GameController {
         GameController.selectedCity = selectedCity;
     }
 
-    public static Response.GameMenu newGame(ArrayList<User> users) {
-        Map mainMap = new Map(3, 3);
-
+    public static Response.GameMenu newGame(ArrayList<User> users, int mapSize) {
         ArrayList<Player> players = users.stream().map(user -> new Player(user, 1, 1)).collect(Collectors.toCollection(ArrayList::new));
 
         // TODO: initial gold, food, production, happiness, city population, .. must be set
-        gameGenerator(players, users.size() * 5 + 5, users.size() * 5 + 5); // width and height chosen randomly
+        gameGenerator(players, mapSize * 5 + 5, mapSize * 5 + 5); // width and height chosen randomly
 
         PlayerController.initializePlayers(players);
 

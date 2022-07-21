@@ -70,6 +70,8 @@ public class ServerMain {
                             } else if (action.equals(ARE_INVITATIONS_ACCEPTED.code)) {
                                 Request response = new Request("invitation accp? result", null, GameController.areInvitationAccepted());
                                 sendRequest(response, objectOutputStream);
+                            } else if (action.equals(GET_USER_BY_USERNAME.code)) {
+                                sendRequest(new Request("Sending user by username", null, UserController.getUserByUsername((String) request.getObj())), objectOutputStream);
                             } else {
                                 System.err.println("INVALID COMMAND!!!");
                             }
@@ -98,7 +100,9 @@ public class ServerMain {
 
     private static synchronized void sendRequest(Request request, ObjectOutputStream objectOutputStream) {
         try {
-            System.out.println("Response:  action:" + request.action + " params: " + request.params);
+            if (!request.action.equals(GET_INVITATIONS.code)) {
+                System.out.println("Response:  action:" + request.action + " params: " + request.params);
+            }
             objectOutputStream.writeObject(request);
             objectOutputStream.flush();
         } catch (Exception e) {

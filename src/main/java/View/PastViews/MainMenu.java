@@ -84,7 +84,7 @@ public class MainMenu extends Menu {
             System.out.println(Response.MainMenu.NONEXISTENCE_USERS.getString(invalidUsernames));
             return false;
         }
-        GameController.newGame(playingUsers);
+        GameController.newGame(playingUsers, 3);
         setCurrentMenu(MenuType.GAME_MENU);
         System.out.println(Response.MainMenu.NEW_GAME_STARTED.getString());
         return true;

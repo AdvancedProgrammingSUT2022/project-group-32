@@ -1,11 +1,11 @@
 package View;
 
 import Controller.GameController;
-import Controller.UserController;
 import Model.Request;
 import Model.User;
 import enums.RequestActions;
 import enums.Responses.Response;
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -24,7 +24,6 @@ import java.util.List;
 
 import static View.Menu.MenuType.EXIT;
 import static View.Menu.MenuType.GAME_VIEW;
-import static View.PastViews.Menu.setCurrentMenu;
 
 public class NewGameMenu extends Menu {
     private static Pane root;
@@ -39,6 +38,7 @@ public class NewGameMenu extends Menu {
     private static TextField mapSize;
     private static VBox invitationPopUp;
     private static Label invitationLabel;
+    private static boolean isAcceptedInvs = false;
 
     private static final List<Pair<String, Runnable>> menuData = Arrays.asList(
             new Pair<String, Runnable>("S E N D   I N V I T A T I O N S", () -> {
@@ -67,6 +67,7 @@ public class NewGameMenu extends Menu {
         accpBtn.setOnMouseClicked(e -> {
             Network.sendRequest(RequestActions.ACCEPT_INVITAION.code, null);
             invitationPopUp.setVisible(false);
+            isAcceptedInvs = true;
         });
         Button rjctBtn = new Button("Reject");
         rjctBtn.setOnMouseClicked(e -> {
@@ -84,7 +85,7 @@ public class NewGameMenu extends Menu {
 
     private static void startGame() {
         // TODO: 7/12/2022
-        if (newGame(new ArrayList<String>(Arrays.stream(playerUsernamesField.getText().split(",")).toList()))) {
+        if (newGame(new ArrayList<String>(Arrays.stream(playerUsernamesField.getText().split(",")).toList()), 3)) {
 
         } else {
             showAlert(alert, "game start failed");
@@ -107,14 +108,16 @@ public class NewGameMenu extends Menu {
         }
 
         if (areUsernamesValid(invitationsUsernames)) {
-            invitationStatus.setText("invitations sent, not accepted!");
+            invitationStatus.setText("invitations sent, not accepted yet!");
             Request req = new Request(RequestActions.SEND_INVITATIONS.code, null, invitationsUsernames);
             Network.sendRequest(req);
             new Thread(() -> {
                 while (true) {
                     Boolean ok = (Boolean) Network.getResponseObjOf(RequestActions.ARE_INVITATIONS_ACCEPTED.code, null);
                     if (ok) {
-                        newGame(invitationsUsernames);
+                        Platform.runLater(() -> {
+                            newGame(invitationsUsernames, mapSizeInteger);
+                        });
                         break;
                     }
                     try {
@@ -136,14 +139,14 @@ public class NewGameMenu extends Menu {
             return false;
         }
         ArrayList<User> playingUsers = new ArrayList<>();
-        playingUsers.add(UserController.getCurrentUser());
-        System.out.println(playingUsers);
+        playingUsers.add((User) Network.getResponseObjOf(RequestActions.GET_THIS_USER.code, null));
         ArrayList<String> nonexistenceUsernames = new ArrayList<>();
         for (String username : usernames) {
-            if (UserController.getUserByUsername(username) == null)
+            User user = (User) Network.getResponseObjOf(new Request(RequestActions.GET_USER_BY_USERNAME.code, null, username));
+            if (user == null)
                 nonexistenceUsernames.add(username);
             else
-                playingUsers.add(UserController.getUserByUsername(username));
+                playingUsers.add(user);
         }
 
         if (nonexistenceUsernames.size() != 0) {
@@ -203,9 +206,19 @@ public class NewGameMenu extends Menu {
             while (true) {
                 ArrayList<User> users = (ArrayList<User>) Network.getResponseObjOf(RequestActions.GET_INVITATIONS.code, null);
                 System.out.println(users);
+                if (isAcceptedInvs) {
+                    break;
+                }
                 if (users != null) {
-                    invitationLabel.setText(users.toString());
-                    invitationPopUp.setVisible(true);
+                    String usersLable = "WANT TO PLAT A GAME WITH:\n";
+                    for (User user : users) {
+                        usersLable += "\n" + user.getNickname();
+                    }
+                    String labelOf = usersLable;
+                    Platform.runLater(() -> {
+                        invitationLabel.setText(labelOf);
+                        invitationPopUp.setVisible(true);
+                    });
                     break;
                 }
                 try {
@@ -235,19 +248,19 @@ public class NewGameMenu extends Menu {
     /**
      * @return true if newGame is created, false if not
      */
-    public static boolean newGame(ArrayList<String> usernames) {
+    public static boolean newGame(ArrayList<String> usernames, int mapSize) {
         if (usernames == null) {
             return false;
         }
         ArrayList<User> playingUsers = new ArrayList<>();
-        playingUsers.add(UserController.getCurrentUser());
-        System.out.println(playingUsers);
+        playingUsers.add((User) Network.getResponseObjOf(RequestActions.GET_THIS_USER.code, null));
         ArrayList<String> nonexistenceUsernames = new ArrayList<>();
         for (String username : usernames) {
-            if (UserController.getUserByUsername(username) == null)
+            User user = (User) Network.getResponseObjOf(new Request(RequestActions.GET_USER_BY_USERNAME.code, null, username));
+            if (user == null)
                 nonexistenceUsernames.add(username);
             else
-                playingUsers.add(UserController.getUserByUsername(username));
+                playingUsers.add(user);
         }
 
         if (nonexistenceUsernames.size() != 0) {
@@ -261,28 +274,14 @@ public class NewGameMenu extends Menu {
         }
 
         // TODO: 7/11/2022 this parts needs to fit for graphical start
-        GameController.newGame(playingUsers);
-        setCurrentMenu(View.PastViews.Menu.MenuType.GAME_MENU);
+        GameController.newGame(playingUsers, 3);
 //        setCurrentMenu(View.PastViews.Menu.MenuType.GAME_MENU);
+//        setCurrentMenu(View.PastViews.Menu.MenuType.GAME_MENU);
+        Menu.changeMenu(GAME_VIEW);
         System.out.println(Response.MainMenu.NEW_GAME_STARTED.getString());
         return true;
-
-
     }
     //////////////
-
-    private static void register() {
-//        Response.LoginMenu response = UserController.register(playerCountField.getText(), playerUsernamesField.getText());
-//        if (response.equals(Response.LoginMenu.USERNAME_EXISTS)) {
-//            showAlert(alert, response.getString(playerCountField.getText()));
-//        } else if (response.equals(Response.LoginMenu.NICKNAME_EXISTS)) {
-//            showAlert(alert, response.getString(playerUsernamesField.getText()));
-//        } else if (!response.equals(Response.LoginMenu.REGISTER_SUCCESSFUL)) {
-//            showAlert(alert, "Invalid input format");
-//        } else {
-//            changeMenu(MAIN_MENU);
-//        }
-    }
 
 }
 
