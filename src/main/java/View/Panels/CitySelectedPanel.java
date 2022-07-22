@@ -28,15 +28,15 @@ public class CitySelectedPanel extends GameMenu {
         else invalidCommand();
     }
 
-    private static void buildBuilding(String command) {
+    public static void buildBuilding(String command) {
 
     }
 
-    private static void pauseBuilding(String command) {
+    public static void pauseBuilding(String command) {
 
     }
 
-    private static void buildUnit(String command) {
+    public static void buildUnit(String command) {
         ArrayList<String> parameters = CLI.getParameters(command, "t");
         if (parameters == null) {
             invalidCommand();
@@ -46,11 +46,11 @@ public class CitySelectedPanel extends GameMenu {
         System.out.println(CityController.buildUnit(unitType).getString());
     }
 
-    private static void pauseUnit() {
+    public static void pauseUnit() {
         System.out.println(CityController.pauseInProgressUnit());
     }
 
-    private static void buyUnit(String command) {
+    public static void buyUnit(String command) {
         ArrayList<String> parameters = CLI.getParameters(command, "t");
         if (parameters == null) {
             invalidCommand();
@@ -60,7 +60,7 @@ public class CitySelectedPanel extends GameMenu {
         System.out.println(CityController.buyUnit(unitType).getString());
     }
 
-    private static void assignCitizen(String command) {
+    public static void assignCitizen(String command) {
         ArrayList<String> parameters = CLI.getParameters(command, "l");
         if (parameters == null) {
             invalidCommand();
@@ -70,7 +70,7 @@ public class CitySelectedPanel extends GameMenu {
         System.out.println(CityController.assignCitizenToTile(row, column).getString());
     }
 
-    private static void freeCitizen(String command) {
+    public static void freeCitizen(String command) {
         ArrayList<String> parameters = CLI.getParameters(command, "l");
         if (parameters == null) {
             invalidCommand();
@@ -80,7 +80,7 @@ public class CitySelectedPanel extends GameMenu {
         System.out.println(CityController.freeCitizenFromTile(row, column).getString());
     }
 
-    private static void buyTile(String command) {
+    public static void buyTile(String command) {
         ArrayList<String> parameters = CLI.getParameters(command, "l");
         if (parameters == null) {
             invalidCommand();
@@ -90,7 +90,7 @@ public class CitySelectedPanel extends GameMenu {
         System.out.println(CityController.buyTile(row, column));
     }
 
-    private static void attack(String command) {
+    public static void attack(String command) {
         ArrayList<String> parameters = CLI.getParameters(command, "l");
         if (parameters == null) {
             invalidCommand();
@@ -100,11 +100,11 @@ public class CitySelectedPanel extends GameMenu {
         System.out.println(CityController.attack(row, column).getString());
     }
 
-    private static void delete() {
+    public static void delete() {
         System.out.println(CityController.delete().getString());
     }
 
-    private static void showBanner() {
+    public static void showBanner() {
         City city = GameController.getSelectedCity();
         System.out.println(city.getOwner().getBackgroundColor().code
                 + city.getName() + " owned by " + city.getOwner().getName() + Color.RESET.code);

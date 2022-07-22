@@ -1,18 +1,10 @@
 package View.Panels;
 
-import Controller.GameController;
 import Controller.UnitController;
 import Model.Units.Unit;
 import View.GameView;
 import View.Network;
-import View.PastViews.CLI;
-import View.PastViews.GameMenu;
-import enums.RequestActions;
 import enums.Responses.InGameResponses;
-import enums.Types.ImprovementType;
-import enums.Types.RoadType;
-
-import java.util.ArrayList;
 
 public class UnitSelectedPanel extends GameView {
 

@@ -11,6 +11,11 @@ import enums.Types.UnitType;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
+import static View.Panels.CitySelectedPanel.attack;
+import static View.Panels.CitySelectedPanel.*;
+import static View.Panels.UnitSelectedPanel.attack;
+import static View.Panels.UnitSelectedPanel.*;
+
 public class InGameCommandHandler {
     public enum PanelType {
         CITIES_PANEL("cities", x -> CitiesPanel.run(x)),
@@ -39,7 +44,43 @@ public class InGameCommandHandler {
     protected static PanelType currentPanel = null;
 
     public static Object handleCommand(String command) {
-        if (command.startsWith("move map")) {
+        // Selected Units Panel
+        if (command.startsWith("move unit")) return moveTo();
+        else if (command.startsWith("build city")) return foundCity();
+        else if (command.startsWith("sleep")) return sleep();
+        else if (command.startsWith("alert")) return alert();
+        else if (command.startsWith("fortify")) return fortify();
+        else if (command.startsWith("heal")) return heal();
+        else if (command.startsWith("wake")) return wake();
+        else if (command.startsWith("unit delete")) return UnitSelectedPanel.delete();
+        else if (command.startsWith("build improvement")) return buildImprovement(command);
+        else if (command.startsWith("build road")) return buildRoad();
+        else if (command.startsWith("remove forest")) return removeForest();
+        else if (command.startsWith("remove jungle")) return removeJungle();
+        else if (command.startsWith("remove marsh")) return removeMarsh();
+        else if (command.startsWith("remove road")) return removeRoute();
+        else if (command.startsWith("pillage")) return pillage();
+        else if (command.startsWith("repair")) return repair();
+        else if (command.startsWith("set up")) return setup();
+        else if (command.startsWith("garrison")) return garrison();
+        else if (command.startsWith("attack")) return attack();
+        else if (command.startsWith("show selected unit")) return showSelected();
+
+            // CITY SELECTED PANEL
+        else if (command.startsWith("build unit")) return buildUnit(command);
+        else if (command.startsWith("pause unit")) return pauseUnit();
+        else if (command.startsWith("build building")) return buildBuilding(command);
+        else if (command.startsWith("pause building")) return pauseBuilding(command);
+        else if (command.startsWith("buy unit")) return buyUnit(command);
+        else if (command.startsWith("assign citizen")) return assignCitizen(command);
+        else if (command.startsWith("free citizen")) return freeCitizen(command);
+        else if (command.startsWith("buy tile")) return buyTile(command);
+        else if (command.startsWith("attack")) return attack(command);
+        else if (command.startsWith("city delete")) return CitySelectedPanel.delete();
+        else if (command.startsWith("show banner")) return showBanner();
+
+
+        else if (command.startsWith("move map")) {
             moveMap(command);
         } else if (command.startsWith("select unit")) {
             selectUnit(command);
