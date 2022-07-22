@@ -2,13 +2,12 @@ package View;
 // THIS IS FOR ONLINE PLAYING ...
 
 import Controller.GameController;
+import Model.City;
 import Model.Map;
 import Model.Player;
 import Model.Tile;
-import View.Panels.DemographicsPanel;
-import View.Panels.EconomyPanel;
-import View.Panels.MilitaryPanel;
-import View.Panels.NotificationsPanel;
+import Model.Units.Unit;
+import View.Panels.*;
 import View.PastViews.MapMaker;
 import enums.RequestActions;
 import enums.Types.FogState;
@@ -27,21 +26,28 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class GameView extends Menu {
-    private final static int RIGHT_WIDTH = 350;
+    private final static int RIGHT_WIDTH = 500;
 
-    private static Pane root;
-    private static Pane map = new Pane();
-    private static HBox topPane;
-    private static Label topPaneLabel;
-    private static VBox notificationPane;
-    private static VBox militaryPane;
-    private static VBox economyPane;
-    private static Alert infoAlert;
-    private static Alert invalidAlert;
-    private static DialogPane dialogPane;
-    private static final Label waitiingLable = new Label("NOT your turn. wait ...");
-    private static Stage stage;
-    private static int selectedRow = -1, selectedColumn = -1;
+    protected static Pane root;
+    protected static Pane map = new Pane();
+    protected static HBox topPane;
+    protected static Label topPaneLabel;
+    protected static VBox notificationPane;
+    protected static VBox militaryPane;
+    protected static VBox economyPane;
+
+    protected static VBox unitSelectedPane;
+
+    protected static Alert infoAlert;
+    protected static Alert invalidAlert;
+    protected static DialogPane dialogPane;
+    protected static final Label waitiingLable = new Label("NOT your turn. wait ...");
+    protected static Stage stage;
+
+    protected static int selectedRow = -1, selectedColumn = -1;
+    protected static Unit selectedUnit;
+    protected static City selectedCity;
+
     private static Button nextTurnButton;
 
     private static void putRiver(int x, int y, int w, int h){
@@ -81,19 +87,9 @@ public class GameView extends Menu {
         }
         waitiingLable.setVisible(false);
 
-        ImageView imageView1 = new ImageView(GameView.class.getClassLoader().getResource("images/Terrains/hill.png").toExternalForm());
-        ImageView imageView2 = new ImageView(GameView.class.getClassLoader().getResource("images/Terrains/hill.png").toExternalForm());
-        imageView2.setTranslateY(130);
-        ImageView imageView3 = new ImageView(GameView.class.getClassLoader().getResource("images/Terrains/hill.png").toExternalForm());
-        imageView3.setTranslateY(65);
-        imageView3.setTranslateX(115);
-        map.getChildren().add(imageView1);
-        map.getChildren().add(imageView2);
-        map.getChildren().add(imageView3);
+        Map gameMap = ((Map) Network.getResponseObjOf(RequestActions.GET_THIS_PLAYERS_MAP.code, null));
 
         // putting rivers in
-        Map gameMap = ((Player) Network.getResponseObjOf(RequestActions.GET_THIS_PLAYER.code, null)).getMap();
-
         for (int row = 0; row < gameMap.getHeight(); row++) {
             for (int column = 0; column < gameMap.getWidth(); column++) {
                 int x, y;
@@ -105,6 +101,9 @@ public class GameView extends Menu {
                     x = column * 115;
                 }
                 Tile tile = gameMap.getTile(row, column);
+                if(tile.getUnit() != null) {
+                    System.err.println("this one has a unit");
+                }
                 if (tile.getFogState() == FogState.UNKNOWN) continue;
                 if(tile.getRiverInDirection(0) == 1){
                     putRiver(x, y - 10, 140, 20);
@@ -152,56 +151,64 @@ public class GameView extends Menu {
                 button.setTranslateY(y + 10);
                 int thisRow = row, thisColumn = column;
                 button.setOnMouseClicked(e -> {
-                    selectedRow = thisRow;
+                    selectTile(thisRow, thisColumn);
                     selectedColumn = thisColumn;
+                    selectedRow = thisRow;
+
                     System.out.println(selectedRow + " " + selectedColumn);
                     map.requestFocus();
                 });
                 button.setFocusTraversable(false);
                 button.setTooltip(getToolTip(gameMap.getTile(row, column)));
                 map.getChildren().add(button);
+
                 System.err.println(row + "," + column);
             }
         }
         map.setOnKeyPressed(e -> moveMap(e));
     }
 
-    public static void show(Stage primaryStage) throws Exception {
-        stage = primaryStage;
-        root = new Pane();
-        infoAlert = new Alert(Alert.AlertType.INFORMATION, "Hey!!!", ButtonType.OK);
-        invalidAlert = new Alert(Alert.AlertType.ERROR, "invalid!", ButtonType.OK);
-        Pane pane = root;
-        initTopPane();
-        map = new Pane();
-        map.setVisible(true);
-        makeMap();
-        //map.setTranslateX(GameController.getCurrentPlayer().getCameraColumn() * -130 + WIDTH / 2);
-        //map.setTranslateY(GameController.getCurrentPlayer().getCameraRow() * -115 + HEIGHT / 2);
-        pane.getChildren().add(map);
-        // initing panes
-        initElements();
+    public static void show(Stage primaryStage) {
+        try {
+            stage = primaryStage;
+            root = new Pane();
+            infoAlert = new Alert(Alert.AlertType.INFORMATION, "Hey!!!", ButtonType.OK);
+            invalidAlert = new Alert(Alert.AlertType.ERROR, "invalid!", ButtonType.OK);
+            Pane pane = root;
+            initTopPane();
+            map = new Pane();
+            map.setVisible(true);
+            makeMap();
+            //map.setTranslateX(GameController.getCurrentPlayer().getCameraColumn() * -130 + WIDTH / 2);
+            //map.setTranslateY(GameController.getCurrentPlayer().getCameraRow() * -115 + HEIGHT / 2);
+            pane.getChildren().add(map);
+            // initing panes
+            initElements();
 
-        //militaryPane.setVisible(true);
-        //notificationPane.setVisible(true);
-        //demographicsPane.setVisible(true);
-        //economyPane.setVisible(true);
-        pane.getChildren().addAll(topPane, notificationPane, militaryPane, economyPane);
-        waitiingLable.setVisible(false);
-        pane.getChildren().add(waitiingLable);
-        Platform.runLater(() -> map.requestFocus());
-        pane.getChildren().add(nextTurnButton);
-        Scene scene = new Scene(pane, WIDTH, HEIGHT);
-        scene.getStylesheets().add(LoginMenu.class.getClassLoader().getResource("css/MenuStyle.css").toExternalForm());
-        stage.setScene(scene);
-        stage.show();
+            //militaryPane.setVisible(true);
+            //notificationPane.setVisible(true);
+            //demographicsPane.setVisible(true);
+            //economyPane.setVisible(true);
+            pane.getChildren().addAll(topPane, notificationPane, militaryPane, economyPane, unitSelectedPane);
+            waitiingLable.setVisible(false);
+            pane.getChildren().add(waitiingLable);
+            Platform.runLater(() -> map.requestFocus());
+            pane.getChildren().add(nextTurnButton);
+            Scene scene = new Scene(pane, WIDTH, HEIGHT);
+            scene.getStylesheets().add(LoginMenu.class.getClassLoader().getResource("css/MenuStyle.css").toExternalForm());
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private static void initElements() {
+        unitSelectedPane = new VBox();
         initTopPane();
         initNotificationPane();
         initMilitaryPane();
-        //initDemographicsPane(); todo: this needs a server service
+        initDemographicsPane();
         initEconomyPane();
         nextTurnButton = new Button("pass turn");
         nextTurnButton.setOnMouseClicked((e -> passTurn()));
@@ -312,7 +319,119 @@ public class GameView extends Menu {
         economyPane.getChildren().addAll(header, content);
     }
 
+    private static void initUnitSelectedPane() {
+        unitSelectedPane = new VBox();
+        unitSelectedPane.setVisible(false);
+        unitSelectedPane.setAlignment(Pos.CENTER);
+        unitSelectedPane.setLayoutX(WIDTH - RIGHT_WIDTH);
+        unitSelectedPane.setMinWidth(RIGHT_WIDTH);
+        unitSelectedPane.setMinHeight(HEIGHT);
+        unitSelectedPane.setStyle("-fx-background-color: rgba(33,43,66,0.5); -fx-background-size: 100, 100;");
+        Label header = new Label("UNIT PANEL");
+        header.setTextFill(Color.WHITE);
+        header.setFont(Font.font(22));
+        header.setAlignment(Pos.CENTER);
+
+        Label info = new Label(UnitSelectedPanel.showSelected());
+
+        Button move = new Button("Move Unit");
+        move.setOnMouseClicked(e -> UnitSelectedPanel.moveTo());
+        move.setFocusTraversable(false);
+        Button buildCity = new Button("Build City");
+        buildCity.setOnMouseClicked(e -> UnitSelectedPanel.foundCity());
+        buildCity.setFocusTraversable(false);
+        Button sleep = new Button("Sleep");
+        sleep.setOnMouseClicked(e -> UnitSelectedPanel.sleep());
+        sleep.setFocusTraversable(false);
+        Button alert = new Button("Alert");
+        alert.setOnMouseClicked(e -> UnitSelectedPanel.alert());
+        alert.setFocusTraversable(false);
+        Button fortify = new Button("Fortify");
+        fortify.setOnMouseClicked(e -> UnitSelectedPanel.fortify());
+        fortify.setFocusTraversable(false);
+        Button heal = new Button("Heal");
+        heal.setOnMouseClicked(e -> UnitSelectedPanel.heal());
+        heal.setFocusTraversable(false);
+        Button wake = new Button("Wake Up");
+        wake.setOnMouseClicked(e -> UnitSelectedPanel.wake());
+        wake.setFocusTraversable(false);
+        Button delete = new Button("Delete");
+        delete.setOnMouseClicked(e -> UnitSelectedPanel.delete());
+        delete.setFocusTraversable(false);
+        Button buildImprovement = new Button("Build Imporvement");
+        buildImprovement.setOnMouseClicked(e -> UnitSelectedPanel.buildImprovement());
+        buildImprovement.setFocusTraversable(false);
+        Button buildRoad = new Button("Build Road");
+        buildRoad.setOnMouseClicked(e -> UnitSelectedPanel.buildRoad());
+        buildRoad.setFocusTraversable(false);
+        Button removeForest = new Button("Remove Forest");
+        removeForest.setOnMouseClicked(e -> UnitSelectedPanel.removeForest());
+        removeForest.setFocusTraversable(false);
+        Button removeJungle = new Button("Remove Jungle");
+        removeJungle.setOnMouseClicked(e -> UnitSelectedPanel.removeJungle());
+        removeJungle.setFocusTraversable(false);
+        Button removeMarsh = new Button("Remove Marsh");
+        removeMarsh.setOnMouseClicked(e -> UnitSelectedPanel.removeMarsh());
+        removeMarsh.setFocusTraversable(false);
+        Button removeRoad = new Button("Remove Road");
+        removeRoad.setOnMouseClicked(e -> UnitSelectedPanel.removeRoute());
+        removeRoad.setFocusTraversable(false);
+        Button pillage = new Button("Pillage");
+        pillage.setOnMouseClicked(e -> UnitSelectedPanel.pillage());
+        pillage.setFocusTraversable(false);
+        Button repair = new Button("Repair");
+        repair.setOnMouseClicked(e -> UnitSelectedPanel.repair());
+        repair.setFocusTraversable(false);
+        Button setUp = new Button("Set Up");
+        setUp.setOnMouseClicked(e -> UnitSelectedPanel.setup());
+        setUp.setFocusTraversable(false);
+        Button garrison = new Button("Garrison");
+        garrison.setOnMouseClicked(e -> UnitSelectedPanel.garrison());
+        garrison.setFocusTraversable(false);
+        Button attack = new Button("Attack");
+        attack.setOnMouseClicked(e -> UnitSelectedPanel.attack());
+        attack.setFocusTraversable(false);
+
+        unitSelectedPane.getChildren().addAll(info, move, buildCity, sleep, alert, fortify, heal, wake, delete, buildImprovement, buildRoad, removeForest, removeJungle, removeMarsh, removeRoad, pillage, repair, setUp, garrison, attack);
+    }
+
     /////////////////////
+
+    public static void selectTile(int row, int column) {
+        if (selectedRow != row || selectedColumn != column) {
+            return;
+        }
+        Tile tile = ((Map) Network.getResponseObjOf(RequestActions.GET_GAME_MAP.code, null)).getTile(row, column);
+        if (tile.getCity() != null) {
+            if (selectedCity == null){
+                selectedCity = tile.getCity();
+            }
+            else selectedCity = null;
+        }
+        if (selectedCity == null && tile.getUnit() != null) {
+            if (selectedUnit != tile.getUnit()){
+                selectedUnit = tile.getUnit();
+                root.getChildren().remove(unitSelectedPane);
+                initUnitSelectedPane();
+                unitSelectedPane.setVisible(true);
+                root.getChildren().add(unitSelectedPane);
+            }
+            else selectedUnit = null;
+        }
+        if (selectedUnit == null && selectedCity == null && tile.getTroop() != null) {
+            if (selectedUnit != tile.getTroop()){
+                selectedUnit = tile.getTroop();
+                root.getChildren().remove(unitSelectedPane);
+                initUnitSelectedPane();
+                unitSelectedPane.setVisible(true);
+                root.getChildren().add(unitSelectedPane);
+            }
+            else selectedUnit = null;
+        }
+        System.out.println(selectedRow + "," + selectedColumn);
+        System.out.println(selectedUnit);
+        System.out.println(selectedCity);
+    }
 
     public static void moveMap(KeyEvent keyEvent) {
         String keyName = keyEvent.getCode().getName();

@@ -18,10 +18,10 @@ public class Tile implements Serializable {
     private Terrain terrain;
     private Resource resource;
     private Ruin ruin;
-    private transient City city;  //can be null
+    private City city;  //can be null
     private Improvement improvement;
-    private transient Unit unit;
-    private transient Troop troop;
+    private Unit unit;
+    private Troop troop;
     private FogState fogState;
     private Road road; // can be null
     private HashMap<Integer, Integer> isRiver; // Clock-based directions: 0 - 2 - 4 - 6 - 8 - 10

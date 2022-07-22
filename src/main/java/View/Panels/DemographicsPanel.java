@@ -2,6 +2,7 @@ package View.Panels;
 
 import Controller.GameController;
 import Model.City;
+import Model.Game;
 import Model.Player;
 import Model.Request;
 import View.Network;
@@ -29,8 +30,7 @@ public class DemographicsPanel extends GameMenu {
                 "Worst",
                 "Rank"));
         Player player = ((Player) Network.getResponseObjOf(RequestActions.GET_THIS_PLAYER.code, null));
-        ArrayList<City> cities = player.getCities();
-        ArrayList<Player> players = GameController.getGame().getPlayers();
+        ArrayList<Player> players = ((Game) Network.getResponseObjOf(RequestActions.GET_GAME.code, null)).getPlayers();
 
         // Population
         players.sort(Comparator.comparing(Player::getPopulation));
