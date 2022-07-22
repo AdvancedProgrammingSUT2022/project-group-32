@@ -19,6 +19,7 @@
     "username": "1",
     "password": "1",
     "nickname": "1",
+    "photoAddress": "src/main/resources/images/profilePics/1_HEMYB.png",
     "lastUpdate": "2022-07-11 20:28",
     "bestScore": 111,
     "bestScoreTime": "2022-07-22 10:25"

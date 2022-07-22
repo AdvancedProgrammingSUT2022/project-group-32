@@ -52,7 +52,7 @@ public class ServerMain {
                             } else if (action.equals(REMOVE_USER.code)) {
                                 sendEnumRequest(UserController.removeUser(), objectOutputStream);
                             } else if (action.equals(CHANGE_PROFILE_PICTURE.code)) {
-                                sendEnumRequest(UserController.changePicture((byte[]) request.getObj()), objectOutputStream);
+                                sendEnumRequest(UserController.changePicture((ArrayList<Byte>) request.getObj()), objectOutputStream);
                             } else if (action.equals(GET_THIS_USER.code)) {
                                 sendRequest(new Request("sent this User", null, UserController.getCurrentUser()), objectOutputStream);
                             } else if (action.equals(CHANGE_PASSWORD.code)) {
@@ -106,6 +106,8 @@ public class ServerMain {
                             } else if (action.equals(SELECT_TROOP.code)) {
                                 sendRequest(new Request("select troop", null,
                                         GameController.selectTroop(Integer.parseInt(params.get("row")), Integer.parseInt(params.get("column")))), objectOutputStream);
+                            } else if (action.equals(GET_USERS_PROFILE_PIC.code)) {
+                                sendRequest(new Request("profile pic", null, UserController.getProfilePicOf(getThisThreadUser())), objectOutputStream);
                             } else {
                                 System.err.println("INVALID COMMAND!!!");
                             }

@@ -19,6 +19,7 @@ import javafx.util.Pair;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,6 +48,7 @@ public class ProfileMenu extends Menu{
         addTitle();
 
         Civ6Profile civ6Profile = new Civ6Profile((User) Network.getResponseObjOf(RequestActions.GET_THIS_USER.code, null));
+        civ6Profile.getfileName();
         civ6Profile.setTranslateX((WIDTH - civ6Profile.getWidth()) / 2);
         civ6Profile.setTranslateY(HEIGHT / 2 - civ6Profile.getHeight() + 50);
         root.getChildren().add(civ6Profile);
@@ -93,12 +95,21 @@ public class ProfileMenu extends Menu{
             fileChooser.setTitle("Select Image");
             file = fileChooser.showOpenDialog(Menu.getStage().getScene().getWindow());
             Request request = new Request(RequestActions.CHANGE_PROFILE_PICTURE.code, null);
-            request.setObj(Files.readAllBytes(file.toPath()));
+
+            byte[] rawBytes = Files.readAllBytes(file.toPath());
+            Byte[] bytes = new Byte[rawBytes.length];
+            for (int i = 0; i < rawBytes.length; i++) {
+                bytes[i] = rawBytes[i];
+            }
+            ArrayList<Byte> data = new ArrayList<Byte>(Arrays.asList(bytes));
+            request.setObj(data);
+            System.out.println("dataByteSize" + data.size());
             //        Response.ProfileMenu response = Response.ProfileMenu.values()[Network.getResponseEnumIntOf(request)];
             Response.ProfileMenu response = (Response.ProfileMenu) Network.getResponseObjOf(request);
             //        Response.ProfileMenu response = UserController.changePicture(file);
             if (!response.equals(Response.ProfileMenu.SUCCESSFUL_PICTURE_CHANGE)) {
                 showAlert(alert, response.getString());
+                System.out.println(file.length());
             } else {
                 changeMenu(PROFILE_MENU);
             }
