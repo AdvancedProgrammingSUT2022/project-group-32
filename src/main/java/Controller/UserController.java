@@ -9,7 +9,6 @@ import enums.Responses.Response;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -153,11 +152,11 @@ public class UserController {
         try {
             User currentUser = getCurrentUser();
             String absPath = "src/main/resources/images/profilePics/" + currentUser.getUsername() + ".jpg";
-            ObjectInputStream ois = new ObjectInputStream(bytes);
+//            ObjectInputStream ois = new ObjectInputStream(bytes);
 //            fw.write(file.get);
             currentUser.setPhotoAddress(absPath);
             saveUsers();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return Response.ProfileMenu.SUCCESSFUL_PICTURE_CHANGE;
