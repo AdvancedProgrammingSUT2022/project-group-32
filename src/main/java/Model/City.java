@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class City implements Serializable {
     public static final long serialVersionUID = 68L;
     private String name;
-    private transient Player owner;
+    private Player owner;
     private Tile capitalTile; // TODO: 4/17/2022 Palace must be handled
     private ArrayList<Tile> territory;
     private ArrayList<Building> buildings;
@@ -23,7 +23,7 @@ public class City implements Serializable {
     private int freeCitizens;
     private int foodIncome, population, health, baseStrength;
     private int sightRange;
-    private transient Troop garrisonedTroop;
+    private Troop garrisonedTroop;
     private int neededFoodForNewCitizen = 10, storedFoodForNewCitizen = 0;
     private double HP;
     private boolean hasAttacked;

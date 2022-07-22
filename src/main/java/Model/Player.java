@@ -5,6 +5,7 @@ import Model.Units.Troop;
 import Model.Units.Unit;
 import enums.Color;
 import enums.Types.BuildingType;
+import enums.Types.FogState;
 import enums.Types.TechnologyType;
 
 import java.io.Serializable;

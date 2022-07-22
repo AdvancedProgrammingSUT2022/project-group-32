@@ -14,7 +14,7 @@ public class Unit implements Serializable {
     public static final long serialVersionUID = 80L;
 
     private Tile tile;
-    private transient Player owner;
+    private Player owner;
     private final int health; // this is for reference
     private int cost;
     private int movement;

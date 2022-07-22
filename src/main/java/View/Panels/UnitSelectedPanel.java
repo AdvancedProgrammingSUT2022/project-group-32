@@ -3,16 +3,21 @@ package View.Panels;
 import Controller.GameController;
 import Controller.UnitController;
 import Model.Units.Unit;
+import View.GameView;
+import View.Network;
 import View.PastViews.CLI;
 import View.PastViews.GameMenu;
+import enums.RequestActions;
+import enums.Responses.InGameResponses;
 import enums.Types.ImprovementType;
 import enums.Types.RoadType;
 
 import java.util.ArrayList;
 
-public class UnitSelectedPanel extends GameMenu {
+public class UnitSelectedPanel extends GameView {
+
     public static void run(String command) {
-        if (command.startsWith("move unit")) moveTo(command);
+        /*if (command.startsWith("move unit")) moveTo(command);
         else if (command.startsWith("back")) GameMenu.currentPanel = null;
         else if (command.startsWith("build city")) foundCity(command);
         else if (command.startsWith("sleep")) sleep();
@@ -32,30 +37,28 @@ public class UnitSelectedPanel extends GameMenu {
         else if (command.startsWith("set up")) setup();
         else if (command.startsWith("garrison")) garrison();
         else if (command.startsWith("attack")) attack(command);
-        else if (command.startsWith("show selected unit")) showSelected();
-        else invalidCommand();
+        else if (command.startsWith("show selected unit")) showSelected();*/
     }
 
-    private static void showSelected() {
-        Unit unit = GameController.getSelectedUnit();
-        System.out.println("location: " + unit.getTile().getRow() + " " + unit.getTile().getColumn());
-        System.out.println("type: " + unit.getUnitType().name);
-        System.out.println("owner: " + unit.getOwner().getName());
-        System.out.println("HP: " + unit.getHP());
-        System.out.println("current order status: " + unit.getOrderType().toString());
+    public static String showSelected() {
+        Unit unit = selectedUnit;
+        StringBuilder resp = new StringBuilder();
+        resp.append("location: " + unit.getTile().getRow() + " " + unit.getTile().getColumn() + "\n");
+        resp.append("type: " + unit.getUnitType().name + "\n");
+        resp.append("owner: " + unit.getOwner().getName() + "\n");
+        resp.append("HP: " + unit.getHP() + "\n");
+        resp.append("current order status: " + unit.getOrderType().toString());
+        return resp.toString();
     }
 
-    private static void moveTo(String command) {
-        ArrayList<String> parameters = CLI.getParameters(command, "l");
-        if (parameters == null) {
-            invalidCommand();
-            return;
+    public static void moveTo() {
+        InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("move unit -l " + selectedRow + " " + selectedColumn));
+        if(response != InGameResponses.Unit.MOVETO_SUCCESSFUL){
+            showAlert(invalidAlert, response.getString());
         }
-        int row = Integer.parseInt(parameters.get(0)), column = Integer.parseInt(parameters.get(1));
-        System.out.println(UnitController.moveTo(row, column).getString());
     }
 
-    private static void foundCity(String command) {
+    public static void foundCity() {/*
         ArrayList<String> parameters = CLI.getParameters(command, "cn");
         if (parameters == null) {
             invalidCommand();
@@ -66,83 +69,85 @@ public class UnitSelectedPanel extends GameMenu {
             return;
         }
         System.out.println(UnitController.foundCity(parameters.get(0)).getString());
+    */}
+
+    public static void sleep() {
+        InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("move unit -l " + selectedRow + " " + selectedColumn));
+        System.out.println(response);
+        show(stage);
     }
 
-    private static void sleep() {
-        System.out.println(UnitController.sleep().getString());
-    }
-
-    private static void alert() {
+    public static void alert() {
         System.out.println(UnitController.alert().getString());
     }
 
-    private static void fortify() {
+    public static void fortify() {
         System.out.println(UnitController.fortify().getString());
     }
 
-    private static void heal() {
+    public static void heal() {
         System.out.println(UnitController.heal().getString());
     }
 
-    private static void wake() {
+    public static void wake() {
         System.out.println(UnitController.wake().getString());
     }
 
-    private static void delete() {
+    public static void delete() {
         System.out.println(UnitController.delete().getString());
     }
 
-    private static void buildImprovement(String command) {
+    public static void buildImprovement() {/*
         ArrayList<String> parameters = CLI.getParameters(command, "t");
         if (parameters == null) {
             invalidCommand();
             return;
         }
         System.out.println(UnitController.buildImprovement(ImprovementType.getTypeByName(parameters.get(0))).getString());
-    }
+    */}
 
-    private static void buildRoad(String command) {
+    public static void buildRoad() {/*
         ArrayList<String> parameters = CLI.getParameters(command, "t");
         if (parameters == null) {
             invalidCommand();
             return;
         }
         System.out.println(UnitController.buildRoad(RoadType.getTypeByName(parameters.get(0))).getString());
-    }
+    */}
 
-    private static void removeForest() {
+    public static void removeForest() {
         System.out.println(UnitController.removeForest().getString());
     }
 
-    private static void removeJungle() {
+    public static void removeJungle() {
         System.out.println(UnitController.removeJungle().getString());
     }
 
-    private static void removeMarsh() {
+    public static void removeMarsh() {
         System.out.println(UnitController.removeMarsh().getString());
     }
 
-    private static void removeRoute() {
+    public static void removeRoute() {
         System.out.println(UnitController.removeRoute().getString());
     }
 
-    private static void pillage() {
+    public static void pillage() {
         System.out.println(UnitController.pillage().getString());
     }
 
-    private static void repair() {
+    public static void repair() {
         System.out.println(UnitController.repair().getString());
     }
 
-    private static void setup() {
+    public static void setup() {
         System.out.println(UnitController.setup().getString());
     }
 
-    private static void garrison() {
+    public static void garrison() {
         System.out.println(UnitController.garrison().getString());
     }
 
-    private static void attack(String command) {
+    public static void attack() {/*
         ArrayList<String> parameters = CLI.getParameters(command, "l");
         if (parameters == null) {
             invalidCommand();
@@ -150,6 +155,6 @@ public class UnitSelectedPanel extends GameMenu {
         }
         int row = Integer.parseInt(parameters.get(0)), column = Integer.parseInt(parameters.get(1));
         System.out.println(UnitController.attack(row, column).getString());
-    }
+    */}
 
 }
