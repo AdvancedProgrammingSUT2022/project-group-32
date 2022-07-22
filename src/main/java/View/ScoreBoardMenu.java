@@ -6,10 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -71,6 +68,18 @@ public class ScoreBoardMenu extends Menu {
                     data = FXCollections.observableArrayList(users);
 
                     System.out.println("reSending");
+                    table.refresh();
+                    table.setItems(data);
+                    table.setRowFactory(tv -> new TableRow<>() {
+                        @Override
+                        protected void updateItem(User user, boolean b) {
+                            super.updateItem(user, b);
+                            if (Network.getResponseObjOf(RequestActions.GET_THIS_USER.code, null).equals(user)) {
+                                setStyle("-fx-background-color: #ff8888");
+                            }
+                        }
+                    });
+                    table.getSelectionModel().select((User) Network.getResponseObjOf(RequestActions.GET_THIS_USER.code, null));
                     table.refresh();
                     Thread.sleep(2000);
                 }

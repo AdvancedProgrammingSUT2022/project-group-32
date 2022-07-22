@@ -3,13 +3,10 @@ package Server;
 import Controller.GameController;
 import Controller.PlayerController;
 import Controller.UserController;
-import Model.Map;
 import Model.Request;
-import Model.Tile;
 import Model.User;
 import View.Panels.InGameCommandHandler;
 import enums.ParameterKeys;
-import net.bytebuddy.utility.RandomString;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -17,7 +14,6 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 import static enums.RequestActions.*;
 
@@ -100,14 +96,7 @@ public class ServerMain {
                             } else if (action.equals(GET_SELECTED_UNIT.code)) {
                                 sendRequest(new Request("send selected troop", null, GameController.getSelectedUnit()), objectOutputStream);
                             } else if (action.equals(GET_THIS_PLAYERS_MAP.code)) {
-                                Request request1 = new Request("alskdjalsd" + RandomString.make(10), null, GameController.getCurrentPlayerMap());
-                                for (Tile[] tiles : ((Map) request1.getObj()).getTiles()) {
-                                    for (Tile tile : tiles) {
-                                        if(tile.getUnit() != null){
-                                            System.err.println(tile.getRow() + "," + tile.getColumn() + " is " + tile.getUnit().getOrderType());
-                                        }
-                                    }
-                                }
+                                Request request1 = new Request("sending this player's map", null, GameController.getCurrentPlayerMap());
                                 sendRequest(request1, objectOutputStream);
                             } else if (action.equals(SELECT_CITY.code)) {
                                 sendRequest(new Request("select city", null,
@@ -135,6 +124,15 @@ public class ServerMain {
                         System.out.println("Disconnected: " + socket);
                     } catch (Exception e) {
                         e.printStackTrace();
+                    } finally {
+                        System.err.println("made this thread OFFLINE");
+                        try {
+                            threadIDUser.get(Thread.currentThread().getId()).setOnlineStatus("Offline");
+                            threadIDUser.remove(Thread.currentThread().getId());
+                            outputStreamsByThreadID.remove(Thread.currentThread().getId());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }).start();
             }
@@ -143,10 +141,10 @@ public class ServerMain {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            System.err.println("made this thread OFFLINE");
-            threadIDUser.get(Thread.currentThread().getId()).setOnlineStatus("Offline");
-            threadIDUser.remove(Thread.currentThread().getId());
-            outputStreamsByThreadID.remove(Thread.currentThread().getId());
+//            System.err.println("made this thread OFFLINE");
+//            threadIDUser.get(Thread.currentThread().getId()).setOnlineStatus("Offline");
+//            threadIDUser.remove(Thread.currentThread().getId());
+//            outputStreamsByThreadID.remove(Thread.currentThread().getId());
         }
     }
 
@@ -156,11 +154,10 @@ public class ServerMain {
 
     private static synchronized void sendRequest(Request request, ObjectOutputStream objectOutputStream) {
         try {
-            if (!request.action.equals(GET_INVITATIONS.code)) {
-                System.out.println("Response:  action:" + request.action + " params: " + request.params);
-            }
+            System.out.println("Response:  action:" + request.action + " params: " + request.params + " user: " + getThisThreadUser().getNickname());
             objectOutputStream.writeObject(request);
             objectOutputStream.flush();
+            objectOutputStream.reset();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -7,8 +7,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Map implements Serializable {
-    private static final int INF = 9999;
     public static final long serialVersionUID = 65L;
+    private static final int INF = 9999;
     private final int width;
     private final int height;
     private Tile[][] tiles;

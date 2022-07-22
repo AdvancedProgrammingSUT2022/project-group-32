@@ -35,16 +35,18 @@ public class Network {
 
     public static synchronized Request sendRequest(Request request) {
         if (!socket.isConnected()) {
-            System.err.println("Server is Down. closing the client ...");
+            System.err.println("Server is  Down. closing the client ...");
             System.exit(0);
         }
         try {
             objectOutputStream.writeObject(request);
             objectOutputStream.flush();
+            objectOutputStream.reset();
             Request response = (Request) objectInputStream.readObject();
-            System.err.println(response.action);
+            System.out.println("Server's Response: " + response.toString());
             return response;
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
