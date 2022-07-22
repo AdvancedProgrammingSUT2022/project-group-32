@@ -234,6 +234,12 @@ public class PlayerController {
         player.setScienceIncome(scienceIncome);
     }
 
+    public static void declareWar(Player player1, Player player2) {
+        if(player1.getInWarPlayers().contains(player2)) return;
+        player1.getInWarPlayers().add(player2);
+        player2.getInWarPlayers().add(player1);
+        // TODO: 7/21/2022 notify players maybe?
+    }
 
     public static boolean checkIfLost() {
         throw new RuntimeException("NOT IMPLEMENTED FUNCTION");

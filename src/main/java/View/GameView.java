@@ -3,6 +3,7 @@ package View;
 
 import Controller.GameController;
 import Model.Map;
+import Model.Player;
 import Model.Tile;
 import View.Panels.DemographicsPanel;
 import View.Panels.EconomyPanel;
@@ -34,7 +35,6 @@ public class GameView extends Menu {
     private static Label topPaneLabel;
     private static VBox notificationPane;
     private static VBox militaryPane;
-    private static VBox demographicsPane;
     private static VBox economyPane;
     private static Alert infoAlert;
     private static Alert invalidAlert;
@@ -72,15 +72,14 @@ public class GameView extends Menu {
 
     // should be called after every change to the map :)
     public static void makeMap() {
+        map.getChildren().clear();
         if (!(Boolean) Network.getResponseObjOf(RequestActions.IS_MY_TURN.code, null)) {
             map.setVisible(false);
             waitiingLable.setVisible(true);
             waitiingLable.setLayoutX(WIDTH / 2);
             return;
         }
-        map.setVisible(true);
         waitiingLable.setVisible(false);
-        map = new Pane();
 
         ImageView imageView1 = new ImageView(GameView.class.getClassLoader().getResource("images/Terrains/hill.png").toExternalForm());
         ImageView imageView2 = new ImageView(GameView.class.getClassLoader().getResource("images/Terrains/hill.png").toExternalForm());
@@ -93,7 +92,7 @@ public class GameView extends Menu {
         map.getChildren().add(imageView3);
 
         // putting rivers in
-        Map gameMap = (Map) Network.getResponseObjOf(RequestActions.GET_GAME_MAP.code, null);
+        Map gameMap = ((Player) Network.getResponseObjOf(RequestActions.GET_THIS_PLAYER.code, null)).getMap();
 
         for (int row = 0; row < gameMap.getHeight(); row++) {
             for (int column = 0; column < gameMap.getWidth(); column++) {
@@ -174,6 +173,8 @@ public class GameView extends Menu {
         invalidAlert = new Alert(Alert.AlertType.ERROR, "invalid!", ButtonType.OK);
         Pane pane = root;
         initTopPane();
+        map = new Pane();
+        map.setVisible(true);
         makeMap();
         //map.setTranslateX(GameController.getCurrentPlayer().getCameraColumn() * -130 + WIDTH / 2);
         //map.setTranslateY(GameController.getCurrentPlayer().getCameraRow() * -115 + HEIGHT / 2);
@@ -185,7 +186,7 @@ public class GameView extends Menu {
         //notificationPane.setVisible(true);
         //demographicsPane.setVisible(true);
         //economyPane.setVisible(true);
-        pane.getChildren().addAll(topPane, notificationPane, militaryPane, demographicsPane, economyPane);
+        pane.getChildren().addAll(topPane, notificationPane, militaryPane, economyPane);
         waitiingLable.setVisible(false);
         pane.getChildren().add(waitiingLable);
         Platform.runLater(() -> map.requestFocus());
@@ -200,7 +201,7 @@ public class GameView extends Menu {
         initTopPane();
         initNotificationPane();
         initMilitaryPane();
-        initDemographicsPane();
+        //initDemographicsPane(); todo: this needs a server service
         initEconomyPane();
         nextTurnButton = new Button("pass turn");
         nextTurnButton.setOnMouseClicked((e -> passTurn()));
@@ -276,7 +277,7 @@ public class GameView extends Menu {
     }
 
     private static void initDemographicsPane() {
-        demographicsPane = new VBox();
+        VBox demographicsPane = new VBox();
         demographicsPane.setVisible(false);
         demographicsPane.setAlignment(Pos.CENTER);
         demographicsPane.setLayoutX(WIDTH - RIGHT_WIDTH);

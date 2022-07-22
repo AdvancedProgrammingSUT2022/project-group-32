@@ -367,6 +367,9 @@ public class Tile implements Serializable {
         resourceImage.setFitWidth(40);
         resourceImage.setFitHeight(40);
         imagePane.getChildren().add(resourceImage);
+        if(unit != null) {
+            System.out.println(row + "," + column + " has a unit in it!");
+        }
         if(fogState == FogState.VISIBLE &&  unit != null) {
             ImageView unitImage = unit.getUnitImage();
             unitImage.setTranslateX(20);
