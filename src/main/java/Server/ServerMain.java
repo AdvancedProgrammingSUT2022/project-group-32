@@ -92,7 +92,7 @@ public class ServerMain {
                                 ArrayList<User> users = UserController.getUsers();
                                 sendRequest(new Request("send Users", null, users), objectOutputStream);
                             } else if (action.equals(GET_SELECTED_CITY.code)) {
-                                sendRequest(new Request("send selected cuty", null, GameController.getSelectedCity()), objectOutputStream);
+                                sendRequest(new Request("send selected city", null, GameController.getSelectedCity()), objectOutputStream);
                             } else if (action.equals(GET_SELECTED_UNIT.code)) {
                                 sendRequest(new Request("send selected troop", null, GameController.getSelectedUnit()), objectOutputStream);
                             } else if (action.equals(GET_THIS_PLAYERS_MAP.code)) {

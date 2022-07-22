@@ -45,4 +45,13 @@ public enum BuildingType {
         this.name = name;
         this.technologyType = technologyType;
     }
+
+    public static BuildingType getBuildingTypeByName(String name) {
+        for (BuildingType buildingType : BuildingType.values()) {
+            if(buildingType.name.equals(name)){
+                return buildingType;
+            }
+        }
+        return null;
+    }
 }

@@ -7,6 +7,8 @@ import Model.Tile;
 import View.PastViews.CLI;
 import View.PastViews.GameMenu;
 import enums.Color;
+import enums.Responses.InGameResponses;
+import enums.Types.BuildingType;
 import enums.Types.UnitType;
 
 import java.util.ArrayList;
@@ -16,92 +18,65 @@ public class CitySelectedPanel extends GameMenu {
         if (command.startsWith("build unit")) buildUnit(command);
         else if (command.startsWith("pause unit")) pauseUnit();
         else if (command.startsWith("build building")) buildBuilding(command);
-        else if (command.startsWith("pause building")) pauseBuilding(command);
         else if (command.startsWith("buy unit")) buyUnit(command);
         else if (command.startsWith("assign citizen")) assignCitizen(command);
         else if (command.startsWith("free citizen")) freeCitizen(command);
         else if (command.startsWith("buy tile")) buyTile(command);
-        else if (command.startsWith("attack")) attack(command);
-        else if (command.startsWith("delete")) delete();
+        else if (command.startsWith("city attack")) attack(command);
+        else if (command.startsWith("city delete")) delete();
         else if (command.startsWith("show banner")) showBanner();
         else if (command.startsWith("back")) currentPanel = null;
         else invalidCommand();
     }
 
-    public static void buildBuilding(String command) {
-
-    }
-
-    public static void pauseBuilding(String command) {
-
-    }
-
-    public static void buildUnit(String command) {
+    public static InGameResponses.Building buildBuilding(String command) {
         ArrayList<String> parameters = CLI.getParameters(command, "t");
-        if (parameters == null) {
-            invalidCommand();
-            return;
-        }
-        UnitType unitType = UnitType.getUnitTypeByName(parameters.get(0));
-        System.out.println(CityController.buildUnit(unitType).getString());
+        BuildingType buildingType = BuildingType.getBuildingTypeByName(parameters.get(0));
+        return CityController.buildBuilding(buildingType);
     }
 
-    public static void pauseUnit() {
-        System.out.println(CityController.pauseInProgressUnit());
-    }
-
-    public static void buyUnit(String command) {
+    public static InGameResponses.Unit buildUnit(String command) {
         ArrayList<String> parameters = CLI.getParameters(command, "t");
-        if (parameters == null) {
-            invalidCommand();
-            return;
-        }
         UnitType unitType = UnitType.getUnitTypeByName(parameters.get(0));
-        System.out.println(CityController.buyUnit(unitType).getString());
+        return CityController.buildUnit(unitType);
     }
 
-    public static void assignCitizen(String command) {
+    public static InGameResponses.Unit pauseUnit() {
+        return CityController.pauseInProgressUnit();
+    }
+
+    public static InGameResponses.City buyUnit(String command) {
+        ArrayList<String> parameters = CLI.getParameters(command, "t");
+        UnitType unitType = UnitType.getUnitTypeByName(parameters.get(0));
+        return CityController.buyUnit(unitType);
+    }
+
+    public static InGameResponses.City assignCitizen(String command) {
         ArrayList<String> parameters = CLI.getParameters(command, "l");
-        if (parameters == null) {
-            invalidCommand();
-            return;
-        }
         int row = Integer.parseInt(parameters.get(0)), column = Integer.parseInt(parameters.get(1));
-        System.out.println(CityController.assignCitizenToTile(row, column).getString());
+        return CityController.assignCitizenToTile(row, column);
     }
 
-    public static void freeCitizen(String command) {
+    public static InGameResponses.City freeCitizen(String command) {
         ArrayList<String> parameters = CLI.getParameters(command, "l");
-        if (parameters == null) {
-            invalidCommand();
-            return;
-        }
         int row = Integer.parseInt(parameters.get(0)), column = Integer.parseInt(parameters.get(1));
-        System.out.println(CityController.freeCitizenFromTile(row, column).getString());
+        return CityController.freeCitizenFromTile(row, column);
     }
 
-    public static void buyTile(String command) {
+    public static InGameResponses.City buyTile(String command) {
         ArrayList<String> parameters = CLI.getParameters(command, "l");
-        if (parameters == null) {
-            invalidCommand();
-            return;
-        }
         int row = Integer.parseInt(parameters.get(0)), column = Integer.parseInt(parameters.get(1));
-        System.out.println(CityController.buyTile(row, column));
+        return CityController.buyTile(row, column);
     }
 
-    public static void attack(String command) {
+    public static InGameResponses.City attack(String command) {
         ArrayList<String> parameters = CLI.getParameters(command, "l");
-        if (parameters == null) {
-            invalidCommand();
-            return;
-        }
         int row = Integer.parseInt(parameters.get(0)), column = Integer.parseInt(parameters.get(1));
-        System.out.println(CityController.attack(row, column).getString());
+        return CityController.attack(row, column);
     }
 
-    public static void delete() {
-        System.out.println(CityController.delete().getString());
+    public static InGameResponses.City delete() {
+        return CityController.delete();
     }
 
     public static void showBanner() {
