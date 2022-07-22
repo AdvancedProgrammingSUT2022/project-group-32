@@ -52,7 +52,7 @@ public class ServerMain {
                             } else if (action.equals(REMOVE_USER.code)) {
                                 sendEnumRequest(UserController.removeUser(), objectOutputStream);
                             } else if (action.equals(CHANGE_PROFILE_PICTURE.code)) {
-                                sendEnumRequest(UserController.changePicture((File) request.getObj()), objectOutputStream);
+//                                sendEnumRequest(UserController.changePicture((byte[]) request.getObj()), objectOutputStream);
                             } else if (action.equals(GET_THIS_USER.code)) {
                                 sendRequest(new Request("sent this User", null, UserController.getCurrentUser()), objectOutputStream);
                             } else if (action.equals(CHANGE_PASSWORD.code)) {
@@ -87,6 +87,25 @@ public class ServerMain {
                                 sendRequest(new Request("", null), objectOutputStream);
                             } else if (action.equals(GET_THIS_PLAYER.code)) {
                                 sendRequest(new Request("get player response", null, GameController.getPlayerOfUser(getThisThreadUser())), objectOutputStream);
+                            } else if (action.equals(GET_GAME.code)) {
+                                sendRequest(new Request("response of get game", null, GameController.getGame()), objectOutputStream);
+                            } else if (action.equals(GET_USERS.code)) {
+                                sendRequest(new Request("send Users", null, UserController.getUsers()), objectOutputStream);
+                            } else if (action.equals(GET_SELECTED_CITY.code)) {
+                                sendRequest(new Request("send selected cuty", null, GameController.getSelectedCity()), objectOutputStream);
+                            } else if (action.equals(GET_SELECTED_UNIT.code)) {
+                                sendRequest(new Request("send selected troop", null, GameController.getSelectedUnit()), objectOutputStream);
+                            } else if (action.equals(GET_THIS_PLAYERS_MAP.code)) {
+                                sendRequest(new Request("this playes map", null, GameController.getCurrentPlayerMap()), objectOutputStream);
+                            } else if (action.equals(SELECT_CITY.code)) {
+                                sendRequest(new Request("select city", null,
+                                        GameController.selectCity(Integer.parseInt(params.get("row")), Integer.parseInt(params.get("column")))), objectOutputStream);
+                            } else if (action.equals(SELECT_UNIT.code)) {
+                                sendRequest(new Request("select unit", null,
+                                        GameController.selectUnit(Integer.parseInt(params.get("row")), Integer.parseInt(params.get("column")))), objectOutputStream);
+                            } else if (action.equals(SELECT_TROOP.code)) {
+                                sendRequest(new Request("select troop", null,
+                                        GameController.selectTroop(Integer.parseInt(params.get("row")), Integer.parseInt(params.get("column")))), objectOutputStream);
                             } else {
                                 System.err.println("INVALID COMMAND!!!");
                             }

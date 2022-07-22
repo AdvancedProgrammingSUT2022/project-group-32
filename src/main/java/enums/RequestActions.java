@@ -18,7 +18,16 @@ public enum RequestActions {
     IS_MY_TURN("is_my_turn?"),
     NEW_GAME("new_game"),
     PASS_TURN("pass_turn"),
-    GET_THIS_PLAYER("get_this_player");
+    GET_THIS_PLAYER("get_this_player"),
+    GET_GAME("get_game"),
+    GET_USERS("get_all_users"),
+    GET_SELECTED_CITY("get-selected-city"),
+    GET_SELECTED_UNIT("get-selected-unit"),
+    SELECT_CITY("select-city"),
+    SELECT_UNIT("select-unit"),
+    SELECT_TROOP("select_troop"),
+    GET_THIS_PLAYERS_MAP("get-this_players_map");
+
 
     public final String code;
 
