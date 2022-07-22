@@ -3,48 +3,72 @@
     "username": "qwer",
     "password": "qwQW12!@",
     "nickname": "qwer",
-    "score": 0
+    "lastUpdate": "2022-07-11 20:28",
+    "bestScore": 123,
+    "bestScoreTime": "2022-07-22 10:25"
   },
   {
     "username": "parsa11",
     "password": "Pp123123!@#",
     "nickname": "parsa11",
     "lastUpdate": "2022-07-11 20:28",
-    "score": 0
+    "bestScore": 135,
+    "bestScoreTime": "2022-07-22 10:25"
   },
   {
     "username": "1",
     "password": "1",
     "nickname": "1",
     "lastUpdate": "2022-07-11 20:28",
-    "score": 0
+    "bestScore": 111,
+    "bestScoreTime": "2022-07-22 10:25"
   },
   {
     "username": "2",
     "password": "2",
     "nickname": "2",
     "lastUpdate": "2022-07-11 20:28",
-    "score": 0
+    "bestScore": 123,
+    "bestScoreTime": "2022-07-22 10:25"
   },
   {
     "username": "3",
     "password": "3",
     "nickname": "3",
     "lastUpdate": "2022-07-11 20:28",
-    "score": 0
+    "bestScore": 1444,
+    "bestScoreTime": "2022-07-22 10:25"
   },
   {
     "username": "ali",
     "password": "Ali!@#123",
     "nickname": "ali",
     "lastUpdate": "2022-07-18 08:15",
-    "score": 0
+    "bestScore": 14,
+    "bestScoreTime": "2022-07-22 10:25"
   },
   {
     "username": "joo",
     "password": "Jj132!@#",
     "nickname": "joo",
     "lastUpdate": "2022-07-18 08:18",
-    "score": 0
+    "bestScore": 123,
+    "bestScoreTime": "2022-07-22 15:25"
+  },
+  {
+    "username": "gggggggg",
+    "password": "123!@#gggGGG",
+    "nickname": "ggggggggggg",
+    "lastUpdate": "2022-07-22 10:22",
+    "bestScore": 123,
+    "bestScoreTime": "2022-07-21 10:25"
+  },
+  {
+    "username": "qweqwe",
+    "password": "qweQWE123!@#",
+    "nickname": "qweqwew",
+    "lastUpdate": "2022-07-22 10:25",
+    "bestScore": 123,
+    "bestScoreTime": "2022-07-22 10:25"
   }
 ]

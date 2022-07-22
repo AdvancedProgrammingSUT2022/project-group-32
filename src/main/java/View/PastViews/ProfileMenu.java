@@ -73,7 +73,7 @@ public class ProfileMenu extends Menu {
         ArrayList<User> scoreboard = UserController.getScoreboard();
         int rank = 1;
         for (User user : scoreboard) {
-            System.out.println(rank + "- " + user.getNickname() + ":" + user.getScore());
+            System.out.println(rank + "- " + user.getNickname() + ":" + user.getBestScore());
             rank++;
         }
     }

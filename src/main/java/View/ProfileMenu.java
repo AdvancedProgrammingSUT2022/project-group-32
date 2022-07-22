@@ -17,6 +17,8 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 
@@ -86,18 +88,22 @@ public class ProfileMenu extends Menu{
     }
 
     private static void changePicture() {
-        fileChooser = new FileChooser();
-        fileChooser.setTitle("Select Image");
-        file = fileChooser.showOpenDialog(Menu.getStage().getScene().getWindow());
-        Request request = new Request(RequestActions.CHANGE_PROFILE_PICTURE.code, null);
-        request.setObj(file);
-//        Response.ProfileMenu response = Response.ProfileMenu.values()[Network.getResponseEnumIntOf(request)];
-        Response.ProfileMenu response = (Response.ProfileMenu) Network.getResponseObjOf(request);
-//        Response.ProfileMenu response = UserController.changePicture(file);
-        if (!response.equals(Response.ProfileMenu.SUCCESSFUL_PICTURE_CHANGE)) {
-            showAlert(alert, response.getString());
-        } else {
-            changeMenu(PROFILE_MENU);
+        try {
+            fileChooser = new FileChooser();
+            fileChooser.setTitle("Select Image");
+            file = fileChooser.showOpenDialog(Menu.getStage().getScene().getWindow());
+            Request request = new Request(RequestActions.CHANGE_PROFILE_PICTURE.code, null);
+            request.setObj(Files.readAllBytes(file.toPath()));
+            //        Response.ProfileMenu response = Response.ProfileMenu.values()[Network.getResponseEnumIntOf(request)];
+            Response.ProfileMenu response = (Response.ProfileMenu) Network.getResponseObjOf(request);
+            //        Response.ProfileMenu response = UserController.changePicture(file);
+            if (!response.equals(Response.ProfileMenu.SUCCESSFUL_PICTURE_CHANGE)) {
+                showAlert(alert, response.getString());
+            } else {
+                changeMenu(PROFILE_MENU);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

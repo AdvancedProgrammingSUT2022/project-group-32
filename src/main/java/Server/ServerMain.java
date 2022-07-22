@@ -52,7 +52,7 @@ public class ServerMain {
                             } else if (action.equals(REMOVE_USER.code)) {
                                 sendEnumRequest(UserController.removeUser(), objectOutputStream);
                             } else if (action.equals(CHANGE_PROFILE_PICTURE.code)) {
-//                                sendEnumRequest(UserController.changePicture((byte[]) request.getObj()), objectOutputStream);
+                                sendEnumRequest(UserController.changePicture((byte[]) request.getObj()), objectOutputStream);
                             } else if (action.equals(GET_THIS_USER.code)) {
                                 sendRequest(new Request("sent this User", null, UserController.getCurrentUser()), objectOutputStream);
                             } else if (action.equals(CHANGE_PASSWORD.code)) {
@@ -80,7 +80,7 @@ public class ServerMain {
                                 GameController.newGame((ArrayList<User>) request.getObj(), Integer.parseInt(params.get("mapSize")));
                                 sendRequest(new Request("game started", null), objectOutputStream);
                             } else if (action.equals(PANEL_COMMAND.code)) {
-                                InGameCommandHandler.handleCommand(action);
+                                InGameCommandHandler.handleCommand((String) request.getObj());
                                 sendRequest(new Request("response to panel action", null), objectOutputStream);
                             } else if (action.equals(PASS_TURN.code)) {
                                 PlayerController.nextTurn();

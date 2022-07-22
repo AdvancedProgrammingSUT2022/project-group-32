@@ -1,6 +1,7 @@
 package View;
 
 import Model.Request;
+import enums.RequestActions;
 
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -75,4 +76,10 @@ public class Network {
     public static Object getResponseObjOf(String regMessage, HashMap<String, String> params) {
         return sendRequest(regMessage, params).getObj();
     }
+
+    public static Object getResponseObjOfPanelCommand(String command) {
+        Request req = new Request(RequestActions.PANEL_COMMAND.code, null, command);
+        return getResponseObjOf(req);
+    }
+
 }

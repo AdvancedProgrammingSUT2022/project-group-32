@@ -7,9 +7,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import enums.Responses.Response;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -149,10 +149,17 @@ public class UserController {
         return Response.ProfileMenu.SUCCESSFUL_NICKNAME_CHANGE;
     }
 
-    public static Response.ProfileMenu changePicture(File file){
-        User currentUser = getCurrentUser();
-        currentUser.setPhotoAddress(file.getAbsolutePath());
-        saveUsers();
+    public static Response.ProfileMenu changePicture(byte[] bytes) {
+        try {
+            User currentUser = getCurrentUser();
+            String absPath = "src/main/resources/images/profilePics/" + currentUser.getUsername() + ".jpg";
+            ObjectInputStream ois = new ObjectInputStream(bytes);
+//            fw.write(file.get);
+            currentUser.setPhotoAddress(absPath);
+            saveUsers();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return Response.ProfileMenu.SUCCESSFUL_PICTURE_CHANGE;
     }
 

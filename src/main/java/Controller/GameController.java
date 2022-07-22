@@ -204,7 +204,11 @@ public class GameController {
         for (Player player : game.getPlayers()) {
             User user = player.getUser();
             user.setLastUpdate(getCurrentTime());
-            user.setScore(player.getScore());
+            if (user.getBestScore() < player.getScore()) {
+
+                user.setBestScore(player.getScore());
+                user.setBestScoreTime(getCurrentTime());
+            }
         }
         UserController.saveUsers();
         // TODO: 6/7/2022 show a game ended popup or something

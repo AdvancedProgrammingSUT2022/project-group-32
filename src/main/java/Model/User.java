@@ -16,15 +16,25 @@ public class User implements Serializable {
     private String nickname;
     private String photoAddress;
     private String lastUpdate;
-    private int score;
+    private int bestScore;
+    private String bestScoreTime;
 
     public User(String username, String password, String nickname) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
         this.photoAddress = null;
+        this.bestScoreTime = "123-111-65";
         this.lastUpdate = java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-        this.score = 0;
+        this.bestScore = 0;
+    }
+
+    public String getBestScoreTime() {
+        return bestScoreTime;
+    }
+
+    public void setBestScoreTime(String bestScoreTime) {
+        this.bestScoreTime = bestScoreTime;
     }
 
     public String getUsername() {
@@ -51,12 +61,12 @@ public class User implements Serializable {
         this.nickname = nickname;
     }
 
-    public int getScore() {
-        return score;
+    public int getBestScore() {
+        return bestScore;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void setBestScore(int bestScore) {
+        this.bestScore = bestScore;
     }
 
     public String getPhotoAddress() {
@@ -86,7 +96,7 @@ public class User implements Serializable {
     public static class compareByScore implements Comparator<User> {
         @Override
         public int compare(User o1, User o2) {
-            if(o1.getScore() != o2.getScore()) return o1.getScore() - o2.getScore();
+            if (o1.getBestScore() != o2.getBestScore()) return o1.getBestScore() - o2.getBestScore();
             return o1.getLastUpdate().compareTo(o2.getLastUpdate());
         }
     }
