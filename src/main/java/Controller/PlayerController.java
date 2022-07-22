@@ -173,6 +173,7 @@ public class PlayerController {
             map.setTile(tile.getRow(), tile.getColumn(), new Tile(tile));
             map.getTile(tile.getRow(), tile.getColumn()).setFogState(FogState.VISIBLE);
         }
+        System.out.println("--------->PlayerController.updateFieldOfView");
     }
 
     public static void updateFieldOfView() {
