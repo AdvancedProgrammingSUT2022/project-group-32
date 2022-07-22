@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
+import java.util.Objects;
 
 public class User implements Serializable {
     public static final long serialVersionUID = 3L;
@@ -129,5 +130,18 @@ public class User implements Serializable {
             if (o1.getBestScore() != o2.getBestScore()) return o1.getBestScore() - o2.getBestScore();
             return o1.getLastUpdate().compareTo(o2.getLastUpdate());
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(nickname, user.nickname) && Objects.equals(photoAddress, user.photoAddress) && Objects.equals(lastUpdate, user.lastUpdate) && Objects.equals(bestScore, user.bestScore) && Objects.equals(bestScoreTime, user.bestScoreTime) && Objects.equals(onlineStatus, user.onlineStatus);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, password, nickname, photoAddress, lastUpdate, bestScore, bestScoreTime, onlineStatus);
     }
 }

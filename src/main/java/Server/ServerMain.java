@@ -17,7 +17,6 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 import static enums.RequestActions.*;
 
@@ -156,11 +155,10 @@ public class ServerMain {
 
     private static synchronized void sendRequest(Request request, ObjectOutputStream objectOutputStream) {
         try {
-            if (!request.action.equals(GET_INVITATIONS.code)) {
-                System.out.println("Response:  action:" + request.action + " params: " + request.params);
-            }
+            System.out.println("Response:  action:" + request.action + " params: " + request.params + " user: " + getThisThreadUser().getNickname());
             objectOutputStream.writeObject(request);
             objectOutputStream.flush();
+            objectOutputStream.reset();
         } catch (Exception e) {
             e.printStackTrace();
         }

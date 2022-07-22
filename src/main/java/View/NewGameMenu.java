@@ -129,6 +129,7 @@ public class NewGameMenu extends Menu {
                 Boolean ok = (Boolean) Network.getResponseObjOf(RequestActions.ARE_INVITATIONS_ACCEPTED.code, null);
                 if (ok) {
                     Platform.runLater(() -> {
+                        invitationThread.interrupt();
                         newGame(invitationsUsernames, mapSizeInteger);
                     });
                     break;
@@ -238,7 +239,7 @@ public class NewGameMenu extends Menu {
         invitationThread = new Thread(() -> {
             while (true) {
                 ArrayList<User> users = (ArrayList<User>) Network.getResponseObjOf(RequestActions.GET_INVITATIONS.code, null);
-                System.out.println(users);
+                System.out.println(users + " " + isAcceptedInvs);
                 if (isAcceptedInvs) {
                     break;
                 }
@@ -256,7 +257,7 @@ public class NewGameMenu extends Menu {
                 }
                 try {
                     Thread.sleep(2000);
-                } catch (InterruptedException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -283,7 +284,8 @@ public class NewGameMenu extends Menu {
      * @return true if newGame is created, false if not
      */
     public static boolean newGame(ArrayList<String> usernames, int mapSize) {
-        invitationThread.interrupt();
+        isAcceptedInvs = true;
+
         if (usernames == null) {
             return false;
         }

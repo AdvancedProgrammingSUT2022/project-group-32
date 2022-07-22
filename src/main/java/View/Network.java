@@ -41,9 +41,12 @@ public class Network {
         try {
             objectOutputStream.writeObject(request);
             objectOutputStream.flush();
+            objectOutputStream.reset();
             Request response = (Request) objectInputStream.readObject();
+            System.out.println("Server's Response: " + response.toString());
             return response;
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }

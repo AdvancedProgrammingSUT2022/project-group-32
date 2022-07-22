@@ -13,6 +13,7 @@ public class Request implements Serializable {
     public Request(String action, HashMap<String, String> params) {
         this.action = action;
         this.params = params;
+        this.obj = null;
     }
 
     public Request(String action, HashMap<String, String> params, Object obj) {
@@ -27,7 +28,7 @@ public class Request implements Serializable {
 
     public void setObj(Object obj) {
         this.obj = obj;
-        this.objClass = obj.getClass();
+//        this.objClass = obj.getClass();
     }
 
     public Class<?> getObjClass() {
