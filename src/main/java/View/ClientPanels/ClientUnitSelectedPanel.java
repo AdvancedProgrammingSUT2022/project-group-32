@@ -56,7 +56,9 @@ public class ClientUnitSelectedPanel extends GameView {
         if(response != InGameResponses.Unit.MOVETO_SUCCESSFUL){
             showAlert(invalidAlert, response.getString());
         }
-    }
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        System.err.println(response.getString());
+        show(stage);    }
 
     public static void foundCity() {/*
         ArrayList<String> parameters = CLI.getParameters(command, "cn");

@@ -96,6 +96,7 @@ public class UnitController {
             unit.placeIn(nextTile, map);
             if(nextTile.getRuin() != null) MapController.collectRuin(unit);
             PlayerController.updateFieldOfView();
+            System.err.println(nextTile.getRow() + "," + nextTile.getColumn() + "has a unit moving");
         }
         if (unit.getDestination() == unit.getTile()) {
             unit.setOrderType(OrderType.AWAKE);

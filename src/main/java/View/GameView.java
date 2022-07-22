@@ -4,10 +4,12 @@ package View;
 import Controller.GameController;
 import Model.*;
 import Model.Units.Unit;
+import View.ClientPanels.ClientCitySelectedPanel;
 import View.ClientPanels.ClientUnitSelectedPanel;
 import View.Panels.*;
 import View.PastViews.MapMaker;
 import enums.RequestActions;
+import enums.Types.CombatType;
 import enums.Types.FogState;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -37,6 +39,7 @@ public class GameView extends Menu {
     protected static VBox economyPane;
 
     protected static VBox unitSelectedPane;
+    protected static VBox citySelectedPane;
 
     protected static Alert infoAlert;
     protected static Alert invalidAlert;
@@ -155,14 +158,12 @@ public class GameView extends Menu {
                     selectedColumn = thisColumn;
                     selectedRow = thisRow;
 
-                    System.out.println(selectedRow + " " + selectedColumn);
+                    System.out.println(selectedRow + " " + selectedColumn + " is clicked");
                     map.requestFocus();
                 });
                 button.setFocusTraversable(false);
                 button.setTooltip(getToolTip(gameMap.getTile(row, column)));
                 map.getChildren().add(button);
-
-                System.err.println(row + "," + column);
             }
         }
         map.setOnKeyPressed(e -> moveMap(e));
@@ -189,7 +190,7 @@ public class GameView extends Menu {
             //notificationPane.setVisible(true);
             //demographicsPane.setVisible(true);
             //economyPane.setVisible(true);
-            pane.getChildren().addAll(topPane, notificationPane, militaryPane, economyPane, unitSelectedPane);
+            pane.getChildren().addAll(topPane, notificationPane, militaryPane, economyPane, unitSelectedPane, citySelectedPane);
             waitiingLable.setVisible(false);
             pane.getChildren().add(waitiingLable);
             Platform.runLater(() -> map.requestFocus());
@@ -205,6 +206,7 @@ public class GameView extends Menu {
 
     public static void initElements() {
         unitSelectedPane = new VBox();
+        citySelectedPane = new VBox();
         initTopPane();
         initNotificationPane();
         initMilitaryPane();
@@ -405,18 +407,92 @@ public class GameView extends Menu {
         unitSelectedPane.getChildren().addAll(info, move, buildCity, sleep, alert, fortify, heal, wake, delete, buildImprovement, buildRoad, removeForest, removeJungle, removeMarsh, removeRoad, pillage, repair, setUp, garrison, attack);
     }
 
+    private static void initCitySelectedPane() {
+        citySelectedPane = new VBox();
+        citySelectedPane.setVisible(false);
+        citySelectedPane.setAlignment(Pos.CENTER);
+        citySelectedPane.setLayoutX(WIDTH - RIGHT_WIDTH);
+        citySelectedPane.setMinWidth(RIGHT_WIDTH);
+        citySelectedPane.setMinHeight(HEIGHT);
+        citySelectedPane.setStyle("-fx-background-color: rgba(33,43,66,0.5); -fx-background-size: 100, 100;");
+        Label header = new Label("CITY PANEL");
+        header.setTextFill(Color.WHITE);
+        header.setFont(Font.font(22));
+        header.setAlignment(Pos.CENTER);
+
+        Label info = new Label(ClientCitySelectedPanel.showBanner());
+        info.setStyle("-fx-font-family: 'monospaced'");
+
+        Button move = new Button("Move Unit");
+        move.setOnMouseClicked(e -> ClientUnitSelectedPanel.moveTo());
+        move.setFocusTraversable(false);
+        Button buildCity = new Button("Build City");
+        buildCity.setOnMouseClicked(e -> ClientUnitSelectedPanel.foundCity());
+        buildCity.setFocusTraversable(false);
+        Button sleep = new Button("Sleep");
+        sleep.setOnMouseClicked(e -> ClientUnitSelectedPanel.sleep());
+        sleep.setFocusTraversable(false);
+        Button alert = new Button("Alert");
+        alert.setOnMouseClicked(e -> ClientUnitSelectedPanel.alert());
+        alert.setFocusTraversable(false);
+        Button fortify = new Button("Fortify");
+        fortify.setOnMouseClicked(e -> ClientUnitSelectedPanel.fortify());
+        fortify.setFocusTraversable(false);
+        Button heal = new Button("Heal");
+        heal.setOnMouseClicked(e -> ClientUnitSelectedPanel.heal());
+        heal.setFocusTraversable(false);
+        Button wake = new Button("Wake Up");
+        wake.setOnMouseClicked(e -> ClientUnitSelectedPanel.wake());
+        wake.setFocusTraversable(false);
+        Button delete = new Button("Delete");
+        delete.setOnMouseClicked(e -> ClientUnitSelectedPanel.delete());
+        delete.setFocusTraversable(false);
+        Button buildImprovement = new Button("Build Imporvement");
+        buildImprovement.setOnMouseClicked(e -> ClientUnitSelectedPanel.buildImprovement());
+        buildImprovement.setFocusTraversable(false);
+        Button buildRoad = new Button("Build Road");
+        buildRoad.setOnMouseClicked(e -> ClientUnitSelectedPanel.buildRoad());
+        buildRoad.setFocusTraversable(false);
+        Button removeForest = new Button("Remove Forest");
+        removeForest.setOnMouseClicked(e -> ClientUnitSelectedPanel.removeForest());
+        removeForest.setFocusTraversable(false);
+        Button removeJungle = new Button("Remove Jungle");
+        removeJungle.setOnMouseClicked(e -> ClientUnitSelectedPanel.removeJungle());
+        removeJungle.setFocusTraversable(false);
+        Button removeMarsh = new Button("Remove Marsh");
+        removeMarsh.setOnMouseClicked(e -> ClientUnitSelectedPanel.removeMarsh());
+        removeMarsh.setFocusTraversable(false);
+        Button removeRoad = new Button("Remove Road");
+        removeRoad.setOnMouseClicked(e -> ClientUnitSelectedPanel.removeRoute());
+        removeRoad.setFocusTraversable(false);
+        Button pillage = new Button("Pillage");
+        pillage.setOnMouseClicked(e -> ClientUnitSelectedPanel.pillage());
+        pillage.setFocusTraversable(false);
+        Button repair = new Button("Repair");
+        repair.setOnMouseClicked(e -> ClientUnitSelectedPanel.repair());
+        repair.setFocusTraversable(false);
+        Button setUp = new Button("Set Up");
+        setUp.setOnMouseClicked(e -> ClientUnitSelectedPanel.setup());
+        setUp.setFocusTraversable(false);
+        Button garrison = new Button("Garrison");
+        garrison.setOnMouseClicked(e -> ClientUnitSelectedPanel.garrison());
+        garrison.setFocusTraversable(false);
+        Button attack = new Button("Attack");
+        attack.setOnMouseClicked(e -> ClientUnitSelectedPanel.attack());
+        attack.setFocusTraversable(false);
+
+        unitSelectedPane.getChildren().addAll(info, move, buildCity, sleep, alert, fortify, heal, wake, delete, buildImprovement, buildRoad, removeForest, removeJungle, removeMarsh, removeRoad, pillage, repair, setUp, garrison, attack);
+    }
+
     /////////////////////
 
     public static void selectTile(int row, int column) {
         if (selectedRow != row || selectedColumn != column) {
             return;
         }
-        ArrayList<User> users = ((ArrayList<User>) Network.getResponseObjOf(RequestActions.GET_USERS.code, null));
+        unitSelectedPane.setVisible(false);
+        citySelectedPane.setVisible(false);
         Tile tile = ((Map) Network.getResponseObjOf(RequestActions.GET_THIS_PLAYERS_MAP.code, null)).getTile(row, column);
-        ArrayList<User> users2 = ((ArrayList<User>) Network.getResponseObjOf(RequestActions.GET_USERS.code, null));
-        if(tile.getUnit() != null){
-            System.err.println(tile.getUnit().getOrderType());
-        }
         if (tile.getCity() != null) {
             if (selectedCity == null){
                 selectedCity = tile.getCity();
@@ -424,7 +500,7 @@ public class GameView extends Menu {
             else selectedCity = null;
         }
         if (selectedCity == null && tile.getUnit() != null) {
-            if (selectedUnit != tile.getUnit()){
+            if (selectedUnit == null || selectedUnit.getCombatType() != CombatType.CIVILIAN){
                 selectedUnit = tile.getUnit();
                 root.getChildren().remove(unitSelectedPane);
                 initUnitSelectedPane();
@@ -435,15 +511,12 @@ public class GameView extends Menu {
             else selectedUnit = null;
         }
         if (selectedUnit == null && selectedCity == null && tile.getTroop() != null) {
-            if (selectedUnit != tile.getTroop()){
-                selectedUnit = tile.getTroop();
-                root.getChildren().remove(unitSelectedPane);
-                initUnitSelectedPane();
-                unitSelectedPane.setVisible(true);
-                root.getChildren().add(unitSelectedPane);
-                Network.getResponseObjOfPanelCommand("select troop -l " + row + " " + column);
-            }
-            else selectedUnit = null;
+            selectedUnit = tile.getTroop();
+            root.getChildren().remove(unitSelectedPane);
+            initUnitSelectedPane();
+            unitSelectedPane.setVisible(true);
+            root.getChildren().add(unitSelectedPane);
+            Network.getResponseObjOfPanelCommand("select troop -l " + row + " " + column);
         }
         System.out.println(selectedRow + "," + selectedColumn);
         System.out.println(selectedUnit);

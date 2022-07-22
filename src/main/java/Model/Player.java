@@ -326,6 +326,9 @@ public class Player implements Serializable {
     }
 
     public City getCapital() {
+        if(capital == null && !cities.isEmpty()) {
+            capital = cities.get(0);
+        }
         return capital;
     }
 

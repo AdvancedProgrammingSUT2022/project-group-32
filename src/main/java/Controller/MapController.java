@@ -166,7 +166,7 @@ public class MapController {
         Player player = unit.getOwner();
         Tile tile = unit.getTile();
         Ruin ruin = tile.getRuin();
-        player.getCapital().addPopulation(ruin.getPopulation());
+        if(player.getCapital() != null) player.getCapital().addPopulation(ruin.getPopulation());
         player.setGold(player.getGold() + ruin.getGold());
         if(ruin.getTechnology() != null){
             Technology technology = new Technology(ruin.getTechnology());
