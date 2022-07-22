@@ -73,12 +73,17 @@ public class User implements Serializable {
         return photoAddress;
     }
 
+
     public void setPhotoAddress(String photoAddress) {
         this.photoAddress = photoAddress;
     }
 
-    public ImageView getImage(){
-        if(photoAddress == null){
+    public void setPhotoToDeafault() {
+        this.photoAddress = "src/main/resources/images/Default_Pic.png";
+    }
+
+    public ImageView getImage() {
+        if (photoAddress == null) {
             return new ImageView(new Image(getClass().getResource("/images/Default_Pic.png").toExternalForm()));
         } else {
             return new ImageView(new Image(new File(photoAddress).toURI().toString()));

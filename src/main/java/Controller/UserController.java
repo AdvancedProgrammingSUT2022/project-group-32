@@ -6,12 +6,17 @@ import View.PastViews.Menu;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import enums.Responses.Response;
+import net.bytebuddy.utility.RandomString;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -148,11 +153,23 @@ public class UserController {
         return Response.ProfileMenu.SUCCESSFUL_NICKNAME_CHANGE;
     }
 
-    public static Response.ProfileMenu changePicture(byte[] bytes) {
+    public static Response.ProfileMenu changePicture(ArrayList<Byte> bytes) {
         try {
             User currentUser = getCurrentUser();
-            String absPath = "src/main/resources/images/profilePics/" + currentUser.getUsername() + ".jpg";
-//            ObjectInputStream ois = new ObjectInputStream(bytes);
+            String absPath = "src/main/resources/images/profilePics/" + currentUser.getUsername() + "_" + RandomString.make(5) + ".png";
+            File f = new File(absPath);
+            f.getParentFile().mkdirs();
+            f.createNewFile();
+            FileOutputStream oos = new FileOutputStream(f);
+            byte[] raw = new byte[bytes.size()];
+            for (int i = 0; i < bytes.size(); i++) {
+                raw[i] = bytes.get(i);
+            }
+            oos.write(raw);
+//            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(absPath));
+//            oos.writeObject(bytes);
+            System.out.println(bytes.size());
+            oos.flush();
 //            fw.write(file.get);
             currentUser.setPhotoAddress(absPath);
             saveUsers();
@@ -198,4 +215,37 @@ public class UserController {
         users.add(new User(username, password, nickname));
     }
 
+    public static ArrayList<Byte> getProfilePicOf(User thisThreadUser) {
+        try {
+            String path = thisThreadUser.getPhotoAddress();
+            File f = new File(path);
+            byte[] rawBytes = new byte[0];
+            rawBytes = Files.readAllBytes(f.toPath());
+            Byte[] bytes = new Byte[rawBytes.length];
+            for (int i = 0; i < rawBytes.length; i++) {
+                bytes[i] = rawBytes[i];
+            }
+            ArrayList<Byte> data = new ArrayList<Byte>(Arrays.asList(bytes));
+            return data;
+        } catch (NoSuchFileException e) {
+            thisThreadUser.setPhotoToDeafault();
+            String path = thisThreadUser.getPhotoAddress();
+            File f = new File(path);
+            byte[] rawBytes = new byte[0];
+            try {
+                rawBytes = Files.readAllBytes(f.toPath());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            Byte[] bytes = new Byte[rawBytes.length];
+            for (int i = 0; i < rawBytes.length; i++) {
+                bytes[i] = rawBytes[i];
+            }
+            ArrayList<Byte> data = new ArrayList<Byte>(Arrays.asList(bytes));
+            return data;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
