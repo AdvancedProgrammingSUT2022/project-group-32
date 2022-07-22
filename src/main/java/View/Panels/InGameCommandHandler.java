@@ -39,7 +39,9 @@ public class InGameCommandHandler {
     protected static PanelType currentPanel = null;
 
     public static void handleCommand(String command) {
-        if (command.startsWith("select unit")) {
+        if (command.startsWith("move map")) {
+            moveMap(command);
+        } else if (command.startsWith("select unit")) {
             selectUnit(command);
         } else if (command.startsWith("select troop")) {
             selectTroop(command);
