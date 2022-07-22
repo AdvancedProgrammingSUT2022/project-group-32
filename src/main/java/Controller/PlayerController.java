@@ -177,7 +177,7 @@ public class PlayerController {
     }
 
     public static void updateFieldOfView() {
-        Player player = GameController.getGame().getCurrentPlayer();
+        Player player = GameController.getCurrentPlayer();
         updateFieldOfView(player);
     }
 

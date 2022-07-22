@@ -136,6 +136,7 @@ public class UnitController {
             return InGameResponses.Unit.UNIT_IS_TIRED;
         }
         unit.setOrderType(OrderType.ASLEEP);
+        System.err.println(unit.getRow() + "," + unit.getColumn() + " sleep is called in unitController");
         return InGameResponses.Unit.SLEEP_SUCCESSFUL;
     }
 
@@ -154,6 +155,7 @@ public class UnitController {
             return InGameResponses.Unit.UNIT_CANT_FORTIFY;
         }
         unit.setOrderType(OrderType.ALERT);
+        System.err.println(unit.getRow() + "," + unit.getColumn() + " alert is called in unitController");
         return InGameResponses.Unit.ALERT_SUCCESSFUL;
     }
 

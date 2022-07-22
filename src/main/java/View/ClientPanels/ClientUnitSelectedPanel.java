@@ -16,8 +16,6 @@ import java.util.ArrayList;
 
 public class ClientUnitSelectedPanel extends GameView {
 
-    // TODO: 7/22/2022 This whole file needs to be duplicated
-
     public static void run(String command) {
         /*if (command.startsWith("move unit")) moveTo(command);
         else if (command.startsWith("back")) GameMenu.currentPanel = null;
@@ -75,11 +73,16 @@ public class ClientUnitSelectedPanel extends GameView {
 
     public static void sleep() {
         InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("sleep"));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        System.err.println(response.getString());
         show(stage);
     }
 
     public static void alert() {
-        System.out.println(UnitController.alert().getString());
+        InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("alert"));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        System.err.println(response.getString());
+        show(stage);
     }
 
     public static void fortify() {
@@ -95,7 +98,10 @@ public class ClientUnitSelectedPanel extends GameView {
     }
 
     public static void delete() {
-        System.out.println(UnitController.delete().getString());
+        InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("unit delete"));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        System.err.println(response.getString());
+        show(stage);
     }
 
     public static void buildImprovement() {/*

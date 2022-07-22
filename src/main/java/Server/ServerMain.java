@@ -3,10 +3,13 @@ package Server;
 import Controller.GameController;
 import Controller.PlayerController;
 import Controller.UserController;
+import Model.Map;
 import Model.Request;
+import Model.Tile;
 import Model.User;
 import View.Panels.InGameCommandHandler;
 import enums.ParameterKeys;
+import net.bytebuddy.utility.RandomString;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -14,6 +17,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import static enums.RequestActions.*;
 
@@ -96,7 +100,15 @@ public class ServerMain {
                             } else if (action.equals(GET_SELECTED_UNIT.code)) {
                                 sendRequest(new Request("send selected troop", null, GameController.getSelectedUnit()), objectOutputStream);
                             } else if (action.equals(GET_THIS_PLAYERS_MAP.code)) {
-                                sendRequest(new Request("this playes map", null, GameController.getCurrentPlayerMap()), objectOutputStream);
+                                Request request1 = new Request("alskdjalsd" + RandomString.make(10), null, GameController.getCurrentPlayerMap());
+                                for (Tile[] tiles : ((Map) request1.getObj()).getTiles()) {
+                                    for (Tile tile : tiles) {
+                                        if(tile.getUnit() != null){
+                                            System.err.println(tile.getRow() + "," + tile.getColumn() + " is " + tile.getUnit().getOrderType());
+                                        }
+                                    }
+                                }
+                                sendRequest(request1, objectOutputStream);
                             } else if (action.equals(SELECT_CITY.code)) {
                                 sendRequest(new Request("select city", null,
                                         GameController.selectCity(Integer.parseInt(params.get("row")), Integer.parseInt(params.get("column")))), objectOutputStream);

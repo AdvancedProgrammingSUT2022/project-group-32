@@ -2,10 +2,7 @@ package View;
 // THIS IS FOR ONLINE PLAYING ...
 
 import Controller.GameController;
-import Model.City;
-import Model.Map;
-import Model.Player;
-import Model.Tile;
+import Model.*;
 import Model.Units.Unit;
 import View.ClientPanels.ClientUnitSelectedPanel;
 import View.Panels.*;
@@ -25,6 +22,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import java.util.ArrayList;
 
 public class GameView extends Menu {
     private final static int RIGHT_WIDTH = 500;
@@ -204,7 +203,7 @@ public class GameView extends Menu {
         }
     }
 
-    private static void initElements() {
+    public static void initElements() {
         unitSelectedPane = new VBox();
         initTopPane();
         initNotificationPane();
@@ -412,7 +411,12 @@ public class GameView extends Menu {
         if (selectedRow != row || selectedColumn != column) {
             return;
         }
-        Tile tile = ((Map) Network.getResponseObjOf(RequestActions.GET_GAME_MAP.code, null)).getTile(row, column);
+        ArrayList<User> users = ((ArrayList<User>) Network.getResponseObjOf(RequestActions.GET_USERS.code, null));
+        Tile tile = ((Map) Network.getResponseObjOf(RequestActions.GET_THIS_PLAYERS_MAP.code, null)).getTile(row, column);
+        ArrayList<User> users2 = ((ArrayList<User>) Network.getResponseObjOf(RequestActions.GET_USERS.code, null));
+        if(tile.getUnit() != null){
+            System.err.println(tile.getUnit().getOrderType());
+        }
         if (tile.getCity() != null) {
             if (selectedCity == null){
                 selectedCity = tile.getCity();
@@ -437,6 +441,7 @@ public class GameView extends Menu {
                 initUnitSelectedPane();
                 unitSelectedPane.setVisible(true);
                 root.getChildren().add(unitSelectedPane);
+                Network.getResponseObjOfPanelCommand("select troop -l " + row + " " + column);
             }
             else selectedUnit = null;
         }

@@ -40,6 +40,7 @@ public class NewGameMenu extends Menu {
     private static VBox invitationPopUp;
     private static Label invitationLabel;
     private static boolean isAcceptedInvs = false;
+    private static Thread invitationThread;
 
     private static final List<Pair<String, Runnable>> menuData = Arrays.asList(
             new Pair<String, Runnable>("S E N D   I N V I T A T I O N S", () -> {
@@ -234,7 +235,7 @@ public class NewGameMenu extends Menu {
     }
 
     public static void show(Stage primaryStage) throws Exception {
-        new Thread(() -> {
+        invitationThread = new Thread(() -> {
             while (true) {
                 ArrayList<User> users = (ArrayList<User>) Network.getResponseObjOf(RequestActions.GET_INVITATIONS.code, null);
                 System.out.println(users);
@@ -260,7 +261,8 @@ public class NewGameMenu extends Menu {
                 }
 
             }
-        }).start();
+        });
+        invitationThread.start();
 
 
         stage = primaryStage;
@@ -281,6 +283,7 @@ public class NewGameMenu extends Menu {
      * @return true if newGame is created, false if not
      */
     public static boolean newGame(ArrayList<String> usernames, int mapSize) {
+        invitationThread.interrupt();
         if (usernames == null) {
             return false;
         }

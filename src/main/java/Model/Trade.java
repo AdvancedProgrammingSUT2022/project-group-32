@@ -1,6 +1,8 @@
 package Model;
 
-public class Trade {
+import java.io.Serializable;
+
+public class Trade implements Serializable {
     private Player player1, player2;
     private int goldGiven, goldTaken;
     private int scienceGiven, scienceTaken;
