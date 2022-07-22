@@ -81,25 +81,48 @@ public class ClientUnitSelectedPanel extends GameView {
     public static void alert() {
         InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("alert"));
         Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        if(response != InGameResponses.Unit.ALERT_SUCCESSFUL){
+            showAlert(invalidAlert, response.getString());
+        }
         System.err.println(response.getString());
         show(stage);
     }
 
     public static void fortify() {
-        System.out.println(UnitController.fortify().getString());
+        InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("fortify"));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        if(response != InGameResponses.Unit.FORTIFY_SUCCESSFUL){
+            showAlert(invalidAlert, response.getString());
+        }
+        System.err.println(response.getString());
+        show(stage);
     }
 
     public static void heal() {
-        System.out.println(UnitController.heal().getString());
+        InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("heal"));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        if(response != InGameResponses.Unit.HEAL_SUCCESSFUL){
+            showAlert(invalidAlert, response.getString());
+        }
+        System.err.println(response.getString());
+        show(stage);
     }
 
     public static void wake() {
-        System.out.println(UnitController.wake().getString());
-    }
+        InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("wake"));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        if(response != InGameResponses.Unit.WAKE_SUCCESSFUL){
+            showAlert(invalidAlert, response.getString());
+        }
+        System.err.println(response.getString());
+        show(stage);    }
 
     public static void delete() {
         InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("unit delete"));
         Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        if(response != InGameResponses.Unit.DELETE_SUCCESSFUL){
+            showAlert(invalidAlert, response.getString());
+        }
         System.err.println(response.getString());
         show(stage);
     }
@@ -123,35 +146,83 @@ public class ClientUnitSelectedPanel extends GameView {
     */}
 
     public static void removeForest() {
-        System.out.println(UnitController.removeForest().getString());
+        InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("remove forest"));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        if(response != InGameResponses.Unit.REMOVE_SUCCESSFUL){
+            showAlert(invalidAlert, response.getString());
+        }
+        System.err.println(response.getString());
+        show(stage);
     }
 
     public static void removeJungle() {
-        System.out.println(UnitController.removeJungle().getString());
+        InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("remove jungle"));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        if(response != InGameResponses.Unit.REMOVE_SUCCESSFUL){
+            showAlert(invalidAlert, response.getString());
+        }
+        System.err.println(response.getString());
+        show(stage);
     }
 
     public static void removeMarsh() {
-        System.out.println(UnitController.removeMarsh().getString());
+        InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("remove jungle"));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        if(response != InGameResponses.Unit.REMOVE_SUCCESSFUL){
+            showAlert(invalidAlert, response.getString());
+        }
+        System.err.println(response.getString());
+        show(stage);
     }
 
     public static void removeRoute() {
-        System.out.println(UnitController.removeRoute().getString());
+        InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("remove route"));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        if(response != InGameResponses.Unit.REMOVE_SUCCESSFUL){
+            showAlert(invalidAlert, response.getString());
+        }
+        System.err.println(response.getString());
+        show(stage);
     }
 
     public static void pillage() {
-        System.out.println(UnitController.pillage().getString());
+        InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("pillage"));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        if(response != InGameResponses.Unit.PILLAGE_SUCCESSFUL){
+            showAlert(invalidAlert, response.getString());
+        }
+        System.err.println(response.getString());
+        show(stage);
     }
 
     public static void repair() {
-        System.out.println(UnitController.repair().getString());
+        InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("repair"));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        if(response != InGameResponses.Unit.REPAIR_SUCCESSFUL){
+            showAlert(invalidAlert, response.getString());
+        }
+        System.err.println(response.getString());
+        show(stage);
     }
 
     public static void setup() {
-        System.out.println(UnitController.setup().getString());
+        InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("set up"));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        if(response != InGameResponses.Unit.SETUP_SUCCESSFUL){
+            showAlert(invalidAlert, response.getString());
+        }
+        System.err.println(response.getString());
+        show(stage);
     }
 
     public static void garrison() {
-        System.out.println(UnitController.garrison().getString());
+        InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("garrison"));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        if(response != InGameResponses.Unit.GARRISON_SUCCESSFUL){
+            showAlert(invalidAlert, response.getString());
+        }
+        System.err.println(response.getString());
+        show(stage);
     }
 
     public static void attack() {/*
