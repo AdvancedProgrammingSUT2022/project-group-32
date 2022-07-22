@@ -26,7 +26,10 @@ public enum RequestActions {
     SELECT_CITY("select-city"),
     SELECT_UNIT("select-unit"),
     SELECT_TROOP("select_troop"),
-    GET_THIS_PLAYERS_MAP("get-this_players_map"), GET_USERS_PROFILE_PIC("getusersprofilepic"), GET_ONLINES("geto Onlines");
+    GET_THIS_PLAYERS_MAP("get-this_players_map"),
+    GET_USERS_PROFILE_PIC("getusersprofilepic"),
+    GET_ONLINES("geto Onlines"),
+    UPDATE_FIELD_OF_VIEW("update_fieldOfView");
 
 
     public final String code;

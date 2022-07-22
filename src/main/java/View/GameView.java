@@ -7,6 +7,7 @@ import Model.Map;
 import Model.Player;
 import Model.Tile;
 import Model.Units.Unit;
+import View.ClientPanels.ClientUnitSelectedPanel;
 import View.Panels.*;
 import View.PastViews.MapMaker;
 import enums.RequestActions;
@@ -185,7 +186,7 @@ public class GameView extends Menu {
             // initing panes
             initElements();
 
-            //militaryPane.setVisible(true);
+            militaryPane.setVisible(true);
             //notificationPane.setVisible(true);
             //demographicsPane.setVisible(true);
             //economyPane.setVisible(true);
@@ -242,6 +243,7 @@ public class GameView extends Menu {
 
         topPaneLabel = new Label(MapMaker.getColorlessTopBar());
         topPaneLabel.setFont(Font.font(14));
+        topPaneLabel.setStyle("-fx-font-family: 'monospaced'");
         topPaneLabel.setTextFill(Color.WHITE);
         topPane.getChildren().addAll(topPaneLabel);
     }
@@ -262,6 +264,8 @@ public class GameView extends Menu {
         Label content = new Label(NotificationsPanel.showPanel());
         content.setFont(Font.font(14));
         content.setTextFill(Color.WHITE);
+        content.setStyle("-fx-font-family: 'monospaced'");
+
         notificationPane.getChildren().addAll(header, content);
     }
 
@@ -280,6 +284,8 @@ public class GameView extends Menu {
         Label content = new Label(MilitaryPanel.printPanel());
         content.setFont(Font.font(14));
         content.setTextFill(Color.WHITE);
+        content.setStyle("-fx-font-family: 'monospaced'");
+
         militaryPane.getChildren().addAll(header, content);
     }
 
@@ -298,6 +304,8 @@ public class GameView extends Menu {
         Label content = new Label(DemographicsPanel.printPanel());
         content.setFont(Font.font(14));
         content.setTextFill(Color.WHITE);
+        content.setStyle("-fx-font-family: 'monospaced'");
+
         demographicsPane.getChildren().addAll(header, content);
     }
 
@@ -316,6 +324,8 @@ public class GameView extends Menu {
         Label content = new Label(EconomyPanel.printPanel());
         content.setFont(Font.font(14));
         content.setTextFill(Color.WHITE);
+        content.setStyle("-fx-font-family: 'monospaced'");
+
         economyPane.getChildren().addAll(header, content);
     }
 
@@ -332,64 +342,65 @@ public class GameView extends Menu {
         header.setFont(Font.font(22));
         header.setAlignment(Pos.CENTER);
 
-        Label info = new Label(UnitSelectedPanel.showSelected());
+        Label info = new Label(ClientUnitSelectedPanel.showSelected());
+        info.setStyle("-fx-font-family: 'monospaced'");
 
         Button move = new Button("Move Unit");
-        move.setOnMouseClicked(e -> UnitSelectedPanel.moveTo());
+        move.setOnMouseClicked(e -> ClientUnitSelectedPanel.moveTo());
         move.setFocusTraversable(false);
         Button buildCity = new Button("Build City");
-        buildCity.setOnMouseClicked(e -> UnitSelectedPanel.foundCity());
+        buildCity.setOnMouseClicked(e -> ClientUnitSelectedPanel.foundCity());
         buildCity.setFocusTraversable(false);
         Button sleep = new Button("Sleep");
-        sleep.setOnMouseClicked(e -> UnitSelectedPanel.sleep());
+        sleep.setOnMouseClicked(e -> ClientUnitSelectedPanel.sleep());
         sleep.setFocusTraversable(false);
         Button alert = new Button("Alert");
-        alert.setOnMouseClicked(e -> UnitSelectedPanel.alert());
+        alert.setOnMouseClicked(e -> ClientUnitSelectedPanel.alert());
         alert.setFocusTraversable(false);
         Button fortify = new Button("Fortify");
-        fortify.setOnMouseClicked(e -> UnitSelectedPanel.fortify());
+        fortify.setOnMouseClicked(e -> ClientUnitSelectedPanel.fortify());
         fortify.setFocusTraversable(false);
         Button heal = new Button("Heal");
-        heal.setOnMouseClicked(e -> UnitSelectedPanel.heal());
+        heal.setOnMouseClicked(e -> ClientUnitSelectedPanel.heal());
         heal.setFocusTraversable(false);
         Button wake = new Button("Wake Up");
-        wake.setOnMouseClicked(e -> UnitSelectedPanel.wake());
+        wake.setOnMouseClicked(e -> ClientUnitSelectedPanel.wake());
         wake.setFocusTraversable(false);
         Button delete = new Button("Delete");
-        delete.setOnMouseClicked(e -> UnitSelectedPanel.delete());
+        delete.setOnMouseClicked(e -> ClientUnitSelectedPanel.delete());
         delete.setFocusTraversable(false);
         Button buildImprovement = new Button("Build Imporvement");
-        buildImprovement.setOnMouseClicked(e -> UnitSelectedPanel.buildImprovement());
+        buildImprovement.setOnMouseClicked(e -> ClientUnitSelectedPanel.buildImprovement());
         buildImprovement.setFocusTraversable(false);
         Button buildRoad = new Button("Build Road");
-        buildRoad.setOnMouseClicked(e -> UnitSelectedPanel.buildRoad());
+        buildRoad.setOnMouseClicked(e -> ClientUnitSelectedPanel.buildRoad());
         buildRoad.setFocusTraversable(false);
         Button removeForest = new Button("Remove Forest");
-        removeForest.setOnMouseClicked(e -> UnitSelectedPanel.removeForest());
+        removeForest.setOnMouseClicked(e -> ClientUnitSelectedPanel.removeForest());
         removeForest.setFocusTraversable(false);
         Button removeJungle = new Button("Remove Jungle");
-        removeJungle.setOnMouseClicked(e -> UnitSelectedPanel.removeJungle());
+        removeJungle.setOnMouseClicked(e -> ClientUnitSelectedPanel.removeJungle());
         removeJungle.setFocusTraversable(false);
         Button removeMarsh = new Button("Remove Marsh");
-        removeMarsh.setOnMouseClicked(e -> UnitSelectedPanel.removeMarsh());
+        removeMarsh.setOnMouseClicked(e -> ClientUnitSelectedPanel.removeMarsh());
         removeMarsh.setFocusTraversable(false);
         Button removeRoad = new Button("Remove Road");
-        removeRoad.setOnMouseClicked(e -> UnitSelectedPanel.removeRoute());
+        removeRoad.setOnMouseClicked(e -> ClientUnitSelectedPanel.removeRoute());
         removeRoad.setFocusTraversable(false);
         Button pillage = new Button("Pillage");
-        pillage.setOnMouseClicked(e -> UnitSelectedPanel.pillage());
+        pillage.setOnMouseClicked(e -> ClientUnitSelectedPanel.pillage());
         pillage.setFocusTraversable(false);
         Button repair = new Button("Repair");
-        repair.setOnMouseClicked(e -> UnitSelectedPanel.repair());
+        repair.setOnMouseClicked(e -> ClientUnitSelectedPanel.repair());
         repair.setFocusTraversable(false);
         Button setUp = new Button("Set Up");
-        setUp.setOnMouseClicked(e -> UnitSelectedPanel.setup());
+        setUp.setOnMouseClicked(e -> ClientUnitSelectedPanel.setup());
         setUp.setFocusTraversable(false);
         Button garrison = new Button("Garrison");
-        garrison.setOnMouseClicked(e -> UnitSelectedPanel.garrison());
+        garrison.setOnMouseClicked(e -> ClientUnitSelectedPanel.garrison());
         garrison.setFocusTraversable(false);
         Button attack = new Button("Attack");
-        attack.setOnMouseClicked(e -> UnitSelectedPanel.attack());
+        attack.setOnMouseClicked(e -> ClientUnitSelectedPanel.attack());
         attack.setFocusTraversable(false);
 
         unitSelectedPane.getChildren().addAll(info, move, buildCity, sleep, alert, fortify, heal, wake, delete, buildImprovement, buildRoad, removeForest, removeJungle, removeMarsh, removeRoad, pillage, repair, setUp, garrison, attack);
@@ -415,6 +426,7 @@ public class GameView extends Menu {
                 initUnitSelectedPane();
                 unitSelectedPane.setVisible(true);
                 root.getChildren().add(unitSelectedPane);
+                Network.getResponseObjOfPanelCommand("select unit -l " + row + " " + column);
             }
             else selectedUnit = null;
         }

@@ -92,7 +92,7 @@ public class ServerMain {
                                 ArrayList<User> users = UserController.getUsers();
                                 sendRequest(new Request("send Users", null, users), objectOutputStream);
                             } else if (action.equals(GET_SELECTED_CITY.code)) {
-                                sendRequest(new Request("send selected cuty", null, GameController.getSelectedCity()), objectOutputStream);
+                                sendRequest(new Request("send selected city", null, GameController.getSelectedCity()), objectOutputStream);
                             } else if (action.equals(GET_SELECTED_UNIT.code)) {
                                 sendRequest(new Request("send selected troop", null, GameController.getSelectedUnit()), objectOutputStream);
                             } else if (action.equals(GET_THIS_PLAYERS_MAP.code)) {
@@ -110,6 +110,9 @@ public class ServerMain {
                                 sendRequest(new Request("profile pic", null, UserController.getProfilePicOf(getThisThreadUser())), objectOutputStream);
                             } else if (action.equals(GET_ONLINES.code)) {
                                 sendRequest(new Request("onlines", null, threadIDUser), objectOutputStream);
+                            } else if (action.equals(UPDATE_FIELD_OF_VIEW.code)) {
+                                PlayerController.updateFieldOfView();
+                                sendRequest(new Request("fieldUpdate", null), objectOutputStream);
                             } else {
                                 System.err.println("INVALID COMMAND!!!");
                             }
