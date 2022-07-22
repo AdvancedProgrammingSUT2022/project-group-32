@@ -2,33 +2,43 @@ package View;
 
 import Model.User;
 import enums.RequestActions;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
-
-import static View.Menu.MenuType.PROFILE_MENU;
 
 public class ScoreBoardMenu extends Menu {
     private static Pane root;
     private static VBox menuBox;
     private static Line line;
     private static Alert alert;
+    private static ObservableList<User> data;
+    private static ArrayList<User> users = new ArrayList<>();
+    private static Thread updater;
+    private static TableView<User> table;
     private static final List<Pair<String, Runnable>> menuData = Arrays.asList(
-
-            new Pair<String, Runnable>("B a c k", () -> changeMenu(PROFILE_MENU))
+            new Pair<String, Runnable>("B a c k", () -> {
+                try {
+                    updater.interrupt();
+                } catch (Exception e) {
+                }
+                changeMenu(MenuType.MAIN_MENU);
+            }
+            )
     );
 
     private static Parent createContent() {
@@ -44,15 +54,56 @@ public class ScoreBoardMenu extends Menu {
 
     private static VBox addFields() {
         VBox vBox = new VBox(10);
+        users = (ArrayList<User>) Network.getResponseObjOf(RequestActions.GET_USERS.code, null);
+        users = new ArrayList<>(users.stream().sorted(Comparator.comparing(User::getBestScore).thenComparing(User::getBestScoreTimeForSorting).thenComparing(User::getUsername).reversed()).collect(Collectors.toList()));
+        data = FXCollections.observableArrayList(users);
+        table = new TableView<>();
+        updater = new Thread(() -> {
+            try {
+                while (true) {
+                    users = null;
+                    HashMap<String, String> tada = new HashMap<>();
+                    tada.put("gg", LocalDateTime.now().toString());
+                    users = (ArrayList<User>) Network.getResponseObjOf(RequestActions.GET_USERS.code, tada);
 
-        ArrayList<User> users = (ArrayList<User>) Network.getResponseObjOf(RequestActions.GET_USERS.code, null);
-        users = new ArrayList<>(users.stream().sorted(Comparator.comparing(User::getBestScore).thenComparing(User::getBestScoreTime).thenComparing(User::getUsername).reversed()).collect(Collectors.toList()));
-        for (User user : users) {
-            HBox row = new HBox(user.getImage());
-            System.out.println(user.getNickname() + " " + user.getBestScore() + " " + user.getBestScoreTime());
-            Label thisRow = new Label(user.getNickname() + " " + user.getBestScore() + " " + user.getBestScoreTime());
-            vBox.getChildren().add(thisRow);
-        }
+                    users.forEach(e -> System.out.println(e.getOnlineStatus()));
+                    users = new ArrayList<>(users.stream().sorted(Comparator.comparing(User::getBestScore).thenComparing(User::getBestScoreTimeForSorting).thenComparing(User::getUsername).reversed()).collect(Collectors.toList()));
+                    data = FXCollections.observableArrayList(users);
+
+                    System.out.println("reSending");
+                    table.refresh();
+                    Thread.sleep(2000);
+                }
+            } catch (InterruptedException e) {
+
+            }
+        });
+        updater.start();
+        table.setEditable(false);
+        TableColumn nickCol = new TableColumn("NickName");
+        TableColumn scoreCol = new TableColumn("Score");
+        TableColumn best_timeCol = new TableColumn("Best Time");
+        TableColumn statusCol = new TableColumn<>("Status");
+        TableColumn lastSeenCol = new TableColumn<>("Last Update Time");
+        nickCol.setSortable(false);
+        scoreCol.setSortable(false);
+        best_timeCol.setSortable(false);
+        statusCol.setSortable(false);
+        lastSeenCol.setSortable(false);
+        nickCol.setCellValueFactory(new PropertyValueFactory<User, String>("nickname"));
+        scoreCol.setCellValueFactory(new PropertyValueFactory<User, Integer>("bestScore"));
+        best_timeCol.setCellValueFactory(new PropertyValueFactory<User, String>("bestScoreTime"));
+        statusCol.setCellValueFactory(new PropertyValueFactory<User, String>("onlineStatus"));
+        lastSeenCol.setCellValueFactory(new PropertyValueFactory<User, String>("lastUpdate"));
+        table.setPrefHeight(300);
+
+
+        table.setItems(data);
+
+        table.getColumns().addAll(nickCol, scoreCol, best_timeCol, statusCol, lastSeenCol);
+        vBox.getChildren().add(table);
+        vBox.getChildren().add(new Label());
+
         return vBox;
 
     }

@@ -13,7 +13,6 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -227,7 +226,7 @@ public class UserController {
             }
             ArrayList<Byte> data = new ArrayList<Byte>(Arrays.asList(bytes));
             return data;
-        } catch (NoSuchFileException e) {
+        } catch (Exception e) {
             thisThreadUser.setPhotoToDeafault();
             String path = thisThreadUser.getPhotoAddress();
             File f = new File(path);
@@ -243,9 +242,7 @@ public class UserController {
             }
             ArrayList<Byte> data = new ArrayList<Byte>(Arrays.asList(bytes));
             return data;
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return null;
+
     }
 }

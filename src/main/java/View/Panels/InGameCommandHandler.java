@@ -38,7 +38,7 @@ public class InGameCommandHandler {
 
     protected static PanelType currentPanel = null;
 
-    public static void handleCommand(String command) {
+    public static Object handleCommand(String command) {
         if (command.startsWith("move map")) {
             moveMap(command);
         } else if (command.startsWith("select unit")) {
@@ -83,6 +83,7 @@ public class InGameCommandHandler {
         else {
             runPanel(command);
         }
+        return null;
     }
 
 

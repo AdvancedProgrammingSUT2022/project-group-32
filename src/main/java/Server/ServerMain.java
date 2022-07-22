@@ -80,8 +80,7 @@ public class ServerMain {
                                 GameController.newGame((ArrayList<User>) request.getObj(), Integer.parseInt(params.get("mapSize")));
                                 sendRequest(new Request("game started", null), objectOutputStream);
                             } else if (action.equals(PANEL_COMMAND.code)) {
-                                InGameCommandHandler.handleCommand((String) request.getObj());
-                                sendRequest(new Request("response to panel action", null), objectOutputStream);
+                                sendRequest(new Request("response to panel action", null, InGameCommandHandler.handleCommand((String) request.getObj())), objectOutputStream);
                             } else if (action.equals(PASS_TURN.code)) {
                                 PlayerController.nextTurn();
                                 sendRequest(new Request("", null), objectOutputStream);
@@ -90,7 +89,8 @@ public class ServerMain {
                             } else if (action.equals(GET_GAME.code)) {
                                 sendRequest(new Request("response of get game", null, GameController.getGame()), objectOutputStream);
                             } else if (action.equals(GET_USERS.code)) {
-                                sendRequest(new Request("send Users", null, UserController.getUsers()), objectOutputStream);
+                                ArrayList<User> users = UserController.getUsers();
+                                sendRequest(new Request("send Users", null, users), objectOutputStream);
                             } else if (action.equals(GET_SELECTED_CITY.code)) {
                                 sendRequest(new Request("send selected cuty", null, GameController.getSelectedCity()), objectOutputStream);
                             } else if (action.equals(GET_SELECTED_UNIT.code)) {
@@ -108,6 +108,8 @@ public class ServerMain {
                                         GameController.selectTroop(Integer.parseInt(params.get("row")), Integer.parseInt(params.get("column")))), objectOutputStream);
                             } else if (action.equals(GET_USERS_PROFILE_PIC.code)) {
                                 sendRequest(new Request("profile pic", null, UserController.getProfilePicOf(getThisThreadUser())), objectOutputStream);
+                            } else if (action.equals(GET_ONLINES.code)) {
+                                sendRequest(new Request("onlines", null, threadIDUser), objectOutputStream);
                             } else {
                                 System.err.println("INVALID COMMAND!!!");
                             }
@@ -126,6 +128,9 @@ public class ServerMain {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            System.err.println("made this thread OFFLINE");
+            threadIDUser.get(Thread.currentThread().getId()).setOnlineStatus("Offline");
+            threadIDUser.remove(Thread.currentThread().getId());
             outputStreamsByThreadID.remove(Thread.currentThread().getId());
         }
     }
@@ -147,6 +152,9 @@ public class ServerMain {
     }
 
     public static synchronized void addThreadUser(User user) {
+        user.setOnlineStatus("Online");
+        System.out.println(user.getNickname() + " is now Online");
+        System.out.println(UserController.getUserByUsername(user.getUsername()).getOnlineStatus());
         threadIDUser.put(Thread.currentThread().getId(), user);
         System.out.println("user add to: " + threadIDUser);
     }

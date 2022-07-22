@@ -16,8 +16,9 @@ public class User implements Serializable {
     private String nickname;
     private String photoAddress;
     private String lastUpdate;
-    private int bestScore;
+    private Integer bestScore;
     private String bestScoreTime;
+    private String onlineStatus;
 
     public User(String username, String password, String nickname) {
         this.username = username;
@@ -27,10 +28,34 @@ public class User implements Serializable {
         this.bestScoreTime = "123-111-65";
         this.lastUpdate = java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         this.bestScore = 0;
+        this.onlineStatus = "offline";
+    }
+
+    public String getOnlineStatus() {
+        if (onlineStatus == null) {
+            onlineStatus = "offline";
+        }
+        return onlineStatus;
+    }
+
+    public void setOnlineStatus(String onlineStatus) {
+        this.onlineStatus = onlineStatus;
     }
 
     public String getBestScoreTime() {
         return bestScoreTime;
+    }
+
+    public String getBestScoreTimeForSorting() {
+        String res = "";
+        for (int i = 0; i < bestScoreTime.length(); i++) {
+            if (Character.isDigit(bestScoreTime.charAt(i))) {
+                res += "" + (9 - Character.digit(bestScoreTime.charAt(i), 10));
+            } else {
+                res += bestScoreTime.charAt(i) + "";
+            }
+        }
+        return res;
     }
 
     public void setBestScoreTime(String bestScoreTime) {
