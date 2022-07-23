@@ -97,10 +97,10 @@ public class GameView extends Menu {
             for (int column = 0; column < gameMap.getWidth(); column++) {
                 int x, y;
                 if (column % 2 == 0) {
-                    y = row * 130;
+                    y = row * 130 + 65;
                     x = column * 115;
                 } else {
-                    y = row * 130 + 65;
+                    y = row * 130;
                     x = column * 115;
                 }
                 Tile tile = gameMap.getTile(row, column);
@@ -135,10 +135,10 @@ public class GameView extends Menu {
             for (int column = 0; column < gameMap.getWidth(); column++) {
                 int x, y;
                 if (column % 2 == 0) {
-                    y = row * 130;
+                    y = row * 130 + 65;
                     x = column * 115;
                 } else {
-                    y = row * 130 + 65;
+                    y = row * 130;
                     x = column * 115;
                 }
                 Pane image = gameMap.getTile(row, column).getTileImage();

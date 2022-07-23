@@ -2,7 +2,6 @@ package Model;
 
 import Model.Units.Troop;
 import Model.Units.Unit;
-import View.GameView;
 import enums.Types.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -345,10 +344,15 @@ public class Tile implements Serializable {
                 getImprovement().getRemainingTurns() == 0;
     }
 
+    private boolean isCityCapital() {
+        if(city == null) return false;
+        return (row == city.getCapitalTile().row && column == city.getCapitalTile().column);
+    }
+
     public Pane getTileImage(){
         Pane imagePane = new Pane();
         if(fogState == FogState.UNKNOWN){
-            ImageView imageView = new ImageView(GameView.class.getClassLoader().getResource("images/Clouds.png").toExternalForm());
+            ImageView imageView = new ImageView(Tile.class.getClassLoader().getResource("images/Clouds.png").toExternalForm());
             imageView.setFitWidth(140);
             imageView.setFitHeight(120);
             imagePane.getChildren().add(imageView);
@@ -367,8 +371,14 @@ public class Tile implements Serializable {
         resourceImage.setFitWidth(40);
         resourceImage.setFitHeight(40);
         imagePane.getChildren().add(resourceImage);
-        if(unit != null) {
-            System.out.println(row + "," + column + " has a unit in it!");
+        if(isCityCapital()) {
+            System.err.println("HI!");
+            ImageView imageView = new ImageView(Tile.class.getClassLoader().getResource("images/City.png").toExternalForm());
+            imageView.setTranslateX(30);
+            imageView.setTranslateY(20);
+            imageView.setFitWidth(80);
+            imageView.setFitHeight(80);
+            imagePane.getChildren().add(imageView);
         }
         if(fogState == FogState.VISIBLE &&  unit != null) {
             ImageView unitImage = unit.getUnitImage();

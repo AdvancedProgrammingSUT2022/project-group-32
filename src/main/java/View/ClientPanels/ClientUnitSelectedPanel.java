@@ -60,8 +60,8 @@ public class ClientUnitSelectedPanel extends GameView {
         System.err.println(response.getString());
         show(stage);    }
 
-    public static void foundCity() {/*
-        ArrayList<String> parameters = CLI.getParameters(command, "cn");
+    public static void foundCity() {
+        /*ArrayList<String> parameters = CLI.getParameters(command, "cn");
         if (parameters == null) {
             invalidCommand();
             return;
@@ -69,9 +69,15 @@ public class ClientUnitSelectedPanel extends GameView {
         if (parameters.get(0).length() < 3) {
             System.out.println("City name is too small");
             return;
+        }*/
+        InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("build city -cn wow"));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        if(response != InGameResponses.Unit.FOUND_SUCCESSFUL){
+            showAlert(invalidAlert, response.getString());
         }
-        System.out.println(UnitController.foundCity(parameters.get(0)).getString());
-    */}
+        System.err.println(response.getString());
+        show(stage);
+    }
 
     public static void sleep() {
         InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("sleep"));
