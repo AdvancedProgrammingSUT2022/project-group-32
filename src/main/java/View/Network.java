@@ -43,7 +43,7 @@ public class Network {
             objectOutputStream.flush();
             objectOutputStream.reset();
             Request response = (Request) objectInputStream.readObject();
-            System.out.println("Server's Response: " + response.toString());
+            System.out.println("Server's Response: " + response.toString() + " obj: " + response.getObj());
             return response;
         } catch (Exception e) {
             e.printStackTrace();
@@ -52,7 +52,8 @@ public class Network {
     }
 
     public static Request sendRequest(String reqMessage, HashMap<String, String> params) {
-        return sendRequest(new Request(reqMessage, params));
+        Request res = sendRequest(new Request(reqMessage, params));
+        return res;
     }
 
     public static String getActionOfReq(String reqMessage, HashMap<String, String> params) {
@@ -77,7 +78,8 @@ public class Network {
     }
 
     public static Object getResponseObjOf(String regMessage, HashMap<String, String> params) {
-        return sendRequest(regMessage, params).getObj();
+        Request res = sendRequest(regMessage, params);
+        return res.getObj();
     }
 
     public static Object getResponseObjOfPanelCommand(String command) {

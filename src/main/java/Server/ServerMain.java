@@ -75,15 +75,21 @@ public class ServerMain {
                             } else if (action.equals(GET_USER_BY_USERNAME.code)) {
                                 sendRequest(new Request("Sending user by username", null, UserController.getUserByUsername((String) request.getObj())), objectOutputStream);
                             } else if (action.equals(IS_MY_TURN.code)) {
-                                sendRequest(new Request("is my turn response", null, GameController.isThisUsersTurn(getThisThreadUser())), objectOutputStream);
+                                Boolean value = GameController.isThisUsersTurn(getThisThreadUser());
+                                System.err.println("is my turn?: " + value);
+                                sendRequest(new Request("is my turn response", null, value), objectOutputStream);
                             } else if (action.equals(NEW_GAME.code)) {
                                 GameController.newGame((ArrayList<User>) request.getObj(), Integer.parseInt(params.get("mapSize")));
                                 sendRequest(new Request("game started", null), objectOutputStream);
                             } else if (action.equals(PANEL_COMMAND.code)) {
                                 sendRequest(new Request("response to panel action", null, InGameCommandHandler.handleCommand((String) request.getObj())), objectOutputStream);
                             } else if (action.equals(PASS_TURN.code)) {
-                                PlayerController.nextTurn();
-                                sendRequest(new Request("", null), objectOutputStream);
+                                if (GameController.getCurrentPlayer().getUser().equals(getThisThreadUser())) {
+                                    PlayerController.nextTurn();
+                                    sendRequest(new Request("turn passed!", null), objectOutputStream);
+                                } else {
+                                    sendRequest(new Request("you cant pass turn", null), objectOutputStream);
+                                }
                             } else if (action.equals(GET_THIS_PLAYER.code)) {
                                 sendRequest(new Request("get player response", null, GameController.getPlayerOfUser(getThisThreadUser())), objectOutputStream);
                             } else if (action.equals(GET_GAME.code)) {

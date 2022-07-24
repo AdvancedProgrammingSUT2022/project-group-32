@@ -1,12 +1,16 @@
 package View;
 // THIS IS FOR ONLINE PLAYING ...
 
-import Controller.GameController;
-import Model.*;
+import Model.City;
+import Model.Map;
+import Model.Tile;
 import Model.Units.Unit;
 import View.ClientPanels.ClientCitySelectedPanel;
 import View.ClientPanels.ClientUnitSelectedPanel;
-import View.Panels.*;
+import View.Panels.DemographicsPanel;
+import View.Panels.EconomyPanel;
+import View.Panels.MilitaryPanel;
+import View.Panels.NotificationsPanel;
 import View.PastViews.MapMaker;
 import enums.RequestActions;
 import enums.Types.BuildingType;
@@ -26,8 +30,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import java.util.ArrayList;
 
 public class GameView extends Menu {
     private final static int RIGHT_WIDTH = 500;
@@ -53,7 +55,7 @@ public class GameView extends Menu {
     protected static int selectedRow = -1, selectedColumn = -1;
     protected static Unit selectedUnit;
     protected static City selectedCity;
-
+    private static boolean isMyTurn;
     private static Button nextTurnButton;
 
     private static void putRiver(int x, int y, int w, int h){
@@ -85,14 +87,34 @@ public class GameView extends Menu {
     // should be called after every change to the map :)
     public static void makeMap() {
         map.getChildren().clear();
+        System.err.println("map Cleared!");
         if (!(Boolean) Network.getResponseObjOf(RequestActions.IS_MY_TURN.code, null)) {
+            System.err.println("This is not my turn!");
             map.setVisible(false);
             waitiingLable.setVisible(true);
             waitiingLable.setLayoutX(WIDTH / 2);
+            new Thread(() -> {
+                while (true) {
+                    Boolean res = (Boolean) Network.getResponseObjOf(RequestActions.IS_MY_TURN.code, null);
+                    if (res) {
+                        Platform.runLater(() -> {
+                            makeMap();
+                        });
+                        break;
+                    } else {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }).start();
             return;
         }
+        System.err.println("this is my turn");
         waitiingLable.setVisible(false);
-
+        map.setVisible(true);
         Map gameMap = ((Map) Network.getResponseObjOf(RequestActions.GET_THIS_PLAYERS_MAP.code, null));
 
         // putting rivers in
@@ -135,6 +157,7 @@ public class GameView extends Menu {
 
         // putting tiles in place
         for (int row = 0; row < gameMap.getHeight(); row++) {
+            System.err.println("putting tiles ...");
             for (int column = 0; column < gameMap.getWidth(); column++) {
                 int x, y;
                 if (column % 2 == 0) {
