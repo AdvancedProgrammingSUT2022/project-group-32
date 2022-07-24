@@ -78,7 +78,7 @@ public class GameView extends Menu {
         if(tile.getTroop() != null) text.append(tile.getTroop().getUnitType().name);
         Tooltip tooltip = new Tooltip(text.toString());
         tooltip.setWrapText(true);
-        tooltip.setShowDelay(Duration.seconds(0));
+        tooltip.setShowDelay(Duration.seconds(1));
         return tooltip;
     }
 
@@ -180,6 +180,8 @@ public class GameView extends Menu {
             invalidAlert = new Alert(Alert.AlertType.ERROR, "invalid!", ButtonType.OK);
             selectedUnit = null;
             selectedCity = null;
+            selectedRow = -1;
+            selectedColumn = -1;
             Pane pane = root;
             initTopPane();
             map = new Pane();
@@ -461,7 +463,7 @@ public class GameView extends Menu {
         units.getChildren().add(header);
 
         for (UnitType possibleUnit : selectedCity.getPossibleUnits()) {
-            Button button = new Button(possibleUnit.name);
+            Button button = new Button(possibleUnit.name + " - cost: " + possibleUnit.cost);
             button.setFocusTraversable(false);
             button.setOnMouseClicked(e -> ClientCitySelectedPanel.buildUnit(possibleUnit));
             units.getChildren().add(button);
@@ -481,7 +483,7 @@ public class GameView extends Menu {
         buildings.getChildren().add(header);
 
         for (BuildingType possibleBuilding : selectedCity.getPossibleBuildings()) {
-            Button button = new Button(possibleBuilding.name);
+            Button button = new Button(possibleBuilding.name + " - cost: " + possibleBuilding.cost);
             button.setFocusTraversable(false);
             button.setOnMouseClicked(e -> ClientCitySelectedPanel.buildBuilding(possibleBuilding));
             buildings.getChildren().add(button);

@@ -33,7 +33,7 @@ public class ClientCitySelectedPanel extends GameView {
     }
 
     public static void buildBuilding(BuildingType buildingType) {
-        InGameResponses.Building response = ((InGameResponses.Building) Network.getResponseObjOfPanelCommand("build unit -t " + buildingType.name));
+        InGameResponses.Building response = ((InGameResponses.Building) Network.getResponseObjOfPanelCommand("build building -t " + buildingType.name));
         Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
         if(response != InGameResponses.Building.IN_PROGRESS_BUILDING_CHANGED){
             showAlert(invalidAlert, response.getString());
@@ -115,8 +115,7 @@ public class ClientCitySelectedPanel extends GameView {
     public static String showBanner() {
         City city = selectedCity;
         StringBuilder info = new StringBuilder();
-        info.append(city.getOwner().getBackgroundColor().code
-                + city.getName() + " owned by " + city.getOwner().getName() + Color.RESET.code + "\n");
+        info.append(city.getName() + " owned by " + city.getOwner().getName() + "\n");
         info.append("location: " + city.getCapitalTile().getRow() + "," + city.getCapitalTile().getColumn() + "\n");
         info.append("HP: " + city.getHP() + "\n");
         info.append("strength: " + city.getStrength() + "\n");
@@ -132,6 +131,11 @@ public class ClientCitySelectedPanel extends GameView {
         if (city.getUnitInProgress() != null) {
             info.append("currently building a " + city.getUnitInProgress().getUnitType().name + "\n");
             int remainingTurns = (city.getUnitInProgress().getRemainingCost() + city.getProductionIncome() - 1) / city.getProductionIncome();
+            info.append("will be completed in: " + remainingTurns + "\n");
+        }
+        if (city.getBuildingInProgress() != null) {
+            info.append("currently building a " + city.getBuildingInProgress().getBuildingType().name + "\n");
+            int remainingTurns = (city.getBuildingInProgress().getRemainingCost() + city.getProductionIncome() - 1) / city.getProductionIncome();
             info.append("will be completed in: " + remainingTurns + "\n");
         }
         return info.toString();

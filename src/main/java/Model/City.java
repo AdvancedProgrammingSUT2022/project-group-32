@@ -419,12 +419,11 @@ public class City implements Serializable {
         ArrayList<BuildingType> buildingTypes = new ArrayList<>();
         for (BuildingType buildingType : BuildingType.values()) {
             boolean possible = true;
-
             for (Building building : getBuildings()) {
                 if (building.getBuildingType() == buildingType)
                     possible = false;
             }
-            if(owner.getTechnologyByType(buildingType.technologyType) == null) possible  = false;
+            if(buildingType.technologyType != null && owner.getTechnologyByType(buildingType.technologyType) == null) possible = false;
             if(possible){
                 buildingTypes.add(buildingType);
             }

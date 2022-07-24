@@ -8,15 +8,20 @@ import java.util.ArrayList;
 
 public class Building implements Serializable {
     public static final long serialVersionUID = 67L;
-    private String name;
-    private int cost;
+    private final String name;
+    private final int cost;
     private final BuildingType buildingType;
-    private int maintenanceCost;
-    private final ArrayList<TechnologyType> neededTechs = new ArrayList<>();
+    private final int maintenanceCost;
+    private final TechnologyType neededTech;
     private int remainingCost;
 
     public Building(BuildingType buildingType) {
         this.buildingType = buildingType;
+        this.name = buildingType.name;
+        this.neededTech = buildingType.technologyType;
+        this.cost = buildingType.cost;
+        this.remainingCost = this.cost;
+        this.maintenanceCost = buildingType.maintenance;
     }
 
     public String getName() {
@@ -35,8 +40,8 @@ public class Building implements Serializable {
         return maintenanceCost;
     }
 
-    public ArrayList<TechnologyType> getNeededTechs() {
-        return neededTechs;
+    public TechnologyType getNeededTech() {
+        return neededTech;
     }
 
     public int getRemainingCost() {
