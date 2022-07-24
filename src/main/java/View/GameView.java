@@ -9,10 +9,7 @@ import View.ClientPanels.ClientUnitSelectedPanel;
 import View.Panels.*;
 import View.PastViews.MapMaker;
 import enums.RequestActions;
-import enums.Types.BuildingType;
-import enums.Types.CombatType;
-import enums.Types.FogState;
-import enums.Types.UnitType;
+import enums.Types.*;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -377,12 +374,12 @@ public class GameView extends Menu {
         Button delete = new Button("Delete");
         delete.setOnMouseClicked(e -> ClientUnitSelectedPanel.delete());
         delete.setFocusTraversable(false);
-        Button buildImprovement = new Button("Build Imporvement");
-        buildImprovement.setOnMouseClicked(e -> ClientUnitSelectedPanel.buildImprovement());
-        buildImprovement.setFocusTraversable(false);
         Button buildRoad = new Button("Build Road");
-        buildRoad.setOnMouseClicked(e -> ClientUnitSelectedPanel.buildRoad());
+        buildRoad.setOnMouseClicked(e -> ClientUnitSelectedPanel.buildRoad("Road"));
         buildRoad.setFocusTraversable(false);
+        Button buildRailRoad = new Button("Build RailRoad");
+        buildRailRoad.setOnMouseClicked(e -> ClientUnitSelectedPanel.buildRoad("Railroad"));
+        buildRailRoad.setFocusTraversable(false);
         Button removeForest = new Button("Remove Forest");
         removeForest.setOnMouseClicked(e -> ClientUnitSelectedPanel.removeForest());
         removeForest.setFocusTraversable(false);
@@ -411,8 +408,33 @@ public class GameView extends Menu {
         attack.setOnMouseClicked(e -> ClientUnitSelectedPanel.attack());
         attack.setFocusTraversable(false);
 
-        unitSelectedPane.getChildren().addAll(header, info, move, buildCity, sleep, alert, fortify, heal, wake, delete, buildImprovement, buildRoad, removeForest, removeJungle, removeMarsh, removeRoad, pillage, repair, setUp, garrison, attack);
+        unitSelectedPane.getChildren().addAll(header, info, move, buildCity, sleep, alert, fortify, heal, wake, delete, buildRoad, buildRailRoad, removeForest, removeJungle, removeMarsh, removeRoad, pillage, repair, setUp, garrison, attack);
+
+        if(selectedUnit.getUnitType() == UnitType.WORKER){
+            unitSelectedPane.getChildren().add(getPossibleImprovementsPane());
+        }
     }
+
+    private static VBox getPossibleImprovementsPane() {
+        VBox improvements = new VBox();
+        improvements.setAlignment(Pos.CENTER);
+        improvements.setMinWidth(RIGHT_WIDTH / 2);
+        Label header = new Label("BUILD IMPROVEMENT");
+        header.setTextFill(Color.WHITE);
+        header.setFont(Font.font(20));
+        header.setAlignment(Pos.CENTER);
+        improvements.getChildren().add(header);
+
+        for (ImprovementType possibleImprovement : selectedUnit.getPossibleImprovements()) {
+            Button button = new Button(possibleImprovement.name);
+            button.setFocusTraversable(false);
+            button.setOnMouseClicked(e -> ClientUnitSelectedPanel.buildImprovement(possibleImprovement));
+            improvements.getChildren().add(button);
+        }
+
+        return improvements;
+    }
+
 
     private static void initCitySelectedPane() {
         citySelectedPane = new VBox();

@@ -1,44 +1,14 @@
 package View.ClientPanels;
 
-import Controller.GameController;
-import Controller.UnitController;
 import Model.Units.Unit;
 import View.GameView;
 import View.Network;
-import View.PastViews.CLI;
-import View.PastViews.GameMenu;
 import enums.RequestActions;
 import enums.Responses.InGameResponses;
 import enums.Types.ImprovementType;
-import enums.Types.RoadType;
-
-import java.util.ArrayList;
+import net.bytebuddy.utility.RandomString;
 
 public class ClientUnitSelectedPanel extends GameView {
-
-    public static void run(String command) {
-        /*if (command.startsWith("move unit")) moveTo(command);
-        else if (command.startsWith("back")) GameMenu.currentPanel = null;
-        else if (command.startsWith("build city")) foundCity(command);
-        else if (command.startsWith("sleep")) sleep();
-        else if (command.startsWith("alert")) alert();
-        else if (command.startsWith("fortify")) fortify();
-        else if (command.startsWith("heal")) heal();
-        else if (command.startsWith("wake")) wake();
-        else if (command.startsWith("delete")) delete();
-        else if (command.startsWith("build improvement")) buildImprovement(command);
-        else if (command.startsWith("build road")) buildRoad(command);
-        else if (command.startsWith("remove forest")) removeForest();
-        else if (command.startsWith("remove jungle")) removeJungle();
-        else if (command.startsWith("remove marsh")) removeMarsh();
-        else if (command.startsWith("remove road")) removeRoute();
-        else if (command.startsWith("pillage")) pillage();
-        else if (command.startsWith("repair")) repair();
-        else if (command.startsWith("set up")) setup();
-        else if (command.startsWith("garrison")) garrison();
-        else if (command.startsWith("attack")) attack(command);
-        else if (command.startsWith("show selected unit")) showSelected();*/
-    }
 
     public static String showSelected() {
         Unit unit = selectedUnit;
@@ -58,19 +28,11 @@ public class ClientUnitSelectedPanel extends GameView {
         }
         Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
         System.err.println(response.getString());
-        show(stage);    }
+        show(stage);
+    }
 
     public static void foundCity() {
-        /*ArrayList<String> parameters = CLI.getParameters(command, "cn");
-        if (parameters == null) {
-            invalidCommand();
-            return;
-        }
-        if (parameters.get(0).length() < 3) {
-            System.out.println("City name is too small");
-            return;
-        }*/
-        InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("build city -cn wow"));
+        InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("build city -cn " + RandomString.make(5))); // TODO: 7/24/2022 custom name
         Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
         if(response != InGameResponses.Unit.FOUND_SUCCESSFUL){
             showAlert(invalidAlert, response.getString());
@@ -136,23 +98,25 @@ public class ClientUnitSelectedPanel extends GameView {
         show(stage);
     }
 
-    public static void buildImprovement() {/*
-        ArrayList<String> parameters = CLI.getParameters(command, "t");
-        if (parameters == null) {
-            invalidCommand();
-            return;
+    public static void buildImprovement(ImprovementType improvementType) {
+        InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("build improvement -t " + improvementType.name));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        if(response != InGameResponses.Unit.BUILD_SUCCESSFUL){
+            showAlert(invalidAlert, response.getString());
         }
-        System.out.println(UnitController.buildImprovement(ImprovementType.getTypeByName(parameters.get(0))).getString());
-    */}
+        System.err.println(response.getString());
+        show(stage);
+    }
 
-    public static void buildRoad() {/*
-        ArrayList<String> parameters = CLI.getParameters(command, "t");
-        if (parameters == null) {
-            invalidCommand();
-            return;
+    public static void buildRoad(String type) {
+        InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("build road -t " + type));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        if(response != InGameResponses.Unit.BUILD_SUCCESSFUL){
+            showAlert(invalidAlert, response.getString());
         }
-        System.out.println(UnitController.buildRoad(RoadType.getTypeByName(parameters.get(0))).getString());
-    */}
+        System.err.println(response.getString());
+        show(stage);
+    }
 
     public static void removeForest() {
         InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("remove forest"));
@@ -234,14 +198,14 @@ public class ClientUnitSelectedPanel extends GameView {
         show(stage);
     }
 
-    public static void attack() {/*
-        ArrayList<String> parameters = CLI.getParameters(command, "l");
-        if (parameters == null) {
-            invalidCommand();
-            return;
+    public static void attack() {
+        InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("attack -l " + selectedRow + " " + selectedColumn));
+        if(response != InGameResponses.Unit.MOVETO_SUCCESSFUL){
+            showAlert(invalidAlert, response.getString());
         }
-        int row = Integer.parseInt(parameters.get(0)), column = Integer.parseInt(parameters.get(1));
-        System.out.println(UnitController.attack(row, column).getString());
-    */}
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        System.err.println(response.getString());
+        show(stage);
+    }
 
 }
