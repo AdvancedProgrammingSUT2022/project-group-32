@@ -3,12 +3,11 @@ package Model.Units;
 import Model.Map;
 import Model.Player;
 import Model.Tile;
-import enums.Types.CombatType;
-import enums.Types.OrderType;
-import enums.Types.UnitType;
+import enums.Types.*;
 import javafx.scene.image.ImageView;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Unit implements Serializable {
     public static final long serialVersionUID = 80L;
@@ -175,8 +174,20 @@ public class Unit implements Serializable {
     }
 
     public ImageView getUnitImage() {
-        if(unitType == null) return null;
+        if (unitType == null) return null;
         return unitType.getImage();
     }
-}
 
+    public ArrayList<ImprovementType> getPossibleImprovements() {
+        ArrayList<ImprovementType> improvementTypes = new ArrayList<>();
+        if (unitType != UnitType.WORKER) return improvementTypes;
+        for (ImprovementType improvementType : ImprovementType.values()) {
+            if (owner.getTechnologyByType(improvementType.neededTech) != null) {
+                if (improvementType.canBeOn.contains(tile.getTerrainFeature())) {
+                    improvementTypes.add(improvementType);
+                }
+            }
+        }
+        return improvementTypes;
+    }
+}

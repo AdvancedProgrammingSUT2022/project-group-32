@@ -32,7 +32,6 @@ public class MainMenu extends Menu {
             }),
             new Pair<String, Runnable>("C h a t   R o o m", () -> {
             }),
-            new Pair<String, Runnable>("C o n t i n u e   L a s t g a m e", MainMenu::continueLastGame),
             new Pair<String, Runnable>("L o g o u t", () -> {
                 logout();
             }),
@@ -84,9 +83,4 @@ public class MainMenu extends Menu {
 
     ////////////////
 
-    private static void continueLastGame() {
-        if(GameController.loadGame()){
-            changeMenu(GAME_VIEW);
-        }
-    }
 }

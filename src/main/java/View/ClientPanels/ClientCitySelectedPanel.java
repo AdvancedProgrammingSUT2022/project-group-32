@@ -1,36 +1,15 @@
 package View.ClientPanels;
 
-import Controller.CityController;
-import Controller.GameController;
 import Model.City;
 import Model.Tile;
 import View.GameView;
 import View.Network;
-import View.PastViews.CLI;
-import View.PastViews.GameMenu;
-import enums.Color;
 import enums.RequestActions;
 import enums.Responses.InGameResponses;
 import enums.Types.BuildingType;
 import enums.Types.UnitType;
 
-import java.util.ArrayList;
-
 public class ClientCitySelectedPanel extends GameView {
-    public static void run(String command) {/*
-        if (command.startsWith("build unit")) buildUnit(command);
-        else if (command.startsWith("pause unit")) pauseUnit();
-        else if (command.startsWith("build building")) buildBuilding(command);
-        else if (command.startsWith("buy unit")) buyUnit(command);
-        else if (command.startsWith("assign citizen")) assignCitizen(command);
-        else if (command.startsWith("free citizen")) freeCitizen(command);
-        else if (command.startsWith("buy tile")) buyTile(command);
-        else if (command.startsWith("city attack")) attack(command);
-        else if (command.startsWith("city delete")) delete();
-        else if (command.startsWith("show banner")) showBanner();
-        else if (command.startsWith("back")) currentPanel = null;
-        else invalidCommand();*/
-    }
 
     public static void buildBuilding(BuildingType buildingType) {
         InGameResponses.Building response = ((InGameResponses.Building) Network.getResponseObjOfPanelCommand("build building -t " + buildingType.name));
@@ -52,14 +31,24 @@ public class ClientCitySelectedPanel extends GameView {
         show(stage);
     }
 
-    public static InGameResponses.Unit pauseUnit() {
-        return CityController.pauseInProgressUnit();
+    public static void pauseUnit() {
+        InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("pause unit"));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        if(response != InGameResponses.Unit.UNIT_BUILDING_PAUSED){
+            showAlert(invalidAlert, response.getString());
+        }
+        System.err.println(response.getString());
+        show(stage);
     }
 
-    public static InGameResponses.City buyUnit(String command) {
-        ArrayList<String> parameters = CLI.getParameters(command, "t");
-        UnitType unitType = UnitType.getUnitTypeByName(parameters.get(0));
-        return CityController.buyUnit(unitType);
+    public static void buyUnit(UnitType unitType) {
+        InGameResponses.City response = ((InGameResponses.City) Network.getResponseObjOfPanelCommand("buy unit -t " + unitType.name));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        if(response != InGameResponses.City.UNIT_BUY_SUCCESSFUL){
+            showAlert(invalidAlert, response.getString());
+        }
+        System.err.println(response.getString());
+        show(stage);
     }
 
     public static void assignCitizen() {
