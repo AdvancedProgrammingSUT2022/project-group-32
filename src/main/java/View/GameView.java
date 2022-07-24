@@ -9,8 +9,10 @@ import View.ClientPanels.ClientUnitSelectedPanel;
 import View.Panels.*;
 import View.PastViews.MapMaker;
 import enums.RequestActions;
+import enums.Types.BuildingType;
 import enums.Types.CombatType;
 import enums.Types.FogState;
+import enums.Types.UnitType;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -175,6 +177,8 @@ public class GameView extends Menu {
             root = new Pane();
             infoAlert = new Alert(Alert.AlertType.INFORMATION, "Hey!!!", ButtonType.OK);
             invalidAlert = new Alert(Alert.AlertType.ERROR, "invalid!", ButtonType.OK);
+            selectedUnit = null;
+            selectedCity = null;
             Pane pane = root;
             initTopPane();
             map = new Pane();
@@ -186,7 +190,7 @@ public class GameView extends Menu {
             // initing panes
             initElements();
 
-            militaryPane.setVisible(true);
+            //militaryPane.setVisible(true);
             //notificationPane.setVisible(true);
             //demographicsPane.setVisible(true);
             //economyPane.setVisible(true);
@@ -404,7 +408,7 @@ public class GameView extends Menu {
         attack.setOnMouseClicked(e -> ClientUnitSelectedPanel.attack());
         attack.setFocusTraversable(false);
 
-        unitSelectedPane.getChildren().addAll(info, move, buildCity, sleep, alert, fortify, heal, wake, delete, buildImprovement, buildRoad, removeForest, removeJungle, removeMarsh, removeRoad, pillage, repair, setUp, garrison, attack);
+        unitSelectedPane.getChildren().addAll(header, info, move, buildCity, sleep, alert, fortify, heal, wake, delete, buildImprovement, buildRoad, removeForest, removeJungle, removeMarsh, removeRoad, pillage, repair, setUp, garrison, attack);
     }
 
     private static void initCitySelectedPane() {
@@ -422,66 +426,67 @@ public class GameView extends Menu {
 
         Label info = new Label(ClientCitySelectedPanel.showBanner());
         info.setStyle("-fx-font-family: 'monospaced'");
-
-        Button move = new Button("Move Unit");
-        move.setOnMouseClicked(e -> ClientUnitSelectedPanel.moveTo());
-        move.setFocusTraversable(false);
-        Button buildCity = new Button("Build City");
-        buildCity.setOnMouseClicked(e -> ClientUnitSelectedPanel.foundCity());
-        buildCity.setFocusTraversable(false);
-        Button sleep = new Button("Sleep");
-        sleep.setOnMouseClicked(e -> ClientUnitSelectedPanel.sleep());
-        sleep.setFocusTraversable(false);
-        Button alert = new Button("Alert");
-        alert.setOnMouseClicked(e -> ClientUnitSelectedPanel.alert());
-        alert.setFocusTraversable(false);
-        Button fortify = new Button("Fortify");
-        fortify.setOnMouseClicked(e -> ClientUnitSelectedPanel.fortify());
-        fortify.setFocusTraversable(false);
-        Button heal = new Button("Heal");
-        heal.setOnMouseClicked(e -> ClientUnitSelectedPanel.heal());
-        heal.setFocusTraversable(false);
-        Button wake = new Button("Wake Up");
-        wake.setOnMouseClicked(e -> ClientUnitSelectedPanel.wake());
-        wake.setFocusTraversable(false);
-        Button delete = new Button("Delete");
-        delete.setOnMouseClicked(e -> ClientUnitSelectedPanel.delete());
-        delete.setFocusTraversable(false);
-        Button buildImprovement = new Button("Build Imporvement");
-        buildImprovement.setOnMouseClicked(e -> ClientUnitSelectedPanel.buildImprovement());
-        buildImprovement.setFocusTraversable(false);
-        Button buildRoad = new Button("Build Road");
-        buildRoad.setOnMouseClicked(e -> ClientUnitSelectedPanel.buildRoad());
-        buildRoad.setFocusTraversable(false);
-        Button removeForest = new Button("Remove Forest");
-        removeForest.setOnMouseClicked(e -> ClientUnitSelectedPanel.removeForest());
-        removeForest.setFocusTraversable(false);
-        Button removeJungle = new Button("Remove Jungle");
-        removeJungle.setOnMouseClicked(e -> ClientUnitSelectedPanel.removeJungle());
-        removeJungle.setFocusTraversable(false);
-        Button removeMarsh = new Button("Remove Marsh");
-        removeMarsh.setOnMouseClicked(e -> ClientUnitSelectedPanel.removeMarsh());
-        removeMarsh.setFocusTraversable(false);
-        Button removeRoad = new Button("Remove Road");
-        removeRoad.setOnMouseClicked(e -> ClientUnitSelectedPanel.removeRoute());
-        removeRoad.setFocusTraversable(false);
-        Button pillage = new Button("Pillage");
-        pillage.setOnMouseClicked(e -> ClientUnitSelectedPanel.pillage());
-        pillage.setFocusTraversable(false);
-        Button repair = new Button("Repair");
-        repair.setOnMouseClicked(e -> ClientUnitSelectedPanel.repair());
-        repair.setFocusTraversable(false);
-        Button setUp = new Button("Set Up");
-        setUp.setOnMouseClicked(e -> ClientUnitSelectedPanel.setup());
-        setUp.setFocusTraversable(false);
-        Button garrison = new Button("Garrison");
-        garrison.setOnMouseClicked(e -> ClientUnitSelectedPanel.garrison());
-        garrison.setFocusTraversable(false);
-        Button attack = new Button("Attack");
-        attack.setOnMouseClicked(e -> ClientUnitSelectedPanel.attack());
+        // setting buttons
+        Button assignCitizen = new Button("Assign Citizen");
+        assignCitizen.setOnMouseClicked(e -> ClientCitySelectedPanel.assignCitizen());
+        assignCitizen.setFocusTraversable(false);
+        Button freeCitizen = new Button("Free Citizen");
+        freeCitizen.setOnMouseClicked(e -> ClientCitySelectedPanel.freeCitizen());
+        freeCitizen.setFocusTraversable(false);
+        Button buyTile = new Button("Buy Tile");
+        buyTile.setOnMouseClicked(e -> ClientCitySelectedPanel.buyTile());
+        buyTile.setFocusTraversable(false);
+        Button attack = new Button("attack");
+        attack.setOnMouseClicked(e -> ClientCitySelectedPanel.attack());
         attack.setFocusTraversable(false);
+        Button delete = new Button("delete");
+        delete.setOnMouseClicked(e -> ClientCitySelectedPanel.delete());
+        delete.setFocusTraversable(false);
 
-        unitSelectedPane.getChildren().addAll(info, move, buildCity, sleep, alert, fortify, heal, wake, delete, buildImprovement, buildRoad, removeForest, removeJungle, removeMarsh, removeRoad, pillage, repair, setUp, garrison, attack);
+        // builds
+        HBox hBox = new HBox(getPossibleUnitsPane(), getPossibleBuildingsPane());
+
+        citySelectedPane.getChildren().addAll(header, info, assignCitizen, freeCitizen, buyTile, attack, delete, hBox);
+    }
+
+    private static VBox getPossibleUnitsPane() {
+        VBox units = new VBox();
+        units.setAlignment(Pos.CENTER);
+        units.setMinWidth(RIGHT_WIDTH / 2);
+        Label header = new Label("BUILD UNIT");
+        header.setTextFill(Color.WHITE);
+        header.setFont(Font.font(20));
+        header.setAlignment(Pos.CENTER);
+        units.getChildren().add(header);
+
+        for (UnitType possibleUnit : selectedCity.getPossibleUnits()) {
+            Button button = new Button(possibleUnit.name);
+            button.setFocusTraversable(false);
+            button.setOnMouseClicked(e -> ClientCitySelectedPanel.buildUnit(possibleUnit));
+            units.getChildren().add(button);
+        }
+
+        return units;
+    }
+
+    private static VBox getPossibleBuildingsPane() {
+        VBox buildings = new VBox();
+        buildings.setAlignment(Pos.CENTER);
+        buildings.setMinWidth(RIGHT_WIDTH / 2);
+        Label header = new Label("BUILD BUILDING");
+        header.setTextFill(Color.WHITE);
+        header.setFont(Font.font(20));
+        header.setAlignment(Pos.CENTER);
+        buildings.getChildren().add(header);
+
+        for (BuildingType possibleBuilding : selectedCity.getPossibleBuildings()) {
+            Button button = new Button(possibleBuilding.name);
+            button.setFocusTraversable(false);
+            button.setOnMouseClicked(e -> ClientCitySelectedPanel.buildBuilding(possibleBuilding));
+            buildings.getChildren().add(button);
+        }
+
+        return buildings;
     }
 
     /////////////////////
@@ -496,27 +501,38 @@ public class GameView extends Menu {
         if (tile.getCity() != null) {
             if (selectedCity == null){
                 selectedCity = tile.getCity();
+                selectedUnit = null;
+                root.getChildren().remove(citySelectedPane);
+                initCitySelectedPane();
+                citySelectedPane.setVisible(true);
+                root.getChildren().add(citySelectedPane);
+                Network.getResponseObjOfPanelCommand("select city -l " + row + " " + column);
+                System.err.println("city");
             }
             else selectedCity = null;
         }
         if (selectedCity == null && tile.getUnit() != null) {
             if (selectedUnit == null || selectedUnit.getCombatType() != CombatType.CIVILIAN){
                 selectedUnit = tile.getUnit();
+                selectedCity = null;
                 root.getChildren().remove(unitSelectedPane);
                 initUnitSelectedPane();
                 unitSelectedPane.setVisible(true);
                 root.getChildren().add(unitSelectedPane);
                 Network.getResponseObjOfPanelCommand("select unit -l " + row + " " + column);
+                System.err.println("unit");
             }
             else selectedUnit = null;
         }
         if (selectedUnit == null && selectedCity == null && tile.getTroop() != null) {
             selectedUnit = tile.getTroop();
+            selectedCity = null;
             root.getChildren().remove(unitSelectedPane);
             initUnitSelectedPane();
             unitSelectedPane.setVisible(true);
             root.getChildren().add(unitSelectedPane);
             Network.getResponseObjOfPanelCommand("select troop -l " + row + " " + column);
+            System.err.println("troop");
         }
         System.out.println(selectedRow + "," + selectedColumn);
         System.out.println(selectedUnit);

@@ -5,9 +5,11 @@ import Controller.GameController;
 import Model.City;
 import Model.Tile;
 import View.GameView;
+import View.Network;
 import View.PastViews.CLI;
 import View.PastViews.GameMenu;
 import enums.Color;
+import enums.RequestActions;
 import enums.Responses.InGameResponses;
 import enums.Types.BuildingType;
 import enums.Types.UnitType;
@@ -30,16 +32,24 @@ public class ClientCitySelectedPanel extends GameView {
         else invalidCommand();*/
     }
 
-    public static InGameResponses.Building buildBuilding(String command) {
-        ArrayList<String> parameters = CLI.getParameters(command, "t");
-        BuildingType buildingType = BuildingType.getBuildingTypeByName(parameters.get(0));
-        return CityController.buildBuilding(buildingType);
+    public static void buildBuilding(BuildingType buildingType) {
+        InGameResponses.Building response = ((InGameResponses.Building) Network.getResponseObjOfPanelCommand("build unit -t " + buildingType.name));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        if(response != InGameResponses.Building.IN_PROGRESS_BUILDING_CHANGED){
+            showAlert(invalidAlert, response.getString());
+        }
+        System.err.println(response.getString());
+        show(stage);
     }
 
-    public static InGameResponses.Unit buildUnit(String command) {
-        ArrayList<String> parameters = CLI.getParameters(command, "t");
-        UnitType unitType = UnitType.getUnitTypeByName(parameters.get(0));
-        return CityController.buildUnit(unitType);
+    public static void buildUnit(UnitType unitType) {
+        InGameResponses.Unit response = ((InGameResponses.Unit) Network.getResponseObjOfPanelCommand("build unit -t " + unitType.name));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        if(response != InGameResponses.Unit.UNIT_BUILDING_SUCCESSFUL){
+            showAlert(invalidAlert, response.getString());
+        }
+        System.err.println(response.getString());
+        show(stage);
     }
 
     public static InGameResponses.Unit pauseUnit() {
@@ -52,55 +62,77 @@ public class ClientCitySelectedPanel extends GameView {
         return CityController.buyUnit(unitType);
     }
 
-    public static InGameResponses.City assignCitizen(String command) {
-        ArrayList<String> parameters = CLI.getParameters(command, "l");
-        int row = Integer.parseInt(parameters.get(0)), column = Integer.parseInt(parameters.get(1));
-        return CityController.assignCitizenToTile(row, column);
+    public static void assignCitizen() {
+        InGameResponses.City response = ((InGameResponses.City) Network.getResponseObjOfPanelCommand("assign citizen -l " + selectedRow + " " + selectedColumn));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        if(response != InGameResponses.City.ASSIGNMENT_SUCCESSFUL){
+            showAlert(invalidAlert, response.getString());
+        }
+        System.err.println(response.getString());
+        show(stage);
     }
 
-    public static InGameResponses.City freeCitizen(String command) {
-        ArrayList<String> parameters = CLI.getParameters(command, "l");
-        int row = Integer.parseInt(parameters.get(0)), column = Integer.parseInt(parameters.get(1));
-        return CityController.freeCitizenFromTile(row, column);
+    public static void freeCitizen() {
+        InGameResponses.City response = ((InGameResponses.City) Network.getResponseObjOfPanelCommand("free citizen -l " + selectedRow + " " + selectedColumn));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        if(response != InGameResponses.City.FREEING_SUCCESSFUL){
+            showAlert(invalidAlert, response.getString());
+        }
+        System.err.println(response.getString());
+        show(stage);
     }
 
-    public static InGameResponses.City buyTile(String command) {
-        ArrayList<String> parameters = CLI.getParameters(command, "l");
-        int row = Integer.parseInt(parameters.get(0)), column = Integer.parseInt(parameters.get(1));
-        return CityController.buyTile(row, column);
+    public static void buyTile() {
+        InGameResponses.City response = ((InGameResponses.City) Network.getResponseObjOfPanelCommand("buy tile -l " + selectedRow + " " + selectedColumn));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        if(response != InGameResponses.City.TILE_BUY_SUCCESSFUL){
+            showAlert(invalidAlert, response.getString());
+        }
+        System.err.println(response.getString());
+        show(stage);
     }
 
-    public static InGameResponses.City attack(String command) {
-        ArrayList<String> parameters = CLI.getParameters(command, "l");
-        int row = Integer.parseInt(parameters.get(0)), column = Integer.parseInt(parameters.get(1));
-        return CityController.attack(row, column);
+    public static void attack() {
+        InGameResponses.City response = ((InGameResponses.City) Network.getResponseObjOfPanelCommand("city attack -l " + selectedRow + " " + selectedColumn));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        if(response != InGameResponses.City.ATTACK_SUCCESSFUL){
+            showAlert(invalidAlert, response.getString());
+        }
+        System.err.println(response.getString());
+        show(stage);
     }
 
-    public static InGameResponses.City delete() {
-        return CityController.delete();
+    public static void delete() {
+        InGameResponses.City response = ((InGameResponses.City) Network.getResponseObjOfPanelCommand("city delete"));
+        Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+        if(response != InGameResponses.City.DELETE_SUCCESSFUL){
+            showAlert(invalidAlert, response.getString());
+        }
+        System.err.println(response.getString());
+        show(stage);
     }
 
     public static String showBanner() {
         City city = selectedCity;
         StringBuilder info = new StringBuilder();
         info.append(city.getOwner().getBackgroundColor().code
-                + city.getName() + " owned by " + city.getOwner().getName() + Color.RESET.code);
-        info.append("location: " + city.getCapitalTile().getRow() + "," + city.getCapitalTile().getColumn());
-        info.append("HP: " + city.getHP());
-        info.append("strength: " + city.getStrength());
-        info.append("population: " + city.getPopulation());
-        info.append("production: " + city.getProductionIncome());
-        info.append("food: " + city.getFoodIncome());
-        info.append("gold: " + city.getGoldIncome());
-        info.append("unemployed citizen cnt: " + city.getFreeCitizens());
-        info.append("tiles being worked on: ");
+                + city.getName() + " owned by " + city.getOwner().getName() + Color.RESET.code + "\n");
+        info.append("location: " + city.getCapitalTile().getRow() + "," + city.getCapitalTile().getColumn() + "\n");
+        info.append("HP: " + city.getHP() + "\n");
+        info.append("strength: " + city.getStrength() + "\n");
+        info.append("population: " + city.getPopulation() + "\n");
+        info.append("production: " + city.getProductionIncome() + "\n");
+        info.append("food: " + city.getFoodIncome() + "\n");
+        info.append("gold: " + city.getGoldIncome() + "\n");
+        info.append("unemployed citizen cnt: " + city.getFreeCitizens() + "\n");
+        info.append("tiles being worked on: \n");
         for (Tile tile : city.getTerritory()) {
-            if(tile.isHasCitizen()) info.append(tile.getRow() + "," + tile.getColumn());
+            if(tile.isHasCitizen()) info.append(tile.getRow() + "," + tile.getColumn() + "\n");
         }
         if (city.getUnitInProgress() != null) {
-            info.append("currently building a " + city.getUnitInProgress().getUnitType().name);
+            info.append("currently building a " + city.getUnitInProgress().getUnitType().name + "\n");
             int remainingTurns = (city.getUnitInProgress().getRemainingCost() + city.getProductionIncome() - 1) / city.getProductionIncome();
-            info.append("will be completed in: " + remainingTurns);
+            info.append("will be completed in: " + remainingTurns + "\n");
         }
         return info.toString();
     }

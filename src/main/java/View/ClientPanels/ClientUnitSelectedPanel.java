@@ -76,6 +76,7 @@ public class ClientUnitSelectedPanel extends GameView {
             showAlert(invalidAlert, response.getString());
         }
         System.err.println(response.getString());
+        selectedUnit = null;
         show(stage);
     }
 
