@@ -31,6 +31,7 @@ import java.util.ArrayList;
 
 public class GameView extends Menu {
     private final static int RIGHT_WIDTH = 500;
+    private final static int BOTTOM_HEIGHT = 150;
 
     protected static Pane root;
     protected static Pane map = new Pane();
@@ -190,7 +191,7 @@ public class GameView extends Menu {
             // initing panes
             initElements();
 
-            //militaryPane.setVisible(true);
+            militaryPane.setVisible(true);
             //notificationPane.setVisible(true);
             //demographicsPane.setVisible(true);
             //economyPane.setVisible(true);
@@ -258,9 +259,9 @@ public class GameView extends Menu {
         notificationPane = new VBox();
         notificationPane.setVisible(false);
         notificationPane.setAlignment(Pos.CENTER);
-        notificationPane.setLayoutX(WIDTH - RIGHT_WIDTH);
+        notificationPane.setLayoutY(HEIGHT - BOTTOM_HEIGHT);
         notificationPane.setMinWidth(WIDTH);
-        notificationPane.setMinHeight(HEIGHT);
+        notificationPane.setMinHeight(BOTTOM_HEIGHT);
         notificationPane.setStyle("-fx-background-color: #C0C0C0; -fx-background-size: 100, 100;");
         Label header = new Label("NOTIFICATION PANEL");
         header.setTextFill(Color.WHITE);
@@ -278,9 +279,9 @@ public class GameView extends Menu {
         militaryPane = new VBox();
         militaryPane.setVisible(false);
         militaryPane.setAlignment(Pos.CENTER);
-        militaryPane.setLayoutX(WIDTH - RIGHT_WIDTH);
-        militaryPane.setMinWidth(RIGHT_WIDTH);
-        militaryPane.setMinHeight(HEIGHT);
+        militaryPane.setLayoutY(HEIGHT - BOTTOM_HEIGHT);
+        militaryPane.setMinWidth(WIDTH);
+        militaryPane.setMinHeight(BOTTOM_HEIGHT);
         militaryPane.setStyle("-fx-background-color: #C0C0C0; -fx-background-size: 100, 100;");
         Label header = new Label("MILITARY PANEL");
         header.setTextFill(Color.WHITE);
@@ -298,9 +299,9 @@ public class GameView extends Menu {
         VBox demographicsPane = new VBox();
         demographicsPane.setVisible(false);
         demographicsPane.setAlignment(Pos.CENTER);
-        demographicsPane.setLayoutX(WIDTH - RIGHT_WIDTH);
-        demographicsPane.setMinWidth(RIGHT_WIDTH);
-        demographicsPane.setMinHeight(HEIGHT);
+        militaryPane.setLayoutY(HEIGHT - BOTTOM_HEIGHT);
+        militaryPane.setMinWidth(WIDTH);
+        militaryPane.setMinHeight(BOTTOM_HEIGHT);
         demographicsPane.setStyle("-fx-background-color: #C0C0C0; -fx-background-size: 100, 100;");
         Label header = new Label("DEMOGRAPHICS PANEL");
         header.setTextFill(Color.WHITE);
@@ -318,9 +319,9 @@ public class GameView extends Menu {
         economyPane = new VBox();
         economyPane.setVisible(false);
         economyPane.setAlignment(Pos.CENTER);
-        economyPane.setLayoutX(WIDTH - RIGHT_WIDTH);
-        economyPane.setMinWidth(RIGHT_WIDTH);
-        economyPane.setMinHeight(HEIGHT);
+        militaryPane.setLayoutY(HEIGHT - BOTTOM_HEIGHT);
+        militaryPane.setMinWidth(WIDTH);
+        militaryPane.setMinHeight(BOTTOM_HEIGHT);
         economyPane.setStyle("-fx-background-color: #C0C0C0; -fx-background-size: 100, 100;");
         Label header = new Label("ECONOMY PANEL");
         header.setTextFill(Color.WHITE);
