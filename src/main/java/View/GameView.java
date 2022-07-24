@@ -75,11 +75,10 @@ public class GameView extends Menu {
         if(tile.getTroop() != null) text.append(tile.getTroop().getUnitType().name);
         Tooltip tooltip = new Tooltip(text.toString());
         tooltip.setWrapText(true);
-        tooltip.setShowDelay(Duration.seconds(1));
+        tooltip.setShowDelay(Duration.seconds(0));
         return tooltip;
     }
 
-    // should be called after every change to the map :)
     public static void makeMap() {
         map.getChildren().clear();
         if (!(Boolean) Network.getResponseObjOf(RequestActions.IS_MY_TURN.code, null)) {
@@ -190,7 +189,7 @@ public class GameView extends Menu {
             // initing panes
             initElements();
 
-            militaryPane.setVisible(true);
+            //militaryPane.setVisible(true);
             //notificationPane.setVisible(true);
             //demographicsPane.setVisible(true);
             //economyPane.setVisible(true);
@@ -218,9 +217,11 @@ public class GameView extends Menu {
         initEconomyPane();
         nextTurnButton = new Button("pass turn");
         nextTurnButton.setOnMouseClicked((e -> passTurn()));
-        nextTurnButton.setLayoutX(100);
         nextTurnButton.setFocusTraversable(false);
-        nextTurnButton.setLayoutY(100);
+        nextTurnButton.setLayoutX(0);
+        nextTurnButton.setLayoutY(HEIGHT - 100);
+        nextTurnButton.setMinWidth(100);
+        nextTurnButton.setMinHeight(100);
     }
 
     private static void passTurn() {
