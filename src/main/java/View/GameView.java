@@ -10,10 +10,7 @@ import Model.Units.Unit;
 import View.ClientPanels.ClientCitySelectedPanel;
 import View.ClientPanels.ClientResearchPanel;
 import View.ClientPanels.ClientUnitSelectedPanel;
-import View.Panels.DemographicsPanel;
-import View.Panels.EconomyPanel;
-import View.Panels.MilitaryPanel;
-import View.Panels.NotificationsPanel;
+import View.Panels.*;
 import View.PastViews.MapMaker;
 import enums.RequestActions;
 import enums.Types.*;
@@ -48,6 +45,8 @@ public class GameView extends Menu {
     protected static VBox militaryPane;
     protected static VBox economyPane;
     protected static VBox demographicsPane;
+    protected static VBox unitsPane;
+    protected static VBox citiesPane;
     protected static VBox researchPane;
     // TODO: 7/25/2022 select panel panel
 
@@ -210,6 +209,8 @@ public class GameView extends Menu {
         demographicsPane.setVisible(false);
         economyPane.setVisible(false);
         researchPane.setVisible(false);
+        unitsPane.setVisible(false);
+        citiesPane.setVisible(false);
 
         selectedUnit = null;
         selectedCity = null;
@@ -247,7 +248,7 @@ public class GameView extends Menu {
             //notificationPane.setVisible(true);
             //demographicsPane.setVisible(true);
             //economyPane.setVisible(true);
-            pane.getChildren().addAll(topPane, panelsPane, notificationPane, militaryPane, economyPane, unitSelectedPane, citySelectedPane, researchPane);
+            pane.getChildren().addAll(topPane, panelsPane, notificationPane, militaryPane, economyPane, demographicsPane, unitsPane, citiesPane, unitSelectedPane, citySelectedPane, researchPane);
             waitiingLable.setVisible(false);
             pane.getChildren().add(waitiingLable);
             Platform.runLater(() -> map.requestFocus());
@@ -272,6 +273,8 @@ public class GameView extends Menu {
         initDemographicsPane();
         initEconomyPane();
         initResearchPane();
+        initCitiesPane();
+        initUnitsPane();
         nextTurnButton = new Button("pass turn");
         nextTurnButton.setOnMouseClicked((e -> passTurn()));
         nextTurnButton.setFocusTraversable(false);
@@ -317,7 +320,7 @@ public class GameView extends Menu {
         panelsPane = new VBox();
         panelsPane.setVisible(true);
         panelsPane.setAlignment(Pos.CENTER);
-        panelsPane.setLayoutY(20);
+        panelsPane.setLayoutY(15);
         panelsPane.setMinWidth(LEFT_WIDTH);
         panelsPane.setMinHeight(300);
         panelsPane.setStyle("-fx-background-color: rgb(26,141,113); -fx-background-size: 100, 100;");
@@ -350,6 +353,18 @@ public class GameView extends Menu {
             demographicsPane.setVisible(true);
         });
         demographics.setFocusTraversable(false);
+        Button units = new Button("Units");
+        units.setOnMouseClicked(e -> {
+            closePanels();
+            unitsPane.setVisible(true);
+        });
+        units.setFocusTraversable(false);
+        Button cities = new Button("Cities");
+        cities.setOnMouseClicked(e -> {
+            closePanels();
+            citiesPane.setVisible(true);
+        });
+        cities.setFocusTraversable(false);
         Button research = new Button("Research");
         research.setOnMouseClicked(e -> {
             closePanels();
@@ -360,7 +375,7 @@ public class GameView extends Menu {
         closeAll.setOnMouseClicked(e -> closePanels());
         closeAll.setFocusTraversable(false);
 
-        panelsPane.getChildren().addAll(notifications, military, economy, demographics, research, closeAll);
+        panelsPane.getChildren().addAll(notifications, military, economy, demographics, units, cities, research, closeAll);
     }
 
 
@@ -442,6 +457,46 @@ public class GameView extends Menu {
         content.setStyle("-fx-font-family: 'monospaced'");
 
         economyPane.getChildren().addAll(header, content);
+    }
+
+    private static void initUnitsPane() {
+        unitsPane = new VBox();
+        unitsPane.setVisible(false);
+        unitsPane.setAlignment(Pos.CENTER);
+        unitsPane.setLayoutY(HEIGHT - BOTTOM_HEIGHT);
+        unitsPane.setMinWidth(WIDTH);
+        unitsPane.setMinHeight(BOTTOM_HEIGHT);
+        unitsPane.setStyle("-fx-background-color: #C0C0C0; -fx-background-size: 100, 100;");
+        Label header = new Label("UNITS PANEL");
+        header.setTextFill(Color.WHITE);
+        header.setFont(Font.font(18));
+        header.setAlignment(Pos.CENTER);
+        Label content = new Label(UnitsPanel.showPanel());
+        content.setFont(Font.font(14));
+        content.setTextFill(Color.WHITE);
+        content.setStyle("-fx-font-family: 'monospaced'");
+
+        unitsPane.getChildren().addAll(header, content);
+    }
+
+    private static void initCitiesPane() {
+        citiesPane = new VBox();
+        citiesPane.setVisible(false);
+        citiesPane.setAlignment(Pos.CENTER);
+        citiesPane.setLayoutY(HEIGHT - BOTTOM_HEIGHT);
+        citiesPane.setMinWidth(WIDTH);
+        citiesPane.setMinHeight(BOTTOM_HEIGHT);
+        citiesPane.setStyle("-fx-background-color: #C0C0C0; -fx-background-size: 100, 100;");
+        Label header = new Label("CITIES PANEL");
+        header.setTextFill(Color.WHITE);
+        header.setFont(Font.font(18));
+        header.setAlignment(Pos.CENTER);
+        Label content = new Label(CitiesPanel.showPanel());
+        content.setFont(Font.font(14));
+        content.setTextFill(Color.WHITE);
+        content.setStyle("-fx-font-family: 'monospaced'");
+
+        citiesPane.getChildren().addAll(header, content);
     }
 
     private static void initResearchPane() {
