@@ -22,7 +22,6 @@ public class DemographicsPanel extends GameMenu {
 
     public static String printPanel() {
         StringBuilder result = new StringBuilder();
-//        System.out.println("### DEMOGRAPHICS");
         result.append(printRow("Demographic",
                 "value",
                 "Best",

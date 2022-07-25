@@ -29,16 +29,22 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class GameView extends Menu {
-    private final static int RIGHT_WIDTH = 500;
+    private final static int LEFT_WIDTH = 200;
+    private final static int RIGHT_WIDTH = 400;
     private final static int BOTTOM_HEIGHT = 150;
 
     protected static Pane root;
     protected static Pane map = new Pane();
     protected static HBox topPane;
     protected static Label topPaneLabel;
+    protected static VBox panelsPane;
+
     protected static VBox notificationPane;
     protected static VBox militaryPane;
     protected static VBox economyPane;
+    protected static VBox demographicsPane;
+    // TODO: 7/25/2022 technology panel
+    // TODO: 7/25/2022 select panel panel
 
     protected static VBox unitSelectedPane;
     protected static VBox citySelectedPane;
@@ -191,6 +197,21 @@ public class GameView extends Menu {
         map.setOnKeyPressed(e -> moveMap(e));
     }
 
+    public static void closePanels() {
+        militaryPane.setVisible(false);
+        notificationPane.setVisible(false);
+        demographicsPane.setVisible(false);
+        economyPane.setVisible(false);
+
+        selectedUnit = null;
+        selectedCity = null;
+        selectedRow = -1;
+        selectedColumn = -1;
+
+        unitSelectedPane.setVisible(false);
+        citySelectedPane.setVisible(false);
+    }
+
     public static void show(Stage primaryStage) {
         try {
             stage = primaryStage;
@@ -206,8 +227,6 @@ public class GameView extends Menu {
             map = new Pane();
             map.setVisible(true);
             makeMap();
-            //map.setTranslateX(GameController.getCurrentPlayer().getCameraColumn() * -130 + WIDTH / 2);
-            //map.setTranslateY(GameController.getCurrentPlayer().getCameraRow() * -115 + HEIGHT / 2);
             pane.getChildren().add(map);
             // initing panes
             initElements();
@@ -216,7 +235,7 @@ public class GameView extends Menu {
             //notificationPane.setVisible(true);
             //demographicsPane.setVisible(true);
             //economyPane.setVisible(true);
-            pane.getChildren().addAll(topPane, notificationPane, militaryPane, economyPane, unitSelectedPane, citySelectedPane);
+            pane.getChildren().addAll(topPane, panelsPane, notificationPane, militaryPane, economyPane, unitSelectedPane, citySelectedPane);
             waitiingLable.setVisible(false);
             pane.getChildren().add(waitiingLable);
             Platform.runLater(() -> map.requestFocus());
@@ -234,6 +253,7 @@ public class GameView extends Menu {
         unitSelectedPane = new VBox();
         citySelectedPane = new VBox();
         initTopPane();
+        initPanelsPane();
         initNotificationPane();
         initMilitaryPane();
         initDemographicsPane();
@@ -245,6 +265,7 @@ public class GameView extends Menu {
         nextTurnButton.setLayoutY(HEIGHT - 100);
         nextTurnButton.setMinWidth(100);
         nextTurnButton.setMinHeight(100);
+        closePanels();
     }
 
     private static void passTurn() {
@@ -275,6 +296,50 @@ public class GameView extends Menu {
         topPaneLabel.setStyle("-fx-font-family: 'monospaced'");
         topPaneLabel.setTextFill(Color.WHITE);
         topPane.getChildren().addAll(topPaneLabel);
+    }
+
+    private static void initPanelsPane() {
+        panelsPane = new VBox();
+        panelsPane.setVisible(true);
+        panelsPane.setAlignment(Pos.CENTER);
+        panelsPane.setLayoutY(20);
+        panelsPane.setMinWidth(LEFT_WIDTH);
+        panelsPane.setMinHeight(300);
+        panelsPane.setStyle("-fx-background-color: rgb(26,141,113); -fx-background-size: 100, 100;");
+        Label header = new Label("OPEN PANEL");
+        header.setTextFill(Color.WHITE);
+        header.setFont(Font.font(24));
+        header.setAlignment(Pos.CENTER);
+
+        Button notifications = new Button("Notifications");
+        notifications.setOnMouseClicked(e -> {
+            closePanels();
+            notificationPane.setVisible(true);
+        });
+        notifications.setFocusTraversable(false);
+        Button military = new Button("Military");
+        military.setOnMouseClicked(e -> {
+            closePanels();
+            militaryPane.setVisible(true);
+        });
+        military.setFocusTraversable(false);
+        Button economy = new Button("Economy");
+        economy.setOnMouseClicked(e -> {
+            closePanels();
+            economyPane.setVisible(true);
+        });
+        economy.setFocusTraversable(false);
+        Button demographics = new Button("Demographics");
+        demographics.setOnMouseClicked(e -> {
+            closePanels();
+            demographicsPane.setVisible(true);
+        });
+        demographics.setFocusTraversable(false);
+        Button closeAll = new Button("Close All");
+        closeAll.setOnMouseClicked(e -> closePanels());
+        closeAll.setFocusTraversable(false);
+
+        panelsPane.getChildren().addAll(notifications, military, economy, demographics, closeAll);
     }
 
 
@@ -319,12 +384,12 @@ public class GameView extends Menu {
     }
 
     private static void initDemographicsPane() {
-        VBox demographicsPane = new VBox();
+        demographicsPane = new VBox();
         demographicsPane.setVisible(false);
         demographicsPane.setAlignment(Pos.CENTER);
-        militaryPane.setLayoutY(HEIGHT - BOTTOM_HEIGHT);
-        militaryPane.setMinWidth(WIDTH);
-        militaryPane.setMinHeight(BOTTOM_HEIGHT);
+        demographicsPane.setLayoutY(HEIGHT - BOTTOM_HEIGHT);
+        demographicsPane.setMinWidth(WIDTH);
+        demographicsPane.setMinHeight(BOTTOM_HEIGHT);
         demographicsPane.setStyle("-fx-background-color: #C0C0C0; -fx-background-size: 100, 100;");
         Label header = new Label("DEMOGRAPHICS PANEL");
         header.setTextFill(Color.WHITE);
@@ -342,9 +407,9 @@ public class GameView extends Menu {
         economyPane = new VBox();
         economyPane.setVisible(false);
         economyPane.setAlignment(Pos.CENTER);
-        militaryPane.setLayoutY(HEIGHT - BOTTOM_HEIGHT);
-        militaryPane.setMinWidth(WIDTH);
-        militaryPane.setMinHeight(BOTTOM_HEIGHT);
+        economyPane.setLayoutY(HEIGHT - BOTTOM_HEIGHT);
+        economyPane.setMinWidth(WIDTH);
+        economyPane.setMinHeight(BOTTOM_HEIGHT);
         economyPane.setStyle("-fx-background-color: #C0C0C0; -fx-background-size: 100, 100;");
         Label header = new Label("ECONOMY PANEL");
         header.setTextFill(Color.WHITE);
@@ -458,7 +523,6 @@ public class GameView extends Menu {
 
         return improvements;
     }
-
 
     private static void initCitySelectedPane() {
         citySelectedPane = new VBox();
