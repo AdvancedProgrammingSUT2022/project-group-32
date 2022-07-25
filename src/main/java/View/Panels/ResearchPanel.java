@@ -6,6 +6,7 @@ import Model.Player;
 import Model.Technology;
 import View.PastViews.CLI;
 import View.PastViews.GameMenu;
+import enums.Responses.InGameResponses;
 import enums.Types.TechnologyType;
 
 import java.util.ArrayList;
@@ -27,14 +28,10 @@ public class ResearchPanel extends GameMenu {
 
     }
 
-    public static void researchTech(String command) {
+    public static InGameResponses.Technology researchTech(String command) {
         ArrayList<String> parameters = CLI.getParameters(command, "t");
-        if (parameters == null) {
-            invalidCommand();
-            return;
-        }
         TechnologyType techType = TechnologyType.getTypeByName(parameters.get(0));
-        System.out.println(PlayerController.researchTech(techType).getString());
+        return PlayerController.researchTech(techType);
     }
 
     private static void showCurrent() {

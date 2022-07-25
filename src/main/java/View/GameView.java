@@ -3,9 +3,11 @@ package View;
 
 import Model.City;
 import Model.Map;
+import Model.Player;
 import Model.Tile;
 import Model.Units.Unit;
 import View.ClientPanels.ClientCitySelectedPanel;
+import View.ClientPanels.ClientResearchPanel;
 import View.ClientPanels.ClientUnitSelectedPanel;
 import View.Panels.DemographicsPanel;
 import View.Panels.EconomyPanel;
@@ -43,7 +45,7 @@ public class GameView extends Menu {
     protected static VBox militaryPane;
     protected static VBox economyPane;
     protected static VBox demographicsPane;
-    // TODO: 7/25/2022 technology panel
+    protected static VBox researchPane;
     // TODO: 7/25/2022 select panel panel
 
     protected static VBox unitSelectedPane;
@@ -202,6 +204,7 @@ public class GameView extends Menu {
         notificationPane.setVisible(false);
         demographicsPane.setVisible(false);
         economyPane.setVisible(false);
+        researchPane.setVisible(false);
 
         selectedUnit = null;
         selectedCity = null;
@@ -235,7 +238,7 @@ public class GameView extends Menu {
             //notificationPane.setVisible(true);
             //demographicsPane.setVisible(true);
             //economyPane.setVisible(true);
-            pane.getChildren().addAll(topPane, panelsPane, notificationPane, militaryPane, economyPane, unitSelectedPane, citySelectedPane);
+            pane.getChildren().addAll(topPane, panelsPane, notificationPane, militaryPane, economyPane, unitSelectedPane, citySelectedPane, researchPane);
             waitiingLable.setVisible(false);
             pane.getChildren().add(waitiingLable);
             Platform.runLater(() -> map.requestFocus());
@@ -258,6 +261,7 @@ public class GameView extends Menu {
         initMilitaryPane();
         initDemographicsPane();
         initEconomyPane();
+        initResearchPane();
         nextTurnButton = new Button("pass turn");
         nextTurnButton.setOnMouseClicked((e -> passTurn()));
         nextTurnButton.setFocusTraversable(false);
@@ -270,6 +274,7 @@ public class GameView extends Menu {
 
     private static void passTurn() {
         // TODO: 7/15/2022 in web it must bo into a waiting state?
+        closePanels();
         System.out.println("passing turn!!");
         Network.sendRequest(RequestActions.PASS_TURN.code, null);
         System.out.println("passing turn!!");
@@ -335,11 +340,17 @@ public class GameView extends Menu {
             demographicsPane.setVisible(true);
         });
         demographics.setFocusTraversable(false);
+        Button research = new Button("Research");
+        research.setOnMouseClicked(e -> {
+            closePanels();
+            researchPane.setVisible(true);
+        });
+        research.setFocusTraversable(false);
         Button closeAll = new Button("Close All");
         closeAll.setOnMouseClicked(e -> closePanels());
         closeAll.setFocusTraversable(false);
 
-        panelsPane.getChildren().addAll(notifications, military, economy, demographics, closeAll);
+        panelsPane.getChildren().addAll(notifications, military, economy, demographics, research, closeAll);
     }
 
 
@@ -421,6 +432,47 @@ public class GameView extends Menu {
         content.setStyle("-fx-font-family: 'monospaced'");
 
         economyPane.getChildren().addAll(header, content);
+    }
+
+    private static void initResearchPane() {
+        researchPane = new VBox();
+        researchPane.setVisible(false);
+        researchPane.setAlignment(Pos.CENTER);
+        researchPane.setLayoutX(WIDTH - RIGHT_WIDTH);
+        researchPane.setMinWidth(RIGHT_WIDTH);
+        researchPane.setMinHeight(HEIGHT);
+        researchPane.setStyle("-fx-background-color: rgba(33,43,66,0.5); -fx-background-size: 100, 100;");
+        Label header = new Label("RESEARCH PANEL");
+        header.setTextFill(Color.WHITE);
+        header.setFont(Font.font(22));
+        header.setAlignment(Pos.CENTER);
+
+        Label info = new Label(ClientResearchPanel.showPanel());
+        info.setStyle("-fx-font-family: 'monospaced'");
+
+        researchPane.getChildren().addAll(header, info, getPossibleTechsPane());
+    }
+
+    private static VBox getPossibleTechsPane() {
+        VBox techs = new VBox();
+        techs.setAlignment(Pos.CENTER);
+        techs.setMinWidth(RIGHT_WIDTH / 2);
+        Label header = new Label("RESEARCH TECHS:");
+        header.setTextFill(Color.WHITE);
+        header.setFont(Font.font(20));
+        header.setAlignment(Pos.CENTER);
+        techs.getChildren().add(header);
+
+        Player player = ((Player) Network.getResponseObjOf(RequestActions.GET_THIS_PLAYER.code, null));
+        for (TechnologyType possibleTech : player.getPossibleTechs()) {
+            Button button = new Button(possibleTech.name);
+            button.setFocusTraversable(false);
+            button.setOnMouseClicked(e -> ClientResearchPanel.researchTech(possibleTech));
+            button.setTooltip(new Tooltip("cost: " + possibleTech.cost + "\nunlocks: " + possibleTech.unlocks));
+            techs.getChildren().add(button);
+        }
+
+        return techs;
     }
 
     private static void initUnitSelectedPane() {
@@ -608,11 +660,10 @@ public class GameView extends Menu {
         if (selectedRow != row || selectedColumn != column) {
             return;
         }
-        unitSelectedPane.setVisible(false);
-        citySelectedPane.setVisible(false);
         Tile tile = ((Map) Network.getResponseObjOf(RequestActions.GET_THIS_PLAYERS_MAP.code, null)).getTile(row, column);
         if (tile.getCity() != null) {
             if (selectedCity == null){
+                closePanels();
                 selectedCity = tile.getCity();
                 selectedUnit = null;
                 root.getChildren().remove(citySelectedPane);
@@ -626,6 +677,7 @@ public class GameView extends Menu {
         }
         if (selectedCity == null && tile.getUnit() != null) {
             if (selectedUnit == null || selectedUnit.getCombatType() != CombatType.CIVILIAN){
+                closePanels();
                 selectedUnit = tile.getUnit();
                 selectedCity = null;
                 root.getChildren().remove(unitSelectedPane);
@@ -638,6 +690,7 @@ public class GameView extends Menu {
             else selectedUnit = null;
         }
         if (selectedUnit == null && selectedCity == null && tile.getTroop() != null) {
+            closePanels();
             selectedUnit = tile.getTroop();
             selectedCity = null;
             root.getChildren().remove(unitSelectedPane);

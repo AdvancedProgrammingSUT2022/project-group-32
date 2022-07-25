@@ -15,6 +15,7 @@ import java.util.function.Consumer;
 
 import static View.Panels.CitySelectedPanel.*;
 import static View.Panels.UnitSelectedPanel.*;
+import static View.Panels.ResearchPanel.*;
 
 public class InGameCommandHandler extends GameMenu {
     public enum PanelType {
@@ -75,6 +76,9 @@ public class InGameCommandHandler extends GameMenu {
         else if (command.startsWith("buy tile")) return buyTile(command);
         else if (command.startsWith("city attack")) return CitySelectedPanel.attack(command);
         else if (command.startsWith("city delete")) return CitySelectedPanel.delete();
+
+            // RESEARCH PANEL
+        else if (command.startsWith("research")) return researchTech(command);
 
         else if (command.startsWith("move map")) {
             moveMap(command);
