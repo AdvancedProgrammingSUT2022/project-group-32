@@ -1,10 +1,14 @@
 package View.Panels;
 
 import Controller.GameController;
+import Model.Player;
 import Model.Units.Unit;
+import View.Network;
+import View.NewGameMenu;
 import View.PastViews.CLI;
 import View.PastViews.GameMenu;
 import enums.Color;
+import enums.RequestActions;
 import enums.Responses.InGameResponses;
 
 import java.util.ArrayList;
@@ -20,17 +24,19 @@ public class UnitsPanel extends GameMenu {
         }
     }
 
-
-    private static void showPanel() {
+    public static String showPanel() {
         int i = 0;
-        printRow("id", "Type", "Location");
-        for (Unit unit : GameController.getCurrentPlayer().getUnits()) {
+        String result = "";
+        result += printRow("id", "Type", "Location");
+        Player player = ((Player) Network.getResponseObjOf(RequestActions.GET_THIS_PLAYER.code, null));
+        for (Unit unit : player.getUnits()) {
             i++;
-            printRow(unit.getOwner().getBackgroundColor().code + i + "  " + Color.RESET.code,
+            result += printRow(i + "  ",
                     unit.getUnitType().name,
                     unit.getRow() + " " + unit.getColumn()
             );
         }
+        return result;
     }
 
     private static void openUnit(String command) {
@@ -49,9 +55,10 @@ public class UnitsPanel extends GameMenu {
         System.out.println("unit opened successfully");
     }
 
-    private static void printRow(String s1, String s2, String s3) {
+    private static String printRow(String s1, String s2, String s3) {
         String format = "|%1$-3s|%2$-15s|%3$-15s|";
-        System.out.format(format, s1, s2, s3);
-        System.out.println();
+        String result = "";
+        result += String.format(format, s1, s2, s3) + "\n";
+        return result;
     }
 }

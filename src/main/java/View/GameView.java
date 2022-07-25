@@ -2,18 +2,12 @@ package View;
 // THIS IS FOR ONLINE PLAYING ...
 
 import Controller.PlayerController;
-import Model.City;
-import Model.Map;
-import Model.Player;
-import Model.Tile;
+import Model.*;
 import Model.Units.Unit;
 import View.ClientPanels.ClientCitySelectedPanel;
 import View.ClientPanels.ClientResearchPanel;
 import View.ClientPanels.ClientUnitSelectedPanel;
-import View.Panels.DemographicsPanel;
-import View.Panels.EconomyPanel;
-import View.Panels.MilitaryPanel;
-import View.Panels.NotificationsPanel;
+import View.Panels.*;
 import View.PastViews.MapMaker;
 import enums.RequestActions;
 import enums.Types.*;
@@ -30,6 +24,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import java.util.ArrayList;
 
 public class GameView extends Menu {
     private final static int LEFT_WIDTH = 200;
@@ -48,6 +44,10 @@ public class GameView extends Menu {
     protected static VBox militaryPane;
     protected static VBox economyPane;
     protected static VBox demographicsPane;
+    protected static VBox unitsPane;
+    protected static VBox citiesPane;
+
+    protected static VBox diplomacyPane;
     protected static VBox researchPane;
     // TODO: 7/25/2022 select panel panel
 
@@ -204,12 +204,15 @@ public class GameView extends Menu {
         map.setOnKeyPressed(e -> moveMap(e));
     }
 
-    public static void closePanels() {
+    public static void closePanels() { // TODO: 7/25/2022
         militaryPane.setVisible(false);
         notificationPane.setVisible(false);
         demographicsPane.setVisible(false);
         economyPane.setVisible(false);
         researchPane.setVisible(false);
+        unitsPane.setVisible(false);
+        citiesPane.setVisible(false);
+        diplomacyPane.setVisible(false);
 
         selectedUnit = null;
         selectedCity = null;
@@ -243,11 +246,8 @@ public class GameView extends Menu {
             // initing panes
             initElements();
 
-            //militaryPane.setVisible(true);
-            //notificationPane.setVisible(true);
-            //demographicsPane.setVisible(true);
-            //economyPane.setVisible(true);
-            pane.getChildren().addAll(topPane, panelsPane, notificationPane, militaryPane, economyPane, unitSelectedPane, citySelectedPane, researchPane);
+            // TODO: 7/25/2022
+            pane.getChildren().addAll(topPane, panelsPane, notificationPane, militaryPane, economyPane, demographicsPane, unitsPane, citiesPane, diplomacyPane, unitSelectedPane, citySelectedPane, researchPane);
             waitiingLable.setVisible(false);
             pane.getChildren().add(waitiingLable);
             Platform.runLater(() -> map.requestFocus());
@@ -265,13 +265,16 @@ public class GameView extends Menu {
     public static void initElements() {
         unitSelectedPane = new VBox();
         citySelectedPane = new VBox();
-        initTopPane();
+        initTopPane(); // TODO: 7/25/2022
         initPanelsPane();
         initNotificationPane();
         initMilitaryPane();
         initDemographicsPane();
         initEconomyPane();
         initResearchPane();
+        initCitiesPane();
+        initUnitsPane();
+        initDiplomacyPane();
         nextTurnButton = new Button("pass turn");
         nextTurnButton.setOnMouseClicked((e -> passTurn()));
         nextTurnButton.setFocusTraversable(false);
@@ -313,11 +316,11 @@ public class GameView extends Menu {
         topPane.getChildren().addAll(topPaneLabel);
     }
 
-    private static void initPanelsPane() {
+    private static void initPanelsPane() { // TODO: 7/25/2022
         panelsPane = new VBox();
         panelsPane.setVisible(true);
         panelsPane.setAlignment(Pos.CENTER);
-        panelsPane.setLayoutY(20);
+        panelsPane.setLayoutY(15);
         panelsPane.setMinWidth(LEFT_WIDTH);
         panelsPane.setMinHeight(300);
         panelsPane.setStyle("-fx-background-color: rgb(26,141,113); -fx-background-size: 100, 100;");
@@ -350,6 +353,24 @@ public class GameView extends Menu {
             demographicsPane.setVisible(true);
         });
         demographics.setFocusTraversable(false);
+        Button units = new Button("Units");
+        units.setOnMouseClicked(e -> {
+            closePanels();
+            unitsPane.setVisible(true);
+        });
+        units.setFocusTraversable(false);
+        Button cities = new Button("Cities");
+        cities.setOnMouseClicked(e -> {
+            closePanels();
+            citiesPane.setVisible(true);
+        });
+        cities.setFocusTraversable(false);
+        Button diplomacy = new Button("Diplomacy");
+        diplomacy.setOnMouseClicked(e -> {
+            closePanels();
+            diplomacyPane.setVisible(true);
+        });
+        diplomacy.setFocusTraversable(false);
         Button research = new Button("Research");
         research.setOnMouseClicked(e -> {
             closePanels();
@@ -360,7 +381,8 @@ public class GameView extends Menu {
         closeAll.setOnMouseClicked(e -> closePanels());
         closeAll.setFocusTraversable(false);
 
-        panelsPane.getChildren().addAll(notifications, military, economy, demographics, research, closeAll);
+        // TODO: 7/25/2022
+        panelsPane.getChildren().addAll(notifications, military, economy, demographics, units, cities, research, diplomacy, closeAll);
     }
 
 
@@ -442,6 +464,95 @@ public class GameView extends Menu {
         content.setStyle("-fx-font-family: 'monospaced'");
 
         economyPane.getChildren().addAll(header, content);
+    }
+
+    private static void initUnitsPane() {
+        unitsPane = new VBox();
+        unitsPane.setVisible(false);
+        unitsPane.setAlignment(Pos.CENTER);
+        unitsPane.setLayoutY(HEIGHT - BOTTOM_HEIGHT);
+        unitsPane.setMinWidth(WIDTH);
+        unitsPane.setMinHeight(BOTTOM_HEIGHT);
+        unitsPane.setStyle("-fx-background-color: #C0C0C0; -fx-background-size: 100, 100;");
+        Label header = new Label("UNITS PANEL");
+        header.setTextFill(Color.WHITE);
+        header.setFont(Font.font(18));
+        header.setAlignment(Pos.CENTER);
+        Label content = new Label(UnitsPanel.showPanel());
+        content.setFont(Font.font(14));
+        content.setTextFill(Color.WHITE);
+        content.setStyle("-fx-font-family: 'monospaced'");
+
+        unitsPane.getChildren().addAll(header, content);
+    }
+
+    private static void initCitiesPane() {
+        citiesPane = new VBox();
+        citiesPane.setVisible(false);
+        citiesPane.setAlignment(Pos.CENTER);
+        citiesPane.setLayoutY(HEIGHT - BOTTOM_HEIGHT);
+        citiesPane.setMinWidth(WIDTH);
+        citiesPane.setMinHeight(BOTTOM_HEIGHT);
+        citiesPane.setStyle("-fx-background-color: #C0C0C0; -fx-background-size: 100, 100;");
+        Label header = new Label("CITIES PANEL");
+        header.setTextFill(Color.WHITE);
+        header.setFont(Font.font(18));
+        header.setAlignment(Pos.CENTER);
+        Label content = new Label(CitiesPanel.showPanel());
+        content.setFont(Font.font(14));
+        content.setTextFill(Color.WHITE);
+        content.setStyle("-fx-font-family: 'monospaced'");
+
+        citiesPane.getChildren().addAll(header, content);
+    }
+
+    private static void initDiplomacyPane() {
+        diplomacyPane = new VBox();
+        diplomacyPane.setVisible(false);
+        diplomacyPane.setAlignment(Pos.CENTER);
+        diplomacyPane.setLayoutX(WIDTH - RIGHT_WIDTH);
+        diplomacyPane.setMinWidth(RIGHT_WIDTH);
+        diplomacyPane.setMinHeight(HEIGHT);
+        diplomacyPane.setStyle("-fx-background-color: rgba(33,43,66,0.5); -fx-background-size: 100, 100;");
+        Label header = new Label("DIPLOMACY PANEL");
+        header.setTextFill(Color.WHITE);
+        header.setFont(Font.font(22));
+        header.setAlignment(Pos.CENTER);
+
+        Label info = new Label(DiplomacyPanel.showPanel());
+        info.setStyle("-fx-font-family: 'monospaced'");
+
+        diplomacyPane.getChildren().addAll(header, info, getPossiblePlayersPane());
+    }
+
+    private static VBox getPossiblePlayersPane() {
+        VBox enemies = new VBox();
+        enemies.setAlignment(Pos.CENTER);
+        enemies.setMinWidth(RIGHT_WIDTH / 2);
+        Label header = new Label("DECLARE WAR ON:");
+        header.setTextFill(Color.WHITE);
+        header.setFont(Font.font(20));
+        header.setAlignment(Pos.CENTER);
+        enemies.getChildren().add(header);
+
+        Player player = ((Player) Network.getResponseObjOf(RequestActions.GET_THIS_PLAYER.code, null));
+        ArrayList<Player> players = ((Game) Network.getResponseObjOf(RequestActions.GET_GAME.code, null)).getPlayers();
+
+        for (Player p1 : players) {
+            if(!p1.getName().equals(player.getName()) && player.getInWarPlayerByName(p1.getName()) == null) {
+                Button button = new Button(p1.getName());
+                button.setFocusTraversable(false);
+                button.setOnMouseClicked(e -> {
+                    Network.getResponseObjOfPanelCommand("declare on -t " + p1.getName());
+                    Network.getResponseObjOf(RequestActions.UPDATE_FIELD_OF_VIEW.code, null);
+                    show(stage);
+                });
+                enemies.getChildren().add(button);
+
+            }
+        }
+
+        return enemies;
     }
 
     private static void initResearchPane() {

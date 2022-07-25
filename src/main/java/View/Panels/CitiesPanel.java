@@ -2,9 +2,12 @@ package View.Panels;
 
 import Controller.GameController;
 import Model.City;
+import Model.Player;
+import View.Network;
 import View.PastViews.CLI;
 import View.PastViews.GameMenu;
 import enums.Color;
+import enums.RequestActions;
 import enums.Responses.InGameResponses;
 
 import java.util.ArrayList;
@@ -20,16 +23,19 @@ public class CitiesPanel extends GameMenu {
         }
     }
 
-    private static void showPanel() {
+    public static String showPanel() {
         int i = 0;
-        printRow("#", "Name", "Owner");
-        for (City city : GameController.getCurrentPlayer().getCities()) {
+        String result = "";
+        result += printRow("#", "Name", "Owner");
+        Player player = ((Player) Network.getResponseObjOf(RequestActions.GET_THIS_PLAYER.code, null));
+        for (City city : player.getCities()) {
             i++;
-            printRow(city.getOwner().getBackgroundColor().code + i + "  " + Color.RESET.code,
+            result += printRow(i + "  ",
                     city.getName(),
                     city.getOwner().getName()
             );
         }
+        return result;
     }
 
     private static void openCity(String command){
@@ -50,9 +56,10 @@ public class CitiesPanel extends GameMenu {
         System.out.println("city opened successfully");
     }
 
-    private static void printRow(String s1, String s2, String s3) {
+    private static String printRow(String s1, String s2, String s3) {
         String format = "|%1$-5s|%2$-15s|%3$-15s|";
-        System.out.format(format, s1, s2, s3);
-        System.out.println();
+        String result = "";
+        result += String.format(format, s1, s2, s3) + "\n";
+        return result;
     }
 }
