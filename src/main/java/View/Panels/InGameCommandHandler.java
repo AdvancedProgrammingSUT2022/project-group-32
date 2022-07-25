@@ -80,6 +80,7 @@ public class InGameCommandHandler extends GameMenu {
             // RESEARCH PANEL
         else if (command.startsWith("research")) return researchTech(command);
 
+        else if (command.startsWith("declare on")) return declareOn(command);
         else if (command.startsWith("move map")) {
             moveMap(command);
         } else if (command.startsWith("select unit")) {
@@ -195,6 +196,13 @@ public class InGameCommandHandler extends GameMenu {
 
     private static void endGame(String command) {
 
+    }
+
+    // NOTE: this ones special
+    private static String declareOn(String command) {
+        ArrayList<String> parameters = CLI.getParameters(command, "t");
+        String name = parameters.get(0);
+        return GameController.declareOn(name);
     }
 
     private static void openPanel(String command) {

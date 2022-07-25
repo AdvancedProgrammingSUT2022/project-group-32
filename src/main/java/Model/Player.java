@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.GameController;
 import Controller.UserController;
 import Model.Units.Troop;
 import Model.Units.Unit;
@@ -401,4 +402,5 @@ public class Player implements Serializable {
         }
         return techs;
     }
+
 }

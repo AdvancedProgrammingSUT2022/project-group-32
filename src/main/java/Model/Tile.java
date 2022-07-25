@@ -384,16 +384,16 @@ public class Tile implements Serializable {
             ImageView unitImage = unit.getUnitImage();
             unitImage.setTranslateX(20);
             unitImage.setTranslateY(40);
-            resourceImage.setFitWidth(50);
-            resourceImage.setFitHeight(50);
+            unitImage.setFitWidth(50);
+            unitImage.setFitHeight(50);
             imagePane.getChildren().add(unitImage);
         }
         if(fogState == FogState.VISIBLE && troop != null) {
             ImageView unitImage = troop.getUnitImage();
             unitImage.setTranslateX(80);
             unitImage.setTranslateY(40);
-            resourceImage.setFitWidth(50);
-            resourceImage.setFitHeight(50);
+            unitImage.setFitWidth(50);
+            unitImage.setFitHeight(50);
             imagePane.getChildren().add(unitImage);
         }
         return imagePane;
