@@ -190,11 +190,11 @@ public class GameController {
 
     public static void forceEnd() {
         Player winner = null;
-        int maxCity = -1;
+        int maxScore = -1;
         for (Player player : game.getPlayers()) {
-            if(player.getCities().size() >= maxCity) {
+            if(player.getScore() > maxScore) {
                 winner = player;
-                maxCity = player.getCities().size();
+                maxScore = player.getScore();
             }
         }
         for (Player player : game.getPlayers()) {
@@ -217,7 +217,7 @@ public class GameController {
         return (aliveCount == 1);
     }
 
-    public static void endGame(){
+    public static void endGame(){ // TODO: 7/25/2022 this needs to get server support
         for (Player player : game.getPlayers()) {
             User user = player.getUser();
             user.setLastUpdate(getCurrentTime());
@@ -228,7 +228,6 @@ public class GameController {
             }
         }
         UserController.saveUsers();
-        // TODO: 6/7/2022 show a game ended popup or something
         Menu.changeMenu(Menu.MenuType.MAIN_MENU);
     }
 
