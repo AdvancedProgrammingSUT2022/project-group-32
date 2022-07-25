@@ -54,6 +54,8 @@ public class CombatController {
             defender.getOwner().addNotification(GameController.getTurn() + ": a unit of yours has died!");
             defender.destroy();
         }
+        PlayerController.declareWar(attacker.getOwner(), defender.getOwner());
+
         PlayerController.updateFieldOfView(attacker.getOwner());
         PlayerController.updateFieldOfView(defender.getOwner());
     }
@@ -79,6 +81,8 @@ public class CombatController {
             attacker.placeIn(defender.getCapitalTile(), GameController.getMap());
             captureCity(attacker.getOwner(), defender);
         }
+        PlayerController.declareWar(attacker.getOwner(), defender.getOwner());
+
         PlayerController.updateFieldOfView(attacker.getOwner());
         PlayerController.updateFieldOfView(defender.getOwner());
     }
@@ -99,6 +103,8 @@ public class CombatController {
             defender.getOwner().addNotification(GameController.getTurn() + ": a unit of yours has died!");
             defender.destroy();
         }
+        PlayerController.declareWar(attacker.getOwner(), defender.getOwner());
+
         PlayerController.updateFieldOfView(attacker.getOwner());
         PlayerController.updateFieldOfView(defender.getOwner());
     }
@@ -115,6 +121,9 @@ public class CombatController {
         if (defPower >= 0) defender.setHP(defender.getHP() - defender.getHealth() * (attPower / (defPower * 2)));
         else defender.setHP(0);
         defender.setHP(Math.max(defender.getHP(), 1));
+
+        PlayerController.declareWar(attacker.getOwner(), defender.getOwner());
+
         PlayerController.updateFieldOfView(attacker.getOwner());
         PlayerController.updateFieldOfView(defender.getOwner());
     }
@@ -134,6 +143,8 @@ public class CombatController {
             defender.destroy();
             defender.getOwner().addNotification(GameController.getTurn() + ": a unit of yours has died!");
         }
+        PlayerController.declareWar(attacker.getOwner(), defender.getOwner());
+
         PlayerController.updateFieldOfView(attacker.getOwner());
         PlayerController.updateFieldOfView(defender.getOwner());
     }

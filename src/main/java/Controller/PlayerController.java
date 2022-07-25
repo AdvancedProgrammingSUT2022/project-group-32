@@ -236,9 +236,11 @@ public class PlayerController {
     }
 
     public static void declareWar(Player player1, Player player2) {
-        if(player1.getInWarPlayers().contains(player2)) return;
+        if(player1.getInWarPlayers().contains(player2) && player2.getInWarPlayers().contains(player1)) return;
         player1.getInWarPlayers().add(player2);
         player2.getInWarPlayers().add(player1);
+        player1.addNotification(player2.getName() + "has declared war on you!");
+        player2.addNotification(player1.getName() + "has declared war on you!");
         // TODO: 7/21/2022 notify players maybe?
     }
 
