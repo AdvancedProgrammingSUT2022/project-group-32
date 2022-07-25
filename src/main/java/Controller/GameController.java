@@ -175,6 +175,16 @@ public class GameController {
 
     }
 
+    public static String declareOn(String name) {
+        for (Player player : game.getPlayers()) {
+            if(player.getName().equals(name)){
+                PlayerController.declareWar(getCurrentPlayer(), player);
+                return "OK";
+            }
+        }
+        return "No player with that name";
+    }
+
     // same as above basically overriding
     public static Response.GameMenu changeCamera(String direction) {
         return changeCamera(direction, 1);
