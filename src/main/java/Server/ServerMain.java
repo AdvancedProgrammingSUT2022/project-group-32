@@ -128,6 +128,13 @@ public class ServerMain {
                             } else if (action.equals(LOGOUT.code)) {
                                 UserController.logout();
                                 sendRequest(new Request("logout done", null), objectOutputStream);
+                            } else if (action.equals(END_GAME.code)) {
+                                GameController.endGame();
+                                sendRequest(new Request("end Game response", null), objectOutputStream);
+                            } else if (action.equals(AM_I_LOST.code)) {
+                                sendRequest(new Request("am i lost ans", null, PlayerController.checkIfLost()), objectOutputStream);
+                            } else if (action.equals(AM_I_WON.code)) {
+                                sendRequest(new Request("am i won resp", null, PlayerController.checkIfWon()), objectOutputStream);
                             } else {
                                 System.err.println("INVALID COMMAND!!!");
                             }
