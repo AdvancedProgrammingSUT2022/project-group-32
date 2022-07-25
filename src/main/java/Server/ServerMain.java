@@ -3,6 +3,7 @@ package Server;
 import Controller.GameController;
 import Controller.PlayerController;
 import Controller.UserController;
+import Model.Player;
 import Model.Request;
 import Model.User;
 import View.Panels.InGameCommandHandler;
@@ -120,6 +121,13 @@ public class ServerMain {
                             } else if (action.equals(UPDATE_FIELD_OF_VIEW.code)) {
                                 PlayerController.updateFieldOfView();
                                 sendRequest(new Request("fieldUpdate", null), objectOutputStream);
+                            } else if (action.equals(IS_GAME_ENDED.code)) {
+                                sendRequest(new Request("is ended response", null, GameController.isEnded()), objectOutputStream);
+                            } else if (action.equals(IS_PLAYER_DEAD.code)) {
+                                sendRequest(new Request("is player dead response", null, GameController.isDead((Player) request.getObj())), objectOutputStream);
+                            } else if (action.equals(LOGOUT.code)) {
+                                UserController.logout();
+                                sendRequest(new Request("logout done", null), objectOutputStream);
                             } else {
                                 System.err.println("INVALID COMMAND!!!");
                             }

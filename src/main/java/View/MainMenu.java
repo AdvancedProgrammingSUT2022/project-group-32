@@ -1,9 +1,7 @@
 package View;
 
-import Controller.GameController;
-import Controller.UserController;
 import View.Components.Civ6Title;
-import enums.Responses.Response;
+import enums.RequestActions;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -41,7 +39,7 @@ public class MainMenu extends Menu {
     );
 
     private static void logout() {
-        Response.MainMenu response = UserController.logout();
+        Network.sendRequest(RequestActions.LOGOUT.code, null);
         changeMenu(LOGIN_MENU);
     }
 

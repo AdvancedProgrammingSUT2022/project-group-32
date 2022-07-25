@@ -29,7 +29,7 @@ public enum RequestActions {
     GET_THIS_PLAYERS_MAP("get-this_players_map"),
     GET_USERS_PROFILE_PIC("getusersprofilepic"),
     GET_ONLINES("geto Onlines"),
-    UPDATE_FIELD_OF_VIEW("update_fieldOfView");
+    UPDATE_FIELD_OF_VIEW("update_fieldOfView"), IS_GAME_ENDED("isGameEnded"), IS_PLAYER_DEAD("isPlayerDead"), LOGOUT("logout");
 
 
     public final String code;
