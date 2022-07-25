@@ -1,6 +1,7 @@
 package View;
 // THIS IS FOR ONLINE PLAYING ...
 
+import Controller.PlayerController;
 import Model.City;
 import Model.Map;
 import Model.Player;
@@ -35,6 +36,8 @@ public class GameView extends Menu {
     private final static int RIGHT_WIDTH = 400;
     private final static int BOTTOM_HEIGHT = 150;
 
+    private static int cameraRow, cameraColumn;
+
     protected static Pane root;
     protected static Pane map = new Pane();
     protected static HBox topPane;
@@ -50,6 +53,8 @@ public class GameView extends Menu {
 
     protected static VBox unitSelectedPane;
     protected static VBox citySelectedPane;
+
+    protected static VBox winningPane;
 
     protected static Alert infoAlert;
     protected static Alert invalidAlert;
@@ -230,6 +235,10 @@ public class GameView extends Menu {
             map = new Pane();
             map.setVisible(true);
             makeMap();
+            Player player = ((Player) Network.getResponseObjOf(RequestActions.GET_THIS_PLAYER.code, null));
+            cameraRow = player.getCameraRow();
+            cameraColumn = player.getCameraColumn();
+            setCamera();
             pane.getChildren().add(map);
             // initing panes
             initElements();
@@ -243,6 +252,7 @@ public class GameView extends Menu {
             pane.getChildren().add(waitiingLable);
             Platform.runLater(() -> map.requestFocus());
             pane.getChildren().add(nextTurnButton);
+
             Scene scene = new Scene(pane, WIDTH, HEIGHT);
             scene.getStylesheets().add(LoginMenu.class.getClassLoader().getResource("css/MenuStyle.css").toExternalForm());
             stage.setScene(scene);
@@ -705,22 +715,43 @@ public class GameView extends Menu {
         System.out.println(selectedCity);
     }
 
+    private static int getCameraX(int row, int column) {
+        return column * 115;
+    }
+
+    private static int getCameraY(int row, int column) {
+        if (column % 2 == 0) {
+            return row * 130 + 65;
+        } else {
+            return row * 130;
+        }
+    }
+
+    private static void setCamera() {
+        map.setTranslateX(-getCameraX(cameraRow, cameraColumn) + WIDTH / 2 - 70);
+        map.setTranslateY(-getCameraY(cameraRow, cameraColumn) + HEIGHT / 2 - 60);
+    }
+
     public static void moveMap(KeyEvent keyEvent) {
         String keyName = keyEvent.getCode().getName();
-        System.err.println("an arrow key was pressed!");
         switch (keyName) {
             case "Down":
-                map.setTranslateY(map.getTranslateY() - 15);
+                Network.getResponseObjOfPanelCommand("move map -d d 1");
+                cameraRow++;
                 break;
             case "Up":
-                map.setTranslateY(map.getTranslateY() + 15);
+                Network.getResponseObjOfPanelCommand("move map -d u 1");
+                cameraRow--;
                 break;
             case "Right":
-                map.setTranslateX(map.getTranslateX() - 15);
+                Network.getResponseObjOfPanelCommand("move map -d r 1");
+                cameraColumn++;
                 break;
             case "Left":
-                map.setTranslateX(map.getTranslateX() + 15);
+                Network.getResponseObjOfPanelCommand("move map -d l 1");
+                cameraColumn--;
                 break;
         }
+        setCamera();
     }
 }
