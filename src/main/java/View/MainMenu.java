@@ -1,5 +1,6 @@
 package View;
 
+import Model.User;
 import View.Components.Civ6Title;
 import enums.RequestActions;
 import javafx.scene.Parent;
@@ -10,12 +11,16 @@ import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
 import static View.Menu.MenuType.*;
 
 public class MainMenu extends Menu {
+    private static final String chatClientCommand = """
+            "C:\\Program Files\\Java\\jdk1.8.0_311\\bin\\java.exe" "-javaagent:E:\\IntelliJ IDEA 2021.3.2\\lib\\idea_rt.jar=3919:E:\\IntelliJ IDEA 2021.3.2\\bin" -Dfile.encoding=UTF-8 -classpath "C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\charsets.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\deploy.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\ext\\access-bridge-64.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\ext\\cldrdata.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\ext\\dnsns.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\ext\\jaccess.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\ext\\jfxrt.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\ext\\localedata.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\ext\\nashorn.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\ext\\sunec.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\ext\\sunjce_provider.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\ext\\sunmscapi.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\ext\\sunpkcs11.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\ext\\zipfs.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\javaws.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\jce.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\jfr.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\jfxswt.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\jsse.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\management-agent.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\plugin.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\resources.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\rt.jar;D:\\UNIVERSITY\\2\\AP\\Projects\\ChatClient\\out\\production\\ChatClient" main 
+            """ + ((User) Network.getResponseObjOf(RequestActions.GET_THIS_USER.code, null)).getUsername();
 
 
     private static final List<Pair<String, Runnable>> menuData = Arrays.asList(
@@ -29,6 +34,11 @@ public class MainMenu extends Menu {
                 Menu.changeMenu(SCOREBOARD);
             }),
             new Pair<String, Runnable>("C h a t   R o o m", () -> {
+                try {
+                    Runtime.getRuntime().exec(chatClientCommand);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }),
             new Pair<String, Runnable>("L o g o u t", () -> {
                 logout();

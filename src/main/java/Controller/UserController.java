@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.User;
+import Server.DB;
 import Server.ServerMain;
 import View.PastViews.Menu;
 import com.google.gson.Gson;
@@ -21,7 +22,7 @@ import java.util.List;
 
 public class UserController {
     private static ArrayList<User> users;
-
+    private static final DB db = new DB();
     static {
         try {
             String json = new String(Files.readAllBytes(Paths.get("src/main/resources/users.json")));
@@ -106,11 +107,13 @@ public class UserController {
         users.add(user);
         saveUsers();
         ServerMain.addThreadUser(user);
+        db.insert(username, password);
         return Response.LoginMenu.REGISTER_SUCCESSFUL;
     }
 
     public static Response.LoginMenu login(String username, String password) { // login menu
         User user;
+        String goodPass = db.getPass(username);
         if ((user = getUserByUsername(username)) == null || !user.getPassword().equals(password)) {
             return Response.LoginMenu.USERNAME_PASSWORD_DONT_MATCH;
         }
@@ -136,6 +139,7 @@ public class UserController {
         }
         currentUser.setPassword(newPW);
         saveUsers();
+        db.replace(currentUser.getUsername(), newPW);
         return Response.ProfileMenu.SUCCESSFUL_PASSWORD_CHANGE;
     }
 

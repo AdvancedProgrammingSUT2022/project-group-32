@@ -22,15 +22,18 @@
     "photoAddress": "src/main/resources/images/profilePics/1_HEMYB.png",
     "lastUpdate": "2022-07-11 20:28",
     "bestScore": 111,
-    "bestScoreTime": "2022-07-22 10:25"
+    "bestScoreTime": "2022-07-22 10:25",
+    "onlineStatus": "Online"
   },
   {
     "username": "2",
     "password": "2",
-    "nickname": "2",
+    "nickname": "joojoo",
+    "photoAddress": "src/main/resources/images/profilePics/2_0GjUS.png",
     "lastUpdate": "2022-07-11 20:28",
     "bestScore": 123,
-    "bestScoreTime": "2022-07-22 10:25"
+    "bestScoreTime": "2022-07-22 10:25",
+    "onlineStatus": "Online"
   },
   {
     "username": "3",
@@ -38,7 +41,8 @@
     "nickname": "3",
     "lastUpdate": "2022-07-11 20:28",
     "bestScore": 1444,
-    "bestScoreTime": "2022-07-22 10:25"
+    "bestScoreTime": "2022-07-22 10:25",
+    "onlineStatus": "Offline"
   },
   {
     "username": "ali",
@@ -71,5 +75,25 @@
     "lastUpdate": "2022-07-22 10:25",
     "bestScore": 123,
     "bestScoreTime": "2022-07-22 10:25"
+  },
+  {
+    "username": "Kafter",
+    "password": "Morghe12!@",
+    "nickname": "kafi",
+    "photoAddress": "src/main/resources/images/Default_Pic.png",
+    "lastUpdate": "2022-07-26 00:09",
+    "bestScore": 0,
+    "bestScoreTime": "123-111-65",
+    "onlineStatus": "Online"
+  },
+  {
+    "username": "Morgh",
+    "password": "JooJoo3#",
+    "nickname": "moqi",
+    "photoAddress": "src/main/resources/images/Default_Pic.png",
+    "lastUpdate": "2022-07-26 00:18",
+    "bestScore": 0,
+    "bestScoreTime": "123-111-65",
+    "onlineStatus": "Online"
   }
 ]

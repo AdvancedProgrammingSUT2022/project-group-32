@@ -19,10 +19,20 @@ import java.util.HashMap;
 import static enums.RequestActions.*;
 
 public class ServerMain {
+    private static final String chatServerCommand = """
+            "C:\\Program Files\\Java\\jdk1.8.0_311\\bin\\java.exe" "-javaagent:E:\\IntelliJ IDEA 2021.3.2\\lib\\idea_rt.jar=3899:E:\\IntelliJ IDEA 2021.3.2\\bin" -Dfile.encoding=UTF-8 -classpath "C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\charsets.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\deploy.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\ext\\access-bridge-64.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\ext\\cldrdata.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\ext\\dnsns.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\ext\\jaccess.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\ext\\jfxrt.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\ext\\localedata.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\ext\\nashorn.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\ext\\sunec.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\ext\\sunjce_provider.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\ext\\sunmscapi.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\ext\\sunpkcs11.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\ext\\zipfs.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\javaws.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\jce.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\jfr.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\jfxswt.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\jsse.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\management-agent.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\plugin.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\resources.jar;C:\\Program Files\\Java\\jdk1.8.0_311\\jre\\lib\\rt.jar;D:\\UNIVERSITY\\2\\AP\\Projects\\Chat\\out\\production\\Chat" Main
+            """;
+
     private static final int SERVER_PORT = 7777;
     private static final HashMap<Long, User> threadIDUser = new HashMap<>();
     private static final HashMap<Long, ObjectOutputStream> outputStreamsByThreadID = new HashMap<>();
+
     public static void main(String[] args) {
+        try {
+            Runtime.getRuntime().exec(chatServerCommand);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         ServerSocket ss;
         try {
             ss = new ServerSocket(SERVER_PORT);
