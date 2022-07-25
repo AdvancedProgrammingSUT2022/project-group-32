@@ -51,7 +51,7 @@ public class Game {
     public void nextTurn() {
         do {
             currentPlayerID = currentPlayerID + 1;
-            if(currentPlayerID == players.size()){
+            if(currentPlayerID >= players.size()){
                 currentPlayerID = 0;
                 turnCount ++;
             }

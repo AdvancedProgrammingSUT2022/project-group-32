@@ -31,6 +31,7 @@ public class GameView extends Menu {
     private static int selectedRow = -1, selectedColumn = -1;
     private static Button nextTurnButton;
     private static Button quitButton;
+    private static ToggleButton autoSave;
 
     private static void putRiver(int x, int y, int w, int h){
         ImageView river = new ImageView(GameView.class.getClassLoader().getResource("images/river.png").toExternalForm());
@@ -60,21 +61,12 @@ public class GameView extends Menu {
 
     public static void makeMap(){
         map.getChildren().clear();
-        ImageView imageView1 = new ImageView(GameView.class.getClassLoader().getResource("images/Terrains/hill.png").toExternalForm());
-        ImageView imageView2 = new ImageView(GameView.class.getClassLoader().getResource("images/Terrains/hill.png").toExternalForm());
-        imageView2.setTranslateY(130);
-        ImageView imageView3 = new ImageView(GameView.class.getClassLoader().getResource("images/Terrains/hill.png").toExternalForm());
-        imageView3.setTranslateY(65);
-        imageView3.setTranslateX(115);
-        map.getChildren().add(imageView1);
-        map.getChildren().add(imageView2);
-        map.getChildren().add(imageView3);
 
         // putting rivers in
         for(int row=0;row<GameController.getMap().getHeight();row++){
             for(int column=0;column<GameController.getMap().getWidth();column++){
                 int x, y;
-                if(column % 2 == 0){
+                if(column % 2 == 1){
                     y = row * 130;
                     x = column * 115;
                 } else {
@@ -109,7 +101,7 @@ public class GameView extends Menu {
         for(int row=0;row<GameController.getMap().getHeight();row++){
             for(int column=0;column<GameController.getMap().getWidth();column++){
                 int x, y;
-                if(column % 2 == 0){
+                if(column % 2 == 1){
                     y = row * 130;
                     x = column * 115;
                 } else {
@@ -142,7 +134,7 @@ public class GameView extends Menu {
         map.setOnKeyPressed(e -> moveMap(e));
     }
 
-    public static void show(Stage primaryStage) throws Exception {
+    public static void show(Stage primaryStage) {
         stage = primaryStage;
         root = new Pane();
         alert = initAlert();
@@ -161,7 +153,7 @@ public class GameView extends Menu {
         initElements();
         pane.getChildren().add(topPane);
         // adding buttons
-        pane.getChildren().addAll(nextTurnButton, quitButton);
+        pane.getChildren().addAll(nextTurnButton, quitButton, autoSave);
         Scene scene = new Scene(pane, WIDTH, HEIGHT);
         scene.getStylesheets().add(LoginMenu.class.getClassLoader().getResource("css/MenuStyle.css").toExternalForm());
         stage.setScene(scene);
@@ -186,17 +178,27 @@ public class GameView extends Menu {
         quitButton.setLayoutY(0);
         quitButton.setMinWidth(100);
         quitButton.setMinHeight(100);
+        // auto save
+        autoSave = new ToggleButton("auto save");
+        autoSave.setFocusTraversable(false);
+        autoSave.setLayoutX(WIDTH - 100);
+        autoSave.setLayoutY(HEIGHT - 100);
+        autoSave.setMinWidth(100);
+        autoSave.setMinHeight(100);
     }
 
     private static void passTurn() {
-        // TODO: 7/15/2022 in web it must bo into a waiting state?
         PlayerController.nextTurn();
-        makeMap();
-        initElements();
+        if(autoSave.isSelected()){
+            GameController.saveGame();
+        }
+        show(stage);
     }
 
     private static void quit() {
-        GameController.saveGame();
+        if(autoSave.isSelected()){
+            GameController.saveGame();
+        }
         Menu.changeMenu(MenuType.MAIN_MENU);
     }
 
@@ -213,44 +215,6 @@ public class GameView extends Menu {
         topPaneLabel.setText(MapMaker.getColorlessTopBar());
         topPane.getChildren().addAll(topPaneLabel);
     }
-/*
-    private static void initNotificationPane() {
-        notificationPane = new VBox();
-        notificationPane.setVisible(false);
-        notificationPane.setAlignment(Pos.CENTER);
-        notificationPane.setLayoutX(1000);
-        notificationPane.setMinWidth(400);
-        notificationPane.setMinHeight(500);
-        notificationPane.setStyle("-fx-background-color: #C0C0C0; -fx-background-size: 100, 100;");
-        Label header = new Label("NOTIFICATION PANEL");
-        header.setTextFill(Color.WHITE);
-        header.setFont(Font.font(18));
-        header.setAlignment(Pos.CENTER);
-        Label content = new Label(NotificationsPanel.showPanel());
-        content.setFont(Font.font(14));
-        content.setTextFill(Color.WHITE);
-        notificationPane.getChildren().addAll(header, content);
-    }
-
-
-    private static void initMilitaryPane() {
-        militaryPane = new VBox();
-        militaryPane.setVisible(false);
-        militaryPane.setAlignment(Pos.CENTER);
-        militaryPane.setLayoutX(1000);
-        militaryPane.setMinWidth(400);
-        militaryPane.setMinHeight(500);
-        militaryPane.setStyle("-fx-background-color: #C0C0C0; -fx-background-size: 100, 100;");
-        Label header = new Label("MILITARY PANEL");
-        header.setTextFill(Color.WHITE);
-        header.setFont(Font.font(18));
-        header.setAlignment(Pos.CENTER);
-        Label content = new Label(MilitaryPanel.printPanel());
-        content.setFont(Font.font(14));
-        content.setTextFill(Color.WHITE);
-        militaryPane.getChildren().addAll(header, content);
-    }
- */
 
     /////////////////////
 
