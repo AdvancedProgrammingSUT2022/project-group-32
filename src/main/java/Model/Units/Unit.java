@@ -1,5 +1,6 @@
 package Model.Units;
 
+import Controller.PlayerController;
 import Model.Map;
 import Model.Player;
 import Model.Tile;
@@ -153,6 +154,9 @@ public class Unit implements Serializable {
     }
 
     public void placeIn(Tile tile, Map map) {
+        if(tile.getCity() != null && tile.getCity().getOwner() != owner) {
+            PlayerController.declareWar(owner, tile.getCity().getOwner());
+        }
         if (unitType == UnitType.SCOUT) this.MP--;
         else this.MP -= tile.getMP(this.tile);
         if (tile.getCity() != null && !tile.getCity().getOwner().equals(this.owner)) {
