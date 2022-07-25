@@ -243,11 +243,11 @@ public class PlayerController {
     }
 
     public static boolean checkIfLost() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+        return GameController.isDead(GameController.getCurrentPlayer());
     }
 
     public static boolean checkIfWon() {
-        throw new RuntimeException("NOT IMPLEMENTED FUNCTION");
+        return GameController.isEnded() && !checkIfLost();
     }
 
     public static ArrayList<ResourceType> getPlayerWorkingResourceTypes(Player player) {

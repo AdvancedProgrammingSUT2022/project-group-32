@@ -185,12 +185,29 @@ public class GameController {
     }
 
     public static boolean isDead(Player player){
-//        System.out.println("player score" + player.getScore());
-        return player.getCities().isEmpty() && player.isStarted();
+        return player.getCities().isEmpty() && player.getUnits().isEmpty();
+    }
+
+    public static void forceEnd() {
+        Player winner = null;
+        int maxCity = -1;
+        for (Player player : game.getPlayers()) {
+            if(player.getCities().size() >= maxCity) {
+                winner = player;
+                maxCity = player.getCities().size();
+            }
+        }
+        for (Player player : game.getPlayers()) {
+            if(player != winner) {
+                player.getCities().clear();
+                player.getUnits().clear();
+            }
+        }
     }
 
     public static boolean isEnded(){
-        if(getTurn() >= 2050){
+        if(getTurn() >= 2050){ // can be manipulated
+            forceEnd();
             return true;
         }
         int aliveCount = 0;
