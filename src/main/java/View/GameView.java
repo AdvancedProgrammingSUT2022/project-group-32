@@ -54,8 +54,6 @@ public class GameView extends Menu {
     protected static VBox unitSelectedPane;
     protected static VBox citySelectedPane;
 
-    protected static VBox winningPane;
-
     protected static Alert infoAlert;
     protected static Alert invalidAlert;
     protected static DialogPane dialogPane;
@@ -107,7 +105,7 @@ public class GameView extends Menu {
                     Boolean res = (Boolean) Network.getResponseObjOf(RequestActions.IS_MY_TURN.code, null);
                     if (res) {
                         Platform.runLater(() -> {
-                            makeMap();
+                            show(stage);
                         });
                         break;
                     } else {
@@ -224,6 +222,18 @@ public class GameView extends Menu {
     }
 
     public static void show(Stage primaryStage) {
+        if(((boolean) Network.getResponseObjOf(RequestActions.AM_I_LOST.code, null))){
+            showAlert(infoAlert, "YOU LOST!!!\n(not only in this game but in your whole life.\ncause you wasted so much of your time playing this stupid game)");
+            Network.sendRequest(RequestActions.PASS_TURN.code, null);
+            changeMenu(MenuType.MAIN_MENU);
+            return;
+        }
+        if(((boolean) Network.getResponseObjOf(RequestActions.AM_I_WON.code, null))){
+            showAlert(infoAlert, "YOU WON!!!\n(but at what cost)");
+            Network.getResponseObjOf(RequestActions.END_GAME.code, null);
+            changeMenu(MenuType.MAIN_MENU);
+            return;
+        }
         try {
             stage = primaryStage;
             root = new Pane();
@@ -292,7 +302,7 @@ public class GameView extends Menu {
         Network.sendRequest(RequestActions.PASS_TURN.code, null);
         System.out.println("passing turn!!");
 
-        makeMap();
+        show(stage);
         System.out.println("passing turn!!");
         updateElements();
     }

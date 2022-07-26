@@ -51,14 +51,11 @@ public class Game implements Serializable {
     }
 
     public void nextTurn() {
-        do {
-            currentPlayerID = currentPlayerID + 1;
-            if(currentPlayerID == players.size()){
-                currentPlayerID = 0;
-                turnCount ++;
-            }
-        } while(GameController.isDead(players.get(currentPlayerID)));
-
+        currentPlayerID = currentPlayerID + 1;
+        if(currentPlayerID == players.size()) {
+            currentPlayerID = 0;
+            turnCount++;
+        }
     }
 
     public void refillData(){
