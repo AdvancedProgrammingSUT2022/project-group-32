@@ -232,7 +232,6 @@ public class GameController {
             User user = player.getUser();
             user.setLastUpdate(getCurrentTime());
             if (user.getBestScore() < player.getScore()) {
-
                 user.setBestScore(player.getScore());
                 user.setBestScoreTime(getCurrentTime());
             }
