@@ -37,6 +37,7 @@ public class Menu extends Application {
     private static InputStream inputStream;
     private static ObjectInputStream objectInputStream;
     private static Socket socket;
+    public static String myTokenSTr;
 
     public enum MenuType {
         MAIN_MENU("mainMenu"),

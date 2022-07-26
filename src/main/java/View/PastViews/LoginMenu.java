@@ -34,7 +34,7 @@ public class LoginMenu extends Menu {
             invalidCommand();
             return;
         }
-        Response.LoginMenu response = UserController.login(parameters.get(0), parameters.get(1));
+        Response.LoginMenu response = UserController.login(parameters.get(0), parameters.get(1), "  ");
         System.out.println(response.getString());
     }
 

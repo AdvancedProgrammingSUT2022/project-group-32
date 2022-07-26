@@ -1,5 +1,6 @@
 package View;
 
+import Model.Request;
 import enums.ParameterKeys;
 import enums.RequestActions;
 import enums.Responses.Response;
@@ -87,7 +88,10 @@ public class LoginMenu extends Menu {
         params.put(ParameterKeys.PASSWORD.code, passwordField.getText());
 
 //        Response.LoginMenu response = Response.LoginMenu.values()[Network.getResponseEnumIntOf(RequestActions.LOGIN.code, params)];
-        Response.LoginMenu response = (Response.LoginMenu) Network.getResponseObjOf(RequestActions.LOGIN.code, params);
+        Request responseRequest = Network.sendRequest(RequestActions.LOGIN.code, params);
+
+        Response.LoginMenu response = (Response.LoginMenu) responseRequest.getObj();
+        myTokenSTr = responseRequest.params.get("token");
         if (response.equals(Response.LoginMenu.USERNAME_PASSWORD_DONT_MATCH)) {
             showAlert(alert, response.getString());
         } else {

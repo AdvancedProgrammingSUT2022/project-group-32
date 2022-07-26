@@ -56,7 +56,7 @@ public class UserControllerTest {
     @Test
     public void LoginTest() {
         UserController.addUser("ali", "ali", "ali");
-        Assert.assertEquals(UserController.login("ali", "ali"), Response.LoginMenu.LOGIN_SUCCESSFUL);
-        Assert.assertEquals(UserController.login("ali", "ali34"), Response.LoginMenu.USERNAME_PASSWORD_DONT_MATCH);
+        Assert.assertEquals(UserController.login("ali", "ali", ""), Response.LoginMenu.LOGIN_SUCCESSFUL);
+        Assert.assertEquals(UserController.login("ali", "ali34", ""), Response.LoginMenu.USERNAME_PASSWORD_DONT_MATCH);
     }
 }

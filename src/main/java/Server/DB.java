@@ -33,6 +33,23 @@ public class DB {
         }
     }
 
+    public void setToken(String username, String token) {
+        String sql = "UPDATE User SET token = ? WHERE username = ?";
+
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // set the corresponding param
+            pstmt.setString(1, token);
+            pstmt.setString(2, username);
+            // execute the delete statement
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public String getPass(String username) {
         String sql = "SELECT password FROM User WHERE username='" + username + "'";
 

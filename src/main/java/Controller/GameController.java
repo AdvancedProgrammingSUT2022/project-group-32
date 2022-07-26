@@ -3,7 +3,6 @@ package Controller;
 import Model.*;
 import Model.Units.Troop;
 import Model.Units.Unit;
-import View.Menu;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import enums.Responses.Response;
@@ -237,7 +236,6 @@ public class GameController {
             }
         }
         UserController.saveUsers();
-        Menu.changeMenu(Menu.MenuType.MAIN_MENU);
     }
 
     ///         CHEAT CODES

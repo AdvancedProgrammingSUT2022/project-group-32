@@ -8,6 +8,7 @@ import Model.Request;
 import Model.User;
 import View.Panels.InGameCommandHandler;
 import enums.ParameterKeys;
+import net.bytebuddy.utility.RandomString;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -55,7 +56,10 @@ public class ServerMain {
                             HashMap<String, String> params = request.params;
                             System.out.println(request);
                             if (action.equals(LOGIN.code)) {
-                                sendEnumRequest(UserController.login(params.get(ParameterKeys.USERNAME.code), params.get(ParameterKeys.PASSWORD.code)), objectOutputStream);
+                                String privateToken = RandomString.make(30);
+                                HashMap<String, String> paramssss = new HashMap<>();
+                                paramssss.put("token", privateToken);
+                                sendEnumRequest(UserController.login(params.get(ParameterKeys.USERNAME.code), params.get(ParameterKeys.PASSWORD.code), privateToken), objectOutputStream, paramssss);
                             } else if (action.equals(REGISTER.code)) {
                                 sendEnumRequest(UserController.register(params.get(ParameterKeys.USERNAME.code),
                                         params.get(ParameterKeys.PASSWORD.code),
@@ -181,6 +185,10 @@ public class ServerMain {
 
     private static void sendEnumRequest(Enum thisEnum, ObjectOutputStream objectOutputStream) {
         sendRequest(new Request(thisEnum.toString(), null, thisEnum), objectOutputStream);
+    }
+
+    private static void sendEnumRequest(Enum thisEnum, ObjectOutputStream objectOutputStream, HashMap<String, String> params) {
+        sendRequest(new Request(thisEnum.toString(), params, thisEnum), objectOutputStream);
     }
 
     private static synchronized void sendRequest(Request request, ObjectOutputStream objectOutputStream) {

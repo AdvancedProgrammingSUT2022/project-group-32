@@ -4,6 +4,7 @@ import Model.User;
 import Server.DB;
 import Server.ServerMain;
 import View.PastViews.Menu;
+import com.google.common.hash.Hashing;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import enums.Responses.Response;
@@ -13,6 +14,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -111,13 +113,16 @@ public class UserController {
         return Response.LoginMenu.REGISTER_SUCCESSFUL;
     }
 
-    public static Response.LoginMenu login(String username, String password) { // login menu
+    public static Response.LoginMenu login(String username, String password, String privateToken) { // login menu
         User user;
         String goodPass = db.getPass(username);
         if ((user = getUserByUsername(username)) == null || !user.getPassword().equals(password)) {
             return Response.LoginMenu.USERNAME_PASSWORD_DONT_MATCH;
         }
-
+        String sha256hex = Hashing.sha256()
+                .hashString(privateToken, StandardCharsets.UTF_8)
+                .toString();
+        db.setToken(username, sha256hex);
         ServerMain.addThreadUser(user);
         Menu.setCurrentMenu(Menu.MenuType.MAIN_MENU);
         return Response.LoginMenu.LOGIN_SUCCESSFUL;
