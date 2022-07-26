@@ -10,7 +10,7 @@ public class DB {
 
     private Connection connect() {
         // SQLite connection string
-        String url = "jdbc:sqlite:D:\\UNIVERSITY\\2\\AP\\Projects\\CivVI\\project-group-32\\src\\main\\resources\\login";
+        String url = "jdbc:sqlite:E:\\University\\Term 2\\AP\\project-group-32\\src\\main\\resources\\login";
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);
